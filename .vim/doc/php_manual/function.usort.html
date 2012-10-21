@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>ユーザー定義の比較関数を使用して、配列を値でソートする</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.array.html">配列</a></div>
+ <div class="next" style="float: right;"><a href="ref.aspell.html">Aspell</a></div>
+ <div class="up"><a href="ref.array.html">配列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.usort" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">usort</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">usort ― 
+   ユーザー定義の比較関数を使用して、配列を値でソートする
+  </p>
+
+ </div>
+ <div class="refsect1 u">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>usort</b></b></span>
+    ( <span class="methodparam"><span class="type">array</span> <tt class="parameter reference">&$array</tt></span>
+   , <span class="methodparam"><span class="type">callback</span> <tt class="parameter">$cmp_function</tt></span>
+   )</div>
+
+  <p class="para">
+   この関数は、ユーザー定義の比較関数により配列をその値でソートします。
+   ソートしたい配列を複雑な基準でソートする必要がある場合、
+   この関数を使用するべきです。
+  </p>
+  <p class="para">
+   比較関数は、最初の引数が 2 番目の引数より小さいか、等しいか、大きい場合に、
+   それぞれゼロ未満、ゼロに等しい、ゼロより大きい整数を返す
+   必要があります。
+  </p>
+  <p class="para">
+   <blockquote><p><b class="note">注意</b>: 
+    
+     二つのメンバーの比較結果が等しいとなった場合、
+     ソートされた配列の順番は定義されません。PHP 4.0.6 までは、
+     ユーザー定義関数はそれらの要素の順番を維持します。しかし
+     PHP 4.1.0 以降で導入された新しいソートアルゴリズムでは、
+     それと同等のことを行う効果的な方法はありません。
+    <br />
+   </p></blockquote>
+  </p>
+  <blockquote><p><b class="note">注意</b>: <span class="simpara">この関数は、
+<i><tt class="parameter">array</tt></i>
+ パラメータの要素に対して新しいキーを割り当てます。
+その際、単純にキーを並べ替える代わりに、
+すでに割り当てられている既存のキーを削除してしまいます。</span></p></blockquote>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>usort()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">cmp</span><span style="color: #007700">(</span><span style="color: #0000BB">$a</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$b</span><span style="color: #007700">)<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">==&nbsp;</span><span style="color: #0000BB">$b</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;(</span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">&lt;&nbsp;</span><span style="color: #0000BB">$b</span><span style="color: #007700">)&nbsp;?&nbsp;-</span><span style="color: #0000BB">1&nbsp;</span><span style="color: #007700">:&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">;<br />}<br /><br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #0000BB">3</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">5</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">6</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">usort</span><span style="color: #007700">(</span><span style="color: #0000BB">$a</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"cmp"</span><span style="color: #007700">);<br /><br />foreach&nbsp;(</span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$key&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$value</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"$key:&nbsp;$value\n"</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+0: 1
+1: 2
+2: 3
+3: 5
+4: 6
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    もちろん、このような簡単な例では <a href="function.rsort.html" class="function">rsort()</a>
+    関数の方がより適当です。
+   <br />
+  </p></blockquote>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#2 多次元配列を使用する <b>usort()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">cmp</span><span style="color: #007700">(</span><span style="color: #0000BB">$a</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$b</span><span style="color: #007700">)<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">strcmp</span><span style="color: #007700">(</span><span style="color: #0000BB">$a</span><span style="color: #007700">[</span><span style="color: #DD0000">"fruit"</span><span style="color: #007700">],&nbsp;</span><span style="color: #0000BB">$b</span><span style="color: #007700">[</span><span style="color: #DD0000">"fruit"</span><span style="color: #007700">]);<br />}<br /><br /></span><span style="color: #0000BB">$fruits</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">][</span><span style="color: #DD0000">"fruit"</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #DD0000">"lemons"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$fruits</span><span style="color: #007700">[</span><span style="color: #0000BB">1</span><span style="color: #007700">][</span><span style="color: #DD0000">"fruit"</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #DD0000">"apples"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$fruits</span><span style="color: #007700">[</span><span style="color: #0000BB">2</span><span style="color: #007700">][</span><span style="color: #DD0000">"fruit"</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #DD0000">"grapes"</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">usort</span><span style="color: #007700">(</span><span style="color: #0000BB">$fruits</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"cmp"</span><span style="color: #007700">);<br /><br />while&nbsp;(list(</span><span style="color: #0000BB">$key</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$value</span><span style="color: #007700">)&nbsp;=&nbsp;</span><span style="color: #0000BB">each</span><span style="color: #007700">(</span><span style="color: #0000BB">$fruits</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"\$fruits[$key]:&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$value</span><span style="color: #007700">[</span><span style="color: #DD0000">"fruit"</span><span style="color: #007700">]&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>
+     多次元配列をソートする際には、<var class="varname">$a</var> と <var class="varname">$b</var>
+     は配列の最初のインデックスへの参照を保持しています。
+    </p></div>
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+$fruits[0]: apples
+$fruits[1]: grapes
+$fruits[2]: lemons
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+
+  <p class="para">
+   <div class="example">
+    <p><b>Example#3 
+     <b>usort()</b> でオブジェクトのメンバ関数を使用する例
+    </b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">TestObj&nbsp;</span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;</span><span style="color: #0000BB">TestObj</span><span style="color: #007700">(</span><span style="color: #0000BB">$name</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">name&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;This&nbsp;is&nbsp;the&nbsp;static&nbsp;comparing&nbsp;function:&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">cmp_obj</span><span style="color: #007700">(</span><span style="color: #0000BB">$a</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$b</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$al&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">strtolower</span><span style="color: #007700">(</span><span style="color: #0000BB">$a</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">name</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$bl&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">strtolower</span><span style="color: #007700">(</span><span style="color: #0000BB">$b</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">name</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">$al&nbsp;</span><span style="color: #007700">==&nbsp;</span><span style="color: #0000BB">$bl</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;(</span><span style="color: #0000BB">$al&nbsp;</span><span style="color: #007700">&gt;&nbsp;</span><span style="color: #0000BB">$bl</span><span style="color: #007700">)&nbsp;?&nbsp;+</span><span style="color: #0000BB">1&nbsp;</span><span style="color: #007700">:&nbsp;-</span><span style="color: #0000BB">1</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br /></span><span style="color: #0000BB">$a</span><span style="color: #007700">[]&nbsp;=&nbsp;new&nbsp;</span><span style="color: #0000BB">TestObj</span><span style="color: #007700">(</span><span style="color: #DD0000">"c"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$a</span><span style="color: #007700">[]&nbsp;=&nbsp;new&nbsp;</span><span style="color: #0000BB">TestObj</span><span style="color: #007700">(</span><span style="color: #DD0000">"b"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$a</span><span style="color: #007700">[]&nbsp;=&nbsp;new&nbsp;</span><span style="color: #0000BB">TestObj</span><span style="color: #007700">(</span><span style="color: #DD0000">"d"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">usort</span><span style="color: #007700">(</span><span style="color: #0000BB">$a</span><span style="color: #007700">,&nbsp;array(</span><span style="color: #DD0000">"TestObj"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"cmp_obj"</span><span style="color: #007700">));<br /><br />foreach&nbsp;(</span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$item</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$item</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">name&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+b
+c
+d
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+
+  <p class="para">
+   <a href="function.uasort.html" class="function">uasort()</a>、
+   <a href="function.uksort.html" class="function">uksort()</a>、<a href="function.sort.html" class="function">sort()</a>、
+   <a href="function.asort.html" class="function">asort()</a>、
+   <a href="function.arsort.html" class="function">arsort()</a>、<a href="function.ksort.html" class="function">ksort()</a>、
+   <a href="function.natsort.html" class="function">natsort()</a> および <a href="function.rsort.html" class="function">rsort()</a>
+   も参照ください。
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.array.html">配列</a></div>
+ <div class="next" style="float: right;"><a href="ref.aspell.html">Aspell</a></div>
+ <div class="up"><a href="ref.array.html">配列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

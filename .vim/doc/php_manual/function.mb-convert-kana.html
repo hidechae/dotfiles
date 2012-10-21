@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>カナを("全角かな"、"半角かな"等に)変換する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mb-convert-encoding.html">mb_convert_encoding</a></div>
+ <div class="next" style="float: right;"><a href="function.mb-convert-variables.html">mb_convert_variables</a></div>
+ <div class="up"><a href="ref.mbstring.html">マルチバイト文字列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mb-convert-kana" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mb_convert_kana</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.0.6, PHP 5)</p><p class="refpurpose">mb_convert_kana ― カナを(&quot;全角かな&quot;、&quot;半角かな&quot;等に)変換する</p>
+
+ </div>
+   
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">string</span> <span class="methodname"><b><b>mb_convert_kana</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$str</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$option</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$encoding</tt></span>
+  ]] )</div>
+
+  <p class="para">
+   <b>mb_convert_kana()</b> は、文字列
+   <i><tt class="parameter">str</tt></i>
+ に関して「半角」-「全角」変換を行い、
+   変換された文字列を返します。この関数は、日本語のみで使用可能です。
+  </p>
+  <p class="para">
+   <i><tt class="parameter">option</tt></i>
+ は変換オプションです。デフォルト値は、
+   <i class="literal">&quot;KV&quot;</i>です。
+  </p>
+  <p class="para">
+   <i><tt class="parameter">encoding</tt></i>
+ は文字エンコーディングで、
+   省略された場合は内部文字エンコーディングが使用されます。
+  </p>
+  <p class="para">
+   以下のオプションを組み合わせて指定します。デフォルト値は
+   <i class="literal">KV</i> です。
+   <table border="5">
+    <caption><b>使用可能な変換オプション</b></caption>
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">オプション</th>
+       <th colspan="1">意味</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><i class="literal">r</i></td>
+       <td colspan="1" rowspan="1" align="left">
+        「全角」英字を「半角」に変換します。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><i class="literal">R</i></td>
+       <td colspan="1" rowspan="1" align="left">
+        「半角」英字を「全角」に変換します。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><i class="literal">n</i></td>
+       <td colspan="1" rowspan="1" align="left">
+        「全角」数字を「半角」に変換します。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><i class="literal">N</i></td>
+       <td colspan="1" rowspan="1" align="left">
+        「半角」数字を「全角」に変換します。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><i class="literal">a</i></td>
+       <td colspan="1" rowspan="1" align="left">
+        「全角」英数字を「半角」に変換します。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><i class="literal">A</i></td>
+       <td colspan="1" rowspan="1" align="left">
+        「半角」英数字を「全角」に変換します
+        （&quot;a&quot;, &quot;A&quot; オプションに含まれる文字は、U+0022, U+0027, U+005C,
+        U+007Eを除く U+0021 - U+007E の範囲です）。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><i class="literal">s</i></td>
+       <td colspan="1" rowspan="1" align="left">
+        「全角」スペースを「半角」に変換します（U+3000 -&gt; U+0020）。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><i class="literal">S</i></td>
+       <td colspan="1" rowspan="1" align="left">
+        「半角」スペースを「全角」に変換します（U+0020 -&gt; U+3000）。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><i class="literal">k</i></td>
+       <td colspan="1" rowspan="1" align="left">
+        「全角カタカナ」を「半角カタカナ」に変換します。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><i class="literal">K</i></td>
+       <td colspan="1" rowspan="1" align="left">
+        「半角カタカナ」を「全角カタカナ」に変換します。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><i class="literal">h</i></td>
+       <td colspan="1" rowspan="1" align="left">
+        「全角ひらがな」を「半角カタカナ」に変換します。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><i class="literal">H</i></td>
+       <td colspan="1" rowspan="1" align="left">
+        「半角カタカナ」を「全角ひらがな」に変換します。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><i class="literal">c</i></td>
+       <td colspan="1" rowspan="1" align="left">
+        「全角カタカナ」を「全角ひらがな」に変換します。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><i class="literal">C</i></td>
+       <td colspan="1" rowspan="1" align="left">
+        「全角ひらがな」を「全角カタカナ」に変換します。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><i class="literal">V</i></td>
+       <td colspan="1" rowspan="1" align="left">
+        濁点付きの文字を一文字に変換します。&quot;K&quot;, &quot;H&quot; と共に使用します。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+
+  </p>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>mb_convert_kana()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/*&nbsp;「仮名」を全て「全角カタカナ」に変換します&nbsp;*/<br /></span><span style="color: #0000BB">$str&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mb_convert_kana</span><span style="color: #007700">(</span><span style="color: #0000BB">$str</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"KVC"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;「半角カタカナ」を「全角カタカナ」に変換し、「全角」英数字を「半角」<br />&nbsp;&nbsp;&nbsp;に変換します。&nbsp;*/<br /></span><span style="color: #0000BB">$str&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mb_convert_kana</span><span style="color: #007700">(</span><span style="color: #0000BB">$str</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"KVa"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mb-convert-encoding.html">mb_convert_encoding</a></div>
+ <div class="next" style="float: right;"><a href="function.mb-convert-variables.html">mb_convert_variables</a></div>
+ <div class="up"><a href="ref.mbstring.html">マルチバイト文字列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

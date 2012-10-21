@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>zend_module 構造体</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="internals2.structure.html">拡張モジュールの構造</a></div>
+ <div class="next" style="float: right;"><a href="internals2.structure.globals.html">拡張モジュールのグローバル変数</a></div>
+ <div class="up"><a href="internals2.structure.html">拡張モジュールの構造</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="internals2.structure.modstruct" class="sect1">
+  <h2 class="title">zend_module 構造体</h2>
+  <p class="para">
+   PHP 拡張モジュールのソースファイルの中には、
+   C プログラマにとって目新しいものがいくつか含まれています。
+   これらの中でも最も重要であり、
+   拡張モジュールを開発するにあたって最初にさわることになるのが
+   <i class="literal">zend_module</i> 構造体です。
+   この構造体には豊富な情報が格納されており、
+   その拡張モジュールの依存性やバージョン、コールバック、
+   その他重要なデータを Zend Engine に伝える役割を果たします。
+   この構造体の中身は、何度も大幅に変更されています。
+   ここでは、PHP 5.0 の時点の情報をもとにして説明します。
+   PHP 5.1 や 5.2 では、少々変更されている点もあります。
+  </p>
+  
+  <p class="para">
+   <var class="filename">example.c</var> での <i class="literal">zend_module</i>
+   の宣言は、次のようになります (これは、
+   <strong class="command">ext_skel --extname=example</strong>
+   で生成したものに何も手を加えていない状態です)。
+  </p>
+  
+  <div class="example">
+   <p><b>Example#1 example 拡張モジュールにおける zend_module の宣言部</b></p>
+   <div class="example-contents">
+<div class="cdata"><pre>
+/* {{{ example_module_entry
+ */
+zend_module_entry example_module_entry = {
+#if ZEND_MODULE_API_NO &gt;= 20010901
+    STANDARD_MODULE_HEADER,
+#endif
+    &quot;example&quot;,
+    example_functions,
+    PHP_MINIT(example),
+    PHP_MSHUTDOWN(example),
+    PHP_RINIT(example),        /* Replace with NULL if there&#039;s nothing to do at request start */
+    PHP_RSHUTDOWN(example),    /* Replace with NULL if there&#039;s nothing to do at request end */
+    PHP_MINFO(example),
+#if ZEND_MODULE_API_NO &gt;= 20010901
+    &quot;0.1&quot;, /* Replace with version number for your extension */
+#endif
+    STANDARD_MODULE_PROPERTIES
+};
+/* }}} */
+</pre></div>
+   </div>
+
+  </div>
+  
+  <p class="para">
+   最初はちょっとひるむかも知れませんが、
+   大半の部分はよく見れば非常に単純です。
+   次に示すのは、PHP 5.2 の <var class="filename">zend_modules.h</var>
+   における <i class="literal">zend_module</i> の宣言部です。
+   関連する定数の定義も含めています。
+  </p>
+  
+  <div class="example">
+   <p><b>Example#2 PHP 5.2 における zend_module の定義</b></p>
+   <div class="example-contents">
+<div class="cdata"><pre>
+#define ZEND_MODULE_API_NO 20060613
+struct _zend_module_entry {
+    unsigned short size;
+    unsigned int zend_api;
+    unsigned char zend_debug;
+    unsigned char zts;
+    struct _zend_ini_entry *ini_entry;
+    struct _zend_module_dep *deps;
+    char *name;
+    struct _zend_function_entry *functions;
+    int (*module_startup_func)(INIT_FUNC_ARGS);
+    int (*module_shutdown_func)(SHUTDOWN_FUNC_ARGS);
+    int (*request_startup_func)(INIT_FUNC_ARGS);
+    int (*request_shutdown_func)(SHUTDOWN_FUNC_ARGS);
+    void (*info_func)(ZEND_MODULE_INFO_FUNC_ARGS);
+    char *version;
+    size_t globals_size;
+#ifdef ZTS
+    ts_rsrc_id* globals_id_ptr;
+#else
+    void* globals_ptr;
+#endif
+    void (*globals_ctor)(void *global TSRMLS_DC);
+    void (*globals_dtor)(void *global TSRMLS_DC);
+    int (*post_deactivate_func)(void);
+    int module_started;
+    unsigned char type;
+    void *handle;
+    int module_number;
+};
+#define STANDARD_MODULE_HEADER_EX sizeof(zend_module_entry), ZEND_MODULE_API_NO, ZEND_DEBUG, USING_ZTS
+#define STANDARD_MODULE_HEADER \
+    STANDARD_MODULE_HEADER_EX, NULL, NULL
+#define ZE2_STANDARD_MODULE_HEADER \
+    STANDARD_MODULE_HEADER_EX, ini_entries, NULL
+
+#define STANDARD_MODULE_PROPERTIES_EX 0, 0, NULL, 0
+</pre></div>
+   </div>
+
+  </div>
+  
+ </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="internals2.structure.html">拡張モジュールの構造</a></div>
+ <div class="next" style="float: right;"><a href="internals2.structure.globals.html">拡張モジュールのグローバル変数</a></div>
+ <div class="up"><a href="internals2.structure.html">拡張モジュールの構造</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

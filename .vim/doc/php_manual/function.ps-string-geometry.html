@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>文字列のジオメトリを取得する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ps-show.html">ps_show</a></div>
+ <div class="next" style="float: right;"><a href="function.ps-stringwidth.html">ps_stringwidth</a></div>
+ <div class="up"><a href="ref.ps.html">PS</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.ps-string-geometry" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ps_string_geometry</h1>
+  <p class="verinfo">(PECL ps:1.2.0-1.3.5)</p><p class="refpurpose">ps_string_geometry ― 文字列のジオメトリを取得する</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">array</span> <span class="methodname"><b><b>ps_string_geometry</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$psdoc</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$text</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$fontid</tt></span>
+   [, <span class="methodparam"><span class="type">float</span> <tt class="parameter">$size</tt></span>
+  ]] )</div>
+
+  <p class="para">
+   この関数は <a href="function.ps-stringwidth.html" class="function">ps_stringwidth()</a> と似ていますが、
+   返り値は、テキストの幅、ascender および descender を含む配列形式になります。
+   </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">psdoc</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <a href="function.ps-new.html" class="function">ps_new()</a> が返す、postscript
+       ファイルのリソース ID。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">text</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       ジオメトリを計算するテキスト。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">fontid</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       使用するフォントの ID。フォントが指定されていない場合は、
+       現在のフォントが使用されます。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">size</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       フォントのサイズ。指定されていない場合は現在のサイズが使用されます。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   文字の寸法を格納した配列です。&#039;width&#039; には
+   <a href="function.ps-stringwidth.html" class="function">ps_stringwidth()</a> で返される文字列の幅が入ります。
+   下に突き出している部分の長さの最大値が &#039;descender&#039; に、
+   また上に突き出している部分の長さの最大値が &#039;ascender&#039; に入ります。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.ps-continue-text.html" class="function">ps_continue_text()</a></li>
+    <li class="member"><a href="function.ps-stringwidth.html" class="function">ps_stringwidth()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ps-show.html">ps_show</a></div>
+ <div class="next" style="float: right;"><a href="function.ps-stringwidth.html">ps_stringwidth</a></div>
+ <div class="up"><a href="ref.ps.html">PS</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

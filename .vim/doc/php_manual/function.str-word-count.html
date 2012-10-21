@@ -1,0 +1,236 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>文字列に使用されている単語についての情報を返す</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.str-split.html">str_split</a></div>
+ <div class="next" style="float: right;"><a href="function.strcasecmp.html">strcasecmp</a></div>
+ <div class="up"><a href="ref.strings.html">Strings</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.str-word-count" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">str_word_count</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.3.0, PHP 5)</p><p class="refpurpose">str_word_count ― 
+   文字列に使用されている単語についての情報を返す
+  </p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">mixed</span> <span class="methodname"><b><b>str_word_count</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$string</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$format</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$charlist</tt></span>
+  ]] )</div>
+
+  <p class="para">
+   <i><tt class="parameter">string</tt></i>
+ の単語数を数えます。
+   オプションの <i><tt class="parameter">format</tt></i>
+ が指定されていない場合、
+   見つかった単語の数を整数値で返します。
+   <i><tt class="parameter">format</tt></i>
+ が指定されている場合は結果が配列で返され、
+   配列の内容は <i><tt class="parameter">format</tt></i>
+ に依存します。
+   <i><tt class="parameter">format</tt></i>
+ に設定できる値と対応する出力については
+   以下で示します。
+  </p>
+  <p class="para">
+   この関数を使用するうえで、&#039;単語&#039; は以下のように定義されます。すなわち、
+   「ロケールに依存しないアルファベットからなる文字列で、その先頭以外の部分に
+   &quot;&#039;&quot; および &quot;-&quot; が含まれていてもよい」。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">string</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       文字列。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">format</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       この関数の戻り値を設定します。現在サポートされている値は
+       以下のとおりです。
+       <ul class="itemizedlist">
+        <li class="listitem">
+         <span class="simpara">
+          0 - 見つかった単語の数を返します。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          1 - <i><tt class="parameter">string</tt></i>
+ の中に見つかった単語を含む
+          配列を返します。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          2 - 連想配列を返します。<i><tt class="parameter">string</tt></i>
+ の中での
+          単語の開始位置がキー、単語自体を対応する値となります。
+         </span>
+        </li> 
+       </ul>
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">charlist</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       &#039;単語&#039; とみなされる文字に追加する文字のリスト。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   選択した <i><tt class="parameter">format</tt></i>
+ に応じて、配列あるいは整数を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">5.1.0</td>
+       <td colspan="1" rowspan="1" align="left">
+        <i><tt class="parameter">charlist</tt></i>
+ パラメータが追加されました。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>str_word_count()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$str&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"Hello&nbsp;fri3nd,&nbsp;you're<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;looking&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;good&nbsp;today!"</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">str_word_count</span><span style="color: #007700">(</span><span style="color: #0000BB">$str</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">str_word_count</span><span style="color: #007700">(</span><span style="color: #0000BB">$str</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">str_word_count</span><span style="color: #007700">(</span><span style="color: #0000BB">$str</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'誓誓3'</span><span style="color: #007700">));<br /><br />echo&nbsp;</span><span style="color: #0000BB">str_word_count</span><span style="color: #007700">(</span><span style="color: #0000BB">$str</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+Array
+(
+    [0] =&gt; Hello
+    [1] =&gt; fri
+    [2] =&gt; nd
+    [3] =&gt; you&#039;re
+    [4] =&gt; looking
+    [5] =&gt; good
+    [6] =&gt; today
+)
+
+Array
+(
+    [0] =&gt; Hello
+    [6] =&gt; fri
+    [10] =&gt; nd
+    [14] =&gt; you&#039;re
+    [29] =&gt; looking
+    [46] =&gt; good
+    [51] =&gt; today
+)
+
+Array
+(
+    [0] =&gt; Hello
+    [1] =&gt; fri3nd
+    [2] =&gt; you&#039;re
+    [3] =&gt; looking
+    [4] =&gt; good
+    [5] =&gt; today
+)
+
+7
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.explode.html" class="function">explode()</a></li>
+    <li class="member"><a href="function.preg-split.html" class="function">preg_split()</a></li>
+    <li class="member"><a href="function.split.html" class="function">split()</a></li>
+    <li class="member"><a href="function.count-chars.html" class="function">count_chars()</a></li>
+    <li class="member"><a href="function.substr-count.html" class="function">substr_count()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.str-split.html">str_split</a></div>
+ <div class="next" style="float: right;"><a href="function.strcasecmp.html">strcasecmp</a></div>
+ <div class="up"><a href="ref.strings.html">Strings</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

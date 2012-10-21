@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>bcompiler の exe ファイルを読み込み、クラスを生成する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.bcompiler.html">bcompiler</a></div>
+ <div class="next" style="float: right;"><a href="function.bcompiler-load.html">bcompiler_load</a></div>
+ <div class="up"><a href="ref.bcompiler.html">bcompiler</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.bcompiler-load-exe" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">bcompiler_load_exe</h1>
+  <p class="verinfo">(PECL bcompiler:0.4-0.8)</p><p class="refpurpose">bcompiler_load_exe ― bcompiler の exe ファイルを読み込み、クラスを生成する</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>bcompiler_load_exe</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$filename</tt></span>
+   )</div>
+
+  <p class="para">
+   bcompiler の exe ファイルからデータを読み込み、バイトコードからクラスを生成します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">filename</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       exe ファイルのパスを表す文字列。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <a href="function.bcompiler-load.html" class="function">bcompiler_load()</a> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />bcompiler_load_exe</span><span style="color: #007700">(</span><span style="color: #DD0000">"/tmp/example.exe"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">get_defined_classes</span><span style="color: #007700">());<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <div class="warning"><b class="warning">警告</b><p class="simpara">この関数は、
+<em class="emphasis">実験的</em> なものです。この関数の動作・
+名前・その他ドキュメントに書かれている事項は、予告なく、将来的な PHP
+のリリースにおいて変更される可能性があります。
+この関数は自己責任で使用してください。</p></div>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.bcompiler-load.html" class="function">bcompiler_load()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.bcompiler.html">bcompiler</a></div>
+ <div class="next" style="float: right;"><a href="function.bcompiler-load.html">bcompiler_load</a></div>
+ <div class="up"><a href="ref.bcompiler.html">bcompiler</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

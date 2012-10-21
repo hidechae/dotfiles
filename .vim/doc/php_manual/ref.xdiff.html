@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>xdiff 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.xattr-supported.html">xattr_supported</a></div>
+ <div class="next" style="float: right;"><a href="function.xdiff-file-diff-binary.html">xdiff_file_diff_binary</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">xdiff 関数</h1>
+  
+
+  <div class="partintro">
+   <div id="xdiff.intro" class="section">
+   <h2 class="title">導入</h2>
+    <p class="para">
+     xdiff 拡張モジュールは、テキストファイルおよびバイナリファイルに対しての
+     パッチの作成および適用を行います。
+    </p>
+   </div>
+
+   <div id="xdiff.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">
+     xdiff を使用するには libxdiff がインストールされている必要があります。
+     これは libxdiff のホームページ <a href="http://www.xmailserver.org/xdiff-lib.html" class="link external">&raquo; http://www.xmailserver.org/xdiff-lib.html</a>
+     で取得可能です。
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      memory_limit を考慮してこれらの関数を使用するには、すくなくとも
+      libxdiff 0.7 が必要です。
+     <br />
+    </p></blockquote>
+   </div>
+
+   
+
+
+<div id="xdiff.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  xdiff は、現在は PECL
+  <a href="http://pecl.php.net/package/xdiff" class="link external">&raquo; http://pecl.php.net/package/xdiff</a>
+  から取得可能です。
+ </p>
+ <p class="para">
+  *nix-like システムを使用しており <a href="http://pear.php.net/" class="link external">&raquo; PEAR</a>
+  が使用可能な場合は、pear インストーラを使用して xdiff 拡張モジュールを
+  インストールすることが可能です。そのためには以下のコマンドを使用します。
+  <strong class="command">pear -v install xdiff</strong>
+ </p>
+ <p class="para">
+  tar.gz パッケージをダウンロードし、xdiff を手動でインストールすることも
+  常に可能です。
+  <div class="example">
+   <p><b>Example#1 xdiff の手動インストール</b></p>
+   <div class="example-contents">
+<div class="cdata"><pre>
+gunzip xdiff-xxx.tgz
+tar -xvf xdiff-xxx.tar
+cd xdiff-xxx
+phpize
+./configure &amp;&amp; make &amp;&amp; make install
+</pre></div>
+   </div>
+
+  </div>
+ </p>
+</div>
+
+
+
+   
+
+
+<div id="xdiff.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <dl>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>XDIFF_PATCH_NORMAL</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>XDIFF_PATCH_REVERSE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+</div>
+
+
+
+
+  </div>
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.xdiff-file-diff-binary.html">xdiff_file_diff_binary</a> ― 2 つのファイルのバイナリ diff を作成する</li><li><a href="function.xdiff-file-diff.html">xdiff_file_diff</a> ― 2 つのファイルの unified diff を作成する</li><li><a href="function.xdiff-file-merge3.html">xdiff_file_merge3</a> ― 3 つのファイルをひとつに統合する</li><li><a href="function.xdiff-file-patch-binary.html">xdiff_file_patch_binary</a> ― ファイルにバイナリ diff 形式のパッチを適用する</li><li><a href="function.xdiff-file-patch.html">xdiff_file_patch</a> ― ファイルに unified diff 形式のパッチを適用する</li><li><a href="function.xdiff-string-diff-binary.html">xdiff_string_diff_binary</a> ― 2 つの文字列のバイナリ diff を作成する</li><li><a href="function.xdiff-string-diff.html">xdiff_string_diff</a> ― 2 つの文字列の unified diff を作成する</li><li><a href="function.xdiff-string-merge3.html">xdiff_string_merge3</a> ― 3 つの文字列をひとつに統合する</li><li><a href="function.xdiff-string-patch-binary.html">xdiff_string_patch_binary</a> ― 文字列にバイナリ diff 形式のパッチを適用する</li><li><a href="function.xdiff-string-patch.html">xdiff_string_patch</a> ― 文字列に unified diff 形式のパッチを適用する</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.xattr-supported.html">xattr_supported</a></div>
+ <div class="next" style="float: right;"><a href="function.xdiff-file-diff-binary.html">xdiff_file_diff_binary</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

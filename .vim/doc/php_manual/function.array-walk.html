@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>配列の全ての要素にユーザ関数を適用する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.array-walk-recursive.html">array_walk_recursive</a></div>
+ <div class="next" style="float: right;"><a href="function.array.html">array</a></div>
+ <div class="up"><a href="ref.array.html">配列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.array-walk" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">array_walk</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">array_walk ― 配列の全ての要素にユーザ関数を適用する</p>
+
+ </div>
+ <div class="refsect1 u">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>array_walk</b></b></span>
+    ( <span class="methodparam"><span class="type">array</span> <tt class="parameter reference">&$array</tt></span>
+   , <span class="methodparam"><span class="type">callback</span> <tt class="parameter">$funcname</tt></span>
+   [, <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$userdata</tt></span>
+  ] )</div>
+
+  <p class="simpara">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+  <p class="simpara">
+   <i><tt class="parameter">array</tt></i>
+ 配列の各要素にユーザ定義関数
+   <i><tt class="parameter">funcname</tt></i>
+ を適用します。通常、
+   <i><tt class="parameter">funcname</tt></i>
+ は引数を二つとります。
+   <i><tt class="parameter">array</tt></i>
+ パラメータの値が最初の引数、
+   キー/添字は二番目の引数となります。
+   オプションの <i><tt class="parameter">userdata</tt></i>
+ パラメータが指定された場合、
+   コールバック関数 <i><tt class="parameter">funcname</tt></i>
+
+   への三番目の引数として渡されます。
+  </p>
+  <p class="simpara">
+   <i><tt class="parameter">funcname</tt></i>
+ 関数が、指定された引数より多いパラメータを必要とする
+   場合、<b>array_walk()</b>が<i><tt class="parameter">funcname</tt></i>
+
+   をコールする度にエラーレベル <a href="ref.errorfunc.html#errorfunc.constants" class="link">E_WARNING</a> が
+   発生します。これらの警告は、<b>array_walk()</b> コールの前に
+   PHP エラー演算子 <a href="language.operators.errorcontrol.html" class="link">@</a>
+   を付けるか、<a href="function.error-reporting.html" class="function">error_reporting()</a> により抑制することができます。
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    <i><tt class="parameter">funcname</tt></i>
+ により配列の値そのものを変更する必要がある場合、
+    <i><tt class="parameter">funcname</tt></i>
+ の最初の引数は
+    <a href="language.references.html" class="link">参照</a>
+    として渡す必要があります。この場合、配列の要素に加えた変更は、
+    配列自体に対して行われます。
+   <br />
+  </p></blockquote>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    キー及び userdata を <i><tt class="parameter">funcname</tt></i>
+ に渡す処理は、
+    バージョン 4.0.0 で追加されました。
+   <br />
+  </p></blockquote>
+  <p class="para">
+   <b>array_walk()</b> は <i><tt class="parameter">array</tt></i>
+
+   の内部配列ポインタに影響されません。<b>array_walk()</b>
+   はポインタの位置に関わらず配列の全てに渡って適用されます。
+  </p>
+  <p class="para">
+   コールバック関数により配列自身を変更することはできません。
+   例えば、要素の追加、削除、要素の unset 等はできません。
+   <b>array_walk()</b> が適用される配列を
+   変更しようとすると、関数の動作を定義できず、
+   予期しない結果を得ることになります。
+  </p>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>array_walk()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$fruits&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #DD0000">"d"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"lemon"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"a"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"orange"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"b"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"banana"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"c"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"apple"</span><span style="color: #007700">);<br /><br />function&nbsp;</span><span style="color: #0000BB">test_alter</span><span style="color: #007700">(&amp;</span><span style="color: #0000BB">$item1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$key</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$prefix</span><span style="color: #007700">)<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$item1&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"$prefix:&nbsp;$item1"</span><span style="color: #007700">;<br />}<br /><br />function&nbsp;</span><span style="color: #0000BB">test_print</span><span style="color: #007700">(</span><span style="color: #0000BB">$item2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$key</span><span style="color: #007700">)<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"$key.&nbsp;$item2&lt;br&nbsp;/&gt;\n"</span><span style="color: #007700">;<br />}<br /><br />echo&nbsp;</span><span style="color: #DD0000">"Before&nbsp;...:\n"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">array_walk</span><span style="color: #007700">(</span><span style="color: #0000BB">$fruits</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'test_print'</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">array_walk</span><span style="color: #007700">(</span><span style="color: #0000BB">$fruits</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'test_alter'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'fruit'</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #DD0000">"...&nbsp;and&nbsp;after:\n"</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">array_walk</span><span style="color: #007700">(</span><span style="color: #0000BB">$fruits</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'test_print'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+Before ...:
+d. lemon
+a. orange
+b. banana
+c. apple
+... and after:
+d. fruit: lemon
+a. fruit: orange
+b. fruit: banana
+c. fruit: apple
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+  <p class="simpara">
+   <a href="function.array-walk-recursive.html" class="function">array_walk_recursive()</a>、
+   <a href="function.create-function.html" class="function">create_function()</a>、
+   <a href="function.list.html" class="function">list()</a>、
+   <a href="control-structures.foreach.html" class="link">foreach</a>、
+   <a href="function.each.html" class="function">each()</a>、
+   <a href="function.call-user-func-array.html" class="function">call_user_func_array()</a> および
+   <a href="function.array-map.html" class="function">array_map()</a>
+   <a href="language.pseudo-types.html#language.types.callback" class="link">callback</a> 型に関する情報
+   も参照ください。
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.array-walk-recursive.html">array_walk_recursive</a></div>
+ <div class="next" style="float: right;"><a href="function.array.html">array</a></div>
+ <div class="up"><a href="ref.array.html">配列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

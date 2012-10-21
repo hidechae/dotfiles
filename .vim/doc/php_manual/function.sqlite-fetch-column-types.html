@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>特定のテーブルからカラム型の配列を返す</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.sqlite-fetch-array.html">sqlite_fetch_array</a></div>
+ <div class="next" style="float: right;"><a href="function.sqlite-fetch-object.html">sqlite_fetch_object</a></div>
+ <div class="up"><a href="ref.sqlite.html">SQLite</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.sqlite-fetch-column-types" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">sqlite_fetch_column_types</h1>
+  <h1 class="refname">SQLiteDatabase-&gt;fetchColumnTypes</h1>
+  <p class="verinfo">(No version information available, might be only in CVS)</p><p class="refpurpose">SQLiteDatabase->fetchColumnTypes ― 
+   特定のテーブルからカラム型の配列を返す
+  </p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">array</span> <span class="methodname"><b><b>sqlite_fetch_column_types</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$table_name</tt></span>
+   , <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$dbhandle</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$result_type</tt></span>
+  ] )</div>
+
+  <p class="para">オブジェクト指向言語型スタイル (メソッド):</p>
+  <div class="classsynopsis">
+   <div class="ooclass"><b class="classname">SQLiteDatabase</b></div>
+   <div class="methodsynopsis">
+    <span class="type">array</span> <span class="methodname"><b><b>fetchColumnTypes</b></b></span>
+     ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$table_name</tt></span>
+    [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$result_type</tt></span>
+   ] )</div>
+
+  </div>
+  <p class="para">
+   <b>sqlite_fetch_column_types()</b> は、
+   指定されたテーブル <i><tt class="parameter">table_name</tt></i>
+
+   からカラムのデータ型の配列を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">table_name</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       問い合わせるテーブル名
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">dbhandle</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       SQLite データベースリソース。手続きに従って、
+       <a href="function.sqlite-open.html" class="function">sqlite_open()</a> から返されます。
+       このパラメータは、
+       オブジェクト指向言語型メソッドを使用する場合は不要です。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">result_type</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       オプションパラメータ <i><tt class="parameter">result_type</tt></i>
+
+       は定数を受け付け、
+       返される配列をどの様にインデックス付けするかを決定します。
+       <b><tt>SQLITE_ASSOC</tt></b>
+       を使用すると連想インデックス (名前付けられたフィールド) のみを返し、
+       <b><tt>SQLITE_NUM</tt></b> の場合は数値インデックス
+       (順序を表すフィールド番号) のみを返します。
+       <b><tt>SQLITE_BOTH</tt></b> は、連想、
+       数値の両インデックスを返します。
+       <b><tt>SQLITE_ASSOC</tt></b> がこの関数のデフォルトです。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   カラムのデータ型の配列を返します。エラー時は <b><tt>FALSE</tt></b> を返します。
+  </p>
+  <p class="para">
+<b><tt>SQLITE_ASSOC</tt></b> および <b><tt>SQLITE_BOTH</tt></b> で
+返されるカラム名は、設定オプション
+<a href="ref.sqlite.html#ini.sqlite.assoc-case" class="link">sqlite.assoc_case</a> の値に基づき、
+大文字小文字が変換されます。</p>
+ </div>
+
+
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">5.1.0</td>
+       <td colspan="1" rowspan="1" align="left"><i><tt class="parameter">result_type</tt></i>
+ が追加されました。</td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 手続き型言語スタイルでの例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">sqlite_open</span><span style="color: #007700">(</span><span style="color: #DD0000">'mysqlitedb'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">sqlite_query</span><span style="color: #007700">(</span><span style="color: #0000BB">$db</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'CREATE&nbsp;TABLE&nbsp;foo&nbsp;(bar&nbsp;varchar(10),&nbsp;arf&nbsp;text)'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$cols&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">sqlite_fetch_column_types</span><span style="color: #007700">(</span><span style="color: #DD0000">'foo'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$db</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">SQLITE_ASSOC</span><span style="color: #007700">);<br /><br />foreach&nbsp;(</span><span style="color: #0000BB">$cols&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$column&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$type</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Column:&nbsp;$column&nbsp;&nbsp;Type:&nbsp;$type"</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#2 オブジェクト指向言語型スタイルでの例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$db&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">SQLiteDatabase</span><span style="color: #007700">(</span><span style="color: #DD0000">'mysqlitedb'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$db</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">'CREATE&nbsp;TABLE&nbsp;foo&nbsp;(bar&nbsp;varchar(10),&nbsp;arf&nbsp;text)'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$cols&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$db</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetchColumnTypes</span><span style="color: #007700">(</span><span style="color: #DD0000">'foo'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">SQLITE_ASSOC</span><span style="color: #007700">);<br /><br />foreach&nbsp;(</span><span style="color: #0000BB">$cols&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$column&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$type</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Column:&nbsp;$column&nbsp;&nbsp;Type:&nbsp;$type"</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+Column: bar  Type: VARCHAR
+Column: arf  Type: TEXT
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.sqlite-fetch-array.html">sqlite_fetch_array</a></div>
+ <div class="next" style="float: right;"><a href="function.sqlite-fetch-object.html">sqlite_fetch_object</a></div>
+ <div class="up"><a href="ref.sqlite.html">SQLite</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

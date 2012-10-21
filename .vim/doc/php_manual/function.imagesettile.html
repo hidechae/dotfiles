@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>塗りつぶし用のイメージを設定する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.imagesetthickness.html">imagesetthickness</a></div>
+ <div class="next" style="float: right;"><a href="function.imagestring.html">imagestring</a></div>
+ <div class="up"><a href="ref.image.html">イメージ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.imagesettile" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">imagesettile</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.0.6, PHP 5)</p><p class="refpurpose">imagesettile ― 塗りつぶし用のイメージを設定する</p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>imagesettile</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$image</tt></span>
+   , <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$tile</tt></span>
+   )</div>
+
+  <p class="para">
+   <b>imagesettile()</b> は、特別な色
+   <b><tt>IMG_COLOR_TILED</tt></b> を指定して塗りつぶされた場合に、
+   (<a href="function.imagefill.html" class="function">imagefill()</a> や
+   <a href="function.imagefilledpolygon.html" class="function">imagefilledpolygon()</a> のような)
+   領域塗りつぶし関数で使用されるタイルイメージを設定します。
+  </p>
+  <p class="para">
+   タイルは、領域を塗りつぶすために繰り返し使用されるイメージです。
+   全ての GD イメージをタイルとして使用可能で、
+   <a href="function.imagecolortransparent.html" class="function">imagecolortransparent()</a> でタイルの透過色 ID
+   を設定することにより、
+   その一部から下の部分が透けて見えるようなタイルを作成することが可能です。
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    タイルの使用が終った際には、特別な処理は不要ですが、
+    タイルイメージを破棄する場合には、新たにタイルイメージを設定するまでは、色
+    <b><tt>IMG_COLOR_TILED</tt></b> を使用してはいけません。
+   <br />
+  </p></blockquote>
+ </div>
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+<span class="term"><i><tt class="parameter">
+image</tt></i>
+</span><dd>
+<p class="para"><a href="function.imagecreatetruecolor.html" class="function">imagecreatetruecolor()</a>
+のような画像作成関数が返す画像リソース。</p></dd>
+</dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">tile</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       タイルとして使用する画像リソース。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.imagesetthickness.html">imagesetthickness</a></div>
+ <div class="next" style="float: right;"><a href="function.imagestring.html">imagestring</a></div>
+ <div class="up"><a href="ref.image.html">イメージ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,226 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>BCMath任意精度数学関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.bbcode-set-flags.html">bbcode_set_flags</a></div>
+ <div class="next" style="float: right;"><a href="function.bcadd.html">bcadd</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">BCMath任意精度数学関数</h1>
+  
+  
+  <div class="partintro">
+   <div id="bc.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     任意精度演算に関して、PHPは文字列として表された任意の大きさおよび
+     精度の数をサポートするバイナリ計算機を提供します。
+    </p>
+   </div>
+
+   <div id="bc.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">
+     PHP 4.0.4以降、libbcmathがPHPに付属しています。このモジュールを使
+     用するために外部のライブラリを使用する必要はありません。
+    </p>
+   </div>
+
+   
+
+
+<div id="bc.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  これらの関数は、PHPが構築オプション
+  <span class="option">--enable-bcmath</span>を付けてコンパイ
+  ルされている場合にのみ使用できます。
+  PHP 3では、これらの関数は、PHPが構築オプション
+  <span class="option">--disable-bcmath</span>
+  を付けずにコンパイルされている場合にのみ使用できます。
+ </p>
+ <p class="simpara">Windows 版の <i class="literal">PHP</i> には
+この拡張モジュールのサポートが組み込まれています。これらの関数を使用
+するために拡張モジュールを追加でロードする必要はありません。</p>
+</div>
+
+
+
+
+   
+
+
+
+<div id="bc.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+ <table border="5">
+  <caption><b>BC 数学関数設定オプション</b></caption>
+  <colgroup>
+
+   <thead valign="middle">
+    <tr valign="middle">
+     <th colspan="1">名前</th>
+     <th colspan="1">デフォルト</th>
+     <th colspan="1">変更の可否</th>
+     <th colspan="1">変更履歴</th>
+    </tr>
+
+   </thead>
+
+   <tbody valign="middle">
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">bcmath.scale</td>
+     <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+  PHP_INI_* 定数の詳細および定義については
+<a href="ini.html" class="xref">php.ini ディレクティブ</a> を参照してください。
+ </p>
+
+ <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+
+ <p class="para">
+  <dl>
+
+   <dt id="ini.bcmath.scale">
+    <span class="term">
+     <i><tt class="parameter">bcmath.scale</tt></i>
+
+     <a href="language.types.integer.html" class="type integer">integer</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      全ての bcmath 関数に関する 10 進桁数。
+      <a href="function.bcscale.html" class="function">bcscale()</a> も参照してください。
+     </p>
+    </dd>
+
+   </dt>
+
+
+  </dl>
+
+ </p>
+</div>
+
+
+
+
+
+   <div id="bc.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">リソース型は定義されていません。</p>
+   </div>
+
+   <div id="bc.constants" class="section">
+    <h2 class="title">定義済み定数</h2>
+    <p class="para">定数は定義されていません。</p>
+   </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.bcadd.html">bcadd</a> ― 2つの任意精度の数値を加算する</li><li><a href="function.bccomp.html">bccomp</a> ― 2 つの任意精度数値を比較する</li><li><a href="function.bcdiv.html">bcdiv</a> ― 2つの任意精度数値で除算を行う</li><li><a href="function.bcmod.html">bcmod</a> ― 2 つの任意精度数値の剰余を取得する</li><li><a href="function.bcmul.html">bcmul</a> ― 2つの任意精度数値の乗算を行う</li><li><a href="function.bcpow.html">bcpow</a> ― 任意精度数値をべき乗する</li><li><a href="function.bcpowmod.html">bcpowmod</a> ― 任意精度数値のべき乗の、指定した数値による剰余</li><li><a href="function.bcscale.html">bcscale</a> ― すべての BC 演算関数におけるデフォルトのスケールを設定する</li><li><a href="function.bcsqrt.html">bcsqrt</a> ― 任意精度数値の平方根を取得する</li><li><a href="function.bcsub.html">bcsub</a> ― 任意精度数値の減算を行う</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.bbcode-set-flags.html">bbcode_set_flags</a></div>
+ <div class="next" style="float: right;"><a href="function.bcadd.html">bcadd</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

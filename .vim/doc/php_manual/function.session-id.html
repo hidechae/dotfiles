@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>カレントのセッション ID を取得または設定する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.session-get-cookie-params.html">session_get_cookie_params</a></div>
+ <div class="next" style="float: right;"><a href="function.session-is-registered.html">session_is_registered</a></div>
+ <div class="up"><a href="ref.session.html">セッション</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.session-id" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">session_id</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">session_id ― カレントのセッション ID を取得または設定する</p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">string</span> <span class="methodname"><b><b>session_id</b></b></span>
+    ([ <span class="methodparam"><span class="type">string</span> <tt class="parameter">$id</tt></span>
+  ] )</div>
+
+  <p class="para">
+   <b>session_id()</b> はカレントのセッション ID を取得
+   または設定するために使用されます。
+  </p>
+  <p class="para">
+   カレントの名前とセッション ID を、URL に追加可能な文字列として取得する
+   ために定数 <code class="systemitem systemitem">SID</code>
+ も使用することが可能です。
+   <a href="ref.session.html" class="link">セッションハンドリング</a>
+   も参照してください。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">id</tt></i>
+</span>
+      <dd>
+
+       <p class="para">
+        <i><tt class="parameter">id</tt></i>
+ が指定された場合、カレントの
+        セッション ID を置換します。その際、
+        <a href="function.session-start.html" class="function">session_start()</a>
+        より前にコールされている必要があります。
+        セッションハンドラによっては、セッション ID として使用できる文字に
+        制限がある場合があります。例えば、ファイルによるセッションハンドラは
+        セッション ID として使える文字は <i class="literal">a-z, A-Z, 0-9</i>
+        に限られます!
+       </p>
+       <blockquote><p><b class="note">注意</b>: 
+        <span class="simpara">
+         セッション保持にクッキーを使用している場合、
+         <b>session_id()</b> において
+         <i><tt class="parameter">id</tt></i>
+ 引数を指定すると、
+         カレントのセッション ID がセットされるものと
+         まったく同一であるかどうかに関わらず、
+         <a href="function.session-start.html" class="function">session_start()</a>
+         が呼び出される際に常に新しいクッキーが送信されます。
+        </span>
+       </p></blockquote>
+      </dd>
+
+     </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   <b>session_id()</b> はカレントのセッションのセッション ID、
+   もしくはカレントセッションが存在しない (カレントのセッション ID が存在しない)
+   場合は空文字列 (<i class="literal">&quot;&quot;</i>) を返します。
+  </p>
+ </div>
+
+
+<div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.session-regenerate-id.html" class="function">session_regenerate_id()</a></li>
+    <li class="member"><a href="function.session-start.html" class="function">session_start()</a></li>
+    <li class="member"><a href="function.session-set-save-handler.html" class="function">session_set_save_handler()</a></li>
+    <li class="member">
+     <a href="ref.session.html#ini.session.save-handler" class="link">session.save_handler</a>
+    </li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.session-get-cookie-params.html">session_get_cookie_params</a></div>
+ <div class="next" style="float: right;"><a href="function.session-is-registered.html">session_is_registered</a></div>
+ <div class="up"><a href="ref.session.html">セッション</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,296 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>演算子</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="language.expressions.html">式</a></div>
+ <div class="next" style="float: right;"><a href="language.operators.arithmetic.html">代数演算子</a></div>
+ <div class="up"><a href="langref.html">言語リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1>演算子</h1>
+<h2>目次</h2><ul class="chunklist chunklist_chapter"><li><a href="language.operators.arithmetic.html">代数演算子</a></li><li><a href="language.operators.assignment.html">代入演算子</a></li><li><a href="language.operators.bitwise.html">ビット演算子</a></li><li><a href="language.operators.comparison.html">比較演算子</a></li><li><a href="language.operators.errorcontrol.html">エラー制御演算子</a></li><li><a href="language.operators.execution.html">実行演算子</a></li><li><a href="language.operators.increment.html">加算子/減算子</a></li><li><a href="language.operators.logical.html">論理演算子</a></li><li><a href="language.operators.string.html">文字列演算子</a></li><li><a href="language.operators.array.html">配列演算子</a></li><li><a href="language.operators.type.html">型演算子</a></li></ul>
+
+  <p class="simpara">
+   演算子とは、ひとつ以上の値 (あるいはプログラミング用語における「式」)
+   から別の値 (制御構造が式になるように) を生み出すものです。
+   つまり、値を返す関数や制御構造 (たとえば print) は演算子と考えられますし、
+   何も値を返さないもの (たとえば echo) はそれ以外のものとなります。
+  </p>
+  <p class="para">
+   演算子には 3 種類あります。ひとつめは単項演算子で、これはひとつの値に
+   対してのみ作用します。例えば ! (否定演算子) や ++ (加算子) などです。
+   ふたつめは二項演算子と呼ばれるものです。PHP がサポートしている演算子の
+   ほとんどはここに含まれ、その一覧は
+   <a href="language.operators.html#language.operators.precedence" class="link">演算子の優先順位</a>
+   にあります。
+  </p>
+  <p class="para">
+   最後のグループは、三項演算子 ?: です。これは、2 つの文や実行経路から選択すると
+   いうよりも、3 番目の式に応じて 2 つの式から選択するために使用されるべきです。
+   この演算子を使用する式は、括弧で囲んでおくことをお勧めします。
+  </p>
+
+  <div id="language.operators.precedence" class="sect1">
+   <h2 class="title">演算子の優先順位</h2>
+   <p class="para">
+    演算子の優先順位は、二つの式が&quot;緊密に&quot;結合している度合いを指定します。
+    例えば、式 <i class="literal">1 + 5 * 3</i> の答えは
+    <i class="literal">16</i> になり、<i class="literal">18</i> とはなりません。
+    これは乗算演算子(&quot;*&quot;)は、加算演算子(&quot;+&quot;)より高い優先順位を有するか
+    らです。必要に応じて強制的に優先順位を設定するために括弧を使用する
+    ことが可能です。例えば、<i class="literal">18</i>と評価するためには、
+    <i class="literal">(1 + 5) * 3</i> とします。
+    演算子の優先順位が等しい場合は、左から右へ順に評価されます。
+   </p>
+   <p class="para">
+    以下の表では、優先順位が高い順に演算子を挙げています。
+    同じ行にある演算子は優先順位が等しくなります。そのような場合は、
+    結合時の評価にしたがって評価順が決まります。
+    <table border="5">
+     <caption><b>演算子の優先順位</b></caption>
+     <colgroup>
+
+      <thead valign="middle">
+       <tr valign="middle">
+        <th colspan="1">結合時の評価</th>
+        <th colspan="1">演算子</th>
+        <th colspan="1">追加情報</th>
+       </tr>
+
+      </thead>
+
+      <tbody valign="middle">
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">結合しない</td>
+        <td colspan="1" rowspan="1" align="left">new</td>
+        <td colspan="1" rowspan="1" align="left"><a href="language.oop5.basic.html#language.oop5.basic.new" class="link">new</a></td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">left</td>
+        <td colspan="1" rowspan="1" align="left">[</td>
+        <td colspan="1" rowspan="1" align="left"><a href="function.array.html" class="function">array()</a></td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">結合しない</td>
+        <td colspan="1" rowspan="1" align="left">++ --</td>
+        <td colspan="1" rowspan="1" align="left">
+         <a href="language.operators.increment.html" class="link">加算子/減算子</a>
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">結合しない</td>
+        <td colspan="1" rowspan="1" align="left">~ - (int) (float) (string) (array) (object) @</td>
+        <td colspan="1" rowspan="1" align="left">
+         <a href="language.types.html" class="link">型</a>
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">結合しない</td>
+        <td colspan="1" rowspan="1" align="left">instanceof</td>
+        <td colspan="1" rowspan="1" align="left">
+         <a href="language.types.html" class="link">型</a>
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">right</td>
+        <td colspan="1" rowspan="1" align="left">!</td>
+        <td colspan="1" rowspan="1" align="left">
+         <a href="language.operators.logical.html" class="link">論理演算子</a>
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">left</td>
+        <td colspan="1" rowspan="1" align="left">* / %</td>
+        <td colspan="1" rowspan="1" align="left">
+         <a href="language.operators.arithmetic.html" class="link">代数演算子</a>
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">left</td>
+        <td colspan="1" rowspan="1" align="left">+ - .</td>
+        <td colspan="1" rowspan="1" align="left">
+         <a href="language.operators.arithmetic.html" class="link">代数演算子</a> そして 
+         <a href="language.operators.string.html" class="link">文字列演算子</a></td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">left</td>
+        <td colspan="1" rowspan="1" align="left">&lt;&lt; &gt;&gt;</td>
+        <td colspan="1" rowspan="1" align="left">
+         <a href="language.operators.bitwise.html" class="link">ビット演算子</a>
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">結合しない</td>
+        <td colspan="1" rowspan="1" align="left">&lt; &lt;= &gt; &gt;=</td>
+        <td colspan="1" rowspan="1" align="left">
+         <a href="language.operators.comparison.html" class="link">比較演算子</a>
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">結合しない</td>
+        <td colspan="1" rowspan="1" align="left">== != === !==</td>
+        <td colspan="1" rowspan="1" align="left">
+         <a href="language.operators.comparison.html" class="link">比較演算子</a>
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">left</td>
+        <td colspan="1" rowspan="1" align="left">&amp;</td>
+        <td colspan="1" rowspan="1" align="left">
+         <a href="language.operators.bitwise.html" class="link">ビット演算子</a> そして 
+         <a href="language.references.html" class="link">リファレンス</a></td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">left</td>
+        <td colspan="1" rowspan="1" align="left">^</td>
+        <td colspan="1" rowspan="1" align="left">
+         <a href="language.operators.bitwise.html" class="link">ビット演算子</a>
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">left</td>
+        <td colspan="1" rowspan="1" align="left">|</td>
+        <td colspan="1" rowspan="1" align="left">
+         <a href="language.operators.bitwise.html" class="link">ビット演算子</a>
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">left</td>
+        <td colspan="1" rowspan="1" align="left">&amp;&amp;</td>
+        <td colspan="1" rowspan="1" align="left">
+         <a href="language.operators.logical.html" class="link">論理演算子</a>
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">left</td>
+        <td colspan="1" rowspan="1" align="left">||</td>
+        <td colspan="1" rowspan="1" align="left">
+         <a href="language.operators.logical.html" class="link">論理演算子</a>
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">left</td>
+        <td colspan="1" rowspan="1" align="left">? :</td>
+        <td colspan="1" rowspan="1" align="left">
+         <a href="language.operators.comparison.html#language.operators.comparison.ternary" class="link">三項演算子</a>
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">right</td>
+        <td colspan="1" rowspan="1" align="left">
+         = += -= *= /= .= %= &amp;= |= ^= &lt;&lt;= &gt;&gt;=
+        </td>
+        <td colspan="1" rowspan="1" align="left">
+         <a href="language.operators.assignment.html" class="link">代入演算子</a>
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">left</td>
+        <td colspan="1" rowspan="1" align="left">and</td>
+        <td colspan="1" rowspan="1" align="left">
+         <a href="language.operators.logical.html" class="link">論理演算子</a>
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">left</td>
+        <td colspan="1" rowspan="1" align="left">xor</td>
+        <td colspan="1" rowspan="1" align="left">
+         <a href="language.operators.logical.html" class="link">論理演算子</a>
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">left</td>
+        <td colspan="1" rowspan="1" align="left">or</td>
+        <td colspan="1" rowspan="1" align="left">
+         <a href="language.operators.logical.html" class="link">論理演算子</a>
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">left</td>
+        <td colspan="1" rowspan="1" align="left">,</td>
+        <td colspan="1" rowspan="1" align="left">さまざまな利用法</td>
+       </tr>
+
+      </tbody>
+     </colgroup>
+
+    </table>
+
+   </p>
+   <p class="para">
+    結合時の評価が left の場合は式が左から右に評価され、一方 right の場合は
+    その逆となります。
+    <div class="example">
+     <p><b>Example#1 結合時の評価</b></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">3&nbsp;</span><span style="color: #007700">*&nbsp;</span><span style="color: #0000BB">3&nbsp;</span><span style="color: #007700">%&nbsp;</span><span style="color: #0000BB">5</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;(3&nbsp;*&nbsp;3)&nbsp;%&nbsp;5&nbsp;=&nbsp;4<br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">?&nbsp;</span><span style="color: #0000BB">0&nbsp;</span><span style="color: #007700">:&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">?&nbsp;</span><span style="color: #0000BB">1&nbsp;</span><span style="color: #007700">:&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;(true&nbsp;?&nbsp;0&nbsp;:&nbsp;true)&nbsp;?&nbsp;1&nbsp;:&nbsp;2&nbsp;=&nbsp;2<br /><br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$b&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$b&nbsp;</span><span style="color: #007700">+=&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;$a&nbsp;=&nbsp;($b&nbsp;+=&nbsp;3)&nbsp;-&gt;&nbsp;$a&nbsp;=&nbsp;5,&nbsp;$b&nbsp;=&nbsp;5<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+    コードの可読性を高めるためには括弧を使用します。
+   </p>
+   <blockquote><p><b class="note">注意</b>: 
+    
+     <i class="literal">=</i> は他のほとんどの演算子よりも優先順位が低いはずなのにもかかわらず、
+     PHP は依然として <i class="literal">if (!$a = foo())</i>
+     のような式も許します。この場合は <i class="literal">foo()</i> の返り値が
+     <var class="varname">$a</var> に代入されます。
+    <br />
+   </p></blockquote>
+  </div>
+  
+  
+
+  
+
+  
+  
+  
+ 
+  
+  
+  
+   
+  
+ 
+  
+
+  
+  
+  
+
+  
+ </div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="language.expressions.html">式</a></div>
+ <div class="next" style="float: right;"><a href="language.operators.arithmetic.html">代数演算子</a></div>
+ <div class="up"><a href="langref.html">言語リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

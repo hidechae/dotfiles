@@ -1,0 +1,1499 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>SAM - Simple Asynchronous Messaging: 単純な非同期メッセージング</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.runkit-superglobals.html">runkit_superglobals</a></div>
+ <div class="next" style="float: right;"><a href="function.samconnection-commit.html">SAMConnection->commit()</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">SAM - Simple Asynchronous Messaging: 単純な非同期メッセージング</h1>
+  
+
+  <div class="partintro">
+   <div id="sam.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     この拡張モジュールを使用すると、IBM WebSphere MQSeries
+     製品群のようなメッセージングシステム・キューイングシステムに
+     PHP スクリプトからアクセスできるようになります。このインターフェイスは、
+     一般的な操作 (単純なテキストメッセージをキューに配送するなど)
+     については限りなくシンプルに実行できるように設計されています。
+     また、熟練者向けには、より複雑な操作もできるようになっています。
+     大半のユーザが使用する場合には、複雑で膨大な設定オプションは無視することができます。
+    </p>
+    <p class="para">
+     SAM 拡張モジュールは、さまざまなメッセージングミドルウェアシステムにアクセスするための手段として
+     非常にシンプルな API を提供するフレームワークです。
+     現在このパッケージに標準で組み込まれているのは、
+     MQTT (MQ Telemetry Transport) メッセージングプロトコルのサポート
+     および IBM Messaging and Queuing ミドルウェア製品群のサポートです。
+     SAM は、その他のメッセージングシステムをサポートするために拡張できるよう設計されています。
+     この拡張モジュールは、C あるいは PHP で書くことができます。
+    </p>
+   </div>  
+
+   <div id="sam.installation" class="section">
+    <h2 class="title">インストール手順</h2>
+    <p class="para">
+      SAM フレームワークおよび MQTT サポートをビルドして使用するためには、
+      特にその他の前提条件はありません。
+      MQTT 以外のプロトコルのサポートはライブラリとして提供されており、
+      クライアント側のコードの中にはは XMS を使用するものもあります。
+    </p>
+    <p class="para">
+      組み込みの MQTT サポートを使用したいだけである場合は、
+      SAM を拡張モジュールとしてビルドして設定するか、
+      あるいは単に &quot;php_sam.php&quot; を PHP スクリプトから &quot;requires&quot;
+      あるいは &quot;requires_once&quot; で読み込みます。この場合は、
+      コードをインストールするだけでよく、拡張モジュールをビルドする必要はありません。
+      これを行うには、pear インストーラで次のように指定します。
+      <div class="example-contents"><pre>
+       <div class="cdata"><pre>
+      pecl install -B SAM
+</pre></div>
+      </pre></div>
+    </p>
+    <div id="sam.installation.prerequisites" class="section">
+     <h2 class="title">前提条件</h2>
+      <p class="para">
+       SAM 拡張モジュールは、IBM Messaging and Queuing ミドルウェア製品とのインターフェイスとして
+       XMS のライブラリおよびクライアント側のコードを使用します。
+       このパッケージは、IBM support pack IA94 としてフリーでダウンロードできます。
+       このパッケージについての説明、そしてダウンロード用のリンクは
+       <a href="http://www-1.ibm.com/support/docview.wss?uid=swg24007092" class="link external">&raquo; Introducing XMS - The IBM Message Service API</a>
+       にあります。
+      </p>
+      <p class="para">
+       SAM を使用して WebSphere MQ のメッセージングおよびキューイング機能にアクセスしたい場合は、
+       ローカル MQ キューマネージャあるいは WebSphere MQ
+       クライアントパッケージをインストールする必要があります。
+       クライアントパッケージは、サポートパック (<a href="http://www-1.ibm.com/support/docview.wss?rs=171&uid=swg24009961&loc=en_US&cs=utf-8&lang=en" class="link external">&raquo; MQC6</a>)
+       としてフリーで公開されています。
+      </p>
+      <p class="para">
+       単に、WebSphere Application Server のキューに対して
+       WebSphere Platform Messaging protocol (WPM)
+       を使用したメッセージの送受信を行いたいだけなら、MQC6
+       パッケージをインストールする必要はありません。
+      </p>
+      <p class="para">
+       これらのパッケージをインストールしたら、次に XMS のバイナリや
+       (もし使用するなら) MQ クライアントの bin ディレクトリが
+       PATH 環境変数に含まれていることを確認しましょう。これにより、
+       Apache や PHP から関連する DLL/ライブラリ を見つけられるようになります。
+      </p>
+     </div>
+     <div id="sam.installation.linux" class="section">
+      <h2 class="title">Linux でのインストール手順</h2>
+      <p class="para">
+       SAM 拡張モジュールは PECL モジュールとして提供され、
+       次の手順でダウンロード、インストールすることができます。
+      <div class="example-contents"><pre>
+       <div class="cdata"><pre>
+pear install sam
+</pre></div>
+      </pre></div>
+       (php の環境にもよりますが、おそらく root になる必要があるでしょう)
+      </p>
+      <p class="para">
+       このモジュールを PHP に読み込ませるために、
+       <var class="filename">php.ini</var> に以下を追加します。
+      <div class="example-contents"><pre>
+       <div class="cdata"><pre>
+extension=sam.so
+</pre></div>
+      </pre></div>
+      XMS サポートを使用して IBM Messaging and Queuing family にアクセスしたい場合は、
+      SAM XMS 拡張モジュールも有効にしなければなりません。
+      <div class="example-contents"><pre>
+       <div class="cdata"><pre>
+extension=sam_xms.so
+</pre></div>
+      </pre></div>
+      </p>
+      <p class="para">
+       PEAR インストーラを使用できない場合は、
+       拡張モジュールをダウンロードして手動でビルドします。
+      <div class="example-contents"><pre>
+       <div class="cdata"><pre>
+pear download sam          # sam-&lt;version&gt;.tgz をダウンロードします
+tar -xzf sam-&lt;version&gt;.tgz
+cd sam-&lt;version&gt;
+phpize
+./configure
+make
+make install               # おそらく root になる必要があるでしょう
+</pre></div>
+      </pre></div>
+      </p>
+      <p class="para">
+       最新のソースを使用したい場合は、cvs からソースを取得して、
+       上の手順で手動ビルドします。
+      </p>
+     </div>
+     <div id="sam.installation.windows" class="section">
+     <h2 class="title">Windows でのインストール手順</h2>
+      <p class="para">
+       SAM のウェブサイトにあるビルド済みバイナリは、非常に限られた範囲のものになっています。
+       そのため、おそらく自分でビルドすることになるでしょう。この拡張モジュールのビルド手順は、
+       Windows 上での標準的な拡張モジュールビルド手順と同じです。
+      </p>
+      <p class="para">
+       SAM 拡張モジュールを使用する予定の PHP と同じバージョンの、
+       PHP 自身のソースツリーが必要となります。これは php.net から取得します。
+       取得したソースを、どこかの作業ディレクトリに展開します。
+      </p>
+      <p class="para">
+       また、PHP 拡張モジュールが使用するライブラリやヘッダを
+       http://www.php.net/extra/win32build.zip から取得し、
+       作業ディレクトリの下に展開します。
+      </p>
+      <p class="para">
+       するとこのような状態になります。
+       <div class="example-contents"><pre>
+        <div class="cdata"><pre>
+c:\php-build\-
+              |
+              |---php-5.0.5--|---build
+              |              |---ext
+              |              |--- ...
+              |
+              |---win32build--|---bin
+                              |---include
+                              |---lib
+        </pre></div>
+       </pre></div>
+      </p>
+      <p class="para">
+       コンパイラが必要です。たとえば、フリーの Visual Studio C++
+       Express が Microsoft のウェブサイトから取得可能です。
+       また、Microsoft Windows Platform SDK も必要となります。
+       これも Microsoft のウェブサイトからダウンロードできます。
+      </p>
+      <p class="para">
+       SAM 拡張モジュールのソースを、pear を使用して (pear download sam)
+       あるいは CVS から取得し、それを PHP ソースツリーの &quot;ext&quot; ディレクトリ内に作成した
+       &quot;sam&quot; ディレクトリに配置します。
+      </p>
+      <p class="para">
+       この拡張モジュールをビルドするには、ビルド環境を次の場所から開きます。
+start menu-&gt;all programs-&gt;microsoft platform SDK for windows-&gt;
+  open build environment window-&gt;windows 200 build environment-&gt;
+    set windows 2000 build environment (retail)
+      </p>
+      <p class="para">
+       これは、コマンドプロンプトを開き、プラットフォーム SDK
+       などを使用するためのすべての環境変数を設定します。
+       次に、Visual Studio 用の環境変数を設定するために、このウィンドウでコマンド
+       &quot;vcvars32.bat&quot; を実行します。
+      </p>
+      <p class="para">
+       cd c:\php-build などとして、作業ディレクトリに移動します。
+       そして win32build ツール群にアクセスできるよう、そのパスを環境変数
+       PATH に追加します。
+      <div class="example-contents"><pre>
+       <div class="cdata"><pre>
+set PATH=..\win32build\bin;%PATH%
+</pre></div>
+      </pre></div>
+      </p>
+      <p class="para">
+       buildconf.bat コマンドを実行します。これは configure.js ファイルを作成します。
+      </p>
+      <p class="para">
+cscript コマンドに適切なオプションをつけて実行します。
+SAM 拡張モジュールフレームワークと MQTT サポートだけをビルドするのなら
+      <div class="example-contents"><pre>
+       <div class="cdata"><pre>
+cscript /nologo configure.js --with-sam
+</pre></div>
+      </pre></div>
+SAM フレームワークおよび XMS サポートをビルドするのなら
+      <div class="example-contents"><pre>
+       <div class="cdata"><pre>
+cscript /nologo configure.js --with-sam --with-sam_xms=&quot;c:\program files\ibm\xms&quot;
+</pre></div>
+      </pre></div>
+      </p>
+      <p class="para">
+       とします。sam_xms に渡している追加のパラメータは、XMS ライブラリやランタイムへのパスです。
+       これらは、このファイルの最初に書いてある前提条件によってインストールされているものです。
+      </p>
+      <p class="para">
+       cscript のパラメータとして、php のビルドオプションのうちお好みのものを追加したり削除することもできます。
+      </p>
+      <p class="para">
+       すべてがうまくいけば、あとは SAM フレームワーク用の make を実行するだけです!
+      <div class="example-contents"><pre>
+       <div class="cdata"><pre>
+nmake php_sam.dll
+</pre></div>
+      </pre></div>
+また、もし XML サポートを使用するのなら、sam_xms 拡張モジュールも make しなければなりません。
+      <div class="example-contents"><pre>
+       <div class="cdata"><pre>
+nmake php_sam_xms.dll
+</pre></div>
+      </pre></div>
+      </p>
+      <p class="para">
+Visual Studio 2005 を使用して DLL をビルドする場合は、
+これ以降に進む前に次の追加手順を実行しなければなりません。
+      </p>
+      <p class="para">
+作成された DLL (php_sam.dll およびオプションで php_sam_xms.dll)
+を、PHP をセットアップしたディレクトリ以下の適切な場所にコピーします。
+このモジュールを PHP に読み込ませるために、次の行を
+<var class="filename">php.ini</var> に追加しておきましょう。
+      <div class="example-contents"><pre>
+       <div class="cdata"><pre>
+extension=php_sam.dll
+</pre></div>
+      </pre></div>
+      XMS サポートを使用して IBM Messgaing and Queuing family
+      にアクセスしたい場合は SAM XMS 拡張モジュールも有効にする必要があります。
+      <div class="example-contents"><pre>
+       <div class="cdata"><pre>
+extension=php_sam_xms.dll
+</pre></div>
+      </pre></div>
+      </p>
+     </div>
+     <div id="sam.installation.VS2005" class="section">
+      <h2 class="title">Visual Studio 2005 用の追加手順</h2>
+      <p class="para">
+       SAM 拡張モジュールを Microsoft Visual Studio 2005 のコンパイラでビルドしたい場合は、
+       さらに追加の手順が必要です。これにより、php_sam.dll が実行時に
+       C ランタイムライブラリとリンクできるようにします。
+       この追加手順では、依存性マニフェストを DLL に組み込みます。
+       php_sam.dll が作成されたディレクトリ (通常は、php ソースディレクトリ配下の
+       Release_TS あるいは Debug_TS) に移動し、次のように謎の呪文をとなえます。
+      <div class="example-contents"><pre>
+       <div class="cdata"><pre>
+mt.exe -manifest php_sam.dll.manifest -outputresource:php_sam.dll;2
+</pre></div>
+      </pre></div>
+XMS 機能を使用する場合は、同様に
+SAM XMS DLL も指定しなければなりません。
+      <div class="example-contents"><pre>
+       <div class="cdata"><pre>
+mt.exe -manifest php_sam_xms.dll.manifest -outputresource:php_sam_xms.dll;2
+</pre></div>
+      </pre></div>
+      </p>
+      <p class="para">
+       SAM 拡張モジュールを Microsoft Visual Studio 2005 のコンパイラやライブラリでビルドした場合は、
+       ランタイムコンポーネントが SAM を使用する予定のシステムにインストールされている必要があります。
+       そのためには、そこに Visual Studio 2005 をインストールするか、あるいはフリーで配布されている
+       <a href="http://www.microsoft.com/downloads/details.aspx?familyid=32BC1BEE-A3F9-4C13-9C99-220B62A191EE&displaylang=en" class="link external">&raquo; ランタイムパッケージ</a> を使用します。
+      </p>
+     </div>
+     <div id="sam.installation.configutaion" class="section">
+      <h2 class="title">プロトコルサポートおよびマッピング</h2>
+      <p class="para">
+SAM フレームワークを拡張して、他のメッセージングプロトコルや通信機構をサポートさせることができます。
+新しいプロトコルや接続ライブラリのサポートを追加するには、
+それをサポートするクラスを定義する必要があります。これは C 拡張モジュールあるいは
+PHP スクリプトとして作成します。また、&quot;ファクトリ&quot; スクリプトも作成しなければなりません。
+サポートクラスは、SAMConnection クラスの全メソッドを実装する必要があります。
+SAMConnection を継承してはいけません。ファクトリスクリプトはフレームワークからコールされ、
+実装クラスのインスタンスを作成します。SAM がどのファクトリをコールするのかは、
+&quot;connect&quot; の最初のパラメータで指定したプロトコルによって決まります。
+      </p>
+      <p class="para">
+デフォルトでは、connect でプロトコルに SAM_MQTT (&quot;mqtt&quot;) を指定した場合に
+組み込みの MQTT サポートを使用します。その他のプロトコルを指定した場合は
+XMS 拡張モジュールを使用します。
+新たなプロトコルのサポートを追加したりデフォルトの挙動を変更したりするには、
+<var class="filename">php.ini</var> の [sam] セクションにエントリを追加します。
+デフォルトのマッピングは、以下のエントリと同等です。
+      <div class="example-contents"><pre>
+       <div class="cdata"><pre>
+[sam]
+sam.factory.mqtt=mqtt
+sam.factory.wmq=xms
+sam.factory.wmq:client=xms
+sam.factory.wmq:bindings=xms
+sam.factory.wpm=xms
+sam.factory.rtt=xms
+</pre></div>
+      </pre></div>
+これらの例でわかるように、エントリは &quot;sam.factory.pppp=xxx&quot;
+という形式になります。pppp の部分が connect コール時に指定するプロトコル文字列で、
+xxx はファクトリ名のサフィックスです。
+注意: SAM では、これらのプロトコルに対応する定数を定義しています。たとえば
+SAM_WMQ=wmq、SAM_WPM=wpm、SAM_RTT=rtt、SAM_MQTT=mqtt などとなります。
+      </p>
+      <p class="para">
+connect コールの際にこれを指定すると、
+SAM はそのプロトコル名を <var class="filename">php.ini</var> のエントリから探し、対応するファクトリスクリプト
+sam_factory_xxx.php をコールします。
+エントリが見つからなかった場合は、デフォルトは XMS となります。
+      </p>
+     </div>
+   </div>  
+
+   <div id="sam.usage" class="section">
+    <h2 class="title">API の使用法</h2>
+
+    <div id="sam.connections" class="section">
+     <h2 class="title">接続</h2>
+      <p class="para">
+       メッセージングやキューイングの関数を実行するには、
+       メッセージングサーバとの接続が確立されていなければなりません。そのためには、
+       SAMConnection オブジェクトを作成してその &quot;connect&quot; メソッドを実行します。
+       その際に、接続用のプロパティを指定します。SAMConnection
+       オブジェクトが破棄されるまでの間は、接続が使用可能となります。
+       SAMConnection オブジェクトは、PHP スクリプトが終了する際に破棄されます。
+     </p>
+     <p class="para">
+       メッセージングサーバに接続する際にはデフォルトのプロパティを使用することもできますが、
+       最低限、使用するプロトコルだけは PHP スクリプトで指定しなければなりません。
+     </p>
+     <p class="para">
+      <div class="example">
+       <p><b>Example#1 接続の作成、およびリモートの WebSphere MQSeries Messaging Server への接続</b></p>
+       <div class="example-contents">
+        <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;&nbsp;$conn&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">SAMConnection</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$conn</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">connect</span><span style="color: #007700">(</span><span style="color: #0000BB">SAM_WMQ</span><span style="color: #007700">,&nbsp;array(</span><span style="color: #0000BB">SAM_HOST&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">myhost</span><span style="color: #007700">.</span><span style="color: #0000BB">mycompany</span><span style="color: #007700">.</span><span style="color: #0000BB">com</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">SAM_PORT&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">1506</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">SAM_BROKER&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">mybroker</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+       </div>
+
+      </div>
+     </p>
+     <p class="para">
+      <div class="example">
+       <p><b>Example#2 接続の作成、およびリモートの WebSphere Application Server への接続</b></p>
+       <div class="example-contents">
+        <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;&nbsp;$conn&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">SAMConnection</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$conn</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">connect</span><span style="color: #007700">(</span><span style="color: #0000BB">SAM_WMQ</span><span style="color: #007700">,&nbsp;array(</span><span style="color: #0000BB">SAM_ENDPOINTS&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'localhost:7278:BootstrapBasicMessaging'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">SAM_BUS&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'Bus1'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">SAM_TARGETCHAIN&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'InboundBasicMessaging'</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+       </div>
+
+      </div>
+     </p>
+     <p class="para">
+      <div class="example">
+       <p><b>Example#3 接続の作成、および MQTT サーバへの接続</b></p>
+       <div class="example-contents">
+        <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;&nbsp;$conn&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">SAMConnection</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$conn</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">connect</span><span style="color: #007700">(</span><span style="color: #0000BB">SAM_MQTT</span><span style="color: #007700">,&nbsp;array(</span><span style="color: #0000BB">SAM_HOST&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'myhost.mycompany.com'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">SAM_PORT&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">1883</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+       </div>
+
+      </div>
+     </p>
+    </div>  
+
+    <div id="sam.messages" class="section">
+     <h2 class="title">メッセージ</h2>
+     <p class="para">
+      キューとのメッセージの送受信を行うのが SAMMessage オブジェクトです。
+      SAMMessage オブジェクトは、メッセージ本文 (もしあれば)
+      とそのメッセージに関連するヘッダプロパティをカプセル化します。
+      SAMMessage オブジェクトは、メッセージング操作の際のパラメータ、
+      そしてその返り値の両方に用いられます。
+     </p>
+     <p class="para">
+      <div class="example">
+       <p><b>Example#4 単純なテキストのメッセージの作成</b></p>
+       <div class="example-contents">
+        <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;&nbsp;$msg&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">SAMMessage</span><span style="color: #007700">(</span><span style="color: #DD0000">'This&nbsp;is&nbsp;a&nbsp;simple&nbsp;text&nbsp;message'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+       </div>
+
+      </div>
+     </p>
+     <p class="para">
+      メッセージにはヘッダプロパティを関連付けることができます。
+      これは、メッセージの配送方法を制御したり、
+      受け取り側のアプリケーションに詳しい情報を提供したりするものです。
+      デフォルトでは、メッセージのプロパティは文字列として配送されます。
+      この場合は、プロパティを設定する際に次のような簡単な構文を使用します。
+     </p>
+     <p class="para">
+      <div class="example">
+       <p><b>Example#5 デフォルト構文による、テキスト形式のプロパティの設定</b></p>
+       <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;&nbsp;$msg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">header</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">myPropertyName&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'textData'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+       </div>
+
+      </div>
+     </p>
+     <p class="para">
+      デフォルト以外の構文で使用する型情報を渡す場合は、値と型情報を連想配列で渡します。
+     </p>
+     <p class="para">
+      <div class="example">
+       <p><b>Example#6 型ヒントを使用したプロパティの設定</b></p>
+       <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;&nbsp;$msg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">header</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">myPropertyName&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #0000BB">3.14159</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">SAM_FLOAT</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+       </div>
+
+      </div>
+     </p>
+     <p class="para">
+      プロパティは、メッセージのヘッダから取り出すことができます。
+     </p>
+     <p class="para">
+      <div class="example">
+       <p><b>Example#7 メッセージのヘッダからのプロパティの取得</b></p>
+       <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;&nbsp;$myProperty&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$msg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">header</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">myPropertyName</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+       </div>
+
+      </div>
+     </p>
+    </div>  
+
+    <div id="sam.operations" class="section">
+     <h2 class="title">メッセージング操作</h2>
+     <p class="para">
+      すべてのメッセージング操作は、接続オブジェクトのメソッドをコールすることで行います。
+      キューにメッセージを追加するには &quot;send&quot; メソッドを使用し、
+      キューからメッセージを取得するには &quot;receive&quot; メソッドを使用します。
+      その他のメソッドには、配信や購読機能、
+      そしてトランザクションの境界の制御などがあります。
+     </p>
+     <p class="para">
+      <div class="example">
+       <p><b>Example#8 キューへのメッセージの追加および応答の取得</b></p>
+       <div class="example-contents">
+        <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;&nbsp;$msg&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">SAMMessage</span><span style="color: #007700">(</span><span style="color: #DD0000">'This&nbsp;is&nbsp;a&nbsp;simple&nbsp;text&nbsp;message'</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$msg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">header</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">SAM_REPLY_TO&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'queue://receive/test'</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$correlid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$conn</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">send</span><span style="color: #007700">(</span><span style="color: #DD0000">'queue://send/test'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$msg</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;&nbsp;if&nbsp;(!</span><span style="color: #0000BB">$correlid</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;送信に失敗しました!<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"Send&nbsp;failed&nbsp;($conn-&gt;errno)&nbsp;$conn-&gt;error"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$resp&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$conn</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">receive</span><span style="color: #007700">(</span><span style="color: #DD0000">'queue://receive/test'</span><span style="color: #007700">,&nbsp;array(</span><span style="color: #0000BB">SAM_CORRELID&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$correlid</span><span style="color: #007700">));<br />&nbsp;&nbsp;&nbsp;}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+       </div>
+
+      </div>
+     </p>
+    </div>  
+    <div id="sam.pubsub" class="section">
+     <h2 class="title">配信/購読およびトピックの購読</h2>
+     <p class="para">
+     SAM では、メッセージをキューに送信するか、あるいは WebSphere MQ および WPM
+     ではトピックに配信/購読することができます。
+     トピックを SAM に指定するには、場所を指定する際に
+     &#039;queue://AQUEUE&#039; ではなく &#039;topic://fred&#039; 形式を使用します。
+     配信/購読 機能を使用するには、正しいブローカ名を CAMConnect の
+     &quot;connect&quot; コール時に指定し、対象のトピックを SAMConnect の &quot;send&quot;
+     および &quot;receive&quot; コール時に指定する必要があります。
+     それ以外については、PHP のインターフェイスは point to point モデルと同じです。
+     </p>
+     <p class="para">
+     デフォルトでは、SAM は永続的でない購読を作成して配信/購読を行います。
+     つまり、メッセージをトピックに配信しているときにクライアントアプリケーションがアクティブでなくなると、
+     その後アプリケーションが再開しても受信処理は行われないということです。
+     WPM あるいは WebSphere MQ の配信/購読 を使用している場合は、
+     SAM でトピックへの永続的な購読を作成することができます。
+     こうすると、データの配信時にクライアントがアクティブでなかったとしても、
+     アプリケーションでデータを受信することができるようになります。
+     </p>
+     <p class="para">
+     永続的な購読を指定するには SAMConnect の &quot;subscribe&quot; コールを使用します。
+     このメソッドは、対象となるトピックを入力パラメータとして受け取り、
+     購読 ID を返します。この ID を使用して、&quot;receive&quot; コールを行います。
+     購読が不要になった場合は、SAMConnection の &quot;unsubscribe&quot;
+     メソッドを使用して購読を削除します。
+     </p>
+     <p class="para">
+      <div class="example">
+       <p><b>Example#9 トピックに対する永続的な購読の作成</b></p>
+       <div class="example-contents">
+        <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$subName&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$conn</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">subscribe</span><span style="color: #007700">(</span><span style="color: #DD0000">'topic://A'</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(!</span><span style="color: #0000BB">$subName</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"購読に失敗しました"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">#&nbsp;購読に成功しました<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">...<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+       </div>
+
+      </div>
+     </p>
+     <p class="para">
+      <div class="example">
+       <p><b>Example#10 WebSphere Platform Messaging (WPM) サーバを使用したトピックの購読</b></p>
+       <div class="example-contents">
+        <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;&nbsp;$conn&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">SAMConnection</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;注意:&nbsp;WPM&nbsp;での配信/購読では、永続的な購読を保持するメッセージングエンジン<br />&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(SAM_WPM_DUR_SUB_HOME)&nbsp;を接続の際に指定する必要があります<br />&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$conn</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">connect</span><span style="color: #007700">(</span><span style="color: #0000BB">SAM_WMQ</span><span style="color: #007700">,&nbsp;array(</span><span style="color: #0000BB">SAM_ENDPOINTS&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'localhost:7278:BootstrapBasicMessaging'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">SAM_BUS&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'Bus1'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">SAM_TARGETCHAIN&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'InboundBasicMessaging'<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">SAM_WPM_DUR_SUB_HOME&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'MyMachineNode01.server1-Bus1'</span><span style="color: #007700">));<br /><br />&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$subName&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$conn</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">subscribe</span><span style="color: #007700">(</span><span style="color: #DD0000">'topic://A'</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;&nbsp;if&nbsp;(!</span><span style="color: #0000BB">$subName</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"購読に失敗しました"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">#&nbsp;購読に成功しました<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">...<br />&nbsp;&nbsp;&nbsp;}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+       </div>
+
+      </div>
+     </p>
+     <p class="para">
+      <div class="example">
+       <p><b>Example#11 永続的な購読による、配信されたデータの受信</b></p>
+       <div class="example-contents">
+        <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$msg&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$conn</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">receive</span><span style="color: #007700">(</span><span style="color: #0000BB">$subName</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">$msg</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"メッセージの受信に成功しました"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"受信に失敗しました"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+       </div>
+
+      </div>
+     </p>
+     <p class="para">
+      <div class="example">
+       <p><b>Example#12 トピックへの永続的な購読の削除</b></p>
+       <div class="example-contents">
+        <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">if&nbsp;(!</span><span style="color: #0000BB">$conn</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">unsubscribe</span><span style="color: #007700">(</span><span style="color: #0000BB">$subName</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"購読解除に失敗しました"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+       </div>
+
+      </div>
+     </p>
+    </div>  
+    <div id="sam.errors" class="section">
+     <h2 class="title">エラー処理</h2>
+     <p class="para">
+      SAMConnection のメソッドでメッセージング操作を行うものはすべて、
+      リクエスト処理中にエラーが発生すると <b><tt>FALSE</tt></b> を返します。
+      さらに SAMConnection オブジェクトはふたつのプロパティ
+      &quot;errno&quot; および &quot;error&quot; を保持しています。これらはそれぞれ、
+      接続上でおこった最後のエラーのエラー番号およびエラー内容のテキストを表します。
+     </p>
+     <p class="para">
+      <div class="example">
+       <p><b>Example#13 結果を返さないメソッドからのエラーの処理</b></p>
+       <div class="example-contents">
+        <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">if&nbsp;(!</span><span style="color: #0000BB">$conn</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">commit</span><span style="color: #007700">())&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;コミットに失敗しました!<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"Commit&nbsp;failed&nbsp;($conn-&gt;errno)&nbsp;$conn-&gt;error"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+       </div>
+
+      </div>
+     </p>
+     <p class="para">
+      <div class="example">
+       <p><b>Example#14 結果を返すメソッドからのエラーの処理</b></p>
+       <div class="example-contents">
+        <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;&nbsp;$correlid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$conn</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">send</span><span style="color: #007700">(</span><span style="color: #DD0000">'queue://send/test'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$msg</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;&nbsp;if&nbsp;(!</span><span style="color: #0000BB">$correlid</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;送信に失敗しました!<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"Send&nbsp;failed&nbsp;($conn-&gt;errno)&nbsp;$conn-&gt;error"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br />&nbsp;&nbsp;&nbsp;}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+       </div>
+
+      </div>
+     </p>
+    </div>  
+   </div>  
+
+   
+   <div id="sam.classes" class="section">
+    <h2 class="title">定義済みクラス</h2>
+
+
+    <div id="sam.class.Connection" class="section">
+     <h2 class="title"><span class="classname">SAMConnection</span></h2>
+     <p class="para">
+      メッセージングサーバとの接続を表すオブジェクトです。
+     </p>
+
+     <div id="sam.class.Connection.constructor" class="section">
+      <h2 class="title">コンストラクタ</h2>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para">
+         <a href="function.samconnection-constructor.html" class="link">new SAMConnection</a> -
+         新しい接続オブジェクトを作成し、メッセージング環境への接続を可能にします。
+        </p>
+       </li>
+      </ul>
+     </div>  
+
+     <div id="sam.class.Connection.methods" class="section">
+      <h2 class="title">メソッド</h2>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para">
+         <a href="function.samconnection-commit.html" class="link">commit</a>
+         - 現在作業中の内容をコミット (正常に完了) するメソッドです。
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.samconnection-connect.html" class="link">connect</a>
+         - PHP スクリプトをメッセージングサーバに接続させるメソッドです。
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.samconnection-disconnect.html" class="link">disconnect</a>
+         - PHP スクリプトとメッセージングサーバとの接続を解除するメソッドです。
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.samconnection-isconnected.html" class="link">isConnected</a>
+         - PHP スクリプトがメッセージングサーバと接続しているかどうかを調べるメソッドです。
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.samconnection-peek.html" class="link">peek</a>
+         - メッセージをキューから取得し、それをキューに残したままにしておくメソッドです。
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.samconnection-peekall.html" class="link">peekAll</a>
+         - ひとつあるいは複数のメッセージをキューから取得し、それをキューに残したままにしておくメソッドです。
+        </p>
+       </li>       
+       <li class="listitem">
+        <p class="para">
+         <a href="function.samconnection-receive.html" class="link">receive</a>
+         - メッセージをキューあるいは購読から取得するメソッドです。
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.samconnection-remove.html" class="link">remove</a>
+         - メッセージをキューから削除するメソッドです。
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.samconnection-rollback.html" class="link">rollback</a>
+         - 現在作業中の内容をキャンセル (ロールバック) するメソッドです。
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.samconnection-send.html" class="link">send</a>
+         - キューにメッセージを送信したり、トピックの投稿したりするメソッドです。
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.samconnection-setDebug.html" class="link">setDebug</a>
+         - 追加のデバッグ出力をオンあるいはオフにするメソッドです。
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.samconnection-subscribe.html" class="link">subscribe</a>
+         - ひとつあるいは複数のトピックを購読するためのメソッドです。
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.samconnection-unsubscribe.html" class="link">unsubscribe</a>
+         - ひとつあるいは複数のトピックの購読を解除するメソッドです。
+        </p>
+       </li>
+      </ul>
+     </div>  
+
+     <div id="sam.class.Connection.properties" class="section">
+      <h2 class="title">プロパティ</h2>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para">
+         <a href="function.samconnection-errno.html" class="link">errno</a> -
+         この接続で最後に発生したエラーのエラーコードを表す数値です。
+         直近の処理が正常に終了した場合は、このプロパティは 0 となります。
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.samconnection-error.html" class="link">error</a> -
+         この接続で最後に発生したエラーの説明テキストです。
+        </p>
+       </li>
+      </ul>
+     </div>    
+    </div>   
+
+
+    <div id="sam.class.Message" class="section">
+     <h2 class="title"><span class="classname">SAMMessage</span></h2>
+     <p class="para">
+      送受信するメッセージを表すオブジェクトです。
+     </p>
+
+     <div id="sam.class.Message.constructor" class="section">
+      <h2 class="title">コンストラクタ</h2>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para">
+         <a href="function.sammessage-constructor.html" class="link">new SAMMessage</a> -
+         新しいメッセージを作成します。
+        </p>
+       </li>
+      </ul>
+     </div>  
+
+     <div id="sam.class.Message.properties" class="section">
+      <h2 class="title">プロパティ</h2>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para">
+         <a href="function.sammessage-body.html" class="link">body</a> -
+         メッセージの本文です。
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.sammessage-header.html" class="link">header</a> -
+         メッセージのヘッダプロパティです。
+        </p>
+       </li>
+      </ul>
+     </div>  
+    </div>   
+
+   </div>    
+
+
+   
+  
+
+
+<div id="mq.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <dl>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_AUTO</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     自動的に処理します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_BOOLEAN</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     型指定子。SAM_Message オブジェクトにプロパティを設定する際に使用します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_BUS</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     接続の属性で、接続するエンタープライズサービスバスの名前を設定します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_BYTE</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     型指定子。SAM_Message オブジェクトにプロパティを設定する際に使用します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_BYTES</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     メッセージ本文の型指定子。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_CORRELID</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     リクエストを受信、送信および削除する際に使用する属性で、
+     特定のメッセージを指定します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_DELIVERYMODE</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     メッセージヘッダのプロパティです。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_DOUBLE</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     型指定子。SAM_Message オブジェクトにプロパティを設定する際に使用します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_ENDPOINTS</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     接続の属性で、接続先エンドポイントを指定します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_FLOAT</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     型指定子。SAM_Message オブジェクトにプロパティを設定する際に使用します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_HOST</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     接続の属性で、メッセージングサーバのホスト名を設定します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_INT</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     型指定子。SAM_Message オブジェクトにプロパティを設定する際に使用します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_LONG</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     型指定子。SAM_Message オブジェクトにプロパティを設定する際に使用します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_MANUAL</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     手動で (スクリプトで制御して) 処理します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_MESSAGEID</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     リクエストを受信および削除する際に使用する属性で、
+     特定のメッセージを指定します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_MQTT</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     MQTT (MQ Telemetry Transport) プロトコルを使用するための
+     接続プロトコル定義です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_MQTT_CLEANSTART</tt></b>
+     (<a href="language.types.boolean.html" class="type bool">bool</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     任意で指定する接続オプションで、MQTT サーバに対して
+     このクライアントに関する事前のすべての接続データの削除を指示します。
+     また、クライアントとの接続が明示的に解除されたり
+     予期せず解除されたりしたら、購読を削除するよう指示します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_NON_PERSISTENT</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     接続の属性で、リクエストメッセージをメッセージングサーバ上で
+     持続させないことを指定します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_PASSWORD</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     接続の属性で、接続時に認証が必要なメッセージングサーバに対する
+     接続パスワードを指定します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_PERSISTENT</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     接続の属性で、リクエストメッセージをメッセージングサーバ上で
+     持続させることを指定します。これにより、
+     処理に失敗した際にメッセージを失うことを防ぎます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_PORT</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     接続の属性で、メッセージングサーバと接続する際のポート番号を設定します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_PRIORITY</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     リクエストを配送する際の優先度を設定するオプション名です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_REPLY_TO</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     メッセージのプロパティで、
+     そのスクリプトが応答あるいは返信の配送先として想定しているキューを指定します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_RTT</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     接続プロトコルを指定します。IBM Realtime Transport
+     プロトコルを使用してビジネスインテグレーションメッセージングサーバと通信します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_STRING</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     型指定子。SAM_Message オブジェクトにプロパティを設定する際に使用します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_TARGETCHAIN</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     接続の属性で、ターゲットチェイン識別子を指定します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_TEXT</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     メッセージ本文の型指定子。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_TIMETOLIVE</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     メッセージ送信時のオプション名。
+     メッセージを保持し続ける時間をミリ秒で指定します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_TRANSACTIONS</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     接続の属性で、トランザクションの振る舞いを指定します。SAM_AUTO
+     (デフォルト) あるいは SAM_MANUAL のいずれかです。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_USERID</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     接続の属性で、接続時に認証が必要なメッセージングサーバに対する
+     接続アカウントを指定します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_WAIT</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     受信時のプロパティで、キューや購読からメッセージを取得する際のタイムアウトを指定します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_WMQ</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     接続プロトコルを指定します。IBM WebSphere MQSeries
+     プロトコルを使用してメッセージングサーバと通信します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_WMQ_BINDINGS</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     接続プロトコルを指定します。IBM WebSphere MQSeries
+     プロトコルを使用してローカルのメッセージングサーバと通信します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_WMQ_CLIENT</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     接続プロトコルを指定します。IBM WebSphere MQSeries
+     プロトコルを使用してリモートのメッセージングサーバと通信します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_WMQ_TARGET_CLIENT</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     リクエストを送信する際に使用するオプション名です。
+     ターゲットクライアントモードを指定します。デフォルトの
+     &#039;jms&#039; あるいは &#039;mq&#039; のいずれかを指定します。
+     デフォルトの &#039;jms&#039; は、RFH2 ヘッダがメッセージとともに送信されることを意味します。
+     一方、&#039;mq&#039; の場合は RFH2 は含まれません。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SAM_WPM</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     接続プロトコルを指定します。IBM WebSphere Platform Messaging
+     プロトコルを使用して WebSphere Application Server
+     メッセージングサーバと通信します。
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+</div>
+
+
+
+
+  </div>
+
+  
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.samconnection-commit.html">SAMConnection->commit()</a> ― 現在作業中の内容をコミット (正常に完了) する</li><li><a href="function.samconnection-connect.html">SAMConnection->connect()</a> ― メッセージングサーバとの接続を確立する</li><li><a href="function.samconnection-constructor.html">SAMConnection->__construct()</a> ― メッセージングサーバへの新しい接続を作成する</li><li><a href="function.samconnection-disconnect.html">SAMConnection::disconnect()</a> ― メッセージングサーバからの接続を解除する</li><li><a href="function.samconnection-errno.html">SAMConnection->errno</a> ― 最後に実行した SAM 操作のエラーコードを表す数値を含む</li><li><a href="function.samconnection-error.html">SAMConnection->error</a> ― 最後に実行した SAM 操作のエラーの説明を含む</li><li><a href="function.samconnection-isconnected.html">SAMConnection->isConnected()</a> ― メッセージングサーバとの接続が確立されているかどうかを調べる</li><li><a href="function.samconnection-peek.html">SAMConnection->peek()</a> ― メッセージをキューから読み込み、それをキューに残したままにする</li><li><a href="function.samconnection-peekall.html">SAMConnection->peekAll()</a> ― ひとつあるいは複数のメッセージをキューから読み込み、それをキューに残したままにする</li><li><a href="function.samconnection-receive.html">SAMConnection->receive()</a> ― メッセージをキューあるいは購読から取得する</li><li><a href="function.samconnection-remove.html">SAMConnection->remove()</a> ― メッセージをキューから削除する</li><li><a href="function.samconnection-rollback.html">SAMConnection->rollback()</a> ― 現在作業中の内容をキャンセル (ロールバック) する</li><li><a href="function.samconnection-send.html">SAMConnection->send()</a> ― メッセージをキューに送信、あるいは項目をトピックに投稿する</li><li><a href="function.samconnection-setDebug.html">SAMConnection::setDebug()</a> ― 追加のデバッグ出力を有効あるいは無効にする</li><li><a href="function.samconnection-subscribe.html">SAMConnection->subscribe()</a> ― 指定したトピックの購読を作成する</li><li><a href="function.samconnection-unsubscribe.html">SAMConnection->unsubscribe()</a> ― 指定したトピックの購読を解除する</li><li><a href="function.sammessage-body.html">SAMMessage->body</a> ― メッセージの本文</li><li><a href="function.sammessage-constructor.html">SAMMessage->__construct()</a> ― 新しいメッセージオブジェクトを作成する</li><li><a href="function.sammessage-header.html">SAMMessage->header</a> ― メッセージのヘッダプロパティ</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.runkit-superglobals.html">runkit_superglobals</a></div>
+ <div class="next" style="float: right;"><a href="function.samconnection-commit.html">SAMConnection->commit()</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

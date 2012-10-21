@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>子を置き換える</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.dom-domnode-removechild.html">DOMNode->removeChild()</a></div>
+ <div class="next" style="float: right;"><a href="function.dom-domnodelist-item.html">DOMNodelist->item()</a></div>
+ <div class="up"><a href="ref.dom.html">DOM</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.dom-domnode-replacechild" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">DOMNode-&gt;replaceChild()</h1>
+  <p class="verinfo">(No version information available, might be only in CVS)</p><p class="refpurpose">DOMNode->replaceChild() ― 
+   子を置き換える
+  </p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="classsynopsis">
+   <div class="ooclass"><b class="classname">DOMNode</b></div>
+   <div class="methodsynopsis">
+    <span class="type">DOMNode</span> <span class="methodname"><b><b>replaceChild</b></b></span>
+     ( <span class="methodparam"><span class="type">DOMNode</span> <tt class="parameter">$newnode</tt></span>
+    , <span class="methodparam"><span class="type">DOMNode</span> <tt class="parameter">$oldnode</tt></span>
+    )</div>
+
+  </div>
+  <p class="para">
+   この関数は、子要素 <i><tt class="parameter">oldnode</tt></i>
+ を新しいノードに
+   置き換えます。もし新しいノードがすでに子要素であった場合は、
+   それがふたたび追加されることはありません。置き換えに成功すると、
+   置き換え前のノードが返されます。
+  </p>
+ </div>
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">newnode</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       新しいノード。対象ドキュメントのメンバ、
+       すなわち、DOMDocument-&gt;createXXX() メソッドのひとつで作成されたものか
+       <a href="function.dom-domdocument-importnode.html" class="xref">DOMDocument->importNode()</a> で
+       ドキュメントにインポートされたものである必要があります。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">oldnode</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       古いノード。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   古いノード、あるいはエラーが発生した場合は <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+ <div class="refsect1 errors">
+  <h3 class="title">エラー / 例外</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><b><tt>DOM_NO_MODIFICATION_ALLOWED_ERR</tt></b></span>
+     <dd>
+
+      <p class="para">
+       このノードが読み込み専用であったり、挿入されるノードの以前の親が
+       読み込み専用であった場合に発生します。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><b><tt>DOM_HIERARCHY_REQUEST_ERR</tt></b></span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">newnode</tt></i>
+ で指定した型の子ノードを
+       保持することが許可されていない場合、あるいは追加しようとしている
+       ノードが自分自身やその祖先であった場合に発生します。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><b><tt>DOM_WRONG_DOCUMENT_ERR</tt></b></span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">newnode</tt></i>
+ が、このノードとは別の
+       ドキュメントで作成されたものである場合に発生します。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><b><tt>DOM_NOT_FOUND</tt></b></span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">oldnode</tt></i>
+ がこのノードの子でない場合に
+       発生します。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.dom-domnode-appendchild.html" class="xref">DOMNode->appendChild()</a></li>
+    <li class="member"><a href="function.dom-domnode-removechild.html" class="xref">DOMNode->removeChild()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.dom-domnode-removechild.html">DOMNode->removeChild()</a></div>
+ <div class="next" style="float: right;"><a href="function.dom-domnodelist-item.html">DOMNodelist->item()</a></div>
+ <div class="up"><a href="ref.dom.html">DOM</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

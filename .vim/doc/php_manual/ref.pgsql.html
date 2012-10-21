@@ -1,0 +1,1771 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>PostgreSQL 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.sql-regcase.html">sql_regcase</a></div>
+ <div class="next" style="float: right;"><a href="function.pg-affected-rows.html">pg_affected_rows</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+ <h1 class="title">PostgreSQL 関数</h1>
+ 
+
+ <div class="partintro">
+  <div id="pgsql.intro" class="section">
+   <h2 class="title">導入</h2>
+   <p class="para">
+     PostgreSQL データベースはオープンソースの製品であり、無料で
+     使用可能です。Postgres は元々 UCB（カリフォルニア大学バークレイ校）
+     コンピュータ・サイエンス学部で開発されたものです。この Postgres は、
+     現在いくつかの商用データベースにおいてサポートされつつある
+     オブジェクトリレーショナルデータベース的概念の多くの先駆けでした。
+     Postgres は、SQL92/SQL99 言語サポート・トランザクション・参照整合性・
+     ストアドプロシージャ・拡張可能な型を提供しています。PostgreSQL は、
+     バークレイ校での Postgres のオリジナルコードの、オープンソースの
+     子孫にあたります。
+   </p>
+  </div>
+
+  <div id="pgsql.requirements" class="section">
+   <h2 class="title">要件</h2>
+   <p class="para">
+     PostgreSQL サポートを使用するには、PostgreSQL 6.5 以降が必要です。
+     PostgreSQL 8.0 以降では PostgreSQL モジュールの全ての機能を使用可能
+     です。PostgreSQL は、マルチバイト文字エンコーディングを含む多くの
+     文字エンコーディングをサポートしています。現在のバージョン及び
+     PostgreSQLに関するより詳細な情報は、
+     <a href="http://www.postgresql.org/" class="link external">&raquo; http://www.postgresql.org/</a> と
+     <a href="http://www.postgresql.org/docs/current/interactive/" class="link external">&raquo; PostgreSQL Documentation</a>
+     で入手可能です。
+   </p>
+  </div>
+
+  
+
+
+<div id="pgsql.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  PostgreSQLサポートを利用可能とするには、PHPコンパイル時に
+  <span class="option">--with-pgsql[=DIR]</span>
+  を指定することが必要です。
+  共有オブジェクトモジュールが利用可能な場合、<var class="filename">php.ini</var> の
+  <a href="ini.core.html#ini.extension" class="link">extension</a> ディレクティブ
+  または <a href="function.dl.html" class="function">dl()</a> 関数によりPostgreSQLモジュール
+  をロードすることが可能です。
+ </p>
+</div>
+
+
+
+
+
+  
+
+
+
+<div id="pgsql.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+  <table border="5">
+   <caption><b>PostgreSQL設定オプション</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">名前</th>
+      <th colspan="1">デフォルト</th>
+      <th colspan="1">変更の可否</th>
+      <th colspan="1">変更履歴</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">pgsql.allow_persistent</td>
+      <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">pgsql.max_persistent</td>
+      <td colspan="1" rowspan="1" align="left">&quot;-1&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">pgsql.max_links</td>
+      <td colspan="1" rowspan="1" align="left">&quot;-1&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">pgsql.auto_reset_persistent</td>
+      <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+      <td colspan="1" rowspan="1" align="left">PHP 4.2.0 以降で有効です。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">pgsql.ignore_notice</td>
+      <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td colspan="1" rowspan="1" align="left">PHP 4.3.0 以降で有効です。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">pgsql.log_notice</td>
+      <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td colspan="1" rowspan="1" align="left">PHP 4.3.0 以降で有効です。</td>
+     </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+  PHP_INI_* 定数の詳細および定義については
+<a href="ini.html" class="xref">php.ini ディレクティブ</a> を参照してください。
+ </p>
+
+  <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+
+ <p class="para">
+  <dl>
+
+   
+   <dt id="ini.pgsql.allow-persistent">
+    <span class="term">
+     <i><tt class="parameter">pgsql.allow_persistent</tt></i>
+
+     <a href="language.types.boolean.html" class="type boolean">boolean</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      持続的な Postgres 接続を可能にするかどうか。
+     </p>
+    </dd>
+
+   </dt>
+
+   
+   <dt id="ini.pgsql.max-persistent">
+    <span class="term">
+     <i><tt class="parameter">pgsql.max_persistent</tt></i>
+
+     <a href="language.types.integer.html" class="type integer">integer</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      プロセス毎の持続的 Postgres 接続の最大数。
+     </p>
+    </dd>
+
+   </dt>
+
+   
+   <dt id="ini.pgsql.max-links">
+    <span class="term">
+     <i><tt class="parameter">pgsql.max_links</tt></i>
+
+     <a href="language.types.integer.html" class="type integer">integer</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      持続的接続を含むプロセス毎の Postgres 接続の最大数。
+     </p>
+    </dd>
+
+   </dt>
+
+   
+   <dt id="ini.pgsql.auto-reset-persistent">
+    <span class="term">
+     <i><tt class="parameter">pgsql.auto_reset_persistent</tt></i>
+
+     <a href="language.types.integer.html" class="type integer">integer</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      <a href="function.pg-pconnect.html" class="function">pg_pconnect()</a> で作成した持続的接続の障害を
+      検出する。少々のオーバーヘッドを要します。
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.pgsql.ignore-notice">
+    <span class="term">
+     <i><tt class="parameter">pgsql.ignore_notice</tt></i>
+
+     <a href="language.types.integer.html" class="type integer">integer</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      PostgreSQL バックエンドの通知メッセージを無視するかどうか。
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.pgsql.log-notice">
+    <span class="term">
+     <i><tt class="parameter">pgsql.log_notice</tt></i>
+
+     <a href="language.types.integer.html" class="type integer">integer</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      PostgreSQL バックエンドの通知メッセージをログに記録するかしないか。
+      ログに記録するには、PHP ディレクティブ 
+      <a href="ref.pgsql.html#ini.pgsql.ignore-notice" class="link">pgsql.ignore_notice</a>
+      を off にする必要があります。
+     </p>
+    </dd>
+
+   </dt>
+
+
+  </dl>
+
+ </p>
+
+</div>
+
+
+
+
+
+  <div id="pgsql.resources" class="section">
+  <h2 class="title">リソース型</h2>
+   <p class="para">
+    PostgreSQL モジュールで使用されるリソース型は 2 種類あります。ひとつは
+    データベース接続のリンク ID で、もうひとつはクエリの結果を保持する
+    リソースです。
+   </p>
+  </div>
+
+  
+
+
+<div id="pgsql.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ 
+ <dl>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_ASSOC</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+      <a href="function.pg-fetch-array.html" class="function">pg_fetch_array()</a> に渡します。
+      フィールド名と値の連想配列を返します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_NUM</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+      <a href="function.pg-fetch-array.html" class="function">pg_fetch_array()</a> に渡します。
+      フィールド番号と値の数値添字配列を返します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_BOTH</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+      <a href="function.pg-fetch-array.html" class="function">pg_fetch_array()</a> に渡します。
+      フィールド値の配列を、数値添字（フィールド番号で）と
+      連想配列（フィールド名で）の両方で返します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_CONNECT_FORCE_NEW</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+      <a href="function.pg-connect.html" class="function">pg_connect()</a> に渡し、既存の同一接続を無視して
+      新しい接続を確立させるようにします。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_CONNECTION_BAD</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+      <a href="function.pg-connection-status.html" class="function">pg_connection_status()</a> から返され、データベースとの
+      接続が不正な状態になっていることを示します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_CONNECTION_OK</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+      <a href="function.pg-connection-status.html" class="function">pg_connection_status()</a> から返され、データベースとの
+      接続が正常であることを示します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_SEEK_SET</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-lo-seek.html" class="function">pg_lo_seek()</a> に渡します。シーク操作は
+     オブジェクトの先頭から始められます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_SEEK_CUR</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-lo-seek.html" class="function">pg_lo_seek()</a> に渡します。シーク操作は
+     カレントの位置から始められます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_SEEK_END</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-lo-seek.html" class="function">pg_lo_seek()</a> に渡します。シーク操作は
+     オブジェクトの最後から始められます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_EMPTY_QUERY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-result-status.html" class="function">pg_result_status()</a> から返されます。
+     サーバに送信された文字列が空でした。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_COMMAND_OK</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-result-status.html" class="function">pg_result_status()</a> から返されます。
+     コマンドは正常に終了し、何もデータを返しませんでした。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_TUPLES_OK</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-result-status.html" class="function">pg_result_status()</a> から返されます。
+     コマンドは正常に終了し、データを返しました
+     （<i class="literal">SELECT</i> や <i class="literal">SHOW</i> など）。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_COPY_OUT</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-result-status.html" class="function">pg_result_status()</a> から返されます。
+     （サーバからの）データのコピーが始まりました。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_COPY_IN</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-result-status.html" class="function">pg_result_status()</a> から返されます。
+     （サーバへの）データのコピーが始まりました。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_BAD_RESPONSE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-result-status.html" class="function">pg_result_status()</a> から返されます。
+     サーバからの応答を判別できませんでした。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_NONFATAL_ERROR</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-result-status.html" class="function">pg_result_status()</a> から返されます。
+     致命的ではないエラー（通知や警告など）が発生しました。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_FATAL_ERROR</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-result-status.html" class="function">pg_result_status()</a> から返されます。
+     致命的なエラーが発生しました。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_TRANSACTION_IDLE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-transaction-status.html" class="function">pg_transaction_status()</a> から返されます。
+     接続は現在アイドル状態で、トランザクション内ではありません。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_TRANSACTION_ACTIVE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-transaction-status.html" class="function">pg_transaction_status()</a> から返されます。
+     接続内でコマンドを実行中です。クエリが接続を通じて送信され、
+     まだ完了していません。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_TRANSACTION_INTRANS</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-transaction-status.html" class="function">pg_transaction_status()</a> から返されます。
+     接続は現在アイドル状態で、トランザクションブロック内にあります。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_TRANSACTION_INERROR</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-transaction-status.html" class="function">pg_transaction_status()</a> から返されます。
+     接続は現在アイドル状態で、トランザクション処理に失敗しています。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_TRANSACTION_UNKNOWN</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-transaction-status.html" class="function">pg_transaction_status()</a> から返されます。
+     接続が正常ではありません。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_DIAG_SEVERITY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-result-error-field.html" class="function">pg_result_error_field()</a> に渡します。
+     深刻度です。その内容は <i class="literal">ERROR</i>、
+     <i class="literal">FATAL</i>、あるいは <i class="literal">PANIC</i>
+     （エラーメッセージ内）、あるいは <i class="literal">WARNING</i>、
+     <i class="literal">NOTICE</i>、<i class="literal">DEBUG</i>、
+     <i class="literal">INFO</i>、あるいは <i class="literal">LOG</i>
+     （通知メッセージ内）、あるいはこれらの各国語版のうちのどれかです。
+     常に存在します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_DIAG_SQLSTATE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-result-error-field.html" class="function">pg_result_error_field()</a> に渡します。
+     エラーの SQLSTATE コードです。SQLSTATE コードは発生したエラーの種別を
+     特定します。これは、データベースエラーに対してフロントエンドの
+     アプリケーションが適切な操作（エラー処理など）をできるようにするために
+     使用されます。このフィールドはローカライズされていません。また、
+     常に存在します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_DIAG_MESSAGE_PRIMARY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-result-error-field.html" class="function">pg_result_error_field()</a> に渡します。
+     人間が判読できる最初のエラーメッセージ（たいてい 1 行）です。常に存在します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_DIAG_MESSAGE_DETAIL</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-result-error-field.html" class="function">pg_result_error_field()</a> に渡します。
+     オプションの 2 番目のエラーメッセージで、問題に対する詳細な情報を
+     含みます。複数行にまたがることもあります。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_DIAG_MESSAGE_HINT</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-result-error-field.html" class="function">pg_result_error_field()</a> に渡します。
+     オプションのメッセージで、問題に対してどのように対応すべきかを指摘
+     します。エラーの詳細情報と違う点は、発生した事実ではなくアドバイス
+     （時に不適切な場合もある）をするところです。複数行にまたがることも
+     あります。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_DIAG_STATEMENT_POSITION</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-result-error-field.html" class="function">pg_result_error_field()</a> に渡します。
+     エラーカーソルの位置を、もとのステートメント中の位置として表す
+     整数値を保持する文字列です。
+     最初の文字の位置は 1 で、それ以降（バイト数ではなく）文字数で
+     位置を数えます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_DIAG_INTERNAL_POSITION</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-result-error-field.html" class="function">pg_result_error_field()</a> に渡します。
+     <b><tt>PG_DIAG_STATEMENT_POSITION</tt></b> と同じ定義ですが、
+     こちらはカーソル位置が内部で生成されたコマンドを参照している場合に
+     使用されます。このフィールドが存在する場合は、常に
+     <b><tt>PG_DIAG_INTERNAL_QUERY</tt></b> フィールドも存在します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_DIAG_INTERNAL_QUERY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-result-error-field.html" class="function">pg_result_error_field()</a> に渡します。
+     失敗した内部生成コマンドのテキストです。例としては、PL/pgSQL 関数で
+     発行された SQL クエリなどがあてはまります。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_DIAG_CONTEXT</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-result-error-field.html" class="function">pg_result_error_field()</a> に渡します。
+     エラーが発生した状況を指定します。現在ここに含まれているのは、
+     アクティブなプロシージャの関数や内部生成クエリのコール履歴です。
+     これはエントリごとに 1 行のデータとなっており、直近のデータが
+     先頭にきます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_DIAG_SOURCE_FILE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-result-error-field.html" class="function">pg_result_error_field()</a> に渡します。
+     エラーが報告された箇所の、PostgreSQL ソースコードでのファイル名です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_DIAG_SOURCE_LINE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-result-error-field.html" class="function">pg_result_error_field()</a> に渡します。
+     エラーが報告された箇所の、PostgreSQL ソースコードでの行番号です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_DIAG_SOURCE_FUNCTION</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-result-error-field.html" class="function">pg_result_error_field()</a> に渡します。
+     エラーが報告された箇所の、PostgreSQL ソースコードでの関数名です。
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_ERRORS_TERSE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-set-error-verbosity.html" class="function">pg_set_error_verbosity()</a> に渡します。
+     返されるメッセージを指定します。ここには深刻度・短い説明および
+     発生位置のみを含めます。通常は 1 行に収まるでしょう。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_ERRORS_DEFAULT</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-set-error-verbosity.html" class="function">pg_set_error_verbosity()</a> に渡します。
+     デフォルトで返されるメッセージで、上の内容に加えて詳細・
+     ヒントあるいは詳細情報を含めます（複数行にまたがるかもしれません）。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_ERRORS_VERBOSE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-set-error-verbosity.html" class="function">pg_set_error_verbosity()</a> に渡します。
+     詳細モードでのメッセージで、有効なフィールドをすべて含めます。
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_STATUS_LONG</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-result-status.html" class="function">pg_result_status()</a> に渡します。
+     結果として数値が要求されていることを示します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_STATUS_STRING</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-result-status.html" class="function">pg_result_status()</a> に渡します。
+     結果としてテキストのコマンドタグが要求されていることを示します。
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_CONV_IGNORE_DEFAULT</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-convert.html" class="function">pg_convert()</a> に渡します。
+     変換時に、テーブルのデフォルト値を無視します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_CONV_FORCE_NULL</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-convert.html" class="function">pg_convert()</a> に渡します。
+     空文字列に対して、SQL の <i class="literal">NULL</i> を使用します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PGSQL_CONV_IGNORE_DEFAULT</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.pg-convert.html" class="function">pg_convert()</a> に渡します。
+     <b><tt>NULL</tt></b> を SQL の <i class="literal">NOT NULL</i> に変換しないように
+     します。
+    </span>
+   </dd>
+
+  </dt>
+
+
+ </dl>
+
+</div>
+
+
+
+
+  <div id="pgsql.notes" class="section">
+  <h2 class="title">注意</h2>
+   <blockquote><p><b class="note">注意</b>: 
+    
+     すべての関数がすべての構築環境でサポートされるわけではありません。 
+     サポートされる関数は、使用する libpq（PostgreSQL の C クライアント
+     ライブラリ）のバージョンと libpq のコンパイル方法に依存します。 
+     もし PHP の PostgreSQL 拡張モジュールに足りない関数がある場合、
+     その原因は libpq はその関数をサポートしていないことです。
+    <br />
+   </p></blockquote>
+   <blockquote><p><b class="note">注意</b>: 
+    
+     ほとんどの PostgreSQL 関数は、オプションの第 1 引数として
+     <i><tt class="parameter">connection</tt></i>
+ を受け付けます。もしこれを
+     指定しなかった場合、直近にオープンされた接続を使用します。
+     そのような接続が存在しなかった場合、関数は <b><tt>FALSE</tt></b> を返します。
+    <br />
+   </p></blockquote>
+   <blockquote><p><b class="note">注意</b>: 
+    
+     PostgreSQL は、オブジェクトの生成時やクエリの実行時に
+     識別子（例: テーブル名・カラム名）を自動的に小文字に変換します。
+     この自動変換を防ぐには、識別子をダブルクォート（&quot;&quot;）でエスケープする
+     必要があります。
+    <br />
+   </p></blockquote>
+   <blockquote><p><b class="note">注意</b>: 
+    
+     PostgreSQL には、データベースのスキーマ情報（例: データベース内の
+     すべてのテーブルなど）を取得するための特別なコマンドがありません。
+     その代わりに、PostgreSQL 7.4 以降では <i class="literal">information_schema</i>
+     という標準スキーマが存在し、必要な情報が検索しやすい形式で格納されています。
+     詳しい情報は <a href="http://www.postgresql.org/docs/current/interactive/" class="link external">&raquo; PostgreSQL ドキュメンテーション</a>
+     を参照ください。
+    <br />
+   </p></blockquote>
+  </div>
+
+  <div id="pgsql.examples" class="section">
+   <h2 class="title">例</h2>
+    <p class="para">
+     この例では、PostgreSQL への接続・クエリの実行・結果の表示
+     そして切断の方法を説明します。
+     <div class="example">
+      <p><b>Example#1 PostgreSQL 拡張モジュールの概要</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;接続し、データベースを選択する<br /></span><span style="color: #0000BB">$dbconn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">pg_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">"host=localhost&nbsp;dbname=publishing&nbsp;user=www&nbsp;password=foo"</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or&nbsp;die(</span><span style="color: #DD0000">'Could&nbsp;not&nbsp;connect:&nbsp;'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">pg_last_error</span><span style="color: #007700">());<br /><br /></span><span style="color: #FF8000">//&nbsp;SQL&nbsp;クエリを実行する<br /></span><span style="color: #0000BB">$query&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'SELECT&nbsp;*&nbsp;FROM&nbsp;authors'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">pg_query</span><span style="color: #007700">(</span><span style="color: #0000BB">$query</span><span style="color: #007700">)&nbsp;or&nbsp;die(</span><span style="color: #DD0000">'Query&nbsp;failed:&nbsp;'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">pg_last_error</span><span style="color: #007700">());<br /><br /></span><span style="color: #FF8000">//&nbsp;結果を&nbsp;HTML&nbsp;で表示する<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"&lt;table&gt;\n"</span><span style="color: #007700">;<br />while&nbsp;(</span><span style="color: #0000BB">$line&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">pg_fetch_array</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">null</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">PGSQL_ASSOC</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"\t&lt;tr&gt;\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;(</span><span style="color: #0000BB">$line&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$col_value</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"\t\t&lt;td&gt;$col_value&lt;/td&gt;\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"\t&lt;/tr&gt;\n"</span><span style="color: #007700">;<br />}<br />echo&nbsp;</span><span style="color: #DD0000">"&lt;/table&gt;\n"</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">//&nbsp;結果セットを開放する<br /></span><span style="color: #0000BB">pg_free_result</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;接続をクローズする<br /></span><span style="color: #0000BB">pg_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$dbconn</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+   </div>
+ </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.pg-affected-rows.html">pg_affected_rows</a> ― 変更されたレコード(タプル)の数を返す</li><li><a href="function.pg-cancel-query.html">pg_cancel_query</a> ― 非同期クエリを取り消す</li><li><a href="function.pg-client-encoding.html">pg_client_encoding</a> ― クライアントのエンコーディングを取得する</li><li><a href="function.pg-close.html">pg_close</a> ― PostgreSQL 接続をクローズする</li><li><a href="function.pg-connect.html">pg_connect</a> ― PostgreSQL 接続をオープンする</li><li><a href="function.pg-connection-busy.html">pg_connection_busy</a> ― 接続がビジーかどうか調べる</li><li><a href="function.pg-connection-reset.html">pg_connection_reset</a> ― 接続をリセット(再接続)する</li><li><a href="function.pg-connection-status.html">pg_connection_status</a> ― 接続ステータスを取得する</li><li><a href="function.pg-convert.html">pg_convert</a> ― 連想配列の値を、SQL 文として実行可能な形式に変換する</li><li><a href="function.pg-copy-from.html">pg_copy_from</a> ― 配列からテーブルに挿入する</li><li><a href="function.pg-copy-to.html">pg_copy_to</a> ― 配列にテーブルをコピーする</li><li><a href="function.pg-dbname.html">pg_dbname</a> ― データベース名を取得する</li><li><a href="function.pg-delete.html">pg_delete</a> ― レコードを削除する</li><li><a href="function.pg-end-copy.html">pg_end_copy</a> ― PostgreSQL バックエンドと同期する</li><li><a href="function.pg-escape-bytea.html">pg_escape_bytea</a> ― bytea フィールドに挿入するために文字列をエスケープする</li><li><a href="function.pg-escape-string.html">pg_escape_string</a> ― テキスト型フィールドに挿入するために、文字列をエスケープする</li><li><a href="function.pg-execute.html">pg_execute</a> ― 指定したパラメータを用いてプリペアドステートメントを実行するリクエストを
+   送信し、その結果を待つ</li><li><a href="function.pg-fetch-all-columns.html">pg_fetch_all_columns</a> ― 指定したカラムの全ての行を配列として取得する</li><li><a href="function.pg-fetch-all.html">pg_fetch_all</a> ― 取得されたすべての行を配列として取得する</li><li><a href="function.pg-fetch-array.html">pg_fetch_array</a> ― 行を配列として取得する</li><li><a href="function.pg-fetch-assoc.html">pg_fetch_assoc</a> ― 行を連想配列として取得する</li><li><a href="function.pg-fetch-object.html">pg_fetch_object</a> ― 行をオブジェクトとして得る</li><li><a href="function.pg-fetch-result.html">pg_fetch_result</a> ― 結果リソースから値を返す</li><li><a href="function.pg-fetch-row.html">pg_fetch_row</a> ― 数値添字の配列として行を得る</li><li><a href="function.pg-field-is-null.html">pg_field_is_null</a> ― フィールドが SQL の NULL かどうか調べる</li><li><a href="function.pg-field-name.html">pg_field_name</a> ― フィールドの名前を返す</li><li><a href="function.pg-field-num.html">pg_field_num</a> ― 指定されたフィールドのフィールド番号を返す</li><li><a href="function.pg-field-prtlen.html">pg_field_prtlen</a> ― 表示される長さを返す</li><li><a href="function.pg-field-size.html">pg_field_size</a> ― 指定したフィールドの内部記憶領域におけるサイズを返す</li><li><a href="function.pg-field-table.html">pg_field_table</a> ― tables フィールドの名前あるいは oid を返す</li><li><a href="function.pg-field-type-oid.html">pg_field_type_oid</a> ― フィールド番号に対応する型 ID（OID）を返す</li><li><a href="function.pg-field-type.html">pg_field_type</a> ― フィールド番号に対応する型名を返す</li><li><a href="function.pg-free-result.html">pg_free_result</a> ― メモリを開放する</li><li><a href="function.pg-get-notify.html">pg_get_notify</a> ― SQL NOTIFY メッセージを取得する</li><li><a href="function.pg-get-pid.html">pg_get_pid</a> ― バックエンドのプロセス ID を得る</li><li><a href="function.pg-get-result.html">pg_get_result</a> ― 非同期クエリの結果を取得する</li><li><a href="function.pg-host.html">pg_host</a> ― 接続に関連するホスト名を返す</li><li><a href="function.pg-insert.html">pg_insert</a> ― テーブルに配列を挿入する</li><li><a href="function.pg-last-error.html">pg_last_error</a> ― 特定の接続から直近のエラーメッセージ文字列を取得する</li><li><a href="function.pg-last-notice.html">pg_last_notice</a> ― PostgreSQL サーバからの直近の通知メッセージを返す</li><li><a href="function.pg-last-oid.html">pg_last_oid</a> ― 直近の行のオブジェクト ID を返す</li><li><a href="function.pg-lo-close.html">pg_lo_close</a> ― ラージオブジェクトをクローズする</li><li><a href="function.pg-lo-create.html">pg_lo_create</a> ― ラージオブジェクトを生成する</li><li><a href="function.pg-lo-export.html">pg_lo_export</a> ― ラージオブジェクトをファイルにエクスポートする</li><li><a href="function.pg-lo-import.html">pg_lo_import</a> ― ファイルからラージオブジェクトをインポートする</li><li><a href="function.pg-lo-open.html">pg_lo_open</a> ― ラージオブジェクトをオープンする</li><li><a href="function.pg-lo-read-all.html">pg_lo_read_all</a> ― ラージオブジェクト全体を読み込みブラウザに直接送信する</li><li><a href="function.pg-lo-read.html">pg_lo_read</a> ― ラージオブジェクトを読み込む</li><li><a href="function.pg-lo-seek.html">pg_lo_seek</a> ― ラージオブジェクトの位置をシークする</li><li><a href="function.pg-lo-tell.html">pg_lo_tell</a> ― ラージオブジェクトのカレントのシーク位置を返す</li><li><a href="function.pg-lo-unlink.html">pg_lo_unlink</a> ― ラージオブジェクトを削除する</li><li><a href="function.pg-lo-write.html">pg_lo_write</a> ― ラージオブジェクトを書く</li><li><a href="function.pg-meta-data.html">pg_meta_data</a> ― テーブルからメタデータを取得する</li><li><a href="function.pg-num-fields.html">pg_num_fields</a> ― フィールド数を返す</li><li><a href="function.pg-num-rows.html">pg_num_rows</a> ― 行数を返す</li><li><a href="function.pg-options.html">pg_options</a> ― 接続に関連するオプションを取得する</li><li><a href="function.pg-parameter-status.html">pg_parameter_status</a> ― サーバのパラメータ設定を検索する</li><li><a href="function.pg-pconnect.html">pg_pconnect</a> ― 持続的な PostgreSQL 接続をオープンする</li><li><a href="function.pg-ping.html">pg_ping</a> ― データベース接続を調べる</li><li><a href="function.pg-port.html">pg_port</a> ― 接続に関連するポート番号を返す</li><li><a href="function.pg-prepare.html">pg_prepare</a> ― 指定したパラメータでプリペアドステートメントを作成するリクエストを
+   送信し、その完了を待つ</li><li><a href="function.pg-put-line.html">pg_put_line</a> ― NULL で終わる文字列を PostgreSQL バックエンドに送信する</li><li><a href="function.pg-query-params.html">pg_query_params</a> ― SQL コマンドとパラメータを分割してサーバにを送信し、その結果を待つ</li><li><a href="function.pg-query.html">pg_query</a> ― クエリを実行する</li><li><a href="function.pg-result-error-field.html">pg_result_error_field</a> ― エラー報告の各フィールドを返す</li><li><a href="function.pg-result-error.html">pg_result_error</a> ― 結果に関連するエラーメッセージを取得する</li><li><a href="function.pg-result-seek.html">pg_result_seek</a> ― 結果リソースの内部行オフセットを設定する</li><li><a href="function.pg-result-status.html">pg_result_status</a> ― クエリ結果のステータスを取得する</li><li><a href="function.pg-select.html">pg_select</a> ― レコードを選択する</li><li><a href="function.pg-send-execute.html">pg_send_execute</a> ― 指定したパラメータでプリペアドステートメントを実行するリクエストを
+   送信し、その結果を待たない</li><li><a href="function.pg-send-prepare.html">pg_send_prepare</a> ― 指定したパラメータでプリペアドステートメントを作成するリクエストを
+   送信し、その結果を待たない</li><li><a href="function.pg-send-query-params.html">pg_send_query_params</a> ― コマンドとパラメータを分割してサーバに送信し、その結果を待たない</li><li><a href="function.pg-send-query.html">pg_send_query</a> ― 非同期クエリを送信する</li><li><a href="function.pg-set-client-encoding.html">pg_set_client_encoding</a> ― クライアントのエンコーディングを設定する</li><li><a href="function.pg-set-error-verbosity.html">pg_set_error_verbosity</a> ― pg_last_error および pg_result_error
+   が返すメッセージの詳細度を指定する</li><li><a href="function.pg-trace.html">pg_trace</a> ― PostgreSQL 接続のトレースを有効にする</li><li><a href="function.pg-transaction-status.html">pg_transaction_status</a> ― サーバ上で実行中のトランザクションの状態を返す</li><li><a href="function.pg-tty.html">pg_tty</a> ― 接続に関する TTY 名を返す</li><li><a href="function.pg-unescape-bytea.html">pg_unescape_bytea</a> ― bytea 型のバイナリをアンエスケープする</li><li><a href="function.pg-untrace.html">pg_untrace</a> ― PostgreSQL 接続のトレースを無効にする</li><li><a href="function.pg-update.html">pg_update</a> ― テーブルを更新する</li><li><a href="function.pg-version.html">pg_version</a> ― クライアント・プロトコル・サーバのバージョンを配列で返す</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.sql-regcase.html">sql_regcase</a></div>
+ <div class="next" style="float: right;"><a href="function.pg-affected-rows.html">pg_affected_rows</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

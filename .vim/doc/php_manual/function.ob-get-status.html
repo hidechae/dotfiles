@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>出力バッファのステータスを取得する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ob-get-level.html">ob_get_level</a></div>
+ <div class="next" style="float: right;"><a href="function.ob-gzhandler.html">ob_gzhandler</a></div>
+ <div class="up"><a href="ref.outcontrol.html">出力制御</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.ob-get-status" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ob_get_status</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.2.0, PHP 5)</p><p class="refpurpose">ob_get_status ― 出力バッファのステータスを取得する</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">array</span> <span class="methodname"><b><b>ob_get_status</b></b></span>
+    ([ <span class="methodparam"><span class="type">bool</span>  <tt class="parameter">$full_status</tt> <span class="initializer">=FALSE</span></span>
+  ] )</div>
+
+  <p class="para">
+   <b>ob_get_status()</b> は、トップレベルの出力バッファの
+   ステータス情報を返します。<i><tt class="parameter">full_status</tt></i>
+ が
+   <b><tt>TRUE</tt></b> に設定されている場合は、すべてのアクティブな出力バッファの
+   ステータス情報を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">full_status</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <b><tt>TRUE</tt></b> を指定すると、すべてのアクティブな出力バッファを返します。
+       <b><tt>FALSE</tt></b> を指定した場合、あるいは省略した場合は、
+       トップレベルの出力バッファのみを返します。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   パラメータ <i><tt class="parameter">full_status</tt></i>
+ を指定していなかったり
+   <i><tt class="parameter">full_status</tt></i>
+ = <b><tt>FALSE</tt></b> としていた場合は、
+   以下の要素を保持する配列が返されます。
+   <div class="informalexample">
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+Array
+(
+    [level] =&gt; 2
+    [type] =&gt; 0
+    [status] =&gt; 0
+    [name] =&gt; URL-Rewriter
+    [del] =&gt; 1
+)
+</pre></div>
+    </pre></div>
+   </div>
+   <div class="segmentedlist">
+    <strong class="title">単純な <b>ob_get_status()</b> の出力結果</strong>
+    
+    <div class="seglistitem"><div class="seg"><strong><span class="segtitle">キー:</span></strong>level</div><div class="seg"><strong><span class="segtitle">値:</span></strong>出力階層レベル</div></div>
+    <div class="seglistitem"><div class="seg"><strong><span class="segtitle">キー:</span></strong>type</div><div class="seg"><strong><span class="segtitle">値:</span></strong><i class="literal">PHP_OUTPUT_HANDLER_INTERNAL (0)</i> あるいは <i class="literal">PHP_OUTPUT_HANDLER_USER (1)</i></div></div>
+    <div class="seglistitem"><div class="seg"><strong><span class="segtitle">キー:</span></strong>status</div><div class="seg"><strong><span class="segtitle">値:</span></strong><i class="literal">PHP_OUTPUT_HANDLER_START</i> (0)、<i class="literal">PHP_OUTPUT_HANDLER_CONT</i> (1) あるいは <i class="literal">PHP_OUTPUT_HANDLER_END</i> (2) のいずれか</div></div>
+    <div class="seglistitem"><div class="seg"><strong><span class="segtitle">キー:</span></strong>name</div><div class="seg"><strong><span class="segtitle">値:</span></strong>アクティブな出力ハンドラの名前、あるいは設定されていない場合は &#039; default output handler&#039;</div></div>
+    <div class="seglistitem"><div class="seg"><strong><span class="segtitle">キー:</span></strong>del</div><div class="seg"><strong><span class="segtitle">値:</span></strong><a href="function.ob-start.html" class="function">ob_start()</a> が設定した削除フラグ</div></div>
+   </div>
+  </p>
+  <p class="para">
+   <i><tt class="parameter">full_status</tt></i>
+ = <b><tt>TRUE</tt></b> を指定してコールした場合、
+   出力バッファごとにひとつの要素を保持する配列が返されます。
+   出力レベルが配列のキーとして使用され、対応する値として
+   各出力レベルのステータス情報を配列として保持します。
+   <div class="informalexample">
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+Array
+(
+    [0] =&gt; Array
+        (
+            [chunk_size] =&gt; 0
+            [size] =&gt; 40960
+            [block_size] =&gt; 10240
+            [type] =&gt; 1
+            [status] =&gt; 0
+            [name] =&gt; default output handler
+            [del] =&gt; 1
+        )
+
+    [1] =&gt; Array
+        (
+            [chunk_size] =&gt; 0
+            [size] =&gt; 40960
+            [block_size] =&gt; 10240
+            [type] =&gt; 0
+            [buffer_size] =&gt; 0
+            [status] =&gt; 0
+            [name] =&gt; URL-Rewriter
+            [del] =&gt; 1
+        )
+
+)
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+  <p class="para">
+   完全な出力には、追加項目として以下の要素が含まれます。
+   <div class="segmentedlist">
+    <strong class="title">完全な <b>ob_get_status()</b> の出力結果</strong>
+    
+    <div class="seglistitem"><div class="seg"><strong><span class="segtitle">キー:</span></strong>chunk_size</div><div class="seg"><strong><span class="segtitle">値:</span></strong><a href="function.ob-start.html" class="function">ob_start()</a> で設定したチャンクの大きさ</div></div>
+    <div class="seglistitem"><div class="seg"><strong><span class="segtitle">キー:</span></strong>size</div><div class="seg"><strong><span class="segtitle">値:</span></strong>...</div></div>
+    <div class="seglistitem"><div class="seg"><strong><span class="segtitle">キー:</span></strong>blocksize</div><div class="seg"><strong><span class="segtitle">値:</span></strong>...</div></div>
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.ob-get-level.html" class="function">ob_get_level()</a></li>
+    <li class="member"><a href="function.ob-list-handlers.html" class="function">ob_list_handlers()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ob-get-level.html">ob_get_level</a></div>
+ <div class="next" style="float: right;"><a href="function.ob-gzhandler.html">ob_gzhandler</a></div>
+ <div class="up"><a href="ref.outcontrol.html">出力制御</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

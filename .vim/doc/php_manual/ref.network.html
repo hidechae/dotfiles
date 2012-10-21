@@ -1,0 +1,671 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>ネットワーク関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ncurses-wvline.html">ncurses_wvline</a></div>
+ <div class="next" style="float: right;"><a href="function.checkdnsrr.html">checkdnsrr</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">ネットワーク関数</h1>
+  
+  <div class="partintro">
+
+   <div id="network.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+    
+    </p>
+   </div>
+   
+   <div id="network.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">外部ライブラリを必要としません。</p>
+   </div>
+   
+   <div id="network.installation" class="section">
+    <h2 class="title">インストール手順</h2>
+    <p class="para">PHP コアに含まれるため、
+追加のインストール無しで使用できます。</p>
+   </div>
+
+   
+
+
+
+<div id="network.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+  <table border="5">
+   <caption><b>ネットワーク設定オプション(Network)</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">名前</th>
+      <th colspan="1">デフォルト</th>
+      <th colspan="1">変更の可否</th>
+      <th colspan="1">変更の履歴</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">define_syslog_variables</td>
+     <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+ PHP_INI_* 定数の詳細および定義については
+<a href="ini.html" class="xref">php.ini ディレクティブ</a> を参照してください。
+ </p>
+ 
+ <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+ 
+ <p class="para">
+  <dl>
+
+   <dt id="ini.define-syslog-variables">
+    <span class="term">
+     <i><tt class="parameter">define_syslog_variables</tt></i>
+
+     <a href="language.types.boolean.html" class="type boolean">boolean</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      様々なsyslog変数(例: $LOG_PID、$LOG_CRON、等)を定義するかどうか。
+      これをoffにするのは、性能面では良い考えです。
+      実行時に<a href="function.define-syslog-variables.html" class="function">define_syslog_variables()</a>をコールする
+      ことにより、これらを定義することができます。
+     </p>
+    </dd>
+
+   </dt>
+
+  </dl>
+
+ </p>
+</div>
+
+
+
+
+
+
+   <div id="network.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">
+     この拡張モジュールでは、ファイルポインタリソースを定義しています。これは
+     <a href="function.fsockopen.html" class="function">fsockopen()</a> および <a href="function.pfsockopen.html" class="function">pfsockopen()</a>
+     で使用するものです。
+    </p>
+   </div>
+
+   
+
+
+
+<div id="network.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数は、PHP コアに含まれており、常に利用可能です。
+</p>
+ <table border="5">
+  <caption><b><a href="function.openlog.html" class="function">openlog()</a>オプション</b></caption>
+  <colgroup>
+
+    <thead valign="middle">
+    <tr valign="middle">
+     <th colspan="1">定数</th>
+     <th colspan="1">説明</th>
+    </tr>
+
+   </thead>
+
+   <tbody valign="middle">
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">LOG_CONS</td>
+     <td colspan="1" rowspan="1" align="left">
+      システムロガーにデータを送信する際にエラーが発生した場合、
+      システムコンソールに直接書き込む。
+     </td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">LOG_NDELAY</td>
+     <td colspan="1" rowspan="1" align="left">
+      ロガーにただちに接続をオープンする。
+     </td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">LOG_ODELAY</td>
+     <td colspan="1" rowspan="1" align="left">
+      (デフォルト) 最初のメッセージが記録されるまで接続のオープンを
+      遅延させる。
+     </td>
+    </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">LOG_NOWAIT</td>
+      <td colspan="1" rowspan="1" align="left">
+      </td>
+     </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">LOG_PERROR</td>
+     <td colspan="1" rowspan="1" align="left">標準エラー出力にもログメッセージを出力する</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">LOG_PID</td>
+     <td colspan="1" rowspan="1" align="left">各メッセージにプロセスIDを含める</td>
+    </tr>
+
+   </tbody>
+  </colgroup>
+
+ </table>
+
+
+  <table border="5">
+   <caption><b><a href="function.openlog.html" class="function">openlog()</a> ファシリティ</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">定数</th>
+      <th colspan="1">説明</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">LOG_AUTH</td>
+      <td colspan="1" rowspan="1" align="left">
+       セキュリティ/認証メッセージ（LOG_AUTHPRIVが定義されているシステムであれば
+       代わりにそれを使用してください）
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">LOG_AUTHPRIV</td>
+      <td colspan="1" rowspan="1" align="left">セキュリティ/認証メッセージ (private)</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">LOG_CRON</td>
+      <td colspan="1" rowspan="1" align="left">時刻デーモン (cron and at)</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">LOG_DAEMON</td>
+      <td colspan="1" rowspan="1" align="left">その他のシステムデーモン</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">LOG_KERN</td>
+      <td colspan="1" rowspan="1" align="left">カーネルメッセージ</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">LOG_LOCAL0 ... LOG_LOCAL7</td>
+      <td colspan="1" rowspan="1" align="left">ローカルで使用できるようリザーブされている。Windowsでは使用できない。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">LOG_LPR</td>
+      <td colspan="1" rowspan="1" align="left">ラインプリンタサブシステム</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">LOG_MAIL</td>
+      <td colspan="1" rowspan="1" align="left">メールサブシステム</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">LOG_NEWS</td>
+      <td colspan="1" rowspan="1" align="left">USENETニュースサブシステム</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">LOG_SYSLOG</td>
+      <td colspan="1" rowspan="1" align="left">syslogdによって内部で生成されたメッセージ</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">LOG_USER</td>
+      <td colspan="1" rowspan="1" align="left">一般ユーザーレベルのメッセージ</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">LOG_UUCP</td>
+      <td colspan="1" rowspan="1" align="left">UUCPサブシステム</td>
+     </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+
+ <table border="5">
+   <caption><b><a href="function.syslog.html" class="function">syslog()</a>プロパティ(降順)</b></caption>
+  <colgroup>
+
+   <thead valign="middle">
+    <tr valign="middle">
+     <th colspan="1">定数</th>
+     <th colspan="1">説明</th>
+    </tr>
+
+   </thead>
+
+   <tbody valign="middle">
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">LOG_EMERG</td>
+     <td colspan="1" rowspan="1" align="left">システムは使用不可</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">LOG_ALERT</td>
+     <td colspan="1" rowspan="1" align="left">アクションを直ちに起こすことが必要</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">LOG_CRIT</td>
+     <td colspan="1" rowspan="1" align="left">危機的な条件</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">LOG_ERR</td>
+     <td colspan="1" rowspan="1" align="left">エラー条件</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">LOG_WARNING</td>
+     <td colspan="1" rowspan="1" align="left">警告条件</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">LOG_NOTICE</td>
+     <td colspan="1" rowspan="1" align="left">正常、しかし、注意すべき条件</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">LOG_INFO</td>
+     <td colspan="1" rowspan="1" align="left">情報メッセージ</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">LOG_DEBUG</td>
+     <td colspan="1" rowspan="1" align="left">デバッグレベルメッセージ</td>
+    </tr>
+
+   </tbody>
+  </colgroup>
+
+ </table>
+
+ <table border="5">
+  <caption><b><a href="function.dns-get-record.html" class="function">dns_get_record()</a>オプション</b></caption>
+  <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">定数</th>
+      <th colspan="1">説明</th>
+    </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">DNS_A</td>
+     <td colspan="1" rowspan="1" align="left">IPv4アドレスリソース</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">DNS_MX</td>
+     <td colspan="1" rowspan="1" align="left">Mail Exchangerリソース</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">DNS_CNAME</td>
+     <td colspan="1" rowspan="1" align="left">エイリアス(Canonical Name)リソース</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">DNS_NS</td>
+     <td colspan="1" rowspan="1" align="left">Authoritative Name Serverリソース</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">DNS_PTR</td>
+     <td colspan="1" rowspan="1" align="left">ポインタリソース</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">DNS_HINFO</td>
+      <td colspan="1" rowspan="1" align="left">ホスト情報リソース（これらの値の意味については、IANA の
+        <a href="http://www.iana.org/assignments/operating-system-names" class="link external">&raquo; Operating System Names</a>
+        を参照ください）</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">DNS_SOA</td>
+     <td colspan="1" rowspan="1" align="left">認証リソースの開始</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">DNS_TXT</td>
+     <td colspan="1" rowspan="1" align="left">テキストリソース</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">DNS_ANY</td>
+     <td colspan="1" rowspan="1" align="left">
+      全てのリソースレコード。多くのシステムでは、
+      これは、全てのリソースレコードを返します。
+      しかし、危機的な状況には対応できません。代わりに
+      DNS_ALLを試してください。
+     </td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">DNS_AAAA</td>
+     <td colspan="1" rowspan="1" align="left">IPv6アドレスリソース</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">DNS_ALL</td>
+     <td colspan="1" rowspan="1" align="left">
+      利用可能なレコード型毎のネームサーバへの反復クエリ。
+     </td>
+    </tr>
+
+   </tbody>
+  </colgroup>
+
+ </table>
+
+</div>
+
+
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.checkdnsrr.html">checkdnsrr</a> ― 指定したインターネットホスト名もしくは IP アドレスに対応する DNS レコードを検索する</li><li><a href="function.closelog.html">closelog</a> ― システムログへの接続を閉じる</li><li><a href="function.debugger-off.html">debugger_off</a> ― PHP の内部デバッガを無効にする (PHP 3)</li><li><a href="function.debugger-on.html">debugger_on</a> ― PHP の内部デバッガを有効にする (PHP 3)</li><li><a href="function.define-syslog-variables.html">define_syslog_variables</a> ― syslog に関係する全ての定数を初期化する</li><li><a href="function.dns-check-record.html">dns_check_record</a> ― checkdnsrr のエイリアス</li><li><a href="function.dns-get-mx.html">dns_get_mx</a> ― getmxrr のエイリアス</li><li><a href="function.dns-get-record.html">dns_get_record</a> ― ホスト名に関連する DNS リソースレコードを取得する</li><li><a href="function.fsockopen.html">fsockopen</a> ― インターネット接続もしくはUnix ドメインソケット接続をオープンする</li><li><a href="function.gethostbyaddr.html">gethostbyaddr</a> ― 指定した IP アドレスに対応するインターネットホスト名を取得する</li><li><a href="function.gethostbyname.html">gethostbyname</a> ― インターネットホスト名に対応するIPアドレスを取得する</li><li><a href="function.gethostbynamel.html">gethostbynamel</a> ― 指定したインターネットホスト名に対応するIPアドレスのリストを取得する</li><li><a href="function.getmxrr.html">getmxrr</a> ― 指定したインターネットホスト名に対応する MX レコードを取得する</li><li><a href="function.getprotobyname.html">getprotobyname</a> ― プロトコル名のプロトコル番号を得る</li><li><a href="function.getprotobynumber.html">getprotobynumber</a> ― プロトコル番号が指すプロトコル名を取得する</li><li><a href="function.getservbyname.html">getservbyname</a> ― インターネットサービスおよびプロトコルが関連するポート番号を取得する</li><li><a href="function.getservbyport.html">getservbyport</a> ― ポートおよびプロトコルに対応するインターネットサービスを得る</li><li><a href="function.header.html">header</a> ― 生の HTTP ヘッダを送信する</li><li><a href="function.headers-list.html">headers_list</a> ― 送信した (もしくは送信される予定の) レスポンスヘッダの一覧を返す</li><li><a href="function.headers-sent.html">headers_sent</a> ― ヘッダが既に送信されているかどうかを調べる</li><li><a href="function.inet-ntop.html">inet_ntop</a> ― パックされたインターネットアドレスを、人間が読める形式に変換する</li><li><a href="function.inet-pton.html">inet_pton</a> ― 人間が読める形式の IP アドレスを、パックされた in_addr 形式に変換する</li><li><a href="function.ip2long.html">ip2long</a> ― (IPv4) インターネットプロトコルドット表記のアドレスを、適当なアドレスを有する文字列に変換する</li><li><a href="function.long2ip.html">long2ip</a> ― (IPv4) インターネットアドレスをインターネット標準ドット表記に変換する</li><li><a href="function.openlog.html">openlog</a> ― システムのロガーへの接続をオープンする</li><li><a href="function.pfsockopen.html">pfsockopen</a> ― 持続的な Internet または Unix ドメインソケット接続をオープンする</li><li><a href="function.setcookie.html">setcookie</a> ― クッキーを送信する</li><li><a href="function.setrawcookie.html">setrawcookie</a> ― 値を URL エンコードせずにクッキーを送信する</li><li><a href="function.socket-get-status.html">socket_get_status</a> ― stream_get_meta_data のエイリアス</li><li><a href="function.socket-set-blocking.html">socket_set_blocking</a> ― stream_set_blocking のエイリアス</li><li><a href="function.socket-set-timeout.html">socket_set_timeout</a> ― stream_set_timeout のエイリアス</li><li><a href="function.syslog.html">syslog</a> ― システムログのメッセージを生成する</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ncurses-wvline.html">ncurses_wvline</a></div>
+ <div class="next" style="float: right;"><a href="function.checkdnsrr.html">checkdnsrr</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

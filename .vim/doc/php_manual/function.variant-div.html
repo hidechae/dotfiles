@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>2 つの variant の除算結果を返す</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.variant-date-to-timestamp.html">variant_date_to_timestamp</a></div>
+ <div class="next" style="float: right;"><a href="function.variant-eqv.html">variant_eqv</a></div>
+ <div class="up"><a href="ref.com.html">COM</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.variant-div" class="refentry">
+   <div class="refnamediv">
+    <h1 class="refname">variant_div</h1>
+    <p class="verinfo">(PHP 5)</p><p class="refpurpose">variant_div ― 
+     2 つの variant の除算結果を返す
+    </p>
+
+   </div>
+   <div class="refsect1 u">
+    <h3 class="title">説明</h3>
+    <div class="methodsynopsis">
+     <span class="type">mixed</span> <span class="methodname"><b><b>variant_div</b></b></span>
+      ( <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$left</tt></span>
+     , <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$right</tt></span>
+     )</div>
+
+
+     <p class="para">
+      <i><tt class="parameter">left</tt></i>
+ を <i><tt class="parameter">right</tt></i>
+
+      で割り、以下の規則にしたがってその結果を返します。
+ 
+      <table border="5">
+      <caption><b>Variant の除算規則</b></caption>
+      <colgroup>
+
+      <thead valign="middle">
+       <tr valign="middle">
+        <th colspan="1">もし〜なら</th>
+        <th colspan="1">このようにします</th>
+       </tr>
+
+      </thead>
+
+      <tbody valign="middle">
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">両者ともに文字列型・日付型・文字・論理型</td>
+        <td colspan="1" rowspan="1" align="left">Double 型を返す</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">一方が文字列型で、もう一方が文字</td>
+        <td colspan="1" rowspan="1" align="left">除算結果を double 型で返す</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">一方が数値で、もう一方が文字列</td>
+        <td colspan="1" rowspan="1" align="left">除算結果を double 型で返す</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">両者ともに数値</td>
+        <td colspan="1" rowspan="1" align="left">除算結果を double 型で返す</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">どちらか一方が NULL</td>
+        <td colspan="1" rowspan="1" align="left">NULL が返される</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left"><i><tt class="parameter">right</tt></i>
+ が空の値で
+        <i><tt class="parameter">left</tt></i>
+ がそれ以外の型</td>
+        <td colspan="1" rowspan="1" align="left">com_exception コード <b><tt>DISP_E_DIVBYZERO</tt></b>
+        がスローされる</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left"><i><tt class="parameter">left</tt></i>
+ が空の値で
+        <i><tt class="parameter">right</tt></i>
+ がそれ以外の型</td>
+        <td colspan="1" rowspan="1" align="left">double 型の 0 が返される</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">両者ともに空の値</td>
+        <td colspan="1" rowspan="1" align="left">com_exception コード <b><tt>DISP_E_OVERFLOW</tt></b>
+        がスローされる</td>
+       </tr>
+
+      </tbody>
+     </colgroup>
+
+    </table>
+
+   </p>
+  
+    
+
+
+<blockquote><p><b class="note">注意</b>: 
+
+ variant に関するすべての計算関数では、関数のパラメータとして PHP の
+ ネイティブ型 (整数、文字列、浮動小数点数、論理型あるいは <b><tt>NULL</tt></b>)
+ か COM・VARIANT・DOTNET クラスのインスタンスを指定可能です。
+ PHP のネイティブ型は、<a href="class.variant.html" class="xref">VARIANT</a> クラスの
+ コンストラクタと同様の規則を使用して variant に変換されます。
+ COM および DOTNET オブジェクトは、デフォルトのプロパティの値を
+ variant 値として使用します。
+<br />
+
+ variant の計算関数は、COM ライブラリの同名の関数のラッパーです。
+ これらの関数についての詳細な情報は MSDN ライブラリを参照ください。
+ 一部の関数は、PHP での関数名が少し異なります。例えば PHP での
+ variant_add() に対応する関数は、MSDN ドキュメントでは
+ VarAdd() となります。
+<br />
+</p></blockquote>
+
+
+   </div>
+
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.variant-date-to-timestamp.html">variant_date_to_timestamp</a></div>
+ <div class="next" style="float: right;"><a href="function.variant-eqv.html">variant_eqv</a></div>
+ <div class="up"><a href="ref.com.html">COM</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

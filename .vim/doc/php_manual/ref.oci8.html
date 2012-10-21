@@ -1,0 +1,2418 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>Oracle 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.overload.html">overload</a></div>
+ <div class="next" style="float: right;"><a href="function.oci-bind-array-by-name.html">oci_bind_array_by_name</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">Oracle 関数</h1>
+  
+
+  <div class="partintro">
+   <div id="oci8.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     これらの関数は Oracle コールインターフェース (OCI) を使用した
+     Oracle 10, Oracle 9, Oracle 8, そして Oracle 7
+     データベースへのアクセスを可能にします。
+     これらは PHP 変数の Oracle プレースホルダへのバインドをサポートし、
+     LOB、FILE、ROWID を完全にサポートしており、
+     ユーザー定義の変数が使用可能です。
+    </p>
+   </div>
+
+   <div id="oci8.requirements" class="section">
+    <h2 class="title">要件</h2>
+   <p class="para">
+    この拡張を使用するために Oracle クライアントライブラリが必要になります。
+    Windows ユーザは <var class="filename">php_oci8.dll</var> を使用するために
+    少なくともバージョン 10 以降のライブラリが必要になるでしょう。
+   </p>
+   <blockquote><p><b class="note">注意</b>: 
+    
+     この拡張モジュールは、Oracle 8 のクライアントライブラリをサポートしません。
+     とはいえ、バージョン 9 以降のクライアントライブラリが
+     Oracle 8 サーバへの接続をサポートする限りは
+     Oracle 8 サーバに接続することが可能です。
+    <br />
+   </p></blockquote>
+   <p class="para">
+    要求される全てのファイルをインストールする最も簡便な方法は、
+    Oracle Instant Client を使用することです。これは
+    <a href="http://www.oracle.com/technology/tech/oci/instantclient/instantclient.html" class="link external">&raquo; http://www.oracle.com/technology/tech/oci/instantclient/instantclient.html</a>
+    から取得可能です。
+    OCI8 モジュールを動作させるには、Oracle Instant Client の
+    「基本 (basic)」バージョンを導入するだけで十分です。
+    Instant Client は ORACLE_SID もしくは ORACLE_HOME
+    環境変数を設定する必要がありませんが、LD_LIBRARY_PATH と
+    NLS_LANG を設定する必要があります。
+   </p>
+   <p class="para">
+    この拡張モジュールを使用する前に Web デーモンのユーザでもある
+    Oracle ユーザに対する Oracle 用環境変数が正しく設定されていることを
+    確認してください。これらの変数は Web サーバを起動する
+    <em class="emphasis">前に</em> 設定されていなければなりません。
+    設定されている必要がある変数を以下に示します。
+    <ul class="itemizedlist">
+     <li class="listitem">
+      <span class="simpara">
+       ORACLE_HOME
+      </span>
+     </li>
+     <li class="listitem">
+      <span class="simpara">
+       ORACLE_SID
+      </span>
+     </li>
+     <li class="listitem">
+      <span class="simpara">
+       LD_PRELOAD
+      </span>
+     </li>
+     <li class="listitem">
+      <span class="simpara">
+       LD_LIBRARY_PATH
+      </span>
+     </li>
+     <li class="listitem">
+      <span class="simpara">
+       NLS_LANG
+      </span>
+     </li>
+    </ul>
+     頻繁にはないですが、TNS_ADMIN, TWO_TASK, ORA_TZFILE、
+     そして ORA_NLS33, ORA_NLS10 あるいは
+     NLS_* のような様々な Oracle の国際化設定用の変数を使用する場合は、
+     Oracle のドキュメントを参照してください。
+   </p>
+   <p class="para">
+     Web サーバーのユーザ用に環境変数を設定した後、Web サーバーのユーザ
+     (nobody, www) をグループ oracle に追加してください。
+   </p>
+   <blockquote><p><b class="note">注意</b>: 
+    <b>Web サーバが起動しないか、起動時にクラッシュする場合</b>
+    
+      Apache が pthread ライブラリにリンクされているかどうか
+      次のように確認してください。
+    <br />
+    
+     <div class="informalexample">
+      <div class="example-contents"><pre>
+<div class="cdata"><pre>
+# ldd /www/apache/bin/httpd
+    libpthread.so.0 =&gt; /lib/libpthread.so.0 (0x4001c000)
+    libm.so.6 =&gt; /lib/libm.so.6 (0x4002f000)
+    libcrypt.so.1 =&gt; /lib/libcrypt.so.1 (0x4004c000)
+    libdl.so.2 =&gt; /lib/libdl.so.2 (0x4007a000)
+    libc.so.6 =&gt; /lib/libc.so.6 (0x4007e000)
+    /lib/ld-linux.so.2 =&gt; /lib/ld-linux.so.2 (0x40000000)
+</pre></div>
+      </pre></div>
+     </div>
+    <br />
+    
+     libpthread がこの一覧にない場合、Apache
+     を再インストールする必要があります。
+    <br />
+    
+     <div class="informalexample">
+      <div class="example-contents"><pre>
+<div class="cdata"><pre>
+# cd /usr/src/apache_1.3.xx
+# make clean
+# LIBS=-lpthread ./config.status
+# make
+# make install
+</pre></div>
+      </pre></div>
+     </div>
+    <br />
+    
+      UnixWare のようないくつかのシステムでは、libpthread の代わりに
+      libthread が使用されています。その場合、PHP と Apache は、
+      EXTRA_LIBS=-lthread を configure に指定する必要があります。
+    <br />
+   </p></blockquote>
+   </div>
+
+   
+
+
+   <div id="oci8.configuration" class="section">
+    <h2 class="title">実行時設定</h2>
+    <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+    <p class="para">
+     <table border="5">
+      <caption><b>OCI8 設定オプション</b></caption>
+      <colgroup>
+
+       <thead valign="middle">
+        <tr valign="middle">
+         <th colspan="1">名称</th>
+         <th colspan="1">デフォルト</th>
+         <th colspan="1">変更可否</th>
+         <th colspan="1">変更履歴</th>
+        </tr>
+
+       </thead>
+
+       <tbody valign="middle">
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">oci8.privileged_connect</td>
+         <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+         <td colspan="1" rowspan="1" align="left">PHP 5.1.2 以降で使用可能</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">oci8.max_persistent</td>
+         <td colspan="1" rowspan="1" align="left">&quot;-1&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+         <td colspan="1" rowspan="1" align="left">PHP 5.1.2 以降で使用可能</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">oci8.persistent_timeout</td>
+         <td colspan="1" rowspan="1" align="left">&quot;-1&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+         <td colspan="1" rowspan="1" align="left">PHP 5.1.2 以降で使用可能</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">oci8.ping_interval</td>
+         <td colspan="1" rowspan="1" align="left">&quot;60&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+         <td colspan="1" rowspan="1" align="left">PHP 5.1.2 以降で使用可能</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">oci8.statement_cache_size</td>
+         <td colspan="1" rowspan="1" align="left">&quot;20&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+         <td colspan="1" rowspan="1" align="left">PHP 5.1.2 以降で使用可能</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">oci8.default_prefetch</td>
+         <td colspan="1" rowspan="1" align="left">&quot;10&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+         <td colspan="1" rowspan="1" align="left">PHP 5.1.2 以降で使用可能</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">oci8.old_oci_close_semantics</td>
+         <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+         <td colspan="1" rowspan="1" align="left">PHP 5.1.2 以降で使用可能</td>
+        </tr>
+
+       </tbody>
+      </colgroup>
+
+     </table>
+
+    </p>
+
+    <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+
+    <p class="para">
+     <dl>
+
+      <dt id="ini.oci8.privileged_connect">
+       <span class="term">
+        <i><tt class="parameter">oci8.privileged_connect</tt></i>
+
+        <a href="language.types.boolean.html" class="type boolean">boolean</a>
+       </span>
+       <dd>
+
+        <p class="para">
+         このオプションは外部の信用
+         (<b><tt>OCI_SYSOPER</tt></b>, <b><tt>OCI_SYSDBA</tt></b>)
+         を利用して権限付きの接続を有効にします。
+        </p>
+       </dd>
+
+      </dt>
+
+      <dt id="ini.oci8.max_persistent">
+       <span class="term">
+        <i><tt class="parameter">oci8.max_persistent</tt></i>
+
+        <a href="language.types.integer.html" class="type int">int</a>
+       </span>
+       <dd>
+
+        <p class="para">
+         プロセスあたりの永続的な OCI8 接続の最大値を指定します。
+         このオプションを -1 に設定することは、制限なしを意味します。
+        </p>
+       </dd>
+
+      </dt>
+
+      <dt id="ini.oci8.persistent_timeout">
+       <span class="term">
+        <i><tt class="parameter">oci8.persistent_timeout</tt></i>
+
+        <a href="language.types.integer.html" class="type int">int</a>
+       </span>
+       <dd>
+
+        <p class="para">
+         与えられたプロセスがアイドル状態の永続的接続を維持する最大時間
+         (秒単位) を指定します。
+         このオプションを -1 に設定することは、
+         アイドル状態の永続的接続は永久に維持されることを意味します。
+        </p>
+       </dd>
+
+      </dt>
+
+      <dt id="ini.oci8.ping_interval">
+       <span class="term">
+        <i><tt class="parameter">oci8.ping_interval</tt></i>
+
+        <a href="language.types.integer.html" class="type int">int</a>
+       </span>
+       <dd>
+
+        <p class="para">
+          <a href="function.oci-pconnect.html" class="function">oci_pconnect()</a> の間、ping
+          を発行するまでに経過させる時間 (秒単位) を指定します。
+          0 に設定した場合、永続的接続は再利用される度に ping を発行します。
+          ping を完全に無効にするためには、このオプションを -1 に設定します。
+        </p>
+        <blockquote><p><b class="note">注意</b>: 
+         <span class="simpara">
+          ping を無効にすることで <a href="function.oci-pconnect.html" class="function">oci_pconnect()</a>
+          は最高の効率で処理をコールしますが、ネットワークが分断された場合や
+          PHP が接続した後に Oracle サーバがダウンし、
+          その後に実行されるスクリプト中において
+          PHP が接続の失敗を検知しなくなります。
+          詳細な情報は <a href="function.oci-pconnect.html" class="function">oci_pconnect()</a> を参照ください。
+         </span>
+        </p></blockquote>
+       </dd>
+
+      </dt>
+
+      <dt id="ini.oci8.statement_cache_size">
+       <span class="term">
+        <i><tt class="parameter">oci8.statement_cache_size</tt></i>
+
+        <a href="language.types.integer.html" class="type int">int</a>
+       </span>
+       <dd>
+
+        <p class="para">
+         このオプションはステートメントキャッシュを有効にします。
+         また、キャッシュするステートメントの数を指定します。
+         ステートメントキャッシュを無効にする場合、このオプションを 0
+         に設定してください。
+        </p>
+        <blockquote><p><b class="note">注意</b>: 
+         <span class="simpara">
+          より大きなキャッシュは、メモリ使用量の増加と引き替えに
+          パフォーマンスの改善をもたらします。
+         </span>
+        </p></blockquote>
+       </dd>
+
+      </dt>
+
+      <dt id="ini.oci8.default_prefetch">
+       <span class="term">
+        <i><tt class="parameter">oci8.default_prefetch</tt></i>
+
+        <a href="language.types.integer.html" class="type int">int</a>
+       </span>
+       <dd>
+
+        <p class="para">
+         このオプションはステートメントのプリフェッチを有効にし、
+         ステートメントの実行後自動的にフェッチされるデフォルトの行数を
+         設定します。
+        </p>
+        <blockquote><p><b class="note">注意</b>: 
+         <span class="simpara">
+          より大きなプリフェッチは、メモリ使用量の増加と引き替えに
+          パフォーマンスの改善をもたらします。
+         </span>
+        </p></blockquote>
+       </dd>
+
+      </dt>
+
+      <dt id="ini.oci8.old_oci_close_semantics">
+       <span class="term">
+        <i><tt class="parameter">oci8.old_oci_close_semantics</tt></i>
+
+        <a href="language.types.boolean.html" class="type boolean">boolean</a>
+       </span>
+       <dd>
+
+        <p class="para">
+         このオプションは <a href="function.oci-close.html" class="function">oci_close()</a>
+         の動作を制御します。有効にすると、<a href="function.oci-close.html" class="function">oci_close()</a>
+         は何も行いません。接続はスクリプトの終了まで閉じられません。
+         これは後方互換性のためのみに存在しています。
+         この設定を有効にする必要があると判明した場合、
+         このオプションを有効にする代わりに、
+         <a href="function.oci-close.html" class="function">oci_close()</a> をアプリケーションから削除することが
+         <em class="emphasis">強く推奨</em>されます。
+        </p>
+       </dd>
+
+      </dt>
+
+     </dl>
+
+    </p>
+   </div>
+
+
+
+
+
+
+   
+
+
+<div id="oci8.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <dl>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_DEFAULT</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     文の実行モードを指定します。
+     このモードを使用する場合、
+     文は自動的にコミットされません。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_DESCRIBE_ONLY</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     文の実行モードを指定します。
+     実際に文を実行したくないが取得一覧の記述は取得したい場合に
+     このモードを使用してください。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_COMMIT_ON_SUCCESS</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     文の実行モードを指定します。
+     文は、<a href="function.oci-execute.html" class="function">oci_execute()</a>
+     コールの後に自動的にコミットされます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_EXACT_FETCH</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     文の取得モードを指定します。
+     アプリケーションがあらかじめ何行取得すればよいか分かっている場合に
+     使用されます。
+     このモードは Oracle リリース 8 以降ではプリフェッチ機能をオフにします。
+     カーソルは希望する行を取得した後キャンセルされ、
+     サーバ側のリソースの使用は軽減されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_SYSDATE</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_B_BFILE</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.oci-bind-by-name.html" class="function">oci_bind_by_name()</a> で
+     BFILE をバインドする場合に使用されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_B_CFILEE</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.oci-bind-by-name.html" class="function">oci_bind_by_name()</a> で
+     CFILE をバインドする場合に使用されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_B_CLOB</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.oci-bind-by-name.html" class="function">oci_bind_by_name()</a> で
+     CLOB をバインドする場合に使用されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_B_BLOB</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.oci-bind-by-name.html" class="function">oci_bind_by_name()</a> で
+     BLOB をバインドする場合に使用されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_B_ROWID</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.oci-bind-by-name.html" class="function">oci_bind_by_name()</a> で
+     ROWID をバインドする場合に使用されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_B_CURSOR</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.oci-bind-by-name.html" class="function">oci_bind_by_name()</a> で
+     <a href="function.oci-new-descriptor.html" class="function">oci_new_descriptor()</a>
+     によってあらかじめ割り当てられたカーソルをバインドする場合に使用されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_B_NTY</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.oci-bind-by-name.html" class="function">oci_bind_by_name()</a> で
+     名前付けされたデータ型をバインドする場合に使用されます。
+     注意: PHP &lt; 5.0 では <b><tt>OCI_B_SQLT_NTY</tt></b> と呼ばれます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_B_BIN</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SQLT_BFILEE</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <b><tt>OCI_B_BFILE</tt></b> と等価です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SQLT_CFILEE</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <b><tt>OCI_B_CFILEE</tt></b> と等価です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SQLT_CLOB</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <b><tt>OCI_B_CLOB</tt></b> と等価です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SQLT_BLOB</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <b><tt>OCI_B_BLOB</tt></b> と等価です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SQLT_RDD</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <b><tt>OCI_B_ROWID</tt></b> と等価です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SQLT_NTY</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <b><tt>OCI_B_NTY</tt></b> と等価です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SQLT_LNG</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.oci-bind-by-name.html" class="function">oci_bind_by_name()</a> で
+     LONG 値をバインドする際に使用されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SQLT_LBI</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.oci-bind-by-name.html" class="function">oci_bind_by_name()</a> で
+     LONG RAW 値をバインドする際に使用されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SQLT_BIN</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.oci-bind-by-name.html" class="function">oci_bind_by_name()</a> で
+     RAW 値をバインドする際に使用されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SQLT_NUM</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.oci-bind-array-by-name.html" class="function">oci_bind_array_by_name()</a> で
+     NUMBER の配列をバインドする場合に使用されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SQLT_INT</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.oci-bind-array-by-name.html" class="function">oci_bind_array_by_name()</a> で
+     INTEGER の配列をバインドする場合に使用されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SQLT_AFC</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.oci-bind-array-by-name.html" class="function">oci_bind_array_by_name()</a> で
+     CHAR の配列をバインドする場合に使用されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SQLT_CHR</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.oci-bind-array-by-name.html" class="function">oci_bind_array_by_name()</a> で
+     VARCHAR2 の配列をバインドする場合に使用されます。
+     <a href="function.oci-bind-by-name.html" class="function">oci_bind_by_name()</a> でも使用されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SQLT_VCS</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.oci-bind-array-by-name.html" class="function">oci_bind_array_by_name()</a> で
+     VARCHAR の配列をバインドする際に使用されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SQLT_AVC</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.oci-bind-array-by-name.html" class="function">oci_bind_array_by_name()</a> で
+     CHARZ の配列をバインドする場合に使用されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SQLT_STR</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.oci-bind-array-by-name.html" class="function">oci_bind_array_by_name()</a> で
+     STRING の配列をバインドする場合に使用されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SQLT_LVC</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.oci-bind-array-by-name.html" class="function">oci_bind_array_by_name()</a> で
+     LONG VARCHAR の配列をバインドする場合に使用されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SQLT_FLT</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.oci-bind-array-by-name.html" class="function">oci_bind_array_by_name()</a> で
+     FLOAT の配列をバインドする場合に使用されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SQLT_ODT</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.oci-bind-array-by-name.html" class="function">oci_bind_array_by_name()</a> で
+     LONG の配列をバインドする場合に使用されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SQLT_BDOUBLE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SQLT_BFLOAT</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_FETCHSTATEMENT_BY_COLUMN</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.oci-fetch-all.html" class="function">oci_fetch_all()</a> のデフォルトのモードです。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_FETCHSTATEMENT_BY_ROW</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.oci-fetch-all.html" class="function">oci_fetch_all()</a> でのもうひとつのモードです。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_ASSOC</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.oci-fetch-all.html" class="function">oci_fetch_all()</a> と
+     <a href="function.oci-fetch-array.html" class="function">oci_fetch_array()</a>
+     で結果を連想配列で取得するために使用されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_NUM</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.oci-fetch-all.html" class="function">oci_fetch_all()</a> と
+     <a href="function.oci-fetch-array.html" class="function">oci_fetch_array()</a>
+     で結果を配列で取得するために使用されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_BOTH</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.oci-fetch-all.html" class="function">oci_fetch_all()</a> と
+     <a href="function.oci-fetch-array.html" class="function">oci_fetch_array()</a>
+     で結果を配列と連想配列の両方で取得するために使用されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_RETURN_NULLS</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.oci-fetch-array.html" class="function">oci_fetch_array()</a>
+     でフィールド値が <b><tt>NULL</tt></b> の場合に空の配列要素を取得するために使用されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_RETURN_LOBS</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.oci-fetch-array.html" class="function">oci_fetch_array()</a>
+     でディスクリプタの代わりに LOB の値を取得するために使用されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_DTYPE_FILE</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     このフラグは <a href="function.oci-new-descriptor.html" class="function">oci_new_descriptor()</a> に新しい
+     FILE ディスクリプタを初期化するように伝えます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_DTYPE_LOB</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     このフラグは <a href="function.oci-new-descriptor.html" class="function">oci_new_descriptor()</a> に新しい
+     LOB ディスクリプタを初期化するように伝えます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_DTYPE_ROWID</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     このフラグは <a href="function.oci-new-descriptor.html" class="function">oci_new_descriptor()</a> に新しい
+     ROWID ディスクリプタを初期化するように伝えます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_D_FILE</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <b><tt>OCI_DTYPE_FILE</tt></b> と等価です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_D_LOB</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <b><tt>OCI_DTYPE_LOB</tt></b> と等価です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_D_ROWID</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <b><tt>OCI_DTYPE_ROWID</tt></b> と等価です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_SYSOPER</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     外部の信任を使用する SYSOPER として接続するために
+     <a href="function.oci-connect.html" class="function">oci_connect()</a>
+     と併用します (これには <a href="ref.oci8.html#ini.oci8.privileged_connect" class="link">oci8.privileged_connect</a>
+     を有効にすべきです) 。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_SYSDBA</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     外部の信任を使用する SYSDBA として接続するために
+     <a href="function.oci-connect.html" class="function">oci_connect()</a>
+     と併用します (これには <a href="ref.oci8.html#ini.oci8.privileged_connect" class="link">oci8.privileged_connect</a>
+     を有効にすべきです) 。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_LOB_BUFFER_FREE</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     使用されたバッファを解放するために
+     <a href="function.oci-lob-flush.html" class="xref">OCI-Lob->flush</a> と併用します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_TEMP_CLOB</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     一時的な CLOB が生成されるよう明示的に指定するため
+     <a href="function.oci-lob-writetemporary.html" class="xref">OCI-Lob->writeTemporary</a> と併用します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>OCI_TEMP_BLOB</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     一時的な BLOB が生成されるよう明示的に指定するため
+     <a href="function.oci-lob-writetemporary.html" class="xref">OCI-Lob->writeTemporary</a> と併用します。
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+</div>
+
+
+
+
+   <div id="oci8.examples" class="section">
+    <h2 class="title">例</h2>
+    <p class="para">
+     <div class="example">
+      <p><b>Example#1 基本的なクエリ</b></p>
+       <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />&nbsp;&nbsp;$conn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'hr'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'hr'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'orcl'</span><span style="color: #007700">);<br />&nbsp;&nbsp;if&nbsp;(!</span><span style="color: #0000BB">$conn</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$e&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_error</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;</span><span style="color: #0000BB">htmlentities</span><span style="color: #007700">(</span><span style="color: #0000BB">$e</span><span style="color: #007700">[</span><span style="color: #DD0000">'message'</span><span style="color: #007700">]);<br />&nbsp;&nbsp;&nbsp;&nbsp;exit;<br />&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;</span><span style="color: #0000BB">$query&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'SELECT&nbsp;*&nbsp;FROM&nbsp;DEPARTMENTS'</span><span style="color: #007700">;<br /><br />&nbsp;&nbsp;</span><span style="color: #0000BB">$stid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$query</span><span style="color: #007700">);<br />&nbsp;&nbsp;if&nbsp;(!</span><span style="color: #0000BB">$stid</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$e&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_error</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;</span><span style="color: #0000BB">htmlentities</span><span style="color: #007700">(</span><span style="color: #0000BB">$e</span><span style="color: #007700">[</span><span style="color: #DD0000">'message'</span><span style="color: #007700">]);<br />&nbsp;&nbsp;&nbsp;&nbsp;exit;<br />&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;</span><span style="color: #0000BB">$r&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">OCI_DEFAULT</span><span style="color: #007700">);<br />&nbsp;&nbsp;if&nbsp;(!</span><span style="color: #0000BB">$r</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$e&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_error</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">htmlentities</span><span style="color: #007700">(</span><span style="color: #0000BB">$e</span><span style="color: #007700">[</span><span style="color: #DD0000">'message'</span><span style="color: #007700">]);<br />&nbsp;&nbsp;&nbsp;&nbsp;exit;<br />&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;print&nbsp;</span><span style="color: #DD0000">'&lt;table&nbsp;border="1"&gt;'</span><span style="color: #007700">;<br />&nbsp;&nbsp;while&nbsp;(</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_fetch_array</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">OCI_RETURN_NULLS</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;</span><span style="color: #DD0000">'&lt;tr&gt;'</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;(</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$item</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;</span><span style="color: #DD0000">'&lt;td&gt;'</span><span style="color: #007700">.(</span><span style="color: #0000BB">$item</span><span style="color: #007700">?</span><span style="color: #0000BB">htmlentities</span><span style="color: #007700">(</span><span style="color: #0000BB">$item</span><span style="color: #007700">):</span><span style="color: #DD0000">'&amp;nbsp;'</span><span style="color: #007700">).</span><span style="color: #DD0000">'&lt;/td&gt;'</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;</span><span style="color: #DD0000">'&lt;/tr&gt;'</span><span style="color: #007700">;<br />&nbsp;&nbsp;}<br />&nbsp;&nbsp;print&nbsp;</span><span style="color: #DD0000">'&lt;/table&gt;'</span><span style="color: #007700">;<br /><br />&nbsp;&nbsp;</span><span style="color: #0000BB">oci_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+       </div>
+
+     </div>
+    </p>
+    <p class="para">
+     <div class="example">
+      <p><b>Example#2 バインド変数を用いた挿入</b></p>
+       <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;実行前に表を作成する<br />&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;CREATE&nbsp;TABLE&nbsp;MYTABLE&nbsp;(mid&nbsp;NUMBER,&nbsp;myd&nbsp;VARCHAR2(20));<br /><br />&nbsp;&nbsp;</span><span style="color: #0000BB">$conn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'scott'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'tiger'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'orcl'</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;</span><span style="color: #0000BB">$query&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'INSERT&nbsp;INTO&nbsp;MYTABLE&nbsp;VALUES(:myid,&nbsp;:mydata)'</span><span style="color: #007700">;<br /><br />&nbsp;&nbsp;</span><span style="color: #0000BB">$stid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$query</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;</span><span style="color: #0000BB">$id&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">60</span><span style="color: #007700">;<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$data&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'Some&nbsp;data'</span><span style="color: #007700">;<br /><br />&nbsp;&nbsp;</span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">':myid'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$id</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">':mydata'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$data</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;</span><span style="color: #0000BB">$r&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">$r</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;</span><span style="color: #DD0000">"One&nbsp;row&nbsp;inserted"</span><span style="color: #007700">;<br /><br />&nbsp;&nbsp;</span><span style="color: #0000BB">oci_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+       </div>
+
+     </div>
+    </p>
+
+
+    <p class="para">
+    <div class="example">
+     <p><b>Example#3 CLOB カラムにデータを挿入する</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">//&nbsp;実行前に表を作成する<br />//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CREATE&nbsp;TABLE&nbsp;MYTABLE&nbsp;(mykey&nbsp;NUMBER,&nbsp;myclob&nbsp;CLOB);<br /><br /></span><span style="color: #0000BB">$conn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'scott'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'tiger'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'orcl'</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$mykey&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">12343</span><span style="color: #007700">;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;この例で用いる任意のキー<br /><br /></span><span style="color: #0000BB">$sql&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"INSERT&nbsp;INTO&nbsp;mytable&nbsp;(mykey,&nbsp;myclob)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VALUES&nbsp;(:mykey,&nbsp;EMPTY_CLOB())<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RETURNING&nbsp;myclob&nbsp;INTO&nbsp;:myclob"</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$stid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$sql</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$clob&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_new_descriptor</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">OCI_D_LOB</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">":mykey"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mykey</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">5</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">":myclob"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$clob</span><span style="color: #007700">,&nbsp;-</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">OCI_B_CLOB</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">OCI_DEFAULT</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$clob</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">save</span><span style="color: #007700">(</span><span style="color: #DD0000">"A&nbsp;very&nbsp;long&nbsp;string"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">oci_commit</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;CLOB&nbsp;データをフェッチする<br /><br /></span><span style="color: #0000BB">$query&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'SELECT&nbsp;myclob&nbsp;FROM&nbsp;mytable&nbsp;WHERE&nbsp;mykey&nbsp;=&nbsp;:mykey'</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$stid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse&nbsp;</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$query</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">":mykey"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mykey</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">5</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">OCI_DEFAULT</span><span style="color: #007700">);<br /><br />print&nbsp;</span><span style="color: #DD0000">'&lt;table&nbsp;border="1"&gt;'</span><span style="color: #007700">;<br />while&nbsp;(</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_fetch_array</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">OCI_ASSOC</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">'MYCLOB'</span><span style="color: #007700">]-&gt;</span><span style="color: #0000BB">load</span><span style="color: #007700">();<br />&nbsp;&nbsp;print&nbsp;</span><span style="color: #DD0000">'&lt;tr&gt;&lt;td&gt;'</span><span style="color: #007700">.</span><span style="color: #0000BB">$result</span><span style="color: #007700">.</span><span style="color: #DD0000">'&lt;/td&gt;&lt;/tr&gt;'</span><span style="color: #007700">;<br />}<br />print&nbsp;</span><span style="color: #DD0000">'&lt;/table&gt;'</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+    </p>
+    <p class="para">
+     コマンドラインで実行するのと同様な手法により、ストアドプロシージャ
+     に簡単にアクセス可能です。
+    <div class="example">
+     <p><b>Example#4 ストアドプロシージャの使用法</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;by&nbsp;webmaster&nbsp;at&nbsp;remoterealty&nbsp;dot&nbsp;com<br /></span><span style="color: #0000BB">$sth&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse</span><span style="color: #007700">(</span><span style="color: #0000BB">$dbh</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"begin&nbsp;sp_newaddress(&nbsp;:address_id,&nbsp;'$firstname',<br />&nbsp;'$lastname',&nbsp;'$company',&nbsp;'$address1',&nbsp;'$address2',&nbsp;'$city',&nbsp;'$state',<br />&nbsp;'$postalcode',&nbsp;'$country',&nbsp;:error_code&nbsp;);end;"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;この命令は、:address_id&nbsp;を入出力変数、:error_code&nbsp;を出力変数として<br />//&nbsp;ストアドプロシージャ&nbsp;sp_newaddress&nbsp;をコールします。<br />//&nbsp;続いて、以下のようにバインドを実行します。<br /><br />&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$sth</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">":address_id"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$addr_id</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">10</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$sth</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">":error_code"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$errorcode</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">10</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$sth</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+    </div>
+    </p>
+   </div>
+
+   <div id="oci8.connection" class="section">
+    <h2 class="title">接続のハンドリング</h2>
+    <p class="para">
+     oci8 拡張モジュールは Oracle に接続するための 3
+     つの異なる関数を提供しています。
+     アプリケーションに最適な関数を使用するのはあなた次第です。
+     また、このセクションにある情報は、
+     インフォームド・チョイス (十分な説明を受けよく考えた上での選択)
+     を行う助けになることを目的としています。
+    </p>
+    <p class="para">
+     Oracle サーバへの接続は、完了まで要する時間という点から見ると、
+     かなりコストのかかる操作です。<a href="function.oci-pconnect.html" class="function">oci_pconnect()</a> 関数は、
+     異なるスクリプトリクエスト間で接続の再利用が可能な
+     持続的キャッシュを使用します。
+     これは、PHP プロセス (もしくは Apache の子プロセス)
+     毎の接続に関するオーバーヘッドを一度のみ負うということを意味しています。
+    </p>
+    <p class="para">
+     もしアプリケーションが信用された異なる Web ユーザー毎に
+     Oracle に接続する場合、<a href="function.oci-pconnect.html" class="function">oci_pconnect()</a>
+     による持続的キャッシュは、
+     同時ユーザー数の増加と共に有効ではなくなるでしょう。
+     これは、多くのアイドル状態の接続が維持されることが原因で、
+     Oracle サーバ全体のパフォーマンスに不利な影響を与え始めるためです。
+     もしアプリケーションがこの方法で構成されている場合、
+     <a href="ref.oci8.html#ini.oci8.max_persistent" class="link">oci8.max_persistent</a> や <a href="ref.oci8.html#ini.oci8.persistent_timeout" class="link">oci8.persistent_timeout</a>
+     (持続的接続のキャッシュサイズや生存期間の制御が可能になります)
+     を使用してアプリケーションをチューニングする、もしくは代わりに
+     <a href="function.oci-connect.html" class="function">oci_connect()</a> を使用することが推奨されます。
+    </p>
+    <p class="para">
+     <a href="function.oci-connect.html" class="function">oci_connect()</a> と <a href="function.oci-pconnect.html" class="function">oci_pconnect()</a>
+     の両者とも接続キャッシュを使用します。もし、同一パラメータと共に
+     <a href="function.oci-connect.html" class="function">oci_connect()</a> を複数回コールする場合、
+     2 番目以降は既存の接続ハンドルを返します。<a href="function.oci-connect.html" class="function">oci_connect()</a>
+     によって使用されるキャッシュは、スクリプト実行終了時、
+     もしくは明示的に接続ハンドルを閉じた時にクリアされます。
+     <a href="function.oci-pconnect.html" class="function">oci_pconnect()</a> も同様の動作をしますが、
+     キャッシュは独立して維持され、リクエスト間で残存します。
+    </p>
+    <p class="para">
+     このキャッシュ機能は忘れてはならないほど重要です。
+     それは、2 つのハンドルがトランザクション的に独立していない
+     (実際には同じ接続なので、どのような種類の独立もありません)
+     ためです。もしアプリケーションが 2
+     つの別々でトランザクション的に独立した接続を必要とする場合、
+     <a href="function.oci-new-connect.html" class="function">oci_new_connect()</a> を使用すべきです。
+    </p>
+    <p class="para">
+     <a href="function.oci-new-connect.html" class="function">oci_new_connect()</a> は、他の既存の接続が存在したとしても
+     常に Oracle サーバへの新規接続を生成します。
+     特にアプリケーションの最も負荷が高い部分など、
+     高トラフィックな Web アプリケーションに対しては
+     <a href="function.oci-new-connect.html" class="function">oci_new_connect()</a> の使用を避けてください。
+    </p>
+   </div>
+
+   <div id="oci8.datatypes" class="section">
+    <h2 class="title">ドライバでサポートされるデータ型</h2>
+    <table border="5">
+     <caption><b><a href="function.oci-bind-by-name.html" class="function">oci_bind_by_name()</a>
+     関数を使用してパラメータをバインドする場合、
+     ドライバは次の型をサポートします</b></caption>
+     <colgroup>
+
+      <thead valign="middle">
+       <tr valign="middle">
+        <th colspan="1">型</th>
+        <th colspan="1">マッピング</th>
+       </tr>
+
+      </thead>
+
+      <tbody valign="middle">
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">SQLT_NTY</td>
+        <td colspan="1" rowspan="1" align="left"><a href="function.oci-new-collection.html" class="function">oci_new_collection()</a>
+        によって生成されたような
+        PHP のコレクションオブジェクトからネイティブのコレクション型に
+        マップします</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">SQLT_BFILEE</td>
+        <td colspan="1" rowspan="1" align="left"><a href="function.oci-new-descriptor.html" class="function">oci_new_descriptor()</a>
+        によって生成されたような
+        PHP のディスクリプタオブジェクトからネイティブのディスクリプタ型に
+        マップします</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">SQLT_CFILEE</td>
+        <td colspan="1" rowspan="1" align="left"><a href="function.oci-new-descriptor.html" class="function">oci_new_descriptor()</a>
+        によって生成されたような
+        PHP のディスクリプタオブジェクトからネイティブのディスクリプタ型に
+        マップします</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">SQLT_CLOB</td>
+        <td colspan="1" rowspan="1" align="left"><a href="function.oci-new-descriptor.html" class="function">oci_new_descriptor()</a>
+        によって生成されたような
+        PHP のディスクリプタオブジェクトからネイティブのディスクリプタ型に
+        マップします</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">SQLT_BLOB</td>
+        <td colspan="1" rowspan="1" align="left"><a href="function.oci-new-descriptor.html" class="function">oci_new_descriptor()</a>
+        によって生成されたような
+        PHP のディスクリプタオブジェクトからネイティブのディスクリプタ型に
+        マップします</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">SQLT_RDD</td>
+        <td colspan="1" rowspan="1" align="left"><a href="function.oci-new-descriptor.html" class="function">oci_new_descriptor()</a>
+        によって生成されたような
+        PHP のディスクリプタオブジェクトからネイティブのディスクリプタ型に
+        マップします</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">SQLT_NUM</td>
+        <td colspan="1" rowspan="1" align="left">PHP パラメータを &#039;C&#039; の long 型に変換し、
+        その値をバインドします</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">SQLT_RSET</td>
+        <td colspan="1" rowspan="1" align="left"><a href="function.oci-parse.html" class="function">oci_parse()</a> によって生成されたもしくは他の
+        OCI クエリから処理されたような
+        PHP のステートメントハンドルからネイティブのステートメントハンドルに
+        マップします</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">SQLT_CHR や他の型</td>
+        <td colspan="1" rowspan="1" align="left">PHP パラメータを文字列型に変換し、その文字列をバインドします
+        </td>
+       </tr>
+
+      </tbody>
+     </colgroup>
+
+    </table>
+
+
+    <table border="5">
+     <caption><b>以下の型は結果セットからカラムを処理する際にサポートされます
+     </b></caption>
+     <colgroup>
+
+      <thead valign="middle">
+       <tr valign="middle">
+        <th colspan="1">型</th>
+        <th colspan="1">マッピング</th>
+       </tr>
+
+      </thead>
+
+      <tbody valign="middle">
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">SQLT_RSET</td>
+        <td colspan="1" rowspan="1" align="left">カーソルを表す OCI ステートメントリソースを生成します</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">SQLT_RDD</td>
+        <td colspan="1" rowspan="1" align="left">ROWID オブジェクトを生成します</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">SQLT_BLOB</td>
+        <td colspan="1" rowspan="1" align="left">LOB オブジェクトを生成します</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">SQLT_CLOB</td>
+        <td colspan="1" rowspan="1" align="left">LOB オブジェクトを生成します</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">SQLT_BFILE</td>
+        <td colspan="1" rowspan="1" align="left">LOB オブジェクトを生成します</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">SQLT_LNG</td>
+        <td colspan="1" rowspan="1" align="left">SQLT_CHR としてバインドし、文字列として返します</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">SQLT_LBI</td>
+        <td colspan="1" rowspan="1" align="left">SQLT_BIN としてバインドし、文字列として返します</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">Any other type</td>
+        <td colspan="1" rowspan="1" align="left">SQLT_CHR としてバインドし、文字列として返します</td>
+       </tr>
+
+      </tbody>
+     </colgroup>
+
+    </table>
+
+   </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.oci-bind-array-by-name.html">oci_bind_array_by_name</a> ― PHP の配列を Oracle PL/SQL の配列に名前でバインドする</li><li><a href="function.oci-bind-by-name.html">oci_bind_by_name</a> ― Oracle プレースホルダーに PHP 変数をバインドする</li><li><a href="function.oci-cancel.html">oci_cancel</a> ― カーソルからの読み込みをキャンセルする</li><li><a href="function.oci-close.html">oci_close</a> ― Oracleとの接続を閉じる</li><li><a href="function.oci-collection-append.html">OCI-Collection->append</a> ― コレクションに要素を追加する</li><li><a href="function.oci-collection-assign.html">OCI-Collection->assign</a> ― コレクションに他の存在するコレクションから値を割り当てる</li><li><a href="function.oci-collection-element-assign.html">OCI-Collection->assignElem</a> ― コレクションの要素に値を割り当てる</li><li><a href="function.oci-collection-free.html">OCI-Collection->free</a> ― コレクションオブジェクトに関連付けられたリソースを解放する</li><li><a href="function.oci-collection-element-get.html">OCI-Collection->getElem</a> ― 要素の値を返す</li><li><a href="function.oci-collection-max.html">OCI-Collection->max</a> ― コレクション内の要素の最大数を取得する</li><li><a href="function.oci-collection-size.html">OCI-Collection->size</a> ― コレクションのサイズを返す</li><li><a href="function.oci-collection-trim.html">OCI-Collection->trim</a> ― コレクションの最後から要素を切り取る</li><li><a href="function.oci-commit.html">oci_commit</a> ― 未解決の文をコミットする</li><li><a href="function.oci-connect.html">oci_connect</a> ― Oracle サーバへの接続を確立する</li><li><a href="function.oci-define-by-name.html">oci_define_by_name</a> ― SELECT 実行中、定義用の PHP 変数を使用する</li><li><a href="function.oci-error.html">oci_error</a> ― 最後に見つかったエラーを返す</li><li><a href="function.oci-execute.html">oci_execute</a> ― 文を実行する</li><li><a href="function.oci-fetch-all.html">oci_fetch_all</a> ― 結果データの全ての行を配列に取得する</li><li><a href="function.oci-fetch-array.html">oci_fetch_array</a> ― 結果データからの次の行を連想配列または配列、またはその両方で返す</li><li><a href="function.oci-fetch-assoc.html">oci_fetch_assoc</a> ― 結果データの次の行を連想配列で返す</li><li><a href="function.oci-fetch-object.html">oci_fetch_object</a> ― 結果の次の行をオブジェクトとして返す</li><li><a href="function.oci-fetch-row.html">oci_fetch_row</a> ― 結果データの次の行を配列で返す</li><li><a href="function.oci-fetch.html">oci_fetch</a> ― 結果バッファの次の行を取得する</li><li><a href="function.oci-field-is-null.html">oci_field_is_null</a> ― フィールドが NULL であるかどうかを確認する</li><li><a href="function.oci-field-name.html">oci_field_name</a> ― 文からのフィールド名を返す</li><li><a href="function.oci-field-precision.html">oci_field_precision</a> ― フィールドの精度を問い合わせる</li><li><a href="function.oci-field-scale.html">oci_field_scale</a> ― フィールドの桁数を問い合わせる</li><li><a href="function.oci-field-size.html">oci_field_size</a> ― フィールドサイズを返す</li><li><a href="function.oci-field-type-raw.html">oci_field_type_raw</a> ― Oracle におけるフィールドの型を問い合わせる</li><li><a href="function.oci-field-type.html">oci_field_type</a> ― フィールドのデータ型を返す</li><li><a href="function.oci-free-statement.html">oci_free_statement</a> ― 文やカーソルに関連付けられた全てのリソースを解放する</li><li><a href="function.oci-internal-debug.html">oci_internal_debug</a> ― 内部デバッグ用出力有効または無効にする</li><li><a href="function.oci-lob-append.html">OCI-Lob->append</a> ― ラージオブジェクトのデータを他のラージオブジェクトに追加する</li><li><a href="function.oci-lob-close.html">OCI-Lob->close</a> ― LOB ディスクリプタを閉じる</li><li><a href="function.oci-lob-copy.html">oci_lob_copy</a> ― ラージオブジェクトをコピーする</li><li><a href="function.oci-lob-eof.html">OCI-Lob->eof</a> ― ラージオブジェクトのディスクリプタが EOF かどうかを調べる</li><li><a href="function.oci-lob-erase.html">OCI-Lob->erase</a> ― 内部 LOB データの特定の位置を消去する</li><li><a href="function.oci-lob-export.html">OCI-Lob->export</a> ― LOB の内容をファイルに出力する</li><li><a href="function.oci-lob-flush.html">OCI-Lob->flush</a> ― LOB のバッファをサーバにフラッシュする、あるいは書き込む</li><li><a href="function.oci-lob-free.html">OCI-Lob->free</a> ― LOB ディスクリプタに関連付けられたりソースを解放する</li><li><a href="function.oci-lob-getbuffering.html">OCI-Lob->getBuffering</a> ― ラージオブジェクトに対する現在のバッファリングの状態を返す</li><li><a href="function.oci-lob-import.html">OCI-Lob->import</a> ― ファイルデータを LOB にインポートする</li><li><a href="function.oci-lob-is-equal.html">oci_lob_is_equal</a> ― 2 つの LOB/FILE ロケータの等価性を比較する</li><li><a href="function.oci-lob-load.html">OCI-Lob->load</a> ― ラージオブジェクトの内容を返す</li><li><a href="function.oci-lob-read.html">OCI-Lob->read</a> ― ラージオブジェクトの一部を読み込む</li><li><a href="function.oci-lob-rewind.html">OCI-Lob->rewind</a> ― 内部ポインタをラージオブジェクトの先頭に移動する</li><li><a href="function.oci-lob-save.html">OCI-Lob->save</a> ― データをラージオブジェクトに保存する</li><li><a href="function.oci-lob-savefile.html">OCI-Lob->saveFile</a> ― oci_lob_import のエイリアス</li><li><a href="function.oci-lob-seek.html">OCI-Lob->seek</a> ― ラージオブジェクトの内部ポインタをセットする</li><li><a href="function.oci-lob-setbuffering.html">OCI-Lob->setBuffering</a> ― 現在のラージオブジェクト用のバッファリング状態を変更する</li><li><a href="function.oci-lob-size.html">OCI-Lob->size</a> ― ラージオブジェクトのサイズを返す</li><li><a href="function.oci-lob-tell.html">OCI-Lob->tell</a> ― ラージオブジェクトの内部ポインタの現在位置を返す</li><li><a href="function.oci-lob-truncate.html">OCI-Lob->truncate</a> ― ラージオブジェクトを切りつめる</li><li><a href="function.oci-lob-write.html">OCI-Lob->write</a> ― データをラージオブジェクトに書き込む</li><li><a href="function.oci-lob-writetemporary.html">OCI-Lob->writeTemporary</a> ― 一時的なラージオブジェクトを書き込む</li><li><a href="function.oci-lob-writetofile.html">OCI-Lob->writeToFile</a> ― oci_lob_export のエイリアス</li><li><a href="function.oci-new-collection.html">oci_new_collection</a> ― 新しいコレクションオブジェクトを割り当てる</li><li><a href="function.oci-new-connect.html">oci_new_connect</a> ― Oracle サーバへの新規接続を確立する</li><li><a href="function.oci-new-cursor.html">oci_new_cursor</a> ― 新規カーソル (ステートメントハンドル) を割り当て、それを返す</li><li><a href="function.oci-new-descriptor.html">oci_new_descriptor</a> ― 空の新規 LOB あるいは FILE ディスクリプタを初期化する</li><li><a href="function.oci-num-fields.html">oci_num_fields</a> ― ある文における結果のカラム数を返す</li><li><a href="function.oci-num-rows.html">oci_num_rows</a> ― 文の実行で作用された行数を取得する</li><li><a href="function.oci-parse.html">oci_parse</a> ― 実行のために Oracle の文をパースする</li><li><a href="function.oci-password-change.html">oci_password_change</a> ― Oracle ユーザのパスワードを変更する</li><li><a href="function.oci-pconnect.html">oci_pconnect</a> ― 持続的接続を使用してOracle データベースに接続する</li><li><a href="function.oci-result.html">oci_result</a> ― フェッチした行からフィールドの値を取得する</li><li><a href="function.oci-rollback.html">oci_rollback</a> ― 未解決のトランザクションをロールバックする</li><li><a href="function.oci-server-version.html">oci_server_version</a> ― サーバのバージョンを返す</li><li><a href="function.oci-set-prefetch.html">oci_set_prefetch</a> ― プリフェッチする行数を設定する</li><li><a href="function.oci-statement-type.html">oci_statement_type</a> ― OCI ステートメントの種類を返す</li><li><a href="function.ocibindbyname.html">ocibindbyname</a> ― oci_bind_by_name のエイリアス</li><li><a href="function.ocicancel.html">ocicancel</a> ― oci_cancel のエイリアス</li><li><a href="function.ocicloselob.html">ocicloselob</a> ― のエイリアス</li><li><a href="function.ocicollappend.html">ocicollappend</a> ― のエイリアス</li><li><a href="function.ocicollassign.html">ocicollassign</a> ― のエイリアス</li><li><a href="function.ocicollassignelem.html">ocicollassignelem</a> ― のエイリアス</li><li><a href="function.ocicollgetelem.html">ocicollgetelem</a> ― のエイリアス</li><li><a href="function.ocicollmax.html">ocicollmax</a> ― のエイリアス</li><li><a href="function.ocicollsize.html">ocicollsize</a> ― のエイリアス</li><li><a href="function.ocicolltrim.html">ocicolltrim</a> ― のエイリアス</li><li><a href="function.ocicolumnisnull.html">ocicolumnisnull</a> ― oci_field_is_null のエイリアス</li><li><a href="function.ocicolumnname.html">ocicolumnname</a> ― oci_field_name のエイリアス</li><li><a href="function.ocicolumnprecision.html">ocicolumnprecision</a> ― oci_field_precision のエイリアス</li><li><a href="function.ocicolumnscale.html">ocicolumnscale</a> ― oci_field_scale のエイリアス</li><li><a href="function.ocicolumnsize.html">ocicolumnsize</a> ― oci_field_size のエイリアス</li><li><a href="function.ocicolumntype.html">ocicolumntype</a> ― oci_field_type のエイリアス</li><li><a href="function.ocicolumntyperaw.html">ocicolumntyperaw</a> ― oci_field_type_raw のエイリアス</li><li><a href="function.ocicommit.html">ocicommit</a> ― oci_commit のエイリアス</li><li><a href="function.ocidefinebyname.html">ocidefinebyname</a> ― oci_define_by_name のエイリアス</li><li><a href="function.ocierror.html">ocierror</a> ― oci_error のエイリアス</li><li><a href="function.ociexecute.html">ociexecute</a> ― oci_execute のエイリアス</li><li><a href="function.ocifetch.html">ocifetch</a> ― oci_fetch のエイリアス</li><li><a href="function.ocifetchinto.html">ocifetchinto</a> ― 結果配列の次の行を取得する (非推奨)</li><li><a href="function.ocifetchstatement.html">ocifetchstatement</a> ― oci_fetch_all のエイリアス</li><li><a href="function.ocifreecollection.html">ocifreecollection</a> ― のエイリアス</li><li><a href="function.ocifreecursor.html">ocifreecursor</a> ― oci_free_statement のエイリアス</li><li><a href="function.ocifreedesc.html">ocifreedesc</a> ― のエイリアス</li><li><a href="function.ocifreestatement.html">ocifreestatement</a> ― oci_free_statement のエイリアス</li><li><a href="function.ociinternaldebug.html">ociinternaldebug</a> ― oci_internal_debug のエイリアス</li><li><a href="function.ociloadlob.html">ociloadlob</a> ― のエイリアス</li><li><a href="function.ocilogoff.html">ocilogoff</a> ― oci_close のエイリアス</li><li><a href="function.ocilogon.html">ocilogon</a> ― oci_connect のエイリアス</li><li><a href="function.ocinewcollection.html">ocinewcollection</a> ― oci_new_collection のエイリアス</li><li><a href="function.ocinewcursor.html">ocinewcursor</a> ― oci_new_cursor のエイリアス</li><li><a href="function.ocinewdescriptor.html">ocinewdescriptor</a> ― oci_new_descriptor のエイリアス</li><li><a href="function.ocinlogon.html">ocinlogon</a> ― oci_new_connect のエイリアス</li><li><a href="function.ocinumcols.html">ocinumcols</a> ― oci_num_fields のエイリアス</li><li><a href="function.ociparse.html">ociparse</a> ― oci_parse のエイリアス</li><li><a href="function.ociplogon.html">ociplogon</a> ― oci_pconnect のエイリアス</li><li><a href="function.ociresult.html">ociresult</a> ― oci_result のエイリアス</li><li><a href="function.ocirollback.html">ocirollback</a> ― oci_rollback のエイリアス</li><li><a href="function.ocirowcount.html">ocirowcount</a> ― oci_num_rows のエイリアス</li><li><a href="function.ocisavelob.html">ocisavelob</a> ― のエイリアス</li><li><a href="function.ocisavelobfile.html">ocisavelobfile</a> ― のエイリアス</li><li><a href="function.ociserverversion.html">ociserverversion</a> ― oci_server_version のエイリアス</li><li><a href="function.ocisetprefetch.html">ocisetprefetch</a> ― oci_set_prefetch のエイリアス</li><li><a href="function.ocistatementtype.html">ocistatementtype</a> ― oci_statement_type のエイリアス</li><li><a href="function.ociwritelobtofile.html">ociwritelobtofile</a> ― のエイリアス</li><li><a href="function.ociwritetemporarylob.html">ociwritetemporarylob</a> ― のエイリアス</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.overload.html">overload</a></div>
+ <div class="next" style="float: right;"><a href="function.oci-bind-array-by-name.html">oci_bind_array_by_name</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

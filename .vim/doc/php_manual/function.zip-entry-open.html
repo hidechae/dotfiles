@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>読込み用にディレクトリエントリをオープンする</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.zip-entry-name.html">zip_entry_name</a></div>
+ <div class="next" style="float: right;"><a href="function.zip-entry-read.html">zip_entry_read</a></div>
+ <div class="up"><a href="ref.zip.html">Zip</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.zip-entry-open" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">zip_entry_open</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.0.7, PHP 5 &gt;= 5.2.0, PECL zip:1.0-1.9.0)</p><p class="refpurpose">zip_entry_open ― 読込み用にディレクトリエントリをオープンする</p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>zip_entry_open</b></b></span>      
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$zip</tt></span>
+   , <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$zip_entry</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$mode</tt></span>
+  ] )</div>
+
+  <p class="para">
+   読込み用にzipファイルの中にディレクトリエントリをオープンします。
+  </p>
+ </div>
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">zip</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <a href="function.zip-open.html" class="function">zip_open()</a>により返された有効なリソースハンドル
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">zip_entry</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <a href="function.zip-read.html" class="function">zip_read()</a>により返されたディレクトリエントリ
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">mode</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <a href="function.fopen.html" class="function">fopen()</a>のマニュアルで指定されたモードのどれか
+      </p>
+      <blockquote><p><b class="note">注意</b>: 
+       
+        現在、<i><tt class="parameter">mode</tt></i>
+は無視され、
+        常に<i class="literal">&quot;rb&quot;</i>となります。
+        これは、PHPのzipサポートが読み込みのみのアクセスであるためです。
+       <br />
+      </p></blockquote>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    <a href="function.fopen.html" class="function">fopen()</a>や他の同種の関数と異なり、
+    <b>zip_entry_open()</b>の戻り値は、
+    処理の結果のみを示し、ディレクトリエントリの読み込みやクローズの際には
+    必要とされません。
+   <br />
+  </p></blockquote>
+ </div>
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.zip-entry-close.html" class="function">zip_entry_close()</a></li>
+    <li class="member"><a href="function.zip-entry-read.html" class="function">zip_entry_read()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.zip-entry-name.html">zip_entry_name</a></div>
+ <div class="next" style="float: right;"><a href="function.zip-entry-read.html">zip_entry_read</a></div>
+ <div class="up"><a href="ref.zip.html">Zip</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>ファイルの構文ハイライト表示</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.halt-compiler.html">__halt_compiler</a></div>
+ <div class="next" style="float: right;"><a href="function.highlight-string.html">highlight_string</a></div>
+ <div class="up"><a href="ref.misc.html">その他</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.highlight-file" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">highlight_file</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">highlight_file ― ファイルの構文ハイライト表示</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">mixed</span> <span class="methodname"><b><b>highlight_file</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$filename</tt></span>
+   [, <span class="methodparam"><span class="type">bool</span> <tt class="parameter">$return</tt></span>
+  ] )</div>
+
+  <p class="para">
+   <i><tt class="parameter">filename</tt></i>
+ の中のコードを構文ハイライト表示して
+   出力します。色は、PHP 組込の構文ハイライタで定義されているものを使用します。
+  </p>
+  <p class="para">
+   多くのサーバでは、拡張子が <em class="emphasis">phps</em> のファイルは
+   自動的に構文ハイライト表示されるように設定されています。例えば
+   <var class="filename">example.phps</var> のようなファイルは、構文ハイライト
+   したソースファイルとして表示されます。これを有効にするには、
+   <var class="filename">httpd.conf</var> に以下のような行を追加します。
+  </p>
+  <div class="example-contents"><pre>
+<div class="cdata"><pre>
+AddType application/x-httpd-php-source .phps
+</pre></div>
+  </pre></div>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">filename</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       ハイライト表示する PHP ファイルへのパス。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">return</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       このパラメータを <b><tt>TRUE</tt></b> にすると、この関数はハイライトされたコードを返します。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   <i><tt class="parameter">return</tt></i>
+ が <b><tt>TRUE</tt></b> の場合は、
+   ハイライトされたコードを文字列として返し、表示しません。
+   それ以外の場合は、成功した場合に <b><tt>TRUE</tt></b>、
+   失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">4.2.1</td>
+       <td colspan="1" rowspan="1" align="left">
+        この関数は <a href="features.safe-mode.html#ini.safe-mode" class="link">safe_mode</a> および <a href="features.safe-mode.html#ini.open-basedir" class="link">open_basedir</a> の影響を受けます。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">4.2.0</td>
+       <td colspan="1" rowspan="1" align="left">
+        パラメータ <i><tt class="parameter">return</tt></i>
+ が追加されました。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <div class="caution"><b class="caution">警告</b>
+   <p class="para">
+    <b>highlight_file()</b> 関数を使用する場合には、
+    パスワードやその他潜在的なセキュリティ上の危険を生む類の重要な
+    情報を不注意で公開してしまわないように注意する必要があります。
+   </p>
+  </div>
+  <blockquote><p><b class="note">注意</b>: この関数は、
+このパラメータに対して内部的に出力バッファリングを使用しています。
+そのため、<a href="function.ob-start.html" class="function">ob_start()</a>
+コールバック関数の中で使用することはできません。<br /></p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.highlight-string.html" class="function">highlight_string()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.halt-compiler.html">__halt_compiler</a></div>
+ <div class="next" style="float: right;"><a href="function.highlight-string.html">highlight_string</a></div>
+ <div class="up"><a href="ref.misc.html">その他</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

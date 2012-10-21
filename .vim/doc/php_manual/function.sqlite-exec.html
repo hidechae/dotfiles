@@ -1,0 +1,219 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>与えられたデータベースに対して結果を伴わないクエリを実行する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.sqlite-escape-string.html">sqlite_escape_string</a></div>
+ <div class="next" style="float: right;"><a href="function.sqlite-factory.html">sqlite_factory</a></div>
+ <div class="up"><a href="ref.sqlite.html">SQLite</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.sqlite-exec" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">sqlite_exec</h1>
+  <h1 class="refname">SQLiteDatabase-&gt;exec</h1>
+  <p class="verinfo">(No version information available, might be only in CVS)</p><p class="refpurpose">SQLiteDatabase->exec ― 
+   与えられたデータベースに対して結果を伴わないクエリを実行する
+  </p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>sqlite_exec</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$dbhandle</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$query</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter reference">&$error_msg</tt></span>
+  ] )</div>
+
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>sqlite_exec</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$query</tt></span>
+   , <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$dbhandle</tt></span>
+   )</div>
+
+  <p class="para">オブジェクト指向言語型スタイル (メソッド):</p>
+  <div class="classsynopsis">
+   <div class="ooclass"><b class="classname">SQLiteDatabase</b></div>
+   <div class="methodsynopsis">
+    <span class="type">bool</span> <span class="methodname"><b><b>queryExec</b></b></span>
+     ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$query</tt></span>
+    [, <span class="methodparam"><span class="type">string</span> <tt class="parameter reference">&$error_msg</tt></span>
+   ] )</div>
+
+  </div>
+  <p class="para">
+   与えられたデータベースハンドル (<i><tt class="parameter">dbhandle</tt></i>
+
+   パラメータで指定される) に対して
+   <i><tt class="parameter">query</tt></i>
+ によって指定される SQL
+   ステートメントを実行します。
+  </p>
+  <div class="warning"><b class="warning">警告</b>
+   <p class="simpara">
+    SQLiteは、セミコロンで区切られた複数のクエリを実行します。
+    これにより、ファイルからロードするかスクリプトに埋め込んだ SQL
+    をバッチ実行することができます。
+   </p>
+  </div>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">dbhandle</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       SQLite データベースリソース。手続きに従って、
+       <a href="function.sqlite-open.html" class="function">sqlite_open()</a> から返されます。
+       このパラメータは、
+       オブジェクト指向言語型メソッドを使用する場合は不要です。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">query</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       実行するクエリを指定します。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">error_msg</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       エラーが発生した場合、指定された変数に詰め込まれます。
+       SQL 文法エラーは <a href="function.sqlite-last-error.html" class="function">sqlite_last_error()</a>
+       関数では取得できないので、これは特に重要です。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+  <blockquote><p><b class="note">注意</b>: <span class="simpara">
+(MySQL のような)他のデータベースエクステンションとの互換性のため、
+2 種類の構文がサポートされています。
+推奨されるのは最初の構文で、<i><tt class="parameter">dbhandle</tt></i>
+ パラメータを
+関数の最初のパラメータとするものです。</span></p></blockquote>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   この関数はブール型の結果を返します。
+   成功時は <b><tt>TRUE</tt></b>、失敗時は <b><tt>FALSE</tt></b> を返します。
+   もしレコードを返すクエリを実行する必要がある場合は
+   <a href="function.sqlite-query.html" class="function">sqlite_query()</a> を参照ください。
+  </p>
+  <p class="para">
+<b><tt>SQLITE_ASSOC</tt></b> および <b><tt>SQLITE_BOTH</tt></b> で
+返されるカラム名は、設定オプション
+<a href="ref.sqlite.html#ini.sqlite.assoc-case" class="link">sqlite.assoc_case</a> の値に基づき、
+大文字小文字が変換されます。</p>
+ </div>
+
+
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">5.1.0</td>
+       <td colspan="1" rowspan="1" align="left">
+        <i><tt class="parameter">error_msg</tt></i>
+ パラメータが追加されました。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 手続き型言語スタイルでの例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$dbhandle&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">sqlite_open</span><span style="color: #007700">(</span><span style="color: #DD0000">'mysqlitedb'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$query&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">sqlite_exec</span><span style="color: #007700">(</span><span style="color: #0000BB">$dbhandle</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"UPDATE&nbsp;users&nbsp;SET&nbsp;email='jDoe@example.com'&nbsp;WHERE&nbsp;username='jDoe'"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$error</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$query</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;exit(</span><span style="color: #DD0000">"Error&nbsp;in&nbsp;query:&nbsp;'$error'"</span><span style="color: #007700">);<br />}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">'Number&nbsp;of&nbsp;rows&nbsp;modified:&nbsp;'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">sqlite_changes</span><span style="color: #007700">(</span><span style="color: #0000BB">$dbhandle</span><span style="color: #007700">);<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#2 オブジェクト指向言語型スタイルでの例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$dbhandle&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">SQLiteDatabase</span><span style="color: #007700">(</span><span style="color: #DD0000">'mysqlitedb'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$query&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$dbhandle</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">queryExec</span><span style="color: #007700">(</span><span style="color: #DD0000">"UPDATE&nbsp;users&nbsp;SET&nbsp;email='jDoe@example.com'&nbsp;WHERE&nbsp;username='jDoe'"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$error</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$query</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;exit(</span><span style="color: #DD0000">"Error&nbsp;in&nbsp;query:&nbsp;'$error'"</span><span style="color: #007700">);<br />}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">'Number&nbsp;of&nbsp;rows&nbsp;modified:&nbsp;'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$dbhandle</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">changes</span><span style="color: #007700">();<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.sqlite-query.html" class="function">sqlite_query()</a></li>
+    <li class="member"><a href="function.sqlite-unbuffered-query.html" class="function">sqlite_unbuffered_query()</a></li>
+    <li class="member"><a href="function.sqlite-array-query.html" class="function">sqlite_array_query()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.sqlite-escape-string.html">sqlite_escape_string</a></div>
+ <div class="next" style="float: right;"><a href="function.sqlite-factory.html">sqlite_factory</a></div>
+ <div class="up"><a href="ref.sqlite.html">SQLite</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

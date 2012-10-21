@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>SOAP コールが失敗したかどうかを調べる</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.soap.html">SOAP</a></div>
+ <div class="next" style="float: right;"><a href="function.soap-soapclient-call.html">SoapClient->__call()</a></div>
+ <div class="up"><a href="ref.soap.html">SOAP</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.is-soap-fault" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">is_soap_fault</h1>
+  <p class="verinfo">(PHP 5)</p><p class="refpurpose">is_soap_fault ― 
+   SOAP コールが失敗したかどうかを調べる
+  </p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>is_soap_fault</b></b></span>
+    ( <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$obj</tt></span>
+   )</div>
+
+  <p class="para">
+   この関数は、SOAP コールが失敗したかどうかを調べたいが、例外を使用したくない
+   場合に有用です。
+   この関数を使用するには、オプション <i class="literal">exceptions</i> に
+   ゼロまたは <b><tt>FALSE</tt></b> を指定して <span class="classname">SoapClient</span>
+   オブジェクトを作成する必要があります。
+   この場合、SOAP メソッドは、特別な <span class="classname">SoapFault</span>
+   オブジェクトを返します。
+   このオブジェクトには、フォルトの詳細 (faultcode,
+   faultstring, faultactor および faultdetails) が含まれています。
+  </p>
+  <p class="para">
+   <i class="literal">exceptions</i> が設定されていない場合、
+   SOAPコールは、エラー時に例外を投げます。
+   <b>is_soap_fault()</b> は指定したパラメータ
+   <span class="classname">SoapFault</span> オブジェクトであるかどうかを調べます。
+  </p>
+ </div>
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">obj</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       検査するオブジェクト
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>is_soap_fault()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$client&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">SoapClient</span><span style="color: #007700">(</span><span style="color: #DD0000">"some.wsdl"</span><span style="color: #007700">,&nbsp;array(</span><span style="color: #DD0000">'exceptions'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$client</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">SomeFunction</span><span style="color: #007700">();<br />if&nbsp;(</span><span style="color: #0000BB">is_soap_fault</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">trigger_error</span><span style="color: #007700">(</span><span style="color: #DD0000">"SOAP&nbsp;Fault:&nbsp;(faultcode:&nbsp;{$result-&gt;faultcode},&nbsp;faultstring:&nbsp;{$result-&gt;faultstring})"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">E_USER_ERROR</span><span style="color: #007700">);<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+   <div class="example">
+    <p><b>Example#2 SOAP の標準的なエラーレポートメソッドは例外となる</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">try&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$client&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">SoapClient</span><span style="color: #007700">(</span><span style="color: #DD0000">"some.wsdl"</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$client</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">SomeFunction</span><span style="color: #007700">(</span><span style="color: #FF8000">/*&nbsp;...&nbsp;*/</span><span style="color: #007700">);<br />}&nbsp;catch&nbsp;(</span><span style="color: #0000BB">SoapFault&nbsp;$fault</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">trigger_error</span><span style="color: #007700">(</span><span style="color: #DD0000">"SOAP&nbsp;Fault:&nbsp;(faultcode:&nbsp;{$fault-&gt;faultcode},&nbsp;faultstring:&nbsp;{$fault-&gt;faultstring})"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">E_USER_ERROR</span><span style="color: #007700">);<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.soap-soapclient-construct.html" class="xref">SoapClient->__construct()</a></li>
+    <li class="member"><a href="function.soap-soapfault-construct.html" class="xref">SoapFault->__construct()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.soap.html">SOAP</a></div>
+ <div class="next" style="float: right;"><a href="function.soap-soapclient-call.html">SoapClient->__call()</a></div>
+ <div class="up"><a href="ref.soap.html">SOAP</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

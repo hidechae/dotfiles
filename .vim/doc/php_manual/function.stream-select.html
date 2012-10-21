@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>select() システムコールと同等の操作を、
+     ストリームの配列に対して tv_sec と tv_usec で指定されたタイムアウト時間をもって行う</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.stream-resolve-include-path.html">stream_resolve_include_path</a></div>
+ <div class="next" style="float: right;"><a href="function.stream-set-blocking.html">stream_set_blocking</a></div>
+ <div class="up"><a href="ref.stream.html">ストリーム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.stream-select" class="refentry">
+   <div class="refnamediv">
+    <h1 class="refname">stream_select</h1>
+    <p class="verinfo">(PHP 4 &gt;= 4.3.0, PHP 5)</p><p class="refpurpose">stream_select ― select() システムコールと同等の操作を、
+     ストリームの配列に対して tv_sec と tv_usec で指定されたタイムアウト時間をもって行う</p>
+
+   </div>
+   <div class="refsect1 u">
+    <h3 class="title">説明</h3>
+     <div class="methodsynopsis">
+      <span class="type">int</span> <span class="methodname"><b><b>stream_select</b></b></span>
+       ( <span class="methodparam"><span class="type">array</span> <tt class="parameter reference">&$read</tt></span>
+      , <span class="methodparam"><span class="type">array</span> <tt class="parameter reference">&$write</tt></span>
+      , <span class="methodparam"><span class="type">array</span> <tt class="parameter reference">&$except</tt></span>
+      , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$tv_sec</tt></span>
+      [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$tv_usec</tt></span>
+     ] )</div>
+
+    <p class="simpara">
+     <b>stream_select()</b> はストリームの配列を受け取ると、
+     それらの状態が変化するまで待ちます。機能としては、ストリームに対して
+     働くという点以外では <a href="function.socket-select.html" class="function">socket_select()</a> と同一です。
+    </p>
+    <p class="simpara">
+     <i><tt class="parameter">read</tt></i>
+ 配列に列挙されたストリームに対しては、
+     何らかのデータがそのストリーム内で読み出せる状態にあるかどうか
+     監視が行われます
+     (より正確にいえば、ブロックしないで読み出せる状態かどうか -
+      特にストリームが EOF に達したかどうか、です。このとき、
+      <a href="function.fread.html" class="function">fread()</a> は長さ 0 の文字列を返します)。
+    </p>
+    <p class="simpara">
+     <i><tt class="parameter">write</tt></i>
+ 配列に列挙されたストリームに対しては、
+     ブロックしないで書き込みができるかどうかの監視が行われます。
+    </p>
+    <p class="simpara">
+     <i><tt class="parameter">except</tt></i>
+ 配列に列挙されたストリームに対しては、
+     重大な例外（&quot;帯域外の&quot;）データが発生したかどうかの監視が行われます。
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      <b>stream_select()</b> の終了時には、
+      どのストリームの状態が実際に変化したのかが分かるよう、
+      配列 <i><tt class="parameter">read</tt></i>
+、<i><tt class="parameter">write</tt></i>
+ および
+      <i><tt class="parameter">except</tt></i>
+ に変更が加えられます。
+     <br />
+    </p></blockquote>
+    <p class="simpara">
+     <i><tt class="parameter">tv_sec</tt></i>
+ と <i><tt class="parameter">tv_usec</tt></i>
+
+     は、一体となって、<em class="emphasis">timeout</em> パラメータを表現します。
+     <i><tt class="parameter">tv_sec</tt></i>
+ は秒数を指定し、一方
+     <i><tt class="parameter">tv_usec</tt></i>
+ はマイクロ秒数を指定します。
+     <em class="emphasis">timeout</em> は、<b>stream_select()</b>
+     の実行から戻るまでの時間の上限です。
+     <i><tt class="parameter">tv_sec</tt></i>
+ および <i><tt class="parameter">tv_usec</tt></i>
+
+     の両方に <i class="literal">0</i> を指定すると 
+     <b>stream_select()</b> はデータを待たずに一瞬で戻ります。
+     これは現在のストリームの状態を示します。
+     <i><tt class="parameter">tv_sec</tt></i>
+ が <b><tt>NULL</tt></b> (タイムアウトなし) の場合、
+     <b>stream_select()</b> はブロックしつづけ、調べている
+     ストリームのひとつでイベントが発生する（あるいはシグナルがシステム
+     コールを中断する）まで終了しません。
+    </p>
+    <p class="simpara">
+     成功した場合 <b>stream_select()</b> は、変更された
+     配列に何個のストリームリソースが格納されたかを示す数を返します。
+     もしタイムアウトの時間内に何も規定された事象が起こらなかった場合は
+     0 になることもあります。エラーの際は <b><tt>FALSE</tt></b> を返し、警告を発生させます
+     （システムコールが別のシグナルによって中断された場合などに起こりえます）。
+    </p>
+
+    <div class="warning"><b class="warning">警告</b>
+     <p class="para">
+      タイムアウト値に <i class="literal">0</i> を指定すると、ストリームの
+      状態を即時に取得することが可能です。しかし、ループ内でタイムアウト
+      <i class="literal">0</i> を指定するのは良い考えではありません。
+      そうすると大量の CPU 時間を消費してしまいます。
+     </p>
+     <p class="para">
+      タイムアウト値を数秒にするとかなりましになります。しかし、どうしても
+      他のコードを同時に実行させながらチェックをする必要がある場合には、
+      少なくとも <i class="literal">200000</i> マイクロ秒以上のタイムアウトを
+      設定するようにしましょう。これであなたのスクリプトの CPU 使用量を
+      抑えることができます。
+     </p>
+     <p class="para">
+      タイムアウト値は、あくまでも経過時間の最大値であることを覚えておきましょう。
+      <b>stream_select()</b> は、指定したストリームが使用可能に
+      なるとすぐに結果を返します。
+     </p>
+    </div>
+    <p class="simpara">
+     <b>stream_select()</b> のすべてのパラメータに配列を
+     渡す必要はありません。代わりに
+     そのままにしておくことも、空の配列を渡すことも、<b><tt>NULL</tt></b> を渡すことも
+     できます。このとき、それらの変数は<em class="emphasis">参照渡し</em>で渡されるため、
+     <b>stream_select()</b> から戻った時点で変更されている
+     可能性があることに注意してください。
+    </p>
+    <p class="para">
+     この例では、<i><tt class="parameter">$stream1</tt></i>
+ あるいは
+     <i><tt class="parameter">$stream2</tt></i>
+ のどちらかに読み込めるデータが
+     到達したかどうかを調べます。
+     タイムアウトが <i class="literal">0</i> なので、すぐに結果を返します。
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/*&nbsp;read&nbsp;配列を用意&nbsp;*/<br /></span><span style="color: #0000BB">$read&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #0000BB">$stream1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$stream2</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$write&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">NULL</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$except&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">NULL</span><span style="color: #007700">;<br />if&nbsp;(</span><span style="color: #0000BB">false&nbsp;</span><span style="color: #007700">===&nbsp;(</span><span style="color: #0000BB">$num_changed_streams&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">stream_select</span><span style="color: #007700">(</span><span style="color: #0000BB">$read</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$write</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$except</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">)))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;エラー処理&nbsp;*/<br /></span><span style="color: #007700">}&nbsp;elseif&nbsp;(</span><span style="color: #0000BB">$num_changed_streams&nbsp;</span><span style="color: #007700">&gt;&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;少なくとも&nbsp;1&nbsp;つのストリームに何らかの事象が起こりました。*/<br /></span><span style="color: #007700">}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      現在の Zend Engine の実装上の制約により、<b><tt>NULL</tt></b> のような定数を
+      この関数の参照渡しが行われるパラメータに直接指定することはできません。
+      代わりに一時的な変数を指定するか、一番左の変数が一時的な変数になるような
+      式を指定してください:
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$e&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">NULL</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">stream_select</span><span style="color: #007700">(</span><span style="color: #0000BB">$r</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$w</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$e</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+     <br />
+    </p></blockquote>
+    <blockquote><p><b class="note">注意</b>: 
+     
+     エラーかどうかをチェックするには <i class="literal">===</i> を使ってください。
+     <b>stream_select()</b> は 0 を返すことがあるため、その場合
+     <b><tt>FALSE</tt></b> と <i class="literal">==</i> 演算子で比較すると <b><tt>TRUE</tt></b>
+     と評価されてしまうからです:
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$e&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">NULL</span><span style="color: #007700">;<br />if&nbsp;(</span><span style="color: #0000BB">false&nbsp;</span><span style="color: #007700">===&nbsp;</span><span style="color: #0000BB">stream_select</span><span style="color: #007700">(</span><span style="color: #0000BB">$r</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$w</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$e</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"stream_select()&nbsp;に失敗しました\n"</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+     <br />
+    </p></blockquote>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      配列に返されたストリームに対して読み込みまたは書き込み操作を行う際に、
+      必ずしもあなたの希望しただけデータが読まれたり書かれたりはしないことに
+      注意してください。たった 1 バイトしか読み出せない場合も、書き込めない
+      場合もあるのです。
+     <br />
+    </p></blockquote>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      Windows の互換性: Windows 98 では、
+      <a href="function.proc-open.html" class="function">proc_open()</a> が返すパイプに対して
+      <b>stream_select()</b> を使用すると
+      データが失われる可能性があります。
+     <br />
+     
+      Windows では、<a href="function.proc-open.html" class="function">proc_open()</a> が返すファイル記述子に
+      対して <b>stream_select()</b> を使用すると
+      失敗して <b><tt>FALSE</tt></b> を返すことがあります。
+     <br />
+    </p></blockquote>
+    <p class="para">
+     <a href="function.stream-set-blocking.html" class="function">stream_set_blocking()</a> も参照ください。
+    </p>
+   </div>
+
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.stream-resolve-include-path.html">stream_resolve_include_path</a></div>
+ <div class="next" style="float: right;"><a href="function.stream-set-blocking.html">stream_set_blocking</a></div>
+ <div class="up"><a href="ref.stream.html">ストリーム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>SQL 命令を直ちに実行する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.sesam-errormsg.html">sesam_errormsg</a></div>
+ <div class="next" style="float: right;"><a href="function.sesam-fetch-array.html">sesam_fetch_array</a></div>
+ <div class="up"><a href="ref.sesam.html">SESAM</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.sesam-execimm" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">sesam_execimm</h1>
+  <p class="verinfo">(No version information available, might be only in CVS)</p><p class="refpurpose">sesam_execimm ― SQL 命令を直ちに実行する</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">string</span> <span class="methodname"><b><b>sesam_execimm</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$query</tt></span>
+   )</div>
+
+  <p class="para">
+   &quot;直接&quot; 文を実行します。
+  </p>
+  <p class="para">
+   <a href="function.sesam-affected-rows.html" class="function">sesam_affected_rows()</a> 関数により取得可能な
+   <i><tt class="parameter">affected_rows</tt></i>
+ の値を設定します。
+  </p>
+  <p class="para">
+   <a href="function.sesam-query.html" class="function">sesam_query()</a> は、&quot;即時型&quot; および &quot;select型&quot;
+   クエリの両方を処理することができることに注意してください。実行される
+   命令の型が事前に分かっている場合にのみ
+   <b>sesam_execimm()</b> を使用してください。SELECT 型
+   クエリを使用しようとすると、<b>sesam_execimm()</b> は
+   <i class="literal">$err[&quot;sqlstate&quot;] == &quot;42SBW&quot;</i> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">query</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       命令 (すなわち、UPDATE、
+       INSERT、DELETEのような結果を返さない命令や入出力変数がない命令) を
+       &quot;直ちに&quot;実行します。&quot;select 型&quot; クエリは、
+       <b>sesam_execimm()</b> で使用することはできません。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功時にSESAM &quot;結果 ID&quot;、エラー時に
+   <b><tt>FALSE</tt></b> を返します。
+  </p>
+  <p class="para">
+   返される &quot;結果ID&quot; は、何かを取得する際に使用することはできず、
+   <a href="function.sesam-affected-rows.html" class="function">sesam_affected_rows()</a> を実行する際に使用します。
+   この ID は、<a href="function.sesam-query.html" class="function">sesam_query()</a> 関数と対称性を保つため
+   にのみ返されます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>sesam_execimm()</b> Example</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$stmt&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"INSERT&nbsp;INTO&nbsp;mytable&nbsp;VALUES&nbsp;('one',&nbsp;'two')"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">sesam_execimm</span><span style="color: #007700">(</span><span style="color: #0000BB">$stmt</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$err&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">sesam_diagnostic</span><span style="color: #007700">();<br />echo&nbsp;</span><span style="color: #DD0000">"sqlstate&nbsp;=&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$err</span><span style="color: #007700">[</span><span style="color: #DD0000">"sqlstate"</span><span style="color: #007700">]&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">.<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"変更された行数&nbsp;=&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$err</span><span style="color: #007700">[</span><span style="color: #DD0000">"rowcount"</span><span style="color: #007700">]&nbsp;.&nbsp;</span><span style="color: #DD0000">"&nbsp;==&nbsp;"&nbsp;</span><span style="color: #007700">.<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">sesam_affected_rows</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">)&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.sesam-query.html" class="function">sesam_query()</a></li>
+    <li class="member"><a href="function.sesam-affected-rows.html" class="function">sesam_affected_rows()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.sesam-errormsg.html">sesam_errormsg</a></div>
+ <div class="next" style="float: right;"><a href="function.sesam-fetch-array.html">sesam_fetch_array</a></div>
+ <div class="up"><a href="ref.sesam.html">SESAM</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

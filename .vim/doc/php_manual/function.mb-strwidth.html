@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>文字列の幅を返す</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mb-strtoupper.html">mb_strtoupper</a></div>
+ <div class="next" style="float: right;"><a href="function.mb-substitute-character.html">mb_substitute_character</a></div>
+ <div class="up"><a href="ref.mbstring.html">マルチバイト文字列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mb-strwidth" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mb_strwidth</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.0.6, PHP 5)</p><p class="refpurpose">mb_strwidth ― 文字列の幅を返す</p>
+
+ </div>
+   
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">int</span> <span class="methodname"><b><b>mb_strwidth</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$str</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$encoding</tt></span>
+  ] )</div>
+
+  <p class="para">
+   <b>mb_strwidth()</b> は文字列
+   <i><tt class="parameter">str</tt></i>
+ の幅を返します。
+  </p>
+  <p class="para">
+   マルチバイト文字は通常シングルバイト文字の倍の幅となります。
+  </p>
+  <p class="para">
+   <table border="5">
+    <caption><b>文字の幅</b></caption>
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">文字</th>
+       <th colspan="1">幅</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">U+0000 - U+0019</td>
+       <td colspan="1" rowspan="1" align="left">0</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">U+0020 - U+1FFF</td>
+       <td colspan="1" rowspan="1" align="left">1</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">U+2000 - U+FF60</td>
+       <td colspan="1" rowspan="1" align="left">2</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">U+FF61 - U+FF9F</td>
+       <td colspan="1" rowspan="1" align="left">1</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">U+FFA0 -      </td>
+       <td colspan="1" rowspan="1" align="left">2</td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+
+  </p>
+  <p class="para">
+   <i><tt class="parameter">encoding</tt></i>
+ は文字エンコーディングであり、
+   省略された場合は内部エンコーディングが使用されます。
+  </p>
+  <p class="para">
+   <a href="function.mb-strimwidth.html" class="function">mb_strimwidth()</a>,
+   <a href="function.mb-internal-encoding.html" class="function">mb_internal_encoding()</a> も参照ください。
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mb-strtoupper.html">mb_strtoupper</a></div>
+ <div class="next" style="float: right;"><a href="function.mb-substitute-character.html">mb_substitute_character</a></div>
+ <div class="up"><a href="ref.mbstring.html">マルチバイト文字列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

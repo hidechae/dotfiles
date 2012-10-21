@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>WDDX 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.w32api-set-call-method.html">w32api_set_call_method</a></div>
+ <div class="next" style="float: right;"><a href="function.wddx-add-vars.html">wddx_add_vars</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">WDDX 関数</h1>
+  
+  
+  <div class="partintro">
+   <div id="wddx.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     以下の関数は、<a href="http://www.openwddx.org/" class="link external">&raquo; WDDX</a> と組み合わせて
+     動作することを想定しています。
+    </p>
+   </div>
+   
+   <div id="wddx.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">
+     WDDX を使用するには、(Apache 1.3.7 以降に付属する) expat ライブラリを
+     インストールする必要があります。
+    </p>
+   </div>
+   
+   
+
+
+
+<div id="wddx.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  expat をインストールした後、
+  <span class="option">--enable-wddx</span> を指定して PHP を
+  コンパイルする必要があります。
+ </p>
+ <p class="simpara">Windows 版の <i class="literal">PHP</i> には
+この拡張モジュールのサポートが組み込まれています。これらの関数を使用
+するために拡張モジュールを追加でロードする必要はありません。</p>
+</div>
+
+
+
+
+   
+   <div id="wddx.configuration" class="section">
+    <h2 class="title">実行時設定</h2>
+    <p class="para">設定ディレクティブは定義されていません。</p>
+   </div>
+
+   <div id="wddx.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">
+     この拡張モジュールでは、WDDX パケット ID を定義しています。これは
+     <a href="function.wddx-packet-start.html" class="function">wddx_packet_start()</a> が返すものです。
+    </p>
+   </div>
+
+   <div id="wddx.constants" class="section">
+    <h2 class="title">定義済み定数</h2>
+    <p class="para">定数は定義されていません。</p>
+   </div>
+
+   <div id="wddx.examples" class="section">
+    <h2 class="title">例</h2>
+    <p class="para">
+     変数をシリアル化する全ての関数は配列の最初要素をその配列が配列と
+     構造体のどちらでシリアル化されるのかを定義するために使用するということに
+     注意してください。最初の要素が文字列をキーとして有する場合は
+     構造体でシリアル化され、その他の場合は配列でシリアル化されます。
+    </p>
+    
+    <div class="example">
+     <p><b>Example#1 WDDX を使用した単一の値のシリアル化</b></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">wddx_serialize_value</span><span style="color: #007700">(</span><span style="color: #DD0000">"PHP&nbsp;to&nbsp;WDDX&nbsp;packet&nbsp;example"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"PHP&nbsp;packet"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+     <div class="example-contents"><p>
+      この例は次の出力を行います。
+     </p></div>
+     <div class="example-contents"><pre>
+<div class="cdata"><pre>
+&lt;wddxPacket version=&#039;1.0&#039;&gt;&lt;header comment=&#039;PHP packet&#039;/&gt;&lt;data&gt;
+&lt;string&gt;PHP to WDDX packet example&lt;/string&gt;&lt;/data&gt;&lt;/wddxPacket&gt;
+</pre></div>
+     </pre></div>
+    </div>
+ 
+    <div class="example">
+     <p><b>Example#2 WDDX を使用してパケットを追加する例</b></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$pi&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">3.1415926</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$packet_id&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">wddx_packet_start</span><span style="color: #007700">(</span><span style="color: #DD0000">"PHP"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">wddx_add_vars</span><span style="color: #007700">(</span><span style="color: #0000BB">$packet_id</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"pi"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;$cities&nbsp;はデータベースから取得するものと仮定します&nbsp;*/<br /></span><span style="color: #0000BB">$cities&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #DD0000">"Austin"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"Novato"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"Seattle"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">wddx_add_vars</span><span style="color: #007700">(</span><span style="color: #0000BB">$packet_id</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"cities"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$packet&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">wddx_packet_end</span><span style="color: #007700">(</span><span style="color: #0000BB">$packet_id</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #0000BB">$packet</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+     <div class="example-contents"><p>
+      この例は次のような出力を行います。
+     </p></div>
+     <div class="example-contents"><pre>
+<div class="cdata"><pre>
+&lt;wddxPacket version=&#039;1.0&#039;&gt;&lt;header comment=&#039;PHP&#039;/&gt;&lt;data&gt;&lt;struct&gt;
+&lt;var name=&#039;pi&#039;&gt;&lt;number&gt;3.1415926&lt;/number&gt;&lt;/var&gt;&lt;var name=&#039;cities&#039;&gt;
+&lt;array length=&#039;3&#039;&gt;&lt;string&gt;Austin&lt;/string&gt;&lt;string&gt;Novato&lt;/string&gt;
+&lt;string&gt;Seattle&lt;/string&gt;&lt;/array&gt;&lt;/var&gt;&lt;/struct&gt;&lt;/data&gt;&lt;/wddxPacket&gt;
+</pre></div>
+     </pre></div>
+    </div>
+
+    <blockquote><p><b class="note">注意</b>: 
+     
+      ASCII以外の文字をシリアル化したい場合、まず最初に
+      データを UTF-8 に変換する必要があります
+      (<a href="function.utf8-encode.html" class="function">utf8_encode()</a> および
+      <a href="function.iconv.html" class="function">iconv()</a> を参照ください)。
+     <br />
+    </p></blockquote>
+   </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.wddx-add-vars.html">wddx_add_vars</a> ― 指定した ID の WDDX パケットを追加する</li><li><a href="function.wddx-deserialize.html">wddx_deserialize</a> ― wddx_unserialize のエイリアス</li><li><a href="function.wddx-packet-end.html">wddx_packet_end</a> ― 指定した ID の WDDX パケットを終了する</li><li><a href="function.wddx-packet-start.html">wddx_packet_start</a> ― 新規の WDDX パケットを内部の構造体を用いて開始する</li><li><a href="function.wddx-serialize-value.html">wddx_serialize_value</a> ― 単一の値を WDDX パケットにシリアライズする</li><li><a href="function.wddx-serialize-vars.html">wddx_serialize_vars</a> ― 変数を WDDX パケットにシリアライズする</li><li><a href="function.wddx-unserialize.html">wddx_unserialize</a> ― シリアライズされた WDDX パケットを元に戻す</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.w32api-set-call-method.html">w32api_set_call_method</a></div>
+ <div class="next" style="float: right;"><a href="function.wddx-add-vars.html">wddx_add_vars</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

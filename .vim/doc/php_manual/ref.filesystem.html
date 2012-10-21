@@ -1,0 +1,1174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>ファイルシステム関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.filepro.html">filepro</a></div>
+ <div class="next" style="float: right;"><a href="function.basename.html">basename</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">ファイルシステム関数</h1>
+  
+
+  <div class="partintro">
+   <div id="filesystem.intro" class="section">
+   <h2 class="title">導入</h2>
+    <p class="para">
+    </p>
+   </div>
+
+   <div id="filesystem.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">
+     この拡張モジュールを構築するには外部ライブラリを必要としませんが、
+     Linux 上で LFS (ラージファイル) をサポートする PHP を希望する場合は、
+     最新の glibc を入手し、次のコンパイラフラグ
+     <i class="literal">-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64</i>
+     を付けて PHP をコンパイルする必要があります。
+    </p>
+   </div>
+
+   <div id="filesystem.installation" class="section">
+    <h2 class="title">インストール手順</h2>
+    <p class="para">PHP コアに含まれるため、
+追加のインストール無しで使用できます。</p>
+   </div>
+
+   
+
+
+
+<div id="filesystem.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+  <table border="5">
+   <caption><b>ファイルシステムおよびストリーム設定オプション</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">名前</th>
+      <th colspan="1">デフォルト</th>
+      <th colspan="1">変更の可否</th>
+      <th colspan="1">変更履歴</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">allow_url_fopen</td>
+      <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td colspan="1" rowspan="1" align="left">PHP &lt;= 4.3.4 では PHP_INI_ALL、PHP &lt; 6 では PHP_INI_SYSTEM。
+      PHP 4.0.4 から利用可能です。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">allow_url_include</td>
+      <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td colspan="1" rowspan="1" align="left">PHP 5 では PHP_INI_SYSTEM。PHP 5.2.0 から利用可能です。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">user_agent</td>
+      <td colspan="1" rowspan="1" align="left">NULL</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td colspan="1" rowspan="1" align="left">PHP 4.3.0 から利用可能です。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">default_socket_timeout</td>
+      <td colspan="1" rowspan="1" align="left">&quot;60&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td colspan="1" rowspan="1" align="left">PHP 4.3.0 から利用可能です。</td>
+    </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">from</td>
+      <td colspan="1" rowspan="1" align="left">&quot;&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">auto_detect_line_endings</td>
+      <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td colspan="1" rowspan="1" align="left">PHP 4.3.0 から利用可能です。</td>
+     </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+ </p>
+
+ <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+
+ <p class="para">
+  <dl>
+
+   <dt id="ini.allow-url-fopen">
+    <span class="term">
+     <i><tt class="parameter">allow_url_fopen</tt></i>
+
+     <a href="language.types.boolean.html" class="type boolean">boolean</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      このオプションにより、URL対応のfopenラッパーが使用可能となり、
+      ファイルのようにURLオブジェクトをアクセスできるようになります。
+      デフォルトのラッパーが、ftpまたはhttpプロトコルを用いて
+      <a href="features.remote-files.html" class="link">リモートファイル</a>に
+      アクセスするために提供されています。<a href="ref.zlib.html" class="link">zlib</a>のようないくつかの拡張モジュールが
+      ラッパーを追加することがあります。
+     </p>
+     <blockquote><p><b class="note">注意</b>: 
+      
+       この設定はセキュリティ上の理由で php.ini 中でのみ設定可能です。
+      <br />
+     </p></blockquote>
+     <blockquote><p><b class="note">注意</b>: 
+      
+       このオプションは、バージョン4.0.3のリリース直後に追加されました。
+       4.0.3を含む以前のバージョンでは、この機能は、設定スイッチ
+       <a href="configure.html#configure.disable-url-fopen-wrapper" class="link"><i><tt class="parameter">
+       --disable-url-fopen-wrapper</tt></i>
+</a>を使用することに
+       より、コンパイル時にのみ無効にすることができます。
+      <br />
+     </p></blockquote>
+     <div class="warning"><b class="warning">警告</b>
+      <p class="para">
+       PHP 4.3より前のWindows版では、以下の関数は、リモートファイルの
+       アクセスをサポートしません。: <a href="function.include.html" class="function">include()</a>,
+       <a href="function.include-once.html" class="function">include_once()</a>, <a href="function.require.html" class="function">require()</a>,
+       <a href="function.require-once.html" class="function">require_once()</a>,
+       <a href="ref.image.html" class="xref">イメージ</a> 拡張モジュールの imagecreatefromXXX
+      </p>
+     </div>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.allow-url-include">
+    <span class="term">
+     <i><tt class="parameter">allow_url_include</tt></i>
+
+     <a href="language.types.boolean.html" class="type boolean">boolean</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      このオプションを指定すると
+      <a href="function.include.html" class="function">include()</a>、<a href="function.include-once.html" class="function">include_once()</a>、
+      <a href="function.require.html" class="function">require()</a>、<a href="function.require-once.html" class="function">require_once()</a>
+      で URL 対応の fopen ラッパーが使用できるようになります。
+     </p>
+     <blockquote><p><b class="note">注意</b>: 
+      
+       この設定を使用するには、allow_url_fopen が on
+       でないといけません。
+      <br />
+     </p></blockquote>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.user-agent">
+    <span class="term">
+     <i><tt class="parameter">user_agent</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      送信する PHP 用のユーザエージェントを定義します。
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.default-socket-timeout">
+    <span class="term">
+     <i><tt class="parameter">default_socket_timeout</tt></i>
+
+     <a href="language.types.integer.html" class="type integer">integer</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      ソケットベースのストリームのデフォルトの有効時間(単位は秒)を定義します。
+     </p>
+     <blockquote><p><b class="note">注意</b>: 
+      <span class="simpara">
+       この設定は、PHP 4.3で追加されました。
+      </span>
+     </p></blockquote>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.from">
+    <span class="term">
+     <i><tt class="parameter">from</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      匿名ftp用パスワード(自分のemailアドレス)を定義します。
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.auto-detect-line-endings">
+    <span class="term">
+     <i><tt class="parameter">auto_detect_line_endings</tt></i>
+
+     <a href="language.types.boolean.html" class="type boolean">boolean</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      onにした場合、PHPは
+      <a href="function.fgets.html" class="function">fgets()</a> および <a href="function.file.html" class="function">file()</a>
+      により読み込まれたデータを評価し、UNIX、MS-DOS、Machintoshの行末
+      表記を使用しているかどうかを調べます。
+     </p>
+     <p class="para">
+      これにより、PHPがMacintoshシステムと相互運用できるようになりますが、
+      デフォルトはOffとなっています。これは、最初の行の行末表記を検出
+      する際にごく僅かな性能劣化があるためと、UNIXシステムのもとで復改
+      文字を項目セパレータとして使用している人が従来のバージョンと互換
+      性がない動作であると感じる可能性があるためです。
+     </p>
+     <blockquote><p><b class="note">注意</b>: 
+      <span class="simpara">
+       この設定オプションは、PHP 4.3で追加されました。
+      </span>
+     </p></blockquote>
+    </dd>
+
+   </dt>
+
+  </dl>
+
+ </p>
+</div>
+
+
+
+
+   <div id="filesystem.resources" class="section">
+    <h2 class="title">リソース型</h2>
+     <p class="para">
+     </p>
+   </div>
+
+   
+
+
+<div id="filesystem.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <dl>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GLOB_BRACE</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GLOB_ONLYDIR</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GLOB_MARK</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GLOB_NOSORT</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GLOB_NOCHECK</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GLOB_NOESCAPE</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PATHINFO_DIRNAME</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PATHINFO_BASENAME</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PATHINFO_EXTENSION</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PATHINFO_FILENAME</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+    PHP 5.2.0 以降。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILE_USE_INCLUDE_PATH</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <i><tt class="parameter">filename</tt></i>
+ を
+     <a href="ini.core.html#ini.include-path" class="link">include_path</a>
+     から探します (PHP 5 以降)。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILE_APPEND</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     既存のファイルに追記します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILE_IGNORE_NEW_LINES</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     EOL (行末) 文字を取り除きます (PHP 5 以降)。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILE_SKIP_EMPTY_LINES</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     空行を読み飛ばします (PHP 5 以降)。
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILE_BINARY</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     バイナリモード (PHP 6 以降)。
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILE_TEXT</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     テキストモード (PHP 6 以降)。
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+</div>
+
+
+
+
+   <div id="filesystem.seealso" class="section">
+    <h2 class="title">参考</h2>
+    <p class="simpara">
+     関連する関数については、<a href="ref.dir.html" class="link">ディレクトリ
+     </a>および<a href="ref.exec.html" class="link">プログラム実行</a>の節を
+     参照してください。
+    </p>
+    <p class="simpara">
+     リモートファイルとして使用することができる種々のURLラッパーの一覧
+     と説明については、<a href="wrappers.html" class="xref">サポートされるプロトコル/ラッパー</a>も参照してください。
+    </p>
+   </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.basename.html">basename</a> ― パス中のファイル名の部分を返す</li><li><a href="function.chgrp.html">chgrp</a> ― ファイルのグループを変更する</li><li><a href="function.chmod.html">chmod</a> ― ファイルのモードを変更する</li><li><a href="function.chown.html">chown</a> ― ファイルの所有者を変更する</li><li><a href="function.clearstatcache.html">clearstatcache</a> ― ファイルのステータスのキャッシュをクリアする</li><li><a href="function.copy.html">copy</a> ― ファイルをコピーする</li><li><a href="function.delete.html">delete</a> ― unlink か unset を参照してください</li><li><a href="function.dirname.html">dirname</a> ― パス中のディレクトリ名の部分を返す</li><li><a href="function.disk-free-space.html">disk_free_space</a> ― ディレクトリの利用可能なスペースを返す</li><li><a href="function.disk-total-space.html">disk_total_space</a> ― ディレクトリの全体サイズを返す</li><li><a href="function.diskfreespace.html">diskfreespace</a> ― disk_free_space のエイリアス</li><li><a href="function.fclose.html">fclose</a> ― オープンされたファイルポインタをクローズする</li><li><a href="function.feof.html">feof</a> ― ファイルポインタがファイル終端に達しているかどうか調べる</li><li><a href="function.fflush.html">fflush</a> ― 出力をファイルにフラッシュする</li><li><a href="function.fgetc.html">fgetc</a> ― ファイルポインタから1文字取り出す</li><li><a href="function.fgetcsv.html">fgetcsv</a> ― ファイルポインタから行を取得し、CSVフィールドを処理する</li><li><a href="function.fgets.html">fgets</a> ― ファイルポインタから 1 行取得する</li><li><a href="function.fgetss.html">fgetss</a> ― ファイルポインタから 1 行取り出し、HTML タグを取り除く</li><li><a href="function.file-exists.html">file_exists</a> ― ファイルまたはディレクトリが存在するかどうか調べる</li><li><a href="function.file-get-contents.html">file_get_contents</a> ― ファイルの内容を全て文字列に読み込む</li><li><a href="function.file-put-contents.html">file_put_contents</a> ― 文字列をファイルに書き込む</li><li><a href="function.file.html">file</a> ― ファイル全体を読み込んで配列に格納する</li><li><a href="function.fileatime.html">fileatime</a> ― ファイルの最終アクセス時刻を取得する</li><li><a href="function.filectime.html">filectime</a> ― ファイルの inode 変更時刻を取得する</li><li><a href="function.filegroup.html">filegroup</a> ― ファイルのグループを取得する</li><li><a href="function.fileinode.html">fileinode</a> ― ファイルの inode を取得する</li><li><a href="function.filemtime.html">filemtime</a> ― ファイルの更新時刻を取得する</li><li><a href="function.fileowner.html">fileowner</a> ― ファイルの所有者を取得する</li><li><a href="function.fileperms.html">fileperms</a> ― ファイルのパーミッションを取得する</li><li><a href="function.filesize.html">filesize</a> ― ファイルのサイズを取得する</li><li><a href="function.filetype.html">filetype</a> ― ファイルタイプを取得する</li><li><a href="function.flock.html">flock</a> ― 汎用のファイルロックを行う</li><li><a href="function.fnmatch.html">fnmatch</a> ― ファイル名がパターンにマッチするか調べる</li><li><a href="function.fopen.html">fopen</a> ― ファイルまたは URL をオープンする</li><li><a href="function.fpassthru.html">fpassthru</a> ― ファイルポインタ上に残っているすべてのデータを出力する</li><li><a href="function.fputcsv.html">fputcsv</a> ― 行を CSV 形式にフォーマットし、ファイルポインタに書き込む</li><li><a href="function.fputs.html">fputs</a> ― fwrite のエイリアス</li><li><a href="function.fread.html">fread</a> ― バイナリセーフなファイルの読み込み</li><li><a href="function.fscanf.html">fscanf</a> ― フォーマットに基づきファイルからの入力を処理する</li><li><a href="function.fseek.html">fseek</a> ― ファイルポインタを移動する</li><li><a href="function.fstat.html">fstat</a> ― オープンしたファイルポインタからファイルに関する情報を取得する</li><li><a href="function.ftell.html">ftell</a> ― ファイルポインタから読み書きの位置を取得する</li><li><a href="function.ftruncate.html">ftruncate</a> ― ファイルを指定した長さに丸める</li><li><a href="function.fwrite.html">fwrite</a> ― バイナリセーフなファイル書き込み処理</li><li><a href="function.glob.html">glob</a> ― パターンにマッチするパス名を探す</li><li><a href="function.is-dir.html">is_dir</a> ― ファイルがディレクトリかどうかを調べる</li><li><a href="function.is-executable.html">is_executable</a> ― ファイルが実行可能かどうかを調べる</li><li><a href="function.is-file.html">is_file</a> ― 通常ファイルかどうかを調べる</li><li><a href="function.is-link.html">is_link</a> ― ファイルがシンボリックリンクかどうかを調べる</li><li><a href="function.is-readable.html">is_readable</a> ― ファイルが読み込み可能かどうかを知る</li><li><a href="function.is-uploaded-file.html">is_uploaded_file</a> ― HTTP POST でアップロードされたファイルかどうかを調べる</li><li><a href="function.is-writable.html">is_writable</a> ― ファイルが書き込み可能かどうかを調べる</li><li><a href="function.is-writeable.html">is_writeable</a> ― is_writable のエイリアス</li><li><a href="function.lchgrp.html">lchgrp</a> ― シンボリックリンクのグループ所有権を変更する</li><li><a href="function.lchown.html">lchown</a> ― シンボリックリンクの所有者を変更する</li><li><a href="function.link.html">link</a> ― ハードリンクを作成する</li><li><a href="function.linkinfo.html">linkinfo</a> ― リンクに関する情報を取得する</li><li><a href="function.lstat.html">lstat</a> ― ファイルあるいはシンボリックリンクの情報を取得する</li><li><a href="function.mkdir.html">mkdir</a> ― ディレクトリを作る</li><li><a href="function.move-uploaded-file.html">move_uploaded_file</a> ― アップロードされたファイルを新しい位置に移動する</li><li><a href="function.parse-ini-file.html">parse_ini_file</a> ― 設定ファイルをパースする</li><li><a href="function.pathinfo.html">pathinfo</a> ― ファイルパスに関する情報を返す</li><li><a href="function.pclose.html">pclose</a> ― プロセスのファイルポインタをクローズする</li><li><a href="function.popen.html">popen</a> ― プロセスへのファイルポインタをオープンする</li><li><a href="function.readfile.html">readfile</a> ― ファイルを出力する</li><li><a href="function.readlink.html">readlink</a> ― シンボリックリンク先を返す</li><li><a href="function.realpath.html">realpath</a> ― 絶対パス名を返す</li><li><a href="function.rename.html">rename</a> ― ファイルをリネームする</li><li><a href="function.rewind.html">rewind</a> ― ファイルポインタの位置を先頭に戻す</li><li><a href="function.rmdir.html">rmdir</a> ― ディレクトリを削除する</li><li><a href="function.set-file-buffer.html">set_file_buffer</a> ― stream_set_write_buffer のエイリアス</li><li><a href="function.stat.html">stat</a> ― ファイルに関する情報を取得する</li><li><a href="function.symlink.html">symlink</a> ― シンボリックリンクを作成する</li><li><a href="function.tempnam.html">tempnam</a> ― 一意なファイル名を生成する</li><li><a href="function.tmpfile.html">tmpfile</a> ― テンポラリファイルを作成する</li><li><a href="function.touch.html">touch</a> ― ファイルの最終アクセス時刻および最終更新日をセットする</li><li><a href="function.umask.html">umask</a> ― 現在の umask を変更する</li><li><a href="function.unlink.html">unlink</a> ― ファイルを削除する</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.filepro.html">filepro</a></div>
+ <div class="next" style="float: right;"><a href="function.basename.html">basename</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

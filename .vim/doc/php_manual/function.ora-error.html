@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>Oracle エラーメッセージを取得する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ora-do.html">ora_do</a></div>
+ <div class="next" style="float: right;"><a href="function.ora-errorcode.html">ora_errorcode</a></div>
+ <div class="up"><a href="ref.oracle.html">Oracle</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.ora-error" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ora_error</h1>
+  <p class="verinfo">(PHP 4, PHP 5 &lt;= 5.0.5)</p><p class="refpurpose">ora_error ― Oracle エラーメッセージを取得する</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">string</span> <span class="methodname"><b><b>ora_error</b></b></span>
+    ([ <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$cursor_or_connection</tt></span>
+  ] )</div>
+
+  <p class="para">
+   指定したカーソルあるいは接続上で直近に実行された文のエラーメッセージを返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">cursor_or_connection</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       Oracle カーソルあるいは接続 ID。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   <span class="replaceable">XXX</span>-<span class="replaceable">NNNNN</span>
+   という形式のエラーメッセージが返されます。ここで、
+   <span class="replaceable">XXX</span> は何処からエラーが発生したか、
+   <span class="replaceable">NNNNN</span> はエラーメッセージを識別します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">5.1.0</td>
+       <td colspan="1" rowspan="1" align="left">
+        <p class="para"><a href="ref.oracle.html" class="link">oracle</a> 
+拡張モジュールは非推奨です。かわりに <a href="ref.oci8.html" class="link">oci8</a>
+を使用してください。
+</p>
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">3.0.4</td>
+       <td colspan="1" rowspan="1" align="left">
+        接続 ID のサポートが追加されました。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   Unix 版の Oracle 上では、
+   以下のようにエラーメッセージに関する詳細を得ることができます。
+   <div class="informalexample">
+    <div class="example-contents">
+<div class="cdata"><pre>
+$&gt; oerr ora 00001
+</pre></div>
+    </div>
+
+    <p class="para">上の例の出力は、たとえば
+以下のようになります。</p>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+00001, 00000,
+&quot;unique constraint (%s.%s) violated&quot; // *Cause: An update or insert
+statement attempted to insert a duplicate key //         For Trusted
+ORACLE configured in DBMS MAC mode, you may see //         this message
+if a duplicate entry exists at a different level.  // *Action: Either
+remove the unique restriction or do not insert the key
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+   <p class="para">
+    
+廃止予定の <a href="ref.oracle.html" class="link">oracle</a> のかわりに
+<a href="ref.oci8.html" class="link">oci8</a> 拡張モジュールを用いる場合は、
+以下を使用してください。
+    <ul class="simplelist">
+     <li class="member"><a href="function.oci-error.html" class="function">oci_error()</a></li>
+    </ul>
+   </p>
+ </div>
+
+ 
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ora-do.html">ora_do</a></div>
+ <div class="next" style="float: right;"><a href="function.ora-errorcode.html">ora_errorcode</a></div>
+ <div class="up"><a href="ref.oracle.html">Oracle</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

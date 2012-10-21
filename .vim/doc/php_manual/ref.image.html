@@ -1,0 +1,2273 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>イメージ関数(image)</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.iis-stop-service.html">iis_stop_service</a></div>
+ <div class="next" style="float: right;"><a href="function.gd-info.html">gd_info</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">イメージ関数(image)</h1>
+  
+
+  <div class="partintro">
+   <div id="image.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     PHPができることは、HTML出力を生成することだけではありません。PHP
+     は、多くの異なるイメージ形式でイメージファイルを作成したり、操作
+     したりすることもできます。このイメージ形式には、gif, png, jpg,
+     wbmp, xpmが含まれます。さらに便利なことに、PHPはイメージストリー
+     ムを直接ブラウザに出力することができます。
+     これを動作されるには、イメージ関数のGDライブラリを指定してPHPをコ
+     ンパイル必要があります。使用したいイメージ形式によっては、GDとPHP
+     は他のライブラリも必要とする可能性があります。
+    </p>
+    <p class="para">
+     PHPのイメージ関数により
+     <acronym title="Joint Photographic Experts Group">JPEG</acronym>、<acronym title="Graphic Interchange Format">GIF</acronym>、
+     <acronym title="Portable Network Graphics">PNG</acronym>、<acronym title="Shockwave Flash">SWF</acronym>、
+     <acronym title="Tagged Image File Format">TIFF</acronym>、<acronym>JPEG2000</acronym>イメージの
+     大きさを知ることができます。
+    </p>
+    <p class="para">
+      <a href="ref.exif.html" class="link">exif 拡張モジュール</a> を使用すると、
+      <acronym title="Joint Photographic Experts Group">JPEG</acronym> や <acronym title="Tagged Image File Format">TIFF</acronym>
+      画像のヘッダに保存された情報を扱うことができます。
+      これにより、デジタルカメラが作成したメタデータを読み込むことができます。
+      exif 関数は <acronym title="Graphics Draw">GD</acronym> ライブラリを必要としません。
+    </p>
+    
+    <p class="para">
+     <blockquote><p><b class="note">注意</b>: 
+      <span class="simpara">
+       イメージの読み込み、書き込み、修正の機能を拡張するには、
+       要求の節を呼んでください。
+       デジタルカメラで撮影した画像のメタデータを読み込むには、
+       上で説明した <a href="ref.exif.html" class="link">exif
+       拡張モジュール</a> が必要です。
+      </span>
+     </p></blockquote>
+    </p>
+   </div>
+
+   <div id="image.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">
+     <acronym title="Graphics Draw">GD</acronym>ライブラリ( <a href="http://www.libgd.org/" class="link external">&raquo; http://www.libgd.org/</a>で取得可能)があれば、画像の作成と操
+     作を行なうこともできます。
+    </p>
+    <p class="para">
+     操作できるイメージの形式は、インストールされている
+     <acronym title="Graphics Draw">GD</acronym>とこれらのイメージフォーマットにアクセスする
+     ために<acronym title="Graphics Draw">GD</acronym>が必要とするその他のライブラリに依存し
+     ます。gd-1.6より前のバージョンのgdは、GIFイメージ画像をサポートし
+     ていますが、PNGはサポートしていません。一方、gd-1.6以降でgd-2.0.28未満の
+     バージョンはPNGをサポートし、GIFはサポートしていません。
+     GIFサポートは、gd-2.0.28で再度有効になりました。
+     <blockquote><p><b class="note">注意</b>: 
+      <span class="simpara">
+       PHP 4.3以降、GD libの付属版が付属しています。この付属版にはαブ
+       レンディングのようないくつかの機能が追加されています。
+       この版のコードは、より管理が行き届き、安定しているため、  
+       外部ライブラリの代わりに使用されるべきです。
+      </span>
+     </p></blockquote>
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      PHP 6.0.0 では GD 1.x はサポートされなくなりました。
+      GD 2.0.33 以降が必要となります。
+     <br />
+    </p></blockquote>
+    <p class="para">
+     より多くのイメージ形式を処理するために
+     GD を拡張したいと思うかもしれません。
+     <table border="5">
+     <caption><b>サポートされるイメージ形式</b></caption>
+      <colgroup>
+
+       <thead valign="middle">
+        <tr valign="middle">
+         <th colspan="1">イメージ形式</th>
+         <th colspan="1">ダウンロードするライブラリ</th>
+         <th colspan="1">注記</th>
+        </tr>
+
+       </thead>
+
+       <tbody valign="middle">
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left"><i class="literal">gif</i></td>
+         <td class="empty">&nbsp;</td>
+         <td colspan="1" rowspan="1" align="left">
+          gd-1.6より以前またはgd-2.0.28以降のバージョンのGDでのみサポートされます。
+          <em class="emphasis">読み込みのみ</em>のGIFサポートは、PHP 4.3.0
+          とバンドルされたGDライブラリの組合せで利用可能です。
+          <em class="emphasis">書き込み</em>のサポートは、PHP 4.3.9および
+          PHP 5.0.1以降で利用可能です。
+         </td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left"><i class="literal">jpeg-6b</i></td>
+         <td colspan="1" rowspan="1" align="left"><a href="ftp://ftp.uu.net/graphics/jpeg/" class="link external">&raquo; ftp://ftp.uu.net/graphics/jpeg/</a></td>
+         <td colspan="1" rowspan="1" align="left">
+          (PHP のビルド前に) jpeg-v6b ライブラリをビルドする際、configure で
+          <span class="option">--enable-shared</span>
+          オプションを指定する必要があります。
+          そうしないと、PHP をビルドする際の configure で
+          <i class="literal">libjpeg.(a|so) not found</i> というエラーが発生します。
+         </td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left"><i class="literal">png</i></td>
+         <td colspan="1" rowspan="1" align="left"><a href="http://www.libpng.org/pub/png/libpng.html" class="link external">&raquo; http://www.libpng.org/pub/png/libpng.html</a></td>
+         <td colspan="1" rowspan="1" align="left">
+          gd-1.6以降のバージョンのGDでのみサポートされます。
+         </td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left"><i class="literal">xpm</i></td>
+         <td colspan="1" rowspan="1" align="left"><a href="ftp://metalab.unc.edu/pub/Linux/libs/X/!INDEX.html" class="link external">&raquo; ftp://metalab.unc.edu/pub/Linux/libs/X/!INDEX.html</a></td>
+         <td colspan="1" rowspan="1" align="left">
+          Xウインドウ環境をインストールしている場合、
+          このライブラリを既に利用可能と思われます。
+         </td>
+        </tr>
+
+       </tbody>
+      </colgroup>
+
+     </table>
+
+    </p>
+
+    <p class="para">
+     別の種類のフォントを処理できるようにGDを拡張したいと思うかもしれ
+     ません。以下にサポートされるフォントライブラリを示します。
+     <table border="5">
+     <caption><b>サポートされるフォントライブラリ</b></caption>
+      <colgroup>
+
+       <thead valign="middle">
+        <tr valign="middle">
+         <th colspan="1">フォントライブラリ</th>
+         <th colspan="1">ダウンロード</th>
+         <th colspan="1">注記</th>
+        </tr>
+
+       </thead>
+
+       <tbody valign="middle">
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left"><i class="literal">FreeType 1.x</i></td>
+         <td colspan="1" rowspan="1" align="left"><a href="http://www.freetype.org/" class="link external">&raquo; http://www.freetype.org/</a></td>
+         <td colspan="1" rowspan="1" align="left">PHP 6.0.0 でサポートされなくなりました。</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left"><i class="literal">FreeType 2</i></td>
+         <td colspan="1" rowspan="1" align="left"><a href="http://www.freetype.org/" class="link external">&raquo; http://www.freetype.org/</a></td>
+         <td class="empty">&nbsp;</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left"><i class="literal">T1lib</i></td>
+         <td colspan="1" rowspan="1" align="left"><a href="ftp://sunsite.unc.edu/pub/Linux/libs/graphics/" class="link external">&raquo; ftp://sunsite.unc.edu/pub/Linux/libs/graphics/</a>)</td>
+         <td colspan="1" rowspan="1" align="left">
+          Postscript Type 1 フォントをサポートします。
+         </td>
+        </tr>
+
+       </tbody>
+      </colgroup>
+
+     </table>
+
+    </p>
+   </div>
+
+   
+
+
+
+<div id="image.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  PHPでGDサポートを有効にするには、configure に<span class="option">--with-gd[=DIR]</span>を指定します。ただし、DIRは
+  GDのベースインストールディレクトリです。
+  PHPにバンドルされている推奨のGDライブラリを使用するには
+  <span class="option">--with-gd</span>を指定します。
+  GD ライブラリをコンパイルするには、<span class="productname">libpng</span> と
+  <span class="productname">libjpeg</span> が必要です。
+ </p>
+ <p class="para">
+  Windowsの場合、GD2 DLL <var class="filename">php_gd2.dll</var>を<var class="filename">php.ini</var>に
+  エクステンションとして指定してください。
+  GD1 DLL <var class="filename">php_gd.dll</var>はPHP4.3.2で削除されました。
+  <a href="function.imagecreatetruecolor.html" class="function">imagecreatetruecolor()</a>のようにTrueカラーが優先される関数
+  についてはGD2が必須です。
+ </p>
+ <p class="para">
+  PHP3においてGDサポートを無効にするには
+  <span class="option">--without-gd</span>を指定してください。
+ </p>
+ <p class="para">
+  より多くの画像フォーマットを扱えるようにGDの能力を高めるには、
+  <i class="literal">--with-XXXX</i>のような形のオプションを指定します。
+  <table border="5">
+   <caption><b>サポートされる画像フォーマット</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">画像フォーマット</th>
+      <th colspan="1">configure オプション</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><i class="literal">jpeg-6b</i></td>
+      <td colspan="1" rowspan="1" align="left">
+       jpeg-6b をサポートするには
+       <span class="option">--with-jpeg-dir=DIR</span>
+       を指定します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><i class="literal">png</i></td>
+      <td colspan="1" rowspan="1" align="left">
+       PNGをサポートするには<span class="option">--with-png-dir=DIR</span>
+       を指定します。ただし、libpngは<a href="ref.zlib.html#zlib.requirements" class="link">zlibライブラリ</a>を
+       必要とするため、<span class="option">--with-zlib-dir[=DIR]</span>
+       もconfigureオプションに追加する必要があります。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><i class="literal">xpm</i></td>
+      <td colspan="1" rowspan="1" align="left">
+       XPMをサポートするには<span class="option">--with-xpm-dir=DIR</span>
+       を指定します。必要なライブラリをconfigureが見つけられなかった場合は
+       X11ライブラリのパスを追加してください。
+      </td>
+     </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+  <blockquote><p><b class="note">注意</b>: 
+   <span class="simpara">
+    libpng と共に PHP をコンパイルする際、GD
+    ライブラリとリンクされる同じバージョンを使用する必要があります。
+   </span>
+  </p></blockquote>
+ </p>
+ <p class="para">
+  GDがより多くのフォントを扱えるようにするには
+  <i class="literal">--with-XXXX</i>のような形のオプションを指定します。
+  <table border="5">
+   <caption><b>サポートされるフォントライブラリ</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">フォントライブラリ</th>
+      <th colspan="1">configure オプション</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><i class="literal">FreeType 1.x</i></td>
+      <td colspan="1" rowspan="1" align="left">
+       FreeType 1.x をサポートするには
+       <span class="option">--with-ttf[=DIR]</span>を指定します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><i class="literal">FreeType 2</i></td>
+      <td colspan="1" rowspan="1" align="left">
+       FreeType 2 をサポートするには
+       <span class="option">--with-freetype-dir=DIR</span>を指定します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><i class="literal">T1lib</i></td>
+      <td colspan="1" rowspan="1" align="left">
+       T1lib (Postscript Type 1 フォント) をサポートするには
+       <span class="option">--with-t1lib[=DIR]</span>を指定します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><i class="literal">ネイティブ TrueType 文字列関数</i></td>
+      <td colspan="1" rowspan="1" align="left">
+       ネイティブな TrueType 文字列関数 をサポートするには
+       <span class="option">--enable-gd-native-ttf</span>を指定します。
+      </td>
+     </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+ </p>
+</div>
+
+
+
+
+
+   
+
+
+
+<div id="image.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+  <table border="5">
+   <caption><b>Image 設定オプション</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">名前</th>
+      <th colspan="1">デフォルト</th>
+      <th colspan="1">変更可能</th>
+      <th colspan="1">Changelog</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">gd.jpeg_ignore_warning</td>
+      <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td colspan="1" rowspan="1" align="left">PHP 5.1.3 以降で使用可能です。</td>
+     </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+  PHP_INI_* 定数の詳細および定義については
+<a href="ini.html" class="xref">php.ini ディレクティブ</a> を参照してください。
+ </p>
+
+ <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+
+ <p class="para">
+  <dl>
+
+   <dt id="ini.image.jpeg-ignore-warning">
+    <span class="term">
+     <i><tt class="parameter">gd.jpeg_ignore_warning</tt></i>
+
+     <a href="language.types.boolean.html" class="type bool">bool</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      <a href="function.jpeg2wbmp.html" class="function">jpeg2wbmp()</a> や
+      <a href="function.imagecreatefromjpeg.html" class="function">imagecreatefromjpeg()</a> が出す警告を無視します。
+     </p>
+    </dd>
+
+   </dt>
+
+  </dl>
+
+ </p>
+ <p class="para">
+  <a href="ref.exif.html#exif.configuration" class="link">exif</a> の設定ディレクティブも参照ください。
+ </p>
+ 
+ <div class="warning"><b class="warning">警告</b>
+  <p class="para">
+   イメージ関数は非常にメモリを消費します。
+   <a href="ini.core.html#ini.memory-limit" class="link">memory_limit</a>
+   を十分大きな値にしておくようにしましょう。
+  </p>
+ </div>
+</div>
+
+
+
+
+
+   <div id="image.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">
+     この拡張モジュールでは、画像 ID および フォント ID
+     の二種類のリソースを定義しています。
+    </p>
+   </div>
+
+   
+
+
+<div id="image.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <dl>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GD_VERSION</tt></b>
+    (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     PHP をコンパイルしたときの GD のバージョン
+     (PHP 5.2.4 以降で利用可能)。
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GD_MAJOR_VERSION</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     PHP をコンパイルしたときの GD のメジャーバージョン
+     (PHP 5.2.4 以降で利用可能)。
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GD_MINOR_VERSION</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     PHP をコンパイルしたときの GD のマイナーバージョン
+     (PHP 5.2.4 以降で利用可能)。
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GD_RELEASE_VERSION</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     PHP をコンパイルしたときの GD のリリースバージョン
+     (PHP 5.2.4 以降で利用可能)。
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GD_EXTRA_VERSION</tt></b>
+    (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     PHP をコンパイルしたときの GD の &quot;追加&quot; バージョン (beta/rc..)
+     (PHP 5.2.4 以降で利用可能)。
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_GIF</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagetypes.html" class="function">imagetypes()</a> の返り値として使用。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_JPG</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagetypes.html" class="function">imagetypes()</a> の返り値として使用。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_JPEG</tt></b> 
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagetypes.html" class="function">imagetypes()</a> の返り値として使用。
+    </span>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      この定数の値は <b><tt>IMAGE_JPG</tt></b> と同じです。
+     <br />
+    </p></blockquote>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_PNG</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagetypes.html" class="function">imagetypes()</a> の返り値として使用。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_WBMP</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagetypes.html" class="function">imagetypes()</a> の返り値として使用。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_XPM</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagetypes.html" class="function">imagetypes()</a> の返り値として使用。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_COLOR_TILED</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagecolorallocate.html" class="function">imagecolorallocate()</a> あるいは
+     <a href="function.imagecolorallocatealpha.html" class="function">imagecolorallocatealpha()</a>
+     で割り当てた色のかわりに使用できる、特別な色オプション。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_COLOR_STYLED</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagecolorallocate.html" class="function">imagecolorallocate()</a> あるいは
+     <a href="function.imagecolorallocatealpha.html" class="function">imagecolorallocatealpha()</a>
+     で割り当てた色のかわりに使用できる、特別な色オプション。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_COLOR_BRUSHED</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagecolorallocate.html" class="function">imagecolorallocate()</a> あるいは
+     <a href="function.imagecolorallocatealpha.html" class="function">imagecolorallocatealpha()</a>
+     で割り当てた色のかわりに使用できる、特別な色オプション。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_COLOR_STYLEDBRUSHED</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagecolorallocate.html" class="function">imagecolorallocate()</a> あるいは
+     <a href="function.imagecolorallocatealpha.html" class="function">imagecolorallocatealpha()</a>
+     で割り当てた色のかわりに使用できる、特別な色オプション。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_COLOR_TRANSPARENT</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagecolorallocate.html" class="function">imagecolorallocate()</a> あるいは
+     <a href="function.imagecolorallocatealpha.html" class="function">imagecolorallocatealpha()</a>
+     で割り当てた色のかわりに使用できる、特別な色オプション。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_ARC_ROUNDED</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagefilledarc.html" class="function">imagefilledarc()</a> 関数で使用するスタイル定数。
+    </span>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      この定数の値は <b><tt>IMG_ARC_PIE</tt></b> と同じです。
+     <br />
+    </p></blockquote>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_ARC_PIE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagefilledarc.html" class="function">imagefilledarc()</a> 関数で使用するスタイル定数。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_ARC_CHORD</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagefilledarc.html" class="function">imagefilledarc()</a> 関数で使用するスタイル定数。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_ARC_NOFILL</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagefilledarc.html" class="function">imagefilledarc()</a> 関数で使用するスタイル定数。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_ARC_EDGED</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagefilledarc.html" class="function">imagefilledarc()</a> 関数で使用するスタイル定数。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_GD2_RAW</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagegd2.html" class="function">imagegd2()</a> 関数で使用する型定数。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_GD2_COMPRESSED</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagegd2.html" class="function">imagegd2()</a> 関数で使用する型定数。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_EFFECT_REPLACE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagelayereffect.html" class="function">imagelayereffect()</a> 関数で使用するアルファブレンディング効果。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_EFFECT_ALPHABLEND</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagelayereffect.html" class="function">imagelayereffect()</a> 関数で使用するアルファブレンディング効果。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_EFFECT_NORMAL</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagelayereffect.html" class="function">imagelayereffect()</a> 関数で使用するアルファブレンディング効果。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_EFFECT_OVERLAY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagelayereffect.html" class="function">imagelayereffect()</a> 関数で使用するアルファブレンディング効果。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_FILTER_NEGATE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagefilter.html" class="function">imagefilter()</a> 関数で使用する特別な GD フィルタ。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_FILTER_GRAYSCALE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagefilter.html" class="function">imagefilter()</a> 関数で使用する特別な GD フィルタ。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_FILTER_BRIGHTNESS</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagefilter.html" class="function">imagefilter()</a> 関数で使用する特別な GD フィルタ。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_FILTER_CONTRAST</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagefilter.html" class="function">imagefilter()</a> 関数で使用する特別な GD フィルタ。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_FILTER_COLORIZE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagefilter.html" class="function">imagefilter()</a> 関数で使用する特別な GD フィルタ。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_FILTER_EDGEDETECT</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagefilter.html" class="function">imagefilter()</a> 関数で使用する特別な GD フィルタ。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_FILTER_GAUSSIAN_BLUR</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagefilter.html" class="function">imagefilter()</a> 関数で使用する特別な GD フィルタ。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_FILTER_SELECTIVE_BLUR</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagefilter.html" class="function">imagefilter()</a> 関数で使用する特別な GD フィルタ。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_FILTER_EMBOSS</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagefilter.html" class="function">imagefilter()</a> 関数で使用する特別な GD フィルタ。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_FILTER_MEAN_REMOVAL</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagefilter.html" class="function">imagefilter()</a> 関数で使用する特別な GD フィルタ。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMG_FILTER_SMOOTH</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagefilter.html" class="function">imagefilter()</a> 関数で使用する特別な GD フィルタ。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMAGETYPE_GIF</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.image-type-to-mime-type.html" class="function">image_type_to_mime_type()</a> および
+     <a href="function.image-type-to-extension.html" class="function">image_type_to_extension()</a>
+     関数で使用する画像形式定数。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMAGETYPE_JPEG</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.image-type-to-mime-type.html" class="function">image_type_to_mime_type()</a> および
+     <a href="function.image-type-to-extension.html" class="function">image_type_to_extension()</a>
+     関数で使用する画像形式定数。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMAGETYPE_PNG</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.image-type-to-mime-type.html" class="function">image_type_to_mime_type()</a> および
+     <a href="function.image-type-to-extension.html" class="function">image_type_to_extension()</a>
+     関数で使用する画像形式定数。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMAGETYPE_SWF</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.image-type-to-mime-type.html" class="function">image_type_to_mime_type()</a> および
+     <a href="function.image-type-to-extension.html" class="function">image_type_to_extension()</a>
+     関数で使用する画像形式定数。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMAGETYPE_PSD</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.image-type-to-mime-type.html" class="function">image_type_to_mime_type()</a> および
+     <a href="function.image-type-to-extension.html" class="function">image_type_to_extension()</a>
+     関数で使用する画像形式定数。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMAGETYPE_BMP</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.image-type-to-mime-type.html" class="function">image_type_to_mime_type()</a> および
+     <a href="function.image-type-to-extension.html" class="function">image_type_to_extension()</a>
+     関数で使用する画像形式定数。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMAGETYPE_WBMP</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.image-type-to-mime-type.html" class="function">image_type_to_mime_type()</a> および
+     <a href="function.image-type-to-extension.html" class="function">image_type_to_extension()</a>
+     関数で使用する画像形式定数。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMAGETYPE_XBM</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.image-type-to-mime-type.html" class="function">image_type_to_mime_type()</a> および
+     <a href="function.image-type-to-extension.html" class="function">image_type_to_extension()</a>
+     関数で使用する画像形式定数。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMAGETYPE_TIFF_II</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.image-type-to-mime-type.html" class="function">image_type_to_mime_type()</a> および
+     <a href="function.image-type-to-extension.html" class="function">image_type_to_extension()</a>
+     関数で使用する画像形式定数。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMAGETYPE_TIFF_MM</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.image-type-to-mime-type.html" class="function">image_type_to_mime_type()</a> および
+     <a href="function.image-type-to-extension.html" class="function">image_type_to_extension()</a>
+     関数で使用する画像形式定数。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMAGETYPE_IFF</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.image-type-to-mime-type.html" class="function">image_type_to_mime_type()</a> および
+     <a href="function.image-type-to-extension.html" class="function">image_type_to_extension()</a>
+     関数で使用する画像形式定数。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMAGETYPE_JB2</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.image-type-to-mime-type.html" class="function">image_type_to_mime_type()</a> および
+     <a href="function.image-type-to-extension.html" class="function">image_type_to_extension()</a>
+     関数で使用する画像形式定数。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMAGETYPE_JPC</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.image-type-to-mime-type.html" class="function">image_type_to_mime_type()</a> および
+     <a href="function.image-type-to-extension.html" class="function">image_type_to_extension()</a>
+     関数で使用する画像形式定数。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMAGETYPE_JP2</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.image-type-to-mime-type.html" class="function">image_type_to_mime_type()</a> および
+     <a href="function.image-type-to-extension.html" class="function">image_type_to_extension()</a>
+     関数で使用する画像形式定数。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMAGETYPE_JPX</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.image-type-to-mime-type.html" class="function">image_type_to_mime_type()</a> および
+     <a href="function.image-type-to-extension.html" class="function">image_type_to_extension()</a>
+     関数で使用する画像形式定数。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMAGETYPE_SWC</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.image-type-to-mime-type.html" class="function">image_type_to_mime_type()</a> および
+     <a href="function.image-type-to-extension.html" class="function">image_type_to_extension()</a>
+     関数で使用する画像形式定数。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IMAGETYPE_ICO</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.image-type-to-mime-type.html" class="function">image_type_to_mime_type()</a> および
+     <a href="function.image-type-to-extension.html" class="function">image_type_to_extension()</a>
+     関数で使用する画像形式定数
+     (PHP 5.3.0 以降で利用可能)。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PNG_NO_FILTER</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagepng.html" class="function">imagepng()</a> 関数で使用する特別な PNG フィルタ。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PNG_FILTER_NONE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagepng.html" class="function">imagepng()</a> 関数で使用する特別な PNG フィルタ。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PNG_FILTER_SUB</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagepng.html" class="function">imagepng()</a> 関数で使用する特別な PNG フィルタ。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PNG_FILTER_UP</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagepng.html" class="function">imagepng()</a> 関数で使用する特別な PNG フィルタ。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PNG_FILTER_AVG</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagepng.html" class="function">imagepng()</a> 関数で使用する特別な PNG フィルタ。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PNG_FILTER_PAETH</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagepng.html" class="function">imagepng()</a> 関数で使用する特別な PNG フィルタ。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PNG_ALL_FILTERS</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.imagepng.html" class="function">imagepng()</a> 関数で使用する特別な PNG フィルタ。
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+</div>
+
+
+
+   <div id="image.examples" class="section">
+    <h2 class="title">例</h2>
+    <p class="para">
+     <div class="example">
+      <p><b>Example#1 PHPによるPNGの生成</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />header</span><span style="color: #007700">(</span><span style="color: #DD0000">"Content-type:&nbsp;image/png"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$string&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$_GET</span><span style="color: #007700">[</span><span style="color: #DD0000">'text'</span><span style="color: #007700">];<br /></span><span style="color: #0000BB">$im&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">imagecreatefrompng</span><span style="color: #007700">(</span><span style="color: #DD0000">"images/button1.png"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$orange&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">imagecolorallocate</span><span style="color: #007700">(</span><span style="color: #0000BB">$im</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">220</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">210</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">60</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$px&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;(</span><span style="color: #0000BB">imagesx</span><span style="color: #007700">(</span><span style="color: #0000BB">$im</span><span style="color: #007700">)&nbsp;-&nbsp;</span><span style="color: #0000BB">7.5&nbsp;</span><span style="color: #007700">*&nbsp;</span><span style="color: #0000BB">strlen</span><span style="color: #007700">(</span><span style="color: #0000BB">$string</span><span style="color: #007700">))&nbsp;/&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">imagestring</span><span style="color: #007700">(</span><span style="color: #0000BB">$im</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$px</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">9</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$string</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$orange</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">imagepng</span><span style="color: #007700">(</span><span style="color: #0000BB">$im</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">imagedestroy</span><span style="color: #007700">(</span><span style="color: #0000BB">$im</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+     この例のスクリプトは、&lt;img src=&quot;button.php?text&quot;&gt;
+     のようなタグによりあるページからコールされるものです。
+     上のbutton.phpスクリプトは、この &quot;text&quot; 文字列を引数と
+     し、この場合は &quot;images/button1.png&quot; である基本イメージ
+     の最上部にこの文字列を描いた後、描画後ののイメージを出力します。
+     この方法は、ボタンのテキストを変更する度に新規のボタンを生成する
+     必要があるのを回避するために便利な手法です。
+     この方法により、動的にイメージボタンを生成できます。
+    </p>
+   </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.gd-info.html">gd_info</a> ― 現在インストールされているGDライブラリに関する情報を取得する</li><li><a href="function.getimagesize.html">getimagesize</a> ― 画像の大きさを取得する</li><li><a href="function.image-type-to-extension.html">image_type_to_extension</a> ― 画像形式からファイルの拡張子を取得する</li><li><a href="function.image-type-to-mime-type.html">image_type_to_mime_type</a> ― getimagesize, exif_read_data, exif_thumbnail, exif_imagetypeから返される
+   画像形式のMIMEタイプを取得する</li><li><a href="function.image2wbmp.html">image2wbmp</a> ― ブラウザまたはファイルにイメージを出力する</li><li><a href="function.imagealphablending.html">imagealphablending</a> ― イメージのブレンドモードを設定する</li><li><a href="function.imageantialias.html">imageantialias</a> ― アンチエイリアス機能を使用すべきかどうかを判断する</li><li><a href="function.imagearc.html">imagearc</a> ― 部分楕円を描画する</li><li><a href="function.imagechar.html">imagechar</a> ― 水平に文字を描画する</li><li><a href="function.imagecharup.html">imagecharup</a> ― 垂直に文字を描画する</li><li><a href="function.imagecolorallocate.html">imagecolorallocate</a> ― 画像で使用する色を作成する</li><li><a href="function.imagecolorallocatealpha.html">imagecolorallocatealpha</a> ― 画像で使用する色を透過度を指定して作成する</li><li><a href="function.imagecolorat.html">imagecolorat</a> ― ピクセルの色のインデックスを取得する</li><li><a href="function.imagecolorclosest.html">imagecolorclosest</a> ― 指定した色に最も近い色のインデックスを取得する</li><li><a href="function.imagecolorclosestalpha.html">imagecolorclosestalpha</a> ― 指定した色+アルファ値に最も近い色のインデックスを取得する</li><li><a href="function.imagecolorclosesthwb.html">imagecolorclosesthwb</a> ― 指定した色に最も近い色合い、白、黒を有する色のインデックスを得る</li><li><a href="function.imagecolordeallocate.html">imagecolordeallocate</a> ― イメージの色リソースを開放する</li><li><a href="function.imagecolorexact.html">imagecolorexact</a> ― 指定した色のインデックスを取得する</li><li><a href="function.imagecolorexactalpha.html">imagecolorexactalpha</a> ― 指定した色+アルファ値のインデックスを取得する</li><li><a href="function.imagecolormatch.html">imagecolormatch</a> ― パレットイメージの色を True カラーイメージに近づける</li><li><a href="function.imagecolorresolve.html">imagecolorresolve</a> ― 指定した色または出来るだけ近い色のインデックスを得る</li><li><a href="function.imagecolorresolvealpha.html">imagecolorresolvealpha</a> ― 指定した色+アルファ値または最も近い色のインデックスを取得する</li><li><a href="function.imagecolorset.html">imagecolorset</a> ― 指定したパレットインデックスの色を設定する</li><li><a href="function.imagecolorsforindex.html">imagecolorsforindex</a> ― カラーインデックスからカラーを取得する</li><li><a href="function.imagecolorstotal.html">imagecolorstotal</a> ― 画像パレットの色数を検出する</li><li><a href="function.imagecolortransparent.html">imagecolortransparent</a> ― 透明色を定義する</li><li><a href="function.imageconvolution.html">imageconvolution</a> ― div および offset の係数を使用し、3x3 の畳み込み配列を適用する</li><li><a href="function.imagecopy.html">imagecopy</a> ― 画像の一部をコピーする</li><li><a href="function.imagecopymerge.html">imagecopymerge</a> ― イメージの一部をコピー、マージする</li><li><a href="function.imagecopymergegray.html">imagecopymergegray</a> ― グレースケールでイメージの一部をコピー、マージする</li><li><a href="function.imagecopyresampled.html">imagecopyresampled</a> ― 再サンプリングを行いイメージの一部をコピー、伸縮する</li><li><a href="function.imagecopyresized.html">imagecopyresized</a> ― 画像の一部をコピーしサイズを変更する</li><li><a href="function.imagecreate.html">imagecreate</a> ― パレットを使用する新規画像を作成する</li><li><a href="function.imagecreatefromgd2.html">imagecreatefromgd2</a> ― GD2 ファイルまたは URL から新規イメージを生成する</li><li><a href="function.imagecreatefromgd2part.html">imagecreatefromgd2part</a> ― GD2 ファイルまたは URL の指定した部分から新規イメージを生成する</li><li><a href="function.imagecreatefromgd.html">imagecreatefromgd</a> ― GD ファイルまたは URL から新規イメージを生成する</li><li><a href="function.imagecreatefromgif.html">imagecreatefromgif</a> ― ファイルまたは URL から新規画像を作成する</li><li><a href="function.imagecreatefromjpeg.html">imagecreatefromjpeg</a> ― ファイル又は URL から新規 JPEG 画像を作成する</li><li><a href="function.imagecreatefrompng.html">imagecreatefrompng</a> ― ファイルまたは URL から新規 PNG 画像を作成する</li><li><a href="function.imagecreatefromstring.html">imagecreatefromstring</a> ― 文字列の中のイメージストリームから新規イメージを作成する</li><li><a href="function.imagecreatefromwbmp.html">imagecreatefromwbmp</a> ― ファイルまたは URL から新規イメージを作成する</li><li><a href="function.imagecreatefromxbm.html">imagecreatefromxbm</a> ― ファイル又は URL から新規イメージを生成する</li><li><a href="function.imagecreatefromxpm.html">imagecreatefromxpm</a> ― ファイルまたは URL から新規イメージを生成する</li><li><a href="function.imagecreatetruecolor.html">imagecreatetruecolor</a> ― TrueColor イメージを新規に作成する</li><li><a href="function.imagedashedline.html">imagedashedline</a> ― 破線を描画する</li><li><a href="function.imagedestroy.html">imagedestroy</a> ― 画像を破棄する</li><li><a href="function.imageellipse.html">imageellipse</a> ― 楕円を描画する</li><li><a href="function.imagefill.html">imagefill</a> ― 塗り潰す</li><li><a href="function.imagefilledarc.html">imagefilledarc</a> ― 部分楕円を描画し、塗りつぶす</li><li><a href="function.imagefilledellipse.html">imagefilledellipse</a> ― 塗りつぶされた楕円を描画する</li><li><a href="function.imagefilledpolygon.html">imagefilledpolygon</a> ― 塗りつぶした多角形を描画する</li><li><a href="function.imagefilledrectangle.html">imagefilledrectangle</a> ― 塗りつぶした矩形を描画する</li><li><a href="function.imagefilltoborder.html">imagefilltoborder</a> ― 特定色で塗りつぶす</li><li><a href="function.imagefilter.html">imagefilter</a> ― 画像にフィルタを適用する</li><li><a href="function.imagefontheight.html">imagefontheight</a> ― フォントの高さを取得する</li><li><a href="function.imagefontwidth.html">imagefontwidth</a> ― フォントの幅を取得する</li><li><a href="function.imageftbbox.html">imageftbbox</a> ― freetype2 によるフォントを用いたテキストを囲む箱を取得する</li><li><a href="function.imagefttext.html">imagefttext</a> ― FreeType 2 によるフォントを用いてイメージにテキストを描画する</li><li><a href="function.imagegammacorrect.html">imagegammacorrect</a> ― GD イメージにガンマ補正を適用する</li><li><a href="function.imagegd2.html">imagegd2</a> ― GD2 イメージをブラウザまたはファイルに出力する</li><li><a href="function.imagegd.html">imagegd</a> ― GD イメージをブラウザまたはファイルに出力する</li><li><a href="function.imagegif.html">imagegif</a> ― ブラウザまたはファイルへ画像を出力する</li><li><a href="function.imagegrabscreen.html">imagegrabscreen</a> ― 画面全体をキャプチャする</li><li><a href="function.imagegrabwindow.html">imagegrabwindow</a> ― ウィンドウをキャプチャする</li><li><a href="function.imageinterlace.html">imageinterlace</a> ― インターレースを有効もしくは無効にする</li><li><a href="function.imageistruecolor.html">imageistruecolor</a> ― 画像が truecolor かどうか調べる</li><li><a href="function.imagejpeg.html">imagejpeg</a> ― 画像をブラウザまたはファイルに出力する</li><li><a href="function.imagelayereffect.html">imagelayereffect</a> ― アルファブレンディングフラグを設定し、
+   libgd にバンドルされているレイヤ効果を使用する</li><li><a href="function.imageline.html">imageline</a> ― 直線を描画する</li><li><a href="function.imageloadfont.html">imageloadfont</a> ― 新しいフォントを読み込む</li><li><a href="function.imagepalettecopy.html">imagepalettecopy</a> ― あるイメージから他のイメージにパレットをコピーする</li><li><a href="function.imagepng.html">imagepng</a> ― PNG イメージをブラウザまたはファイルに出力する</li><li><a href="function.imagepolygon.html">imagepolygon</a> ― 多角形を描画する</li><li><a href="function.imagepsbbox.html">imagepsbbox</a> ― PostScript Type1 フォントを用いてテキスト矩形のバウンディングボックス
+   を指定する</li><li><a href="function.imagepsencodefont.html">imagepsencodefont</a> ― フォントの文字エンコードベクトルを変更する</li><li><a href="function.imagepsextendfont.html">imagepsextendfont</a> ― フォントを展開または圧縮する</li><li><a href="function.imagepsfreefont.html">imagepsfreefont</a> ― PostScript Type 1 フォント用メモリを解放する</li><li><a href="function.imagepsloadfont.html">imagepsloadfont</a> ― ファイルから PostScript Type 1 フォントをロードする</li><li><a href="function.imagepsslantfont.html">imagepsslantfont</a> ― フォントを傾ける</li><li><a href="function.imagepstext.html">imagepstext</a> ― PostScript Type1 フォントを用いて画像の上に文字列を描く</li><li><a href="function.imagerectangle.html">imagerectangle</a> ― 矩形を描画する</li><li><a href="function.imagerotate.html">imagerotate</a> ― 指定された角度で画像を回転する</li><li><a href="function.imagesavealpha.html">imagesavealpha</a> ― PNG 画像を保存する際に（単一色の透過設定ではない）完全な
+   アルファチャネル情報を保存するフラグを設定する</li><li><a href="function.imagesetbrush.html">imagesetbrush</a> ― 線の描画用にブラシイメージを設定する</li><li><a href="function.imagesetpixel.html">imagesetpixel</a> ― 点を生成する</li><li><a href="function.imagesetstyle.html">imagesetstyle</a> ― 線描画用のスタイルを設定する</li><li><a href="function.imagesetthickness.html">imagesetthickness</a> ― 線描画用の線幅を設定する</li><li><a href="function.imagesettile.html">imagesettile</a> ― 塗りつぶし用のイメージを設定する</li><li><a href="function.imagestring.html">imagestring</a> ― 文字列を水平に描画する</li><li><a href="function.imagestringup.html">imagestringup</a> ― 文字列を垂直に描画する</li><li><a href="function.imagesx.html">imagesx</a> ― 画像の幅を取得する</li><li><a href="function.imagesy.html">imagesy</a> ― 画像の高さを取得する</li><li><a href="function.imagetruecolortopalette.html">imagetruecolortopalette</a> ― TrueColor イメージをパレットイメージに変換する</li><li><a href="function.imagettfbbox.html">imagettfbbox</a> ― TypeType フォントを使用したテキストの bounding box を生成する</li><li><a href="function.imagettftext.html">imagettftext</a> ― TrueType フォントを使用してテキストを画像に書き込む</li><li><a href="function.imagetypes.html">imagetypes</a> ― この PHP がサポートしている画像形式を返す</li><li><a href="function.imagewbmp.html">imagewbmp</a> ― ブラウザまたはファイルにイメージを出力する</li><li><a href="function.imagexbm.html">imagexbm</a> ― XBM 画像をブラウザあるいはファイルに出力する</li><li><a href="function.iptcembed.html">iptcembed</a> ― バイナリ IPTC データを JPEG イメージに埋めこむ</li><li><a href="function.iptcparse.html">iptcparse</a> ― バイナリの IPTC ブロックのタグをパースする</li><li><a href="function.jpeg2wbmp.html">jpeg2wbmp</a> ― JPEG イメージファイルから WBMP イメージファイルに変換する</li><li><a href="function.png2wbmp.html">png2wbmp</a> ― PNG イメージファイルから WBMP イメージファイルに変換する</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.iis-stop-service.html">iis_stop_service</a></div>
+ <div class="next" style="float: right;"><a href="function.gd-info.html">gd_info</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>MySQLi を初期化し、mysqli_real_connect() で使用するリソースを返す</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mysqli-info.html">mysqli_info</a></div>
+ <div class="next" style="float: right;"><a href="function.mysqli-insert-id.html">mysqli_insert_id</a></div>
+ <div class="up"><a href="ref.mysqli.html">mysqli</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mysqli-init" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mysqli_init</h1>
+  <p class="verinfo">(PHP 5)</p><p class="refpurpose">mysqli_init ― MySQLi を初期化し、mysqli_real_connect() で使用するリソースを返す</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <p class="para">手続き型:</p>
+  <div class="methodsynopsis">
+   <span class="type">mysqli</span> <span class="methodname"><b><b>mysqli_init</b></b></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+
+  <p class="para">オブジェクト指向型 (メソッド):</p>
+  <div class="classsynopsis">
+   <div class="ooclass"><b class="classname">mysqli</b></div>
+   <div class="methodsynopsis">
+    <span class="type">mysqli</span> <span class="methodname"><b><b>init</b></b></span>
+     ( <span class="methodparam">void</span>
+    )</div>
+
+  </div>
+  <p class="para">
+   <a href="function.mysqli-options.html" class="function">mysqli_options()</a> および <a href="function.mysqli-real-connect.html" class="function">mysqli_real_connect()</a>
+   で使用可能な MYSQL オブジェクトを割り当て、初期化します。
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    <a href="function.mysqli-real-connect.html" class="function">mysqli_real_connect()</a> がコールされるまで、これ以降の
+    あらゆる mysqli 関数コールは失敗します（<a href="function.mysqli-options.html" class="function">mysqli_options()</a>
+    は除きます）。
+   <br />
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   オブジェクトを返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.mysqli-options.html" class="function">mysqli_options()</a></li>
+    <li class="member"><a href="function.mysqli-close.html" class="function">mysqli_close()</a></li>
+    <li class="member"><a href="function.mysqli-real-connect.html" class="function">mysqli_real_connect()</a></li>
+    <li class="member"><a href="function.mysqli-connect.html" class="function">mysqli_connect()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mysqli-info.html">mysqli_info</a></div>
+ <div class="next" style="float: right;"><a href="function.mysqli-insert-id.html">mysqli_insert_id</a></div>
+ <div class="up"><a href="ref.mysqli.html">mysqli</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,235 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>MySQL サーバへの持続的な接続をオープンする</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mysql-num-rows.html">mysql_num_rows</a></div>
+ <div class="next" style="float: right;"><a href="function.mysql-ping.html">mysql_ping</a></div>
+ <div class="up"><a href="ref.mysql.html">MySQL</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mysql-pconnect" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mysql_pconnect</h1>
+  <p class="verinfo">(PHP 4, PHP 5, PECL mysql:1.0)</p><p class="refpurpose">mysql_pconnect ― MySQL サーバへの持続的な接続をオープンする</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">resource</span> <span class="methodname"><b><b>mysql_pconnect</b></b></span>
+    ([ <span class="methodparam"><span class="type">string</span> <tt class="parameter">$server</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$username</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$password</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$client_flags</tt></span>
+  ]]]] )</div>
+
+  
+  <p class="para">
+   MySQL サーバとの持続的な接続を確立します。
+  </p>
+  
+  <p class="para">
+   <b>mysql_pconnect()</b>は、
+   <a href="function.mysql-connect.html" class="function">mysql_connect()</a>とよく似た動作をしますが、
+   2 つの大きな違いがあります。
+  </p>
+  <p class="para">
+   1 番目の違いとして、この関数は接続時にまず
+   同じホスト、ユーザ名、パスワードを有する(持続的)リンクが
+   すでにオープンされていないかどうかを調べます。
+   それがみつかった場合、新規の接続をオープンする代わりに
+   そのリンクの ID が返されます。
+  </p>
+  <p class="para">
+   2 番目の違いは、スクリプトの実行が終了しても SQL サーバとの接続が
+   閉じられないということです。そのかわりに、将来再利用されるために
+   リンクがオープンされたままとなります（<a href="function.mysql-close.html" class="function">mysql_close()</a>
+   は、<b>mysql_pconnect()</b> によって確立されたリンクを
+   閉じません）。
+  </p>
+  <p class="para">
+   このため、この型のリンクは、&#039;持続的(persistent)&#039;であると言われます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">server</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       MySQL サーバ。&quot;hostname:port&quot; のようにポート番号を
+       指定することが可能で、localhost では &quot;:/path/to/socket&quot;
+       のようにソケットへのパスを指定することも可能です。
+     </p>
+      <p class="para">
+       PHP ディレクティブ <a href="ref.mysql.html#ini.mysql.default-host" class="link">
+       mysql.default_host</a> が指定されない場合（デフォルト）、
+       &#039;localhost:3306&#039; が使用されます。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">username</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       ユーザ名。デフォルト値はサーバプロセスの所有ユーザ名です。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">password</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       パスワード。デフォルト値は空のパスワードです。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">client_flags</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       パラメータ <i><tt class="parameter">client_flags</tt></i>
+ は、
+       以下の定数の組み合わせです：
+       128 (<i class="literal">LOAD DATA LOCAL</i> の処理を有効にする)、
+       <b><tt>MYSQL_CLIENT_SSL</tt></b>、
+       <b><tt>MYSQL_CLIENT_COMPRESS</tt></b>、
+       <b><tt>MYSQL_CLIENT_IGNORE_SPACE</tt></b> または
+       <b><tt>MYSQL_CLIENT_INTERACTIVE</tt></b>
+      </p>
+     </dd>
+
+    </dt>
+ 
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に MySQL 持続的リンク ID を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">4.3.0</td>
+       <td colspan="1" rowspan="1" align="left">
+        パラメータ <i><tt class="parameter">client_flags</tt></i>
+ が追加されました。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">3.0.10</td>
+       <td colspan="1" rowspan="1" align="left">
+        <i><tt class="parameter">server</tt></i>
+ に、&quot;:/path/to/socket&quot;
+        のサポートが追加されました。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">3.0.0</td>
+       <td colspan="1" rowspan="1" align="left">
+        <i><tt class="parameter">server</tt></i>
+ に、&quot;:port&quot;
+        のサポートが追加されました。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    この接続方法は、モジュールバージョンの PHP でのみ使用可能であることに
+    注意しましょう。詳しい情報は
+    <a href="features.persistent-connections.html" class="link">持続的
+    データベース接続</a> を参照ください。
+   <br />
+  </p></blockquote>
+  <div class="warning"><b class="warning">警告</b>
+   <p class="para">
+    持続的接続を利用する場合、MySQL の同時接続数の制限をこえないように
+    Apache や MySQL の設定を多少変更する必要があるかも知れません。
+   </p>
+  </div>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    関数名の前に
+    <a href="language.operators.errorcontrol.html" class="link">@</a>
+    を追加すると、失敗した場合のエラーメッセージを抑制できます。
+   <br />
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.mysql-connect.html" class="function">mysql_connect()</a></li>
+    <li class="member"><a href="features.persistent-connections.html" class="link">Persistent
+    Database Connections</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mysql-num-rows.html">mysql_num_rows</a></div>
+ <div class="next" style="float: right;"><a href="function.mysql-ping.html">mysql_ping</a></div>
+ <div class="up"><a href="ref.mysql.html">MySQL</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

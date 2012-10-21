@@ -1,0 +1,777 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>SESAM データベース関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.shm-remove.html">shm_remove</a></div>
+ <div class="next" style="float: right;"><a href="function.sesam-affected-rows.html">sesam_affected_rows</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">SESAM データベース関数</h1>
+  
+
+  <div class="partintro">
+   <div id="sesam.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     SESAM/SQL-Server は、ドイツの Fujitsu Siemens Computers により
+     開発されたメインフレーム上のデータベースシステムです。この
+     データベースは、ハイエンドのメインフレーム上でオペレーティングシステム
+     BS2000/OSD を使用して動作します。
+    </p>
+    <p class="para">
+     数多くの BS2000 システムにて実運用され、SESAM/SQL-Server は以下の
+     事項を実証しています。
+     <ul class="itemizedlist">
+      <li class="listitem">
+       <span class="simpara">
+        Java、Web ベースのクライアント/サーバ接続が簡単に可能。
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        99.99% 以上の確率で有効に動作する能力。
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        数万から数十万のユーザを管理する能力。
+       </span>
+      </li>
+    </ul>
+    </p>
+    <p class="para">
+     PHP スクリプトによるデータベース処理を可能にする PHP 3 SESAM
+     インターフェースが利用可能です。
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     <span class="simpara">
+      SESAMへのアクセスは、CVS 版の PHP 3 でのみ可能です。
+      PHP 4 は、SESAM データベースをサポートしません。
+     </span>
+    </p></blockquote>
+   </div>
+
+   
+
+
+<div id="sesam.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+    <dl>
+
+     
+     <dt id="ini.sesam-oml">
+      <span class="term">
+       <i><tt class="parameter">sesam_oml</tt></i>
+
+       <a href="language.types.string.html" class="type string">string</a>
+      </span>
+      <dd>
+
+       <p class="para">
+        ロード可能な SESAM ドライバモジュールを含む BS2000 PLAM
+        ライブラリの名前です。SESAM 関数を使用する際に必要です。
+        BS2000 PLAMライブラリは、ACCESS=READ,SHARE=YES に設定する必要が
+        あります。これは、Apache サーバのユーザ ID により
+        読み込み可能とする必要があるためです。
+       </p>
+      </dd>
+
+     </dt>
+
+     
+     <dt id="ini.sesam-configfile">
+      <span class="term">
+       <i><tt class="parameter">sesam_configfile</tt></i>
+
+       <a href="language.types.string.html" class="type string">string</a>
+      </span>
+      <dd>
+
+       <p class="para">
+        SESAM アプリケーション設定ファイルの名前です。SESAM 関数を
+        使用する際に必要です。BS2000 ファイルは、Apache のユーザ ID
+        により読み込み可能である必要があります。
+       </p>
+       <p class="para">
+        アプリケーション設定ファイルは、通常、次のような設定を
+        含んでいます (SESAM リファレンスマニュアルを参照ください)。
+        <div class="informalexample">
+         <div class="example-contents">
+<div class="cdata"><pre>
+CNF=B
+NAM=K
+NOTYPE
+</pre></div>
+                 </div>
+
+        </div>
+       </p>
+      </dd>
+
+     </dt>
+
+     
+     <dt id="ini.sesam-messagecatalog">
+      <span class="term">
+       <i><tt class="parameter">sesam_messagecatalog</tt></i>
+
+       <a href="language.types.string.html" class="type string">string</a>
+      </span>
+      <dd>
+
+       <p class="para">
+        SESAM メッセージカタログファイルの名前。多くの場合、この
+        ディレクティブは不要です。SESAM メッセージファイルがシステムの
+        BS2000 メッセージファイルテーブルにインストールされていない
+        場合にのみこのディレクティブを設定することが可能です。
+       </p>
+       <p class="para">
+        メッセージカタログは、ACCESS=READ,SHARE=YES に設定する必要が
+        あります。これは、Apache サーバのユーザ ID から読み込み可能と
+        しなければならないためです。
+       </p>
+      </dd>
+
+     </dt>
+
+     
+    </dl>
+
+ </div>
+
+
+
+
+   <div id="sesam.config-notes" class="section">
+    <h2 class="title">設定上の注意</h2>
+    <p class="para">
+     PHP SESAM インターフェースは、スタンドアロン版をサポートしていません。
+     Apache モジュール版として組み込まれた場合のみ動作します。Apache
+     PHP モジュールにおいて、<a href="ref.sesam.html#sesam.configuration" class="link">SESAM
+     インターフェース</a> は Apache 用 ディレクティブにより設定されます。
+     <table border="5">
+      <caption><b>SESAM 設定用ディレクティブ</b></caption>
+      <colgroup>
+
+       <thead valign="middle">
+        <tr valign="middle">
+         <th colspan="1">ディレクティブ</th>
+         <th colspan="1">意味</th>
+        </tr>
+
+       </thead>
+
+       <tbody valign="middle">
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left"><i class="literal">php3_sesam_oml</i></td>
+         <td colspan="1" rowspan="1" align="left">
+          ロード可能な SESAM ドライバモジュールが含まれる BS2000 PLAM
+          ライブラリの名前です。SESAM 関数を使用するために必要です。
+          <p class="para">
+          例:
+          <div class="informalexample">
+           <div class="example-contents">
+<div class="cdata"><pre>
+php3_sesam_oml $.SYSLNK.SESAM-SQL.030
+</pre></div>
+           </div>
+
+          </div>
+         </p>
+       </td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left"><i class="literal">php3_sesam_configfile</i></td>
+     <td colspan="1" rowspan="1" align="left">
+      SESAM アプリケーション設定ファイルの名前です。SESAM 関数を
+      使用する際に必要です。
+       <p class="para">
+        例:
+        <div class="informalexample">
+         <div class="example-contents">
+<div class="cdata"><pre>
+php3_sesam_configfile $SESAM.SESAM.CONF.AW
+</pre></div>
+         </div>
+
+        </div>
+        通常、次のような設定が含まれます (SESAM リファレンス
+        マニュアルを参照ください)。
+        <div class="informalexample">
+         <div class="example-contents">
+<div class="cdata"><pre>
+CNF=B
+NAM=K
+NOTYPE
+</pre></div>
+         </div>
+
+        </div>
+       </p>
+     </td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left"><i class="literal">php3_sesam_messagecatalog</i></td>
+     <td colspan="1" rowspan="1" align="left">
+      SESAM メッセージカタログファイルの名前です。多くの場合、
+      このディレクティブは不要です。SESAM メッセージファイルがシステムの
+      BS2000 メッセージファイルテーブルにインストールされていない
+      場合にのみ、このディレクティブを設定することが可能です。
+       <p class="para">
+        例:
+        <div class="informalexample">
+         <div class="example-contents">
+<div class="cdata"><pre>
+php3_sesam_messagecatalog $.SYSMES.SESAM-SQL.030
+</pre></div>
+         </div>
+
+        </div>
+       </p>
+     </td>
+    </tr>
+
+       </tbody>
+      </colgroup>
+
+     </table>
+
+    </p>
+    <p class="para">
+     PHP/SESAM インターフェースの設定に加えて、メインフレーム上の SESAM
+     データベースサーバ自体を設定する必要があります。これは、
+     次のようになります。
+     <ul class="itemizedlist">
+      <li class="listitem">
+       <span class="simpara">
+        SESAM データベースハンドラ (DBH) を開始
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        SESAM データベースハンドラを指定して、データベースに接続
+       </span>
+      </li>
+     </ul>
+    </p>
+    <p class="para">
+     PHP スクリプトとデータベースハンドラの間の接続を得るには、選択した
+     SESAM 設定ファイルのパラメータ <i class="literal">CNF</i> および
+     <i class="literal">NAM</i> が実行中のデータベースハンドラの ID に
+     一致している必要があります。
+    </p>
+    <p class="para">
+     分散型データベースの場合、ホストおよびデータベース名を有する
+     分配テーブルを指定して SESAM/SQL-DCN エージェントを開始する必要が
+     あります。
+    </p>
+    <p class="para">
+     (POSIX サブシステムで実行されている) PHP と (POSIX サブシステムの外で
+     実行されている) データベースハンドラの間の通信は、SQLSCI という名前の
+     特別なドライバモジュールと通常メモリを使用するSESAM接続モジュールで
+     実現されます。通常メモリアクセスのため、そして、PHP は Web
+     サーバの静的部分であるため、ODBC、JDBC、UTM 経由のリモートアクセスは
+     不要であり、データベースへのアクセスは非常に高速です。
+    </p>
+    <p class="para">
+     スモールスタブローダ (SESMOD) のみが PHP にリンクされており、SESAM
+     接続モジュールは SESAM の OML PLAM ライブラリからロードされます。
+     <a href="ref.sesam.html#sesam.configuration" class="link">設定</a>の際、この PLAM
+     ライブラリの名前と SESAM 設定ファイルを使用するためのファイルリンクを
+     PHP に指定する必要があります (SESAM V3.0 において、SQLSCI は標準配布の
+     SESAM ツールライブラリから入手可能です)。
+    </p>
+    <p class="para">
+     SQL コマンドにおけるシングルクオートのクオートは、(シングルクオートの
+     前にバックスラッシュを付加するのではなく) シングルクオートを
+     2 つ重ねて使用するため、SESAM インターフェースを使用する全ての PHP
+     スクリプトについて、PHP 設定ディレクティブで <a href="ref.info.html#ini.magic-quotes-gpc" class="link"><i class="literal">php3_magic_quotes_gpc</i></a>
+     および <a href="ref.sybase.html#ini.magic-quotes-sybase" class="link">
+     <i class="literal">php3_magic_quotes_sybase</i></a> を
+     <i class="literal">On</i> にしておく方が賢明でしょう。
+    </p>
+   </div>
+ 
+   <div id="sesam.runtime" class="section">
+    <h2 class="title">実行時の考慮</h2>
+    <p class="para">
+     BS2000 モデルの制限のために、ドライバは、Apache サーバがその
+     サーバの子プロセスをフォークした後にのみロード可能となります。
+     これは、各子プロセスの最初の SESAM リクエストを若干遅くしますが、
+     その後のアクセスへの応答は最高速度となります。
+    </p>
+    <p class="para">
+     SESAM 用のメッセージカタログを明示的に定義した場合、そのカタログは
+     ドライバがロードされる度 (すなわち、最初の SESAM リクエスト時)
+     にロードされます。BS2000 オペレーティングシステムはメッセージカタログの
+     ロードに成功した後にメッセージを出力します。このメッセージは、
+     Apache の error_log ファイルに送信されます。BS2000 は、現在
+     このメッセージの出力を停止することができません。このため、
+     ログを段々と埋めていきます。
+    </p>
+    <p class="para">
+     SESAM OML PLAM ライブラリと SESAM 設定ファイルは、Web サーバを
+     実行しているユーザ ID から読み込み可能であることを確認してください。
+     そうでない場合、サーバはドライバをロードすることができず、SESAM
+     関数をコールすることができません。また、Apache サーバを実行している
+     ユーザ ID にデータベースへのアクセスが許可されている必要があります。
+     そうでない場合、SESAM データベースハンドラへの接続は失敗します。
+    </p>
+   </div>
+
+   <div id="sesam.cursor-types" class="section">
+    <h2 class="title">カーソル型</h2>
+    <p class="para">
+     SQL &quot;select 型&quot;クエリ用に確保された結果カーソルは、&quot;sequential&quot;
+     または &quot;scrollable&quot; のどちらかとすることが可能です。&quot;scrollable&quot;
+     カーソルで必要なメモリオーバヘッドはより大きいため、デフォルトは
+     &quot;sequential&quot; です。
+    </p>
+    <p class="para">
+     &quot;scrollable&quot; カーソルを使用した場合、カーソルは結果集合の中で自由に
+     移動可能です。各 &quot;scrollable&quot; クエリについて、スクロール型の
+     グローバルなデフォルト値 (<i class="literal">SESAM_SEEK_NEXT</i>
+     に初期化されます) があり、スクロールオフセットは、
+     <a href="function.sesam-seek-row.html" class="function">sesam_seek_row()</a> により一回設定されるか、
+     <a href="function.sesam-fetch-row.html" class="function">sesam_fetch_row()</a> によりレコードを取得する度に
+     設定されるかのどちらかです。&quot;scrollable&quot; カーソルを使用して
+     レコードを取得する際に、スクロール型およびスクロールオフセットの
+     グローバルデフォルト値について次のような後処理が行われます。
+     <table border="5">
+      <caption><b>スクロール後のカーソルに関する後処理</b></caption>
+      <colgroup>
+
+       <thead valign="middle">
+        <tr valign="middle">
+         <th colspan="1">スクロール型</th>
+         <th colspan="1">動作</th>
+        </tr>
+
+       </thead>
+
+       <tbody valign="middle">
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left"><i class="literal">SESAM_SEEK_NEXT</i></td>
+         <td colspan="1" rowspan="1" align="left">なし</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left"><i class="literal">SESAM_SEEK_PRIOR</i></td>
+         <td colspan="1" rowspan="1" align="left">なし</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left"><i class="literal">SESAM_SEEK_FIRST</i></td>
+         <td colspan="1" rowspan="1" align="left">
+          スクロール型を <i class="literal">SESAM_SEEK_NEXT</i> に設定
+         </td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left"><i class="literal">SESAM_SEEK_LAST</i></td>
+         <td colspan="1" rowspan="1" align="left">
+          スクロール型を <i class="literal">SESAM_SEEK_PRIOR</i> に設定
+         </td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left"><i class="literal">SESAM_SEEK_ABSOLUTE</i></td>
+         <td colspan="1" rowspan="1" align="left">
+           内部オフセット値を自動的に増加させる
+         </td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left"><i class="literal">SESAM_SEEK_RELATIVE</i></td>
+         <td colspan="1" rowspan="1" align="left">
+          なし (グローバルデフォルト値 <i><tt class="parameter">offset</tt></i>
+
+          を保持する。これにより、例えば、10 個前のレコードを取得すると
+          いったことが可能になります)。
+         </td>
+        </tr>
+
+       </tbody>
+      </colgroup>
+
+     </table>
+
+    </p>
+   </div>
+
+   <div id="sesam.porting-note" class="section">
+    <h2 class="title">移植上の注意</h2>
+    <p class="para">
+     PHP では配列の添字は (1 よりも) 0 から始まるのが普通なため、
+     いくつかの調整が SESAM インターフェースで行われています。
+     ある添字配列がネイティブの SESAM インターフェースで添字 1 から始まる
+     際には、PHP インターフェースでは最初の添字として 0 を使用します。
+     例えば、<a href="function.sesam-fetch-row.html" class="function">sesam_fetch_row()</a> でカラムを取得する際に、
+     最初のカラムの添字は 0 であり、その後のカラム番号はカラム数
+     ($array[&quot;count&quot;]) に達するまで (カラム数は含まず) 増えていきます。
+     SESAM アプリケーションを他の高級言語から PHP に移植する際には、この
+     インターフェース上の変更に留意する必要があります。各 PHP sesam
+     関数の説明の適切な場所に添字が 0 から始まるという注意が含まれています。
+    </p>
+   </div>
+
+   <div id="sesam.security" class="section">
+    <h2 class="title">セキュリティの考慮</h2>
+    <p class="para">
+     SESAM データベースへのアクセスが可能な場合、Web サーバのユーザは、
+     可能な限り小さな権限のみを有している必要があります。多くの
+     データベースでは許可する必要があるのは読み込み権限のみです。
+     使用する設定に応じて状況に見合ったアクセス権限を追加してください。
+     決してインターネットからの全てのユーザに全てのデータベースへの
+     完全な制御権を許可しないでください! データベースを管理する PHP
+     スクリプトへのアクセス制限は、パスワード制限または
+     SSL セキュリティにより制限してください。
+    </p>
+   </div>
+
+   <div id="sesam.migration" class="section">
+    <h2 class="title">他の SQL データベースからの移行</h2>
+    <p class="para">
+     SQL には方言があるため 100% 互換ではありません。他のデータベース
+     インターフェースから SQL アプリケーションを SESAM に移植する際には、
+     いくつかの修正が必要になる可能性があります。次のような典型的な差異に
+     注意する必要があります。
+     <ul class="itemizedlist">
+      <li class="listitem">
+       <span class="simpara">ベンダ固有のデータ型</span>
+       <span class="simpara">
+        いくつかのベンダ固有のデータ型は、標準 SQL のデータ型で
+        置換する必要があります (例えば、<i class="literal">TEXT</i> は
+        <i class="literal">VARCHAR(max. size)</i> で置換可能です)。
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">SQL 識別子と同じキーワード</span>
+       <span class="simpara">
+        SESAM では (標準 SQL と同様に) このような ID は二重引用符で括る
+        (もしくは名前を変える) 必要があります。
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">データ型の表示長</span>
+       <span class="simpara">
+        SESAM データ型は表示長ではなく、ある精度を有しています。
+        <i class="literal">int(4)</i> (意図された使用法: &#039;9999&#039; までの整数)
+        の代わりに、SESAM は単に 31 ビット長の <i class="literal">int</i>
+        を要求します。また、SESAMで利用可能な日付時刻型は次のものだけです。
+        <i class="literal">DATE</i>、<i class="literal">TIME(3)</i>、
+        <i class="literal">TIMESTAMP(3)</i>。
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        ベンダ固有の SQL 型 <i class="literal">unsigned</i>、
+        <i class="literal">zerofill</i>、<i class="literal">auto_increment</i> 
+        属性
+       </span>
+       <span class="simpara">
+        <i class="literal">unsigned</i> と <i class="literal">zerofill</i> は
+        サポートされません。<i class="literal">auto_increment</i> は自動です。
+        (SESAM に実装された自動インクリメントの利点を活かすために、
+        <i class="literal">&quot;... VALUES(0,...)&quot;</i> の代わりに
+        <i class="literal">&quot;INSERT ... VALUES(*, ...)&quot;</i> を使用してください)。
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara"><strong class="command">int ... DEFAULT &#039;0000&#039;</strong></span>
+       <span class="simpara">
+        数値変数は、文字列定数で初期化するべきではありません。代わりに
+        <strong class="command">DEFAULT 0</strong> を使用してください。SQL データ型
+        datetime の変数を初期化する際、初期化文字列には、次のように
+        適当な型キーワードを前に付加する必要があります。
+        <i class="literal"> CREATE TABLE exmpl (
+                xtime timestamp(3) DEFAULT TIMESTAMP &#039;1970-01-01 00:00:00.000&#039; NOT NULL;
+                ); 
+        </i>
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara"><strong class="command">$count = xxxx_num_rows();</strong></span>
+       <span class="simpara">
+        いくつかのデータベースは、返される値が著しく不正確であるとしても、
+        クエリ結果のレコード数を推定または見積もろうとします。
+        SESAM はクエリ結果のレコード数を実際に取得する前に知ることは
+        ありません。その数が実際に必要な場合には、
+        <strong class="command">SELECT COUNT(...) WHERE ...</strong> を試してみて
+        ください。このクエリは、ヒット数を取得します。2 番目のクエリは
+        (理想的には)結果を返します。
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara"><strong class="command">DROP TABLE thename;</strong></span>
+       <span class="simpara">
+        SESAMでは、<strong class="command">DROP TABLE</strong> においてテーブル名の
+        後にキーワード <i class="literal">RESTRICT</i> または
+        <i class="literal">CASCADE</i> のどちらかを後に付加する必要が
+        あります。<i class="literal">RESTRICT</i> を指定した場合、(VIEW
+        のような) 依存するオブジェクトがある場合にエラーが返されます。
+        また、<i class="literal">CASCADE</i> を指定した場合、依存する
+        オブジェクトは指定したテーブルから削除されます。
+       </span>
+      </li>
+     </ul>
+    </p>
+   </div>
+
+   <div id="sesam.sql-types" class="section">
+    <h2 class="title">
+     様々な SQL 型を使用する場合の注意
+    </h2>
+    <p class="para">
+     SESAM は現在 BLOB 型をサポートしていません。SESAM の将来の
+     バージョンは、BLOBをサポートする予定です。
+    </p>
+    <p class="para">
+     PHP インターフェースでは、SQL フィールドを取得する際に次の型変換が
+     自動的に適用されます。
+     <table border="5">
+      <caption><b>SQL から PHP への型変換</b></caption>
+      <colgroup>
+
+       <thead valign="middle">
+        <tr valign="middle">
+         <th colspan="1">SQL 型</th>
+         <th colspan="1">PHP 型</th>
+        </tr>
+
+       </thead>
+
+       <tbody valign="middle">
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">SMALLINT, INTEGER</td>
+         <td colspan="1" rowspan="1" align="left"><a href="language.types.integer.html" class="type integer">integer</a></td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">NUMERIC, DECIMAL, FLOAT, REAL, DOUBLE</td>
+         <td colspan="1" rowspan="1" align="left"><a href="language.types.float.html" class="type float">float</a></td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">DATE, TIME, TIMESTAMP</td>
+         <td colspan="1" rowspan="1" align="left"><a href="language.types.string.html" class="type string">string</a></td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">VARCHAR, CHARACTER</td>
+         <td colspan="1" rowspan="1" align="left"><a href="language.types.string.html" class="type string">string</a></td>
+        </tr>
+
+       </tbody>
+      </colgroup>
+
+     </table>
+
+     レコード全体を取得する際、結果は配列として返されます。空の
+     フィールドには値が入っていないため、個々のフィールド自体の存在を調べる
+     必要があります (空のフィールドかどうか調べるには、
+     <a href="function.isset.html" class="function">isset()</a> または <a href="function.empty.html" class="function">empty()</a> を
+     使用してください)。この手法は、(空のフィールドの表現として型の
+     文字列を使用するよりも) 空のフィールドの見え方をユーザが
+     制御することが可能となります。
+    </p>
+   </div>
+
+   <div id="sesam.multiple-fields" class="section">
+    <h2 class="title">SESAM の &quot;複数フィールド&quot; 機能のサポート</h2>
+    <p class="para">
+     SESAM 特有の&quot;複数フィールド&quot; 機能により、複数のフィールドの
+     配列からなるカラムを使用することが可能です。&quot;複数フィールド&quot;
+     カラムは、次のように作成可能です。
+     <div class="example">
+      <p><b>Example#1 &quot;複数フィールド&quot; カラムを作成する</b></p>
+      <div class="example-contents">
+<div class="cdata"><pre>
+CREATE TABLE multi_field_test (
+    pkey CHAR(20) PRIMARY KEY,
+    multi(3) CHAR(12)
+)
+</pre></div>
+      </div>
+
+     </div>
+     上のレコードに次のように代入することができます。
+     <div class="example">
+      <p><b>Example#2 &quot;複数フィールド&quot; カラムに代入する</b></p>
+      <div class="example-contents">
+<div class="cdata"><pre>
+INSERT INTO multi_field_test (pkey, multi(2..3) )
+    VALUES (&#039;Second&#039;, &lt;&#039;first_val&#039;, &#039;second_val&#039;&gt;)
+</pre></div>
+      </div>
+
+     </div>
+     (この場合のように) 先頭の空のサブフィールドは無視され、代入された
+     値は詰められることに注意してください。このため、上記の例の結果は、
+     multi(2..3) ではなく、multi(1..2) となります。
+    </p>
+    <p class="para">
+     結果レコードを取得する際、&quot;複数カラム&quot; は &quot;インラインの&quot; 付加カラム
+     のようにアクセスされます。上のにおいて、&quot;pkey&quot; は添字 0 を有し、3
+     つの &quot;multi(1..3)&quot; カラムは添字 1 から 3 でアクセス可能です。
+    </p>
+   </div>
+
+   <div id="sesam.seealso" class="section">
+   <h2 class="title">参考</h2>
+    <p class="para">
+     SESAM 固有の事項について詳細は、<a href="http://manuals.fujitsu-siemens.com/servers/bs2_man/man_us/sesam.htm" class="link external">&raquo; the
+      SESAM/SQL-Server ドキュメント(英語)</a> または
+     <a href="http://manuals.fujitsu-siemens.com/servers/bs2_man/man_de/sesam.htm" class="link external">&raquo; SESAM/SQL-Server ドキュメント(ドイツ語)
+     </a> を参照ください。共にオンラインで参照可能です。もしくは、
+     適当なマニュアルを使用してください。
+   </p>
+   </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.sesam-affected-rows.html">sesam_affected_rows</a> ― 直近のクエリにより作用されたレコードの数を得る</li><li><a href="function.sesam-commit.html">sesam_commit</a> ― SESAM データベースへの待機中の更新処理をコミットする</li><li><a href="function.sesam-connect.html">sesam_connect</a> ― SESAM データベース接続をオープンする</li><li><a href="function.sesam-diagnostic.html">sesam_diagnostic</a> ― 直近の SESAM コールに関するステータス情報を返す</li><li><a href="function.sesam-disconnect.html">sesam_disconnect</a> ― SESAM 接続から切り離す</li><li><a href="function.sesam-errormsg.html">sesam_errormsg</a> ― 直近の SESAM コールのエラーメッセージを返す</li><li><a href="function.sesam-execimm.html">sesam_execimm</a> ― SQL 命令を直ちに実行する</li><li><a href="function.sesam-fetch-array.html">sesam_fetch_array</a> ― 連想配列としてレコードを 1 件取得する</li><li><a href="function.sesam-fetch-result.html">sesam_fetch_result</a> ― クエリ結果の全てあるいは一部を返す</li><li><a href="function.sesam-fetch-row.html">sesam_fetch_row</a> ― 1 件分のレコードを配列として取得する</li><li><a href="function.sesam-field-array.html">sesam_field_array</a> ― 結果の個々のカラムに関するメタ情報を返す</li><li><a href="function.sesam-field-name.html">sesam_field_name</a> ― 結果集合のカラム名を返す</li><li><a href="function.sesam-free-result.html">sesam_free_result</a> ― クエリに関するリソースを開放する</li><li><a href="function.sesam-num-fields.html">sesam_num_fields</a> ― 結果集合のフィールド/カラム数を返す</li><li><a href="function.sesam-query.html">sesam_query</a> ― SESAM SQL クエリを実行し、結果を準備する</li><li><a href="function.sesam-rollback.html">sesam_rollback</a> ― SESAM データベースに対する待機中の更新を破棄する</li><li><a href="function.sesam-seek-row.html">sesam_seek_row</a> ― 連続的に取得する際にスクロール可能なカーソルモードに設定する</li><li><a href="function.sesam-settransaction.html">sesam_settransaction</a> ― SESAM トランザクションパラメータを設定する</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.shm-remove.html">shm_remove</a></div>
+ <div class="next" style="float: right;"><a href="function.sesam-affected-rows.html">sesam_affected_rows</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>proc_open
+  で開かれたプロセスに関する情報を取得する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.proc-close.html">proc_close</a></div>
+ <div class="next" style="float: right;"><a href="function.proc-nice.html">proc_nice</a></div>
+ <div class="up"><a href="ref.exec.html">プログラム実行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.proc-get-status" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">proc_get_status</h1>
+  <p class="verinfo">(PHP 5)</p><p class="refpurpose">proc_get_status ― <a href="function.proc-open.html" class="function">proc_open()</a>
+  で開かれたプロセスに関する情報を取得する</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">array</span> <span class="methodname"><b><b>proc_get_status</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$process</tt></span>
+   )</div>
+
+  <p class="para">
+   <b>proc_get_status()</b> は、<a href="function.proc-open.html" class="function">proc_open()</a>
+   で開かれたプロセスに関する情報を取得します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">process</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       評価される <a href="function.proc-open.html" class="function">proc_open()</a> <span class="type リソース">リソース</span>
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功時は集められた情報の<span class="type 配列">配列</span>、失敗時は <b><tt>FALSE</tt></b> 。
+   返される配列は次のような要素を持ちます:
+  </p>
+  <p class="para">
+  <table class="informaltable">
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle"><th colspan="1">要素</th><th colspan="1">型</th><th colspan="1">説明</th></tr>
+
+    </thead>
+
+    <tbody valign="middle">
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">command</td>
+      <td colspan="1" rowspan="1" align="left"><a href="language.types.string.html" class="type string">string</a></td>
+      <td colspan="1" rowspan="1" align="left">
+       <a href="function.proc-open.html" class="function">proc_open()</a> に指定されたコマンド文字列。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">pid</td>
+      <td colspan="1" rowspan="1" align="left"><a href="language.types.integer.html" class="type int">int</a></td>
+      <td colspan="1" rowspan="1" align="left">プロセス ID</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">running</td>
+      <td colspan="1" rowspan="1" align="left"><a href="language.types.boolean.html" class="type bool">bool</a></td>
+      <td colspan="1" rowspan="1" align="left">
+       もしプロセスがまだ動いている場合は、<b><tt>TRUE</tt></b> 、すでに終了している場合は
+       <b><tt>FALSE</tt></b>。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">signaled</td>
+      <td colspan="1" rowspan="1" align="left"><a href="language.types.boolean.html" class="type bool">bool</a></td>
+      <td colspan="1" rowspan="1" align="left">
+       子プロセスが、キャッチされていないシグナルにより終了した場合に
+       <b><tt>TRUE</tt></b> となります。Windows では常に <b><tt>FALSE</tt></b> にセットされます。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">stopped</td>
+      <td colspan="1" rowspan="1" align="left"><a href="language.types.boolean.html" class="type bool">bool</a></td>
+      <td colspan="1" rowspan="1" align="left">
+       子プロセスが、シグナルにより停止した時に <b><tt>TRUE</tt></b> となります。
+       Windows では常に <b><tt>FALSE</tt></b> にセットされます。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">exitcode</td>
+      <td colspan="1" rowspan="1" align="left"><a href="language.types.integer.html" class="type int">int</a></td>
+      <td colspan="1" rowspan="1" align="left">
+       プロセスが返した終了コード
+       (<i class="literal">running</i> が <b><tt>FALSE</tt></b> の時のみ意味を持ちます)。
+       正しい値を返すのは関数を最初にコールした時のみで、次に
+       コールした際には <i class="literal">-1</i> を返します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">termsig</td>
+      <td colspan="1" rowspan="1" align="left"><a href="language.types.integer.html" class="type int">int</a></td>
+      <td colspan="1" rowspan="1" align="left">
+       プロセスを終了させたシグナルの番号です (<i class="literal">signaled</i> が
+       <b><tt>TRUE</tt></b> の時のみ意味を持ちます)。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">stopsig</td>
+      <td colspan="1" rowspan="1" align="left"><a href="language.types.integer.html" class="type int">int</a></td>
+      <td colspan="1" rowspan="1" align="left">
+       プロセスを停止させたシグナルの番号です (<i class="literal">stopped</i> が
+       <b><tt>TRUE</tt></b> の時のみ意味を持ちます)。
+      </td>
+     </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.proc-open.html" class="function">proc_open()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.proc-close.html">proc_close</a></div>
+ <div class="next" style="float: right;"><a href="function.proc-nice.html">proc_nice</a></div>
+ <div class="up"><a href="ref.exec.html">プログラム実行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

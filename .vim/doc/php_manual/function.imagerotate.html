@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>指定された角度で画像を回転する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.imagerectangle.html">imagerectangle</a></div>
+ <div class="next" style="float: right;"><a href="function.imagesavealpha.html">imagesavealpha</a></div>
+ <div class="up"><a href="ref.image.html">イメージ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.imagerotate" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">imagerotate</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.3.0, PHP 5)</p><p class="refpurpose">imagerotate ― 指定された角度で画像を回転する</p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">resource</span> <span class="methodname"><b><b>imagerotate</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$source_image</tt></span>
+   , <span class="methodparam"><span class="type">float</span> <tt class="parameter">$angle</tt></span>
+   , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$bgd_color</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$ignore_transparent</tt></span>
+  ] )</div>
+
+  <p class="para">
+   画像 <i><tt class="parameter">source_image</tt></i>
+ を、
+   <i><tt class="parameter">angle</tt></i>
+ で指定された角度だけ回転します。
+  </p>
+  <p class="para">
+   回転の中心は画像の中心です。回転された画像はスケールダウンされるので、
+   回転された画像全体は対象画像にフィットします。縁はクリップされません。
+  </p>
+  <p class="para">
+  </p>
+ </div>
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">source_image</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       元画像のリンク。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">angle</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       回転角度。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">bgd_color</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       回転後、カバーされない部分の色。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">ignore_transparent</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       ゼロ以外を指定すると、透過色は無視されます
+       (その他の場合は保持されます)。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+  </p>
+ </div>
+
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">5.1.0</td>
+       <td colspan="1" rowspan="1" align="left">
+        <i><tt class="parameter">ignore_transparent</tt></i>
+ が追加されました。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 画像を 180 度回転する</b></p>
+    <div class="example-contents"><p>
+     この例は、画像を 180 度 - 上下逆さまに回転します
+    </p></div>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;ファイルと回転角<br /></span><span style="color: #0000BB">$filename&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'test.jpg'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$degrees&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">180</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">//&nbsp;コンテントタイプ<br /></span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">'Content-type:&nbsp;image/jpeg'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;読み込み<br /></span><span style="color: #0000BB">$source&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">imagecreatefromjpeg</span><span style="color: #007700">(</span><span style="color: #0000BB">$filename</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;回転<br /></span><span style="color: #0000BB">$rotate&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">imagerotate</span><span style="color: #007700">(</span><span style="color: #0000BB">$source</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$degrees</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;出力<br /></span><span style="color: #0000BB">imagejpeg</span><span style="color: #007700">(</span><span style="color: #0000BB">$rotate</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は、たとえば
+以下のようになります。</p></div>
+    <div class="mediaobject">
+     <div class="imageobject">
+      <img src="figures/image.imagerotate.jpg" />
+     </div>
+    </div>
+   </div>
+  </p>
+ </div>
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <blockquote><p><b class="note">注意</b>: <span class="simpara">この関数は、PHP がバンドル版の GD ライブラリで
+コンパイルされている場合のみ使用可能です。</span></p></blockquote>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.imagerectangle.html">imagerectangle</a></div>
+ <div class="next" style="float: right;"><a href="function.imagesavealpha.html">imagesavealpha</a></div>
+ <div class="up"><a href="ref.image.html">イメージ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,246 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>ファイルに関する情報を取得する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.set-file-buffer.html">set_file_buffer</a></div>
+ <div class="next" style="float: right;"><a href="function.symlink.html">symlink</a></div>
+ <div class="up"><a href="ref.filesystem.html">ファイルシステム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.stat" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">stat</h1>
+  <p class="verinfo">(PHP 4, PHP 5, PECL maxdb:7.5.00.24-7.6.00.38)</p><p class="refpurpose">stat ― ファイルに関する情報を取得する</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">array</span> <span class="methodname"><b><b>stat</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$filename</tt></span>
+   )</div>
+
+  <p class="para">
+   <i><tt class="parameter">filename</tt></i>
+で指定されたファイルに
+   ついての統計情報を取得します。
+   <i><tt class="parameter">filename</tt></i>
+ がシンボリックリンクの場合、
+   シンボリックリンクではなくファイルの実体の統計情報が返されます。
+  </p>
+  <p class="para">
+   <a href="function.lstat.html" class="function">lstat()</a>
+   はシンボリックリンクの統計情報を返すという違いを除いて
+   <b>stat()</b> と等価です。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">filename</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       ファイルへのパス。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   <table border="5">
+    <caption><b><b>stat()</b> と <a href="function.fstat.html" class="function">fstat()</a>
+    の結果のフォーマット</b></caption>
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">数値</th>
+       <th colspan="1">連想 (PHP 4.0.6 以上)</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">0</td>
+       <td colspan="1" rowspan="1" align="left">dev</td>
+       <td colspan="1" rowspan="1" align="left">デバイス番号</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">1</td>
+       <td colspan="1" rowspan="1" align="left">ino</td>
+       <td colspan="1" rowspan="1" align="left">inode 番号</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">2</td>
+       <td colspan="1" rowspan="1" align="left">mode</td>
+       <td colspan="1" rowspan="1" align="left">inode プロテクトモード</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">3</td>
+       <td colspan="1" rowspan="1" align="left">nlink</td>
+       <td colspan="1" rowspan="1" align="left">リンク数</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">4</td>
+       <td colspan="1" rowspan="1" align="left">uid</td>
+       <td colspan="1" rowspan="1" align="left">所有者のユーザ ID</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">5</td>
+       <td colspan="1" rowspan="1" align="left">gid</td>
+       <td colspan="1" rowspan="1" align="left">所有者のグループ ID</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">6</td>
+       <td colspan="1" rowspan="1" align="left">rdev</td>
+       <td colspan="1" rowspan="1" align="left">inode デバイス の場合、デバイスの種類(*)</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">7</td>
+       <td colspan="1" rowspan="1" align="left">size</td>
+       <td colspan="1" rowspan="1" align="left">バイト単位のサイズ</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">8</td>
+       <td colspan="1" rowspan="1" align="left">atime</td>
+       <td colspan="1" rowspan="1" align="left">最終アクセス時間 (Unix タイムスタンプ)</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">9</td>
+       <td colspan="1" rowspan="1" align="left">mtime</td>
+       <td colspan="1" rowspan="1" align="left">最終修正時間 (Unix タイムスタンプ)</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">10</td>
+       <td colspan="1" rowspan="1" align="left">ctime</td>
+       <td colspan="1" rowspan="1" align="left">最終 inode 変更時間 (Unix タイムスタンプ)</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">11</td>
+       <td colspan="1" rowspan="1" align="left">blksize</td>
+       <td colspan="1" rowspan="1" align="left">ファイル IO のブロックサイズ(*)</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">12</td>
+       <td colspan="1" rowspan="1" align="left">blocks</td>
+       <td colspan="1" rowspan="1" align="left">ブロックの確保数(*)</td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+
+   * st_blksize タイプをサポートするシステムでのみ有効です。
+   その他のシステム(例えば Windows)では -1 を返します。
+  </p>
+  <p class="para">
+   <b>stat()</b> はエラーの場合 <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 errors">
+  <h3 class="title">エラー / 例外</h3>
+  <p class="para">
+   失敗した場合は <b><tt>E_WARNING</tt></b> が発生します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">4.0.6</td>
+       <td colspan="1" rowspan="1" align="left">
+        数値添字の配列に加えて、
+        各パラメータ毎の連想配列としてもアクセスできるようになりました。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <blockquote><p><b class="note">注意</b>: <span class="simpara">この関数の結果は
+キャッシュされます。詳細は、<a href="function.clearstatcache.html" class="function">clearstatcache()</a>
+を参照してください。</span></p></blockquote>
+  <div class="tip"><b class="tip">ヒント</b><p class="simpara">
+<i class="literal">PHP 5.0.0</i> 以降、この関数は、
+<em class="emphasis">何らかの</em> URL ラッパーと組合せて使用することができます。
+どのラッパーが <b>stat()</b> ファミリーをサポートしているか
+のリストについては、<a href="wrappers.html" class="xref">サポートされるプロトコル/ラッパー</a> を参照してください。</p></div>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.lstat.html" class="function">lstat()</a></li>
+    <li class="member"><a href="function.fstat.html" class="function">fstat()</a></li>
+    <li class="member"><a href="function.filemtime.html" class="function">filemtime()</a></li>
+    <li class="member"><a href="function.filegroup.html" class="function">filegroup()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.set-file-buffer.html">set_file_buffer</a></div>
+ <div class="next" style="float: right;"><a href="function.symlink.html">symlink</a></div>
+ <div class="up"><a href="ref.filesystem.html">ファイルシステム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

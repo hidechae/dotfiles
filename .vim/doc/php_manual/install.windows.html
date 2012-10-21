@@ -1,0 +1,290 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>Windows システムへのインストール</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="install.macosx.client.html">Mac OS X クライアント用にコンパイルする</a></div>
+ <div class="next" style="float: right;"><a href="install.windows.installer.html">Windows インストーラ (PHP 5.1.0 以前)</a></div>
+ <div class="up"><a href="install.html">インストールと設定</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+   <h1>Windows システムへのインストール</h1>
+<h2>目次</h2><ul class="chunklist chunklist_chapter"><li><a href="install.windows.installer.html">Windows インストーラ (PHP 5.1.0 以前)</a></li><li><a href="install.windows.manual.html">マニュアルインストール</a></li><li><a href="install.windows.activescript.html">ActiveScript</a></li><li><a href="install.windows.iis.html">Microsoft IIS / PWS</a></li><li><a href="install.windows.apache1.html">Apache 1.3.x （Microsoft Windows 用）</a></li><li><a href="install.windows.apache2.html">Apache 2.0.x （Microsoft Windows 用）</a></li><li><a href="install.windows.sun.html">Sun, iPlanet, Netscape サーバ（Microsoft Windows 用）</a></li><li><a href="install.windows.omnihttpd.html">OmniHTTPd サーバ</a></li><li><a href="install.windows.sambar.html">Sambar サーバ（Microsoft Windows 用）</a></li><li><a href="install.windows.xitami.html">Xitami（Microsoft Windows 用）</a></li><li><a href="install.windows.building.html">ソースからのビルド</a></li><li><a href="install.windows.extensions.html">Windows 用 PHP 拡張モジュール</a></li></ul>
+
+   <p class="para">
+    本章は、Windows 98/Me および Windows NT/2000/XP に適用されます。
+    PHP は、Windows 3.1 などの 16 ビットのプラットフォームでは動作しません。
+    PHP がサポートする Windows プラットフォーム を Win32 と呼ぶことがあります。
+    Windows95 は PHP4.3.0 以降サポートされなくなりました。
+   </p>
+   <p class="para">
+    PHP を Windows にインストールするには、
+    <a href="install.windows.manual.html" class="link">マニュアルインストール</a> と 
+    <a href="install.windows.installer.html" class="link">インストーラによる方法</a> 
+    の 2 種類があります。
+   </p>
+   <p class="para">
+    Microsoft Visual Studio を持っていれば、オリジナルのソースコードから
+    PHP を <a href="install.windows.building.html" class="link">ビルドする</a> ことも可能です。
+   </p>
+   <p class="para">
+    Windows システムに PHP をインストールした後、機能を追加するために
+    <a href="install.windows.extensions.html" class="link">拡張モジュールのロード</a>
+    が必要な場合があります。
+   </p>
+   <div class="warning"><b class="warning">警告</b>
+    <p class="para">
+     インターネットでオールインワンのインストーラがいくつか見かけられます。
+     しかし、いずれも PHP.net により公認されたものではありません。
+     システムを最適化し、また、安全を保つためには、
+     <a href="http://www.php.net/downloads.php" class="link external">&raquo; http://www.php.net/downloads.php</a>
+     にある公式 windows パッケージのいずれかを使用することが
+     もっとも良い選択ではないかと我々は考えています。
+    </p>
+   </div>
+   
+   
+
+
+   <div id="install.windows.installer.msi" class="sect1">
+   <h2 class="title">Windows インストーラ (PHP 5.2 以降)</h2>
+    <p class="para">
+     Windows 用 PHP インストーラの最新版は、MSI 形式になっています。これは
+     Wix Toolkit (<a href="http://wix.sourceforge.net/" class="link external">&raquo; http://wix.sourceforge.net/</a>) で作成されています。
+     このインストーラは、インストールおよび PHP の設定、そして組み込みのモジュールと
+     <acronym title="PHP Extension and Application Repository">PECL</acronym> 拡張モジュールの設定だけでなく、
+     <acronym>IIS</acronym>、Apache そして Xitami
+     などといった多くのウェブサーバの設定も行います。
+    </p>
+    
+    <p class="simpara">
+     最初に、お好みの <acronym title="Hypertext Transfer Protocol">HTTP</acronym> (ウェブ)
+     サーバをシステムにインストールし、動作確認をします。
+     それから、次のうちのいずれかのインストール形式を選択します。
+    </p>
+    
+    <div id="install.windows.installer.msi.normal" class="sect2">
+    <h3 class="title">通常のインストール</h3>
+     <p class="para">
+      MSI インストーラを実行し、インストールウィザードの指示に従います。
+      まず最初に設定するウェブサーバを選択し、
+      それに伴って必要となる設定を行います。
+     </p>
+     
+     <p class="para">
+      次に、さまざまな機能や拡張モジュールの中から
+      インストールして有効にしたいものを選択します。
+      各項目のドロップダウンメニューで &quot;Will be installed on local 
+      hard drive&quot; を選択することで、その機能をインストールするかどうかを切り替えます。
+      &quot;Entire feature will be 
+      installed on local hard drive&quot; を選択すると、
+      その機能に関連するすべての機能がインストールされます
+      (たとえば &quot;PDO&quot; に対してこのオプションを選択すると、
+      すべての PDO ドライバがインストールされます)。
+     </p>
+     
+     <div class="warning"><b class="warning">警告</b>
+      <p class="para">
+       すべての項目をデフォルトでインストールしてしまうのはお勧めしません。
+       それらの多くは、適切に動作させるためには
+       PHP 以外の外部の依存性を解決する必要があるからです。
+       その代わりに、いったんインストールした後で
+       コントロールパネルの「プログラムの追加と削除」
+       で修復モードを使用して拡張モジュールを有効にするようにしましょう。
+      </p>
+     </div>
+     
+     <p class="para">
+      次に、インストーラは Windows で使用する PHP と <var class="filename">php.ini</var>
+      ファイルを設定し、ウェブサーバで PHP を使用できるように設定します。
+      現在インストーラがサポートしているのは IIS、
+      Apache、Xitami および Sambar Server のみです。
+      それ以外のウェブサーバを使用する場合は、自分で設定する必要があります。
+     </p>
+    </div>
+    
+    <div id="install.windows.installer.msi.silent" class="sect2">
+    <h3 class="title">サイレントインストール</h3>
+     <p class="para">
+      このインストーラはサイレンとモードもサポートしています。
+      このモードは、システム管理者が簡単に PHP 環境を構築する際に便利です。
+      サイレントモードは、次のようにして使用します。
+      <div class="example-contents"><pre>
+<div class="cdata"><pre>       
+msiexec.exe /i php-VERSION-win32-install.msi /q
+</pre></div>     
+      </pre></div>
+     </p>
+     <p class="para">
+      インストール先ディレクトリを設定するには、インストール時のパラメータとして指定します。
+      例えば、e:\php にインストールする場合は次のようになります。
+      <div class="example-contents"><pre>
+<div class="cdata"><pre>       
+msiexec.exe /i php-VERSION-win32-install.msi /q INSTALLDIR=e:\php
+</pre></div>     
+      </pre></div>
+      同様にして、Apache の設定ディレクトリ (APACHEDIR)
+      や Sambar Server のディレクトリ (SAMBARDIR)、
+      そして Xitami Server のディレクトリ (XITAMIDIR)
+      も指定することが可能です。
+     </p>
+     <p class="para">
+      また、インストールする機能を指定することもできます。例えば、
+      mysqli 拡張モジュールおよび CGI 実行ファイルをインストールするには次のようにします。
+      <div class="example-contents"><pre>
+<div class="cdata"><pre>       
+msiexec.exe /i php-VERSION-win32-install.msi /q ADDLOCAL=cgi,ext_php_mysqli
+</pre></div>     
+      </pre></div>
+     </p>
+     <p class="para">
+      現在、インストールする機能としてサポートされている項目は次のとおりです。
+      <div class="example-contents"><pre>
+<div class="cdata"><pre> 
+MainExecutable - php.exe 実行ファイル
+ScriptExecutable - php-win.exe 実行ファイル
+ext_php_* - 各種拡張モジュール (例: MySQL の場合は ext_php_mysql)
+apache13 - Apache 1.3 モジュール
+apache20 - Apache 2.0 モジュール
+apache22 - Apache 2,2 モジュール
+apacheCGI - Apache CGI 実行ファイル
+iis4ISAPI - IIS ISAPI モジュール
+iis4CGI - IIS CGI 実行ファイル
+NSAPI - Sun/iPlanet/Netscape サーバモジュール
+Xitami - Xitami CGI 実行ファイル
+Sambar - Sambar Server ISAPI モジュール
+CGI - php-cgi.exe 実行ファイル
+PEAR - PEAR インストーラ
+Manual - CHM 形式の PHP マニュアル
+</pre></div>
+      </pre></div>
+     </p>
+     <p class="para">
+      MSI インストーラをコマンドラインから使用する方法の詳細については
+      <a href="http://msdn.microsoft.com/library/en-us/msi/setup/command_line_options.asp" class="link external">&raquo; http://msdn.microsoft.com/library/en-us/msi/setup/command_line_options.asp</a>
+      を参照ください。
+     </p>
+    </div>
+    
+    <div id="install.windows.installer.msi.upgrade" class="sect2">
+    <h3 class="title">インストーラによる PHP のアップグレード</h3>
+    
+     <p class="para">
+      アップグレードの際も、ダブルクリックあるいはコマンドラインから通常どおりインストーラを実行します。
+      インストーラが現在のインストールオプションを読み取り、
+      現在インストールされているバージョンを削除してから
+      同じオプションで PHP をインストールしなおします。
+      インストールディレクトリのファイルを手動で置き換えるのではなく、
+      この方法で PHP をアップグレードすることを推奨します。
+     </p>
+    </div>
+    
+   </div>
+
+
+
+   
+
+
+
+   
+
+
+
+   
+
+
+
+   
+
+
+
+   
+
+
+   
+
+
+
+   
+
+
+
+
+
+
+
+   
+
+
+
+   
+
+
+
+   
+
+
+
+   
+
+
+
+   
+
+
+
+  
+
+
+
+   
+
+
+
+  
+
+
+
+   
+
+
+
+   
+
+
+
+   
+
+
+
+   
+
+
+
+   
+
+
+
+
+
+
+
+   
+
+
+
+   
+
+
+
+  
+  </div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="install.macosx.client.html">Mac OS X クライアント用にコンパイルする</a></div>
+ <div class="next" style="float: right;"><a href="install.windows.installer.html">Windows インストーラ (PHP 5.1.0 以前)</a></div>
+ <div class="up"><a href="install.html">インストールと設定</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

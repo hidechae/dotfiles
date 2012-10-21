@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>最初の結果 ID を返す</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ldap-first-attribute.html">ldap_first_attribute</a></div>
+ <div class="next" style="float: right;"><a href="function.ldap-first-reference.html">ldap_first_reference</a></div>
+ <div class="up"><a href="ref.ldap.html">LDAP</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.ldap-first-entry" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ldap_first_entry</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">ldap_first_entry ― 最初の結果 ID を返す</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">resource</span> <span class="methodname"><b><b>ldap_first_entry</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$link_identifier</tt></span>
+   , <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$result_identifier</tt></span>
+   )</div>
+
+  <p class="para">
+   結果内の最初のエントリのエントリ ID を返します。このエントリ ID を
+   <a href="function.ldap-next-entry.html" class="function">ldap_next_entry()</a> に渡し、
+   結果からそれ以降のエントリを取得します。
+  </p>
+  <p class="para">
+   LDAP 結果におけるエントリは、<b>ldap_first_entry()</b>
+   および <a href="function.ldap-next-entry.html" class="function">ldap_next_entry()</a> 関数を用いて連続的に
+   読み込まれます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">link_identifier</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <a href="function.ldap-connect.html" class="function">ldap_connect()</a> が返す LDAP リンク ID。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">result_identifier</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功時に最初のエントリに関する結果エントリ ID、エラーの場合に <b><tt>FALSE</tt></b>
+   を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.ldap-get-entries.html" class="function">ldap_get_entries()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ldap-first-attribute.html">ldap_first_attribute</a></div>
+ <div class="next" style="float: right;"><a href="function.ldap-first-reference.html">ldap_first_reference</a></div>
+ <div class="up"><a href="ref.ldap.html">LDAP</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

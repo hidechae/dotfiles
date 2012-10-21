@@ -1,0 +1,274 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>CURL, Client URL Library 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ctype-xdigit.html">ctype_xdigit</a></div>
+ <div class="next" style="float: right;"><a href="curl.constants.html">定数</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">CURL, Client URL Library 関数</h1>
+  
+
+  <div class="partintro">
+   <div id="curl.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     PHP は、Daniel Stenbergにより開発されたライブラリlibcurl をサポー
+     トします。このライブラリにより、多くの異なったプロトコルで様々なサー
+     バーと接続し、通信することが可能になります。libcurl は現在
+     http, https, ftp, gopher, telnet, dict, file, ldap プロトコルをサ
+     ポートしてします。libcurl は HTTPS 認証、HTTP POST、HTTP PUT、FTP
+     アップロード(これはPHPのftp拡張機能でも実行可能です)、HTTPフォーム
+     によるアップロード、プロキシ、クッキー、ユーザ名+パスワードによる
+     認証もサポートします。
+    </p>
+    <p class="para">
+     これらの関数は、PHP 4.0.2で追加されました。
+    </p>
+   </div>
+
+   <div id="curl.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">
+     PHP の cURL 関数を使用するためには、<a href="http://curl.haxx.se/" class="link external">&raquo; libcurl</a>
+     パッケージをインストールしておく必要があります。PHP は、
+     libcurl 7.0.2-beta 以降を必要とします。
+     PHP バージョン 4.2.3 以降、少なくとも libcurl バージョン
+     7.9.0 以降が必要となっています。
+     PHP 4.3.0 以降では、7.9.8 以降が必要です。
+     PHP 5.0.0 では、おそらく、libcurl 7.10.5 以降が必要となります。
+    </p>
+   </div>
+   
+   
+
+
+<div id="curl.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  PHP の cURL サポート機能を使用するには、<span class="option">--with-curl[=DIR]</span> を付けて PHP をコンパイル
+  しておく必要があります。ただし、DIR は、ディレクトリ lib および
+  include を有するディレクトリの場所となります。
+  ディレクトリ &quot;include&quot; には、&quot;curl&quot; という名前のフォルダがある
+  必要があり、そのフォルダにはファイル <var class="filename">easy.h</var>
+  および <var class="filename">curl.h</var> がある必要が
+  あります。<var class="filename">libcurl.a</var> という名前のファイルがディレクトリ &quot;lib&quot;
+  にある必要があります。PHP 4.3.0 以降、URL ストリームで cURL を使用するよう PHP を
+  設定するために <span class="option">--with-curlwrappers</span>
+  を指定できます。
+ </p>
+ <blockquote><p><b class="note">注意</b>: 
+  <b>Win32 ユーザへの注意</b>
+  <span class="simpara">
+   このモジュールを Windows 環境で使用可能とするには、
+   <var class="filename">libeay32.dll</var>
+   および <var class="filename">ssleay32.dll</var>
+   が PATH の通った場所に存在する必要があります。
+  </span>
+  <span class="simpara">
+   cURL のサイトにある <var class="filename">libcurl.dll</var> は不要です。
+  </span>
+ </p></blockquote>
+</div>
+
+
+
+
+   <div id="curl.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">
+     この拡張モジュールで定義しているリソース型は
+     cURL ハンドルおよび cURL マルチハンドルのふたつです。
+    </p>
+   </div>
+   
+   <div class="section">
+    <h2 class="title">定義済み定数</h2>
+    <p class="para">
+     cURL の <a href="curl.constants.html" class="link">定義済み定数</a> も参照ください。
+    </p>
+   </div>
+
+   <div id="curl.examples" class="section">
+    <h2 class="title">例</h2>
+    <p class="para">
+     PHP を cURL サポート機能付きでコンパイルすると、
+     curl 関数を使用可能となります。cURL 関数の基本的な使用法は、
+     <a href="function.curl-init.html" class="function">curl_init()</a>により cURL セッションを初期化、
+     <a href="function.curl-setopt.html" class="function">curl_setopt()</a> により転送時のオプションを設定、
+     続いて<a href="function.curl-exec.html" class="function">curl_exec()</a> により転送を実行し、
+     <a href="function.curl-close.html" class="function">curl_close()</a> によりセッションを終了するというものになります。
+     cURL 関数を使用して PHP ホームページをファイルに取得する例を示します。
+     <div class="example">
+      <p><b>Example#1 
+       PHP の cURL モジュールを使用して example.com のホームページを取得する
+      </b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$ch&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">curl_init</span><span style="color: #007700">(</span><span style="color: #DD0000">"http://www.example.com/"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$fp&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">"example_homepage.txt"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"w"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">curl_setopt</span><span style="color: #007700">(</span><span style="color: #0000BB">$ch</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">CURLOPT_FILE</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$fp</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">curl_setopt</span><span style="color: #007700">(</span><span style="color: #0000BB">$ch</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">CURLOPT_HEADER</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">curl_exec</span><span style="color: #007700">(</span><span style="color: #0000BB">$ch</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">curl_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$ch</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">fclose</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+   </div>
+
+  </div>
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="curl.constants.html">定数</a> ― Curl の定義済み定数</li><li><a href="function.curl-close.html">curl_close</a> ― cURL セッションを閉じる</li><li><a href="function.curl-copy-handle.html">curl_copy_handle</a> ― cURL ハンドルを、その設定も含めてコピーする</li><li><a href="function.curl-errno.html">curl_errno</a> ― 直近のエラー番号を返す</li><li><a href="function.curl-error.html">curl_error</a> ― 現在のセッションに関する直近のエラー文字列を返す</li><li><a href="function.curl-exec.html">curl_exec</a> ― cURL セッションを実行する</li><li><a href="function.curl-getinfo.html">curl_getinfo</a> ― 指定した伝送に関する情報を得る</li><li><a href="function.curl-init.html">curl_init</a> ― cURL セッションを初期化する</li><li><a href="function.curl-multi-add-handle.html">curl_multi_add_handle</a> ― cURL マルチハンドルに、通常の cURL ハンドルを追加する</li><li><a href="function.curl-multi-close.html">curl_multi_close</a> ― cURL ハンドルのセットを閉じる</li><li><a href="function.curl-multi-exec.html">curl_multi_exec</a> ― 現在の cURL ハンドルから、サブ接続を実行する</li><li><a href="function.curl-multi-getcontent.html">curl_multi_getcontent</a> ― CURLOPT_RETURNTRANSFER が設定されている場合に、cURL ハンドルの内容を返す</li><li><a href="function.curl-multi-info-read.html">curl_multi_info_read</a> ― 現在の転送についての情報を表示する</li><li><a href="function.curl-multi-init.html">curl_multi_init</a> ― 新規 cURL マルチハンドルを返す</li><li><a href="function.curl-multi-remove-handle.html">curl_multi_remove_handle</a> ― cURL ハンドルのセットからマルチハンドルを削除する</li><li><a href="function.curl-multi-select.html">curl_multi_select</a> ― cURL 拡張モジュールに関連付けられているすべてのソケットを取得し、「選択可能な」状態にする</li><li><a href="function.curl-setopt-array.html">curl_setopt_array</a> ― CURL 転送用の複数のオプションを設定する</li><li><a href="function.curl-setopt.html">curl_setopt</a> ― cURL 転送用オプションを設定する</li><li><a href="function.curl-version.html">curl_version</a> ― cURL のバージョンを返す</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ctype-xdigit.html">ctype_xdigit</a></div>
+ <div class="next" style="float: right;"><a href="curl.constants.html">定数</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

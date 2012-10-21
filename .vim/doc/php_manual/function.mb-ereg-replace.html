@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>マルチバイト文字列に正規表現による置換を行う</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mb-ereg-match.html">mb_ereg_match</a></div>
+ <div class="next" style="float: right;"><a href="function.mb-ereg-search-getpos.html">mb_ereg_search_getpos</a></div>
+ <div class="up"><a href="ref.mbstring.html">マルチバイト文字列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mb-ereg-replace" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mb_ereg_replace</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.2.0, PHP 5)</p><p class="refpurpose">mb_ereg_replace ― マルチバイト文字列に正規表現による置換を行う</p>
+
+ </div>
+   
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">string</span> <span class="methodname"><b><b>mb_ereg_replace</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$pattern</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$replacement</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$string</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$option</tt></span>
+  ] )</div>
+
+  <p class="simpara">
+   <b>mb_ereg_replace()</b> は
+   <i><tt class="parameter">string</tt></i>
+ から
+   <i><tt class="parameter">pattern</tt></i>
+ にマッチする文字列を探し、
+   見つかった文字列を <i><tt class="parameter">replacement</tt></i>
+
+   で置換してそれを返します。エラーの場合は <b><tt>FALSE</tt></b> を返します。
+   <i><tt class="parameter">pattern</tt></i>
+ にはマルチバイト文字列を用いることが可能です。
+  </p>
+  <p class="simpara">
+   オプションの引数 <i><tt class="parameter">option</tt></i>
+ により、
+   マッチングの動作を変更可能です。
+   <i class="literal">i</i> を指定した場合、大文字・小文字が
+   区別されなくなります。
+   <i class="literal">x</i> を指定した場合、空白が無視されます。
+   <i class="literal">m</i> を指定した場合、マルチラインモードとなり、
+   改行文字も &quot;.&quot; に含まれるようになります。
+   <i class="literal">p</i> を指定した場合、POSIX モードとなり、
+   改行も通常文字とみなされるようになります。
+   <i class="literal">e</i> を指定した場合、文字列 <i><tt class="parameter">replacement</tt></i>
+
+   がPHPの式として評価されます。
+  </p>
+  <p class="para">
+   文字エンコーディングとしては、内部エンコーディングまたは
+   <a href="function.mb-regex-encoding.html" class="function">mb_regex_encoding()</a> で指定した
+   文字エンコーディングが使用されます。
+  </p>
+  <p class="para">
+   <a href="function.mb-regex-encoding.html" class="function">mb_regex_encoding()</a>,
+   <a href="function.mb-eregi-replace.html" class="function">mb_eregi_replace()</a> も参照ください。
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mb-ereg-match.html">mb_ereg_match</a></div>
+ <div class="next" style="float: right;"><a href="function.mb-ereg-search-getpos.html">mb_ereg_search_getpos</a></div>
+ <div class="up"><a href="ref.mbstring.html">マルチバイト文字列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

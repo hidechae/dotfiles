@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>直近のクエリにより作用されたレコードの数を得る</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.sesam.html">SESAM</a></div>
+ <div class="next" style="float: right;"><a href="function.sesam-commit.html">sesam_commit</a></div>
+ <div class="up"><a href="ref.sesam.html">SESAM</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.sesam-affected-rows" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">sesam_affected_rows</h1>
+  <p class="verinfo">(No version information available, might be only in CVS)</p><p class="refpurpose">sesam_affected_rows ― 直近のクエリにより作用されたレコードの数を得る</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">int</span> <span class="methodname"><b><b>sesam_affected_rows</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$result_id</tt></span>
+   )</div>
+
+  <p class="para">
+   直近のクエリが変更した行の数を取得します。
+  </p>
+  <p class="para">
+   <b>sesam_affected_rows()</b> 関数は、&quot;即時型&quot; SQL 命令
+   (<i class="literal">INSERT</i>、<i class="literal">UPDATE</i>、
+   <i class="literal">DELETE</i> のような更新処理)との組合せで使用された
+   場合にのみ有用な値を返します。これは、SESAM が &quot;select型&quot; クエリに
+   関して &quot;作用されたレコード&quot; に関する情報を返さないためです。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">result_id</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <a href="function.sesam-query.html" class="function">sesam_query()</a> により返された有効な結果 ID。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   <i><tt class="parameter">result_id</tt></i>
+ に関連するクエリにより作用された
+   レコード数を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>sesam_affected_rows()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">sesam_execimm</span><span style="color: #007700">(</span><span style="color: #DD0000">"DELETE&nbsp;FROM&nbsp;PHONE&nbsp;WHERE&nbsp;LASTNAME&nbsp;=&nbsp;'"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">strtoupper</span><span style="color: #007700">(</span><span style="color: #0000BB">$name</span><span style="color: #007700">)&nbsp;.&nbsp;</span><span style="color: #DD0000">"'"</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$result</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;...&nbsp;エラー&nbsp;...&nbsp;*/<br /></span><span style="color: #007700">}<br />echo&nbsp;</span><span style="color: #0000BB">sesam_affected_rows</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">).<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"&nbsp;姓が&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"&nbsp;のエントリが削除されました。\n"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.sesam-query.html" class="function">sesam_query()</a></li>
+    <li class="member"><a href="function.sesam-execimm.html" class="function">sesam_execimm()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.sesam.html">SESAM</a></div>
+ <div class="next" style="float: right;"><a href="function.sesam-commit.html">sesam_commit</a></div>
+ <div class="up"><a href="ref.sesam.html">SESAM</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

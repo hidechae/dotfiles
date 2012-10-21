@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>プリペアドステートメントを閉じる</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mysqli-stmt-bind-result.html">mysqli_stmt_bind_result</a></div>
+ <div class="next" style="float: right;"><a href="function.mysqli-stmt-data-seek.html">mysqli_stmt_data_seek</a></div>
+ <div class="up"><a href="ref.mysqli.html">mysqli</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mysqli-stmt-close" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mysqli_stmt_close</h1>
+  <h1 class="refname">mysqli_stmt-&gt;close()</h1>
+  <p class="verinfo">(PHP 5)</p><p class="refpurpose">mysqli_stmt->close() ― プリペアドステートメントを閉じる</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <p class="para">手続き型:</p>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>mysqli_stmt_close</b></b></span>
+    ( <span class="methodparam"><span class="type">mysqli_stmt</span> <tt class="parameter">$stmt</tt></span>
+   )</div>
+
+  <p class="para">オブジェクト指向型（メソッド）:</p>
+  <div class="classsynopsis">
+   <div class="ooclass"><b class="classname">mysqli_stmt</b></div>
+   <div class="methodsynopsis">
+    <span class="type">bool</span> <span class="methodname"><b><b>close</b></b></span>
+     ( <span class="methodparam">void</span>
+    )</div>
+
+  </div>
+  <p class="para">
+   プリペアドステートメントを閉じます。また、<b>mysqli_stmt_close()</b>
+   は <i><tt class="parameter">stmt</tt></i>
+ が指すステートメントハンドルを開放します。
+   現在のステートメントが実行中あるいはまだ結果を取得していない場合、
+   この関数はキャンセルされ、次のクエリが実行されます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+<span class="term"><i><tt class="parameter">
+stmt</tt></i>
+</span><dd>
+<p class="para">手続き型のみ:
+<a href="function.mysqli-stmt-init.html" class="function">mysqli_stmt_init()</a> が返すステートメント ID。</p></dd>
+</dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.mysqli-prepare.html" class="function">mysqli_prepare()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mysqli-stmt-bind-result.html">mysqli_stmt_bind_result</a></div>
+ <div class="next" style="float: right;"><a href="function.mysqli-stmt-data-seek.html">mysqli_stmt_data_seek</a></div>
+ <div class="up"><a href="ref.mysqli.html">mysqli</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

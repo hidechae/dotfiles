@@ -1,0 +1,224 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>カレンダーストリームからイベントを取得する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mcal-fetch-current-stream-event.html">mcal_fetch_current_stream_event</a></div>
+ <div class="next" style="float: right;"><a href="function.mcal-is-leap-year.html">mcal_is_leap_year</a></div>
+ <div class="up"><a href="ref.mcal.html">MCAL</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mcal-fetch-event" class="refentry">
+   <div class="refnamediv">
+    <h1 class="refname">mcal_fetch_event</h1>
+    <p class="verinfo">(PHP 4)</p><p class="refpurpose">mcal_fetch_event ― 
+     カレンダーストリームからイベントを取得する
+    </p>
+
+   </div>
+   <div class="refsect1 u">
+    <h3 class="title">説明</h3>
+     <div class="methodsynopsis">
+      <span class="type">object</span> <span class="methodname"><b><b>mcal_fetch_event</b></b></span>
+       ( <span class="methodparam"><span class="type">int</span> <tt class="parameter">$mcal_stream</tt></span>
+      , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$event_id</tt></span>
+      [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$options</tt></span>
+     ] )</div>
+
+    <p class="para">  
+     <b>mcal_fetch_event()</b> は、
+     <i><tt class="parameter">id</tt></i>
+ で指定されたカレンダーストリームから
+     イベントを取得します。
+    </p>
+    <p class="para">
+     以下の要素からなるイベントオブジェクトを返します。
+     <ul class="itemizedlist">
+      <li class="listitem">
+       <span class="simpara">
+        int id - イベント ID
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        int public - イベントが public な場合は <b><tt>TRUE</tt></b>、private な場合は
+        <b><tt>FALSE</tt></b>
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        string category - イベントのカテゴリを表す文字列
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        string title - イベントのタイトルを表す文字列
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        string description - イベントの内容を表す文字列
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        int alarm - アラーム・リマインダイベントが送られるまでの分単位
+        の時間
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        object start - datetime エントリを有するオブジェクト
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        object end - datetime エントリを有するオブジェクト
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        int id - イベント ID 
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        int public - イベントが public な場合は <b><tt>TRUE</tt></b>、private な場合は
+        <b><tt>FALSE</tt></b>
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        string category - イベントのカテゴリを表す文字列
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        string title - イベントのタイトルを表す文字列
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        string description - イベントの内容を表す文字列
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        int alarm - アラーム・リマインダイベントが送られるまでの分単位
+        の時間
+       </span>
+      </li>
+      <li class="listitem"><span class="simpara">
+        object start - datetime エントリを有するオブジェクト
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        object end - datetime エントリを有するオブジェクト
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        int recur_type   - 繰り返しの型
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        int recur_interval   - 繰り返し周期
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        datetime recur_enddate   - 繰り返しが終わる日
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        int recur_data   - 繰り返しデータ
+       </span>
+      </li>
+     </ul>
+     全ての datetime エントリは、次の要素を有するオブジェクトから
+     構成されます。
+     <ul class="itemizedlist">
+      <li class="listitem">
+       <span class="simpara">
+        int year - 年
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        int month - 月
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        int mday  - 日
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        int hour  - 時間
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        int min   - 分
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        int sec   - 秒
+       </span>
+      </li>         
+      <li class="listitem">
+       <span class="simpara">
+        int alarm   - アラームを送るイベントまでの分単位の時間
+       </span>
+      </li>
+     </ul>
+
+     recur_type で使用可能な値を以下に示します。
+
+     <ul class="itemizedlist">
+      <li class="listitem">
+       <span class="simpara">
+        0 - このイベントが繰り返さないことを示す
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        1 - このイベントが一日毎に繰り返す
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        2 - このイベントが1週間毎に繰り返す
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        3 - このイベントは指定した日に毎月発生する (例 毎月十日)
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        4 - このイベントは月単位の週の曜日に発生する (例 第３土曜日)
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        5 - このイベントは年単位で発生する
+       </span>
+      </li>         
+     </ul>
+    </p>
+   </div>
+
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mcal-fetch-current-stream-event.html">mcal_fetch_current_stream_event</a></div>
+ <div class="next" style="float: right;"><a href="function.mcal-is-leap-year.html">mcal_is_leap_year</a></div>
+ <div class="up"><a href="ref.mcal.html">MCAL</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

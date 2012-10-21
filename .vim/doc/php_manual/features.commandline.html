@@ -1,0 +1,1332 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>PHP をコマンドラインから使用する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="features.html">機能</a></div>
+ <div class="next" style="float: right;"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="up"><a href="features.html">機能</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1>PHP をコマンドラインから使用する</h1>
+
+  <p class="para">
+   4.3 以降で PHP は
+   <em class="emphasis">Command Line Interface</em> を意味する
+   <i class="literal">CLI</i> という名前の新しい <i class="literal">SAPI</i> 型
+   (Server Application Programming Interface)をサポートします。
+   名前から分かるように、この <i class="literal">SAPI</i> 型は、
+   PHP によるシェル(またはデスクトップ)アプリケーションの開発を
+   主な対象としています。
+   <i class="literal">CLI SAPI</i> と他の <i class="literal">SAPI</i> の間には、
+   いくつかの違いがあります。本章では、これらについて詳細を説明します。
+   <i class="literal">CLI</i> と <i class="literal">CGI</i> はその振る舞いの多くが
+   共通であるにもかかわらず、違う SAPI であることに留意してください。
+  </p>
+  <p class="para">
+   <i class="literal">CLI SAPI</i> は、当初 PHP 4.2.0 でリリースされましたが、
+   この時点では実験的なステータスにあったため、
+   <i class="literal">./configure</i> を実行する際に、明示的に
+   <span class="option">--enable-cli</span> を指定することにより、
+   有効とする必要がありました。PHP 4.3.0 以降、
+   <i class="literal">CLI SAPI</i> はもはや実験的なステータスではなくなり、
+   <span class="option">--enable-cli</span> はデフォルトでオンとなりました。
+   <span class="option">--disable-cli</span> によりこれを無効とする
+   ことも可能です。
+  </p>
+  <p class="para">
+   PHP 4.3.0 以降、システムにPHPがどのようにインストールされているかによって
+   CLI/CGI バイナリの名前、位置、存在が異なります。デフォルトでは
+   <strong class="command">make</strong> を実行すると CGI と CLI の両方がビルドされ
+   ソースディレクトリの <var class="filename">sapi/cgi/php</var> と
+   <var class="filename">sapi/cli/php</var> にそれぞれ配置されます。両方とも
+   php という名前であることに注意してください
+   <strong class="command">make install</strong> でどうなるかは configure に因ります。
+   configure で例えば apxs のような SAPI モジュールが選択された場合、または
+   <span class="option">--disable-cgi</span> が指定された場合、
+   <strong class="command">make install</strong> によって CLI が <var class="filename">{PREFIX}/bin/php</var>
+   にコピーされます。さもなければ CGI がそこにコピーされます。
+   既にインストールされている CGI バイナリを上書きしたい場合には、
+   <strong class="command">make install</strong> の後に <strong class="command">make install-cli</strong>
+   を実行してください。あるいは configure で
+   <span class="option">--disable-cgi</span> を指定することもできます。
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    <span class="option">--enable-cli</span>
+    と <span class="option">--enable-cgi</span>
+    の両方がデフォルトで有効になっています。そのため、configure で
+    <span class="option">--enable-cli</span>
+    を指定したからといって、<strong class="command">make install</strong> で
+    <var class="filename">{PREFIX}/bin/php</var> 
+    にコピーされるのが必ずしも CLI になるとは限りません。
+   <br />
+  </p></blockquote>
+  <p class="para">
+   PHP 4.2.0 から PHP 4.2.3 までの Windows パッケージでは CLI は
+   CGI <var class="filename">php.exe</var> と同じフォルダに
+   <var class="filename">php-cli.exe</var> として配布されていました。
+   PHP 4.3.0 からは Windows パッケージでは CLI は
+   <var class="filename">cli</var> という
+   別のフォルダに <var class="filename">php.exe</var> として配布されます。
+   したがって <i class="literal">cli/php.exe</i> となります。
+   PHP 5 以降、CLI はメインフォルダ内で <var class="filename">php.exe</var>
+   という名前で配布されます。CGI バージョンは、<var class="filename">php-cgi.exe</var>
+   として配布されます。
+  </p>
+  <p class="para">
+   PHP 5 では、新しく <var class="filename">php-win.exe</var> というファイルが
+   配布されます。これは CLI バージョンとほぼ同じですが、php-win は何も
+   出力しないため、コンソールを必要としません（画面に「DOS 窓」が表示
+   されません）。この振る舞いは、php-gtk と似ています。このためには
+   <span class="option">--enable-cli-win32</span> オプションを
+   含めて configure を行います。
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   <b>自分の SAPI は何か?</b>
+   
+    シェルで <strong class="command">php -v</strong> をタイプすると、
+    <var class="filename">php</var> が CGI なのか CLI なのかわかります。
+    <a href="function.php-sapi-name.html" class="function">php_sapi_name()</a> と定数 <b><tt>PHP_SAPI</tt></b>
+    も参照してください。
+   <br />
+  </p></blockquote>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    Unix の <i class="literal">man</i> ページが PHP 4.3.2 で追加されました。
+    シェル環境から <strong class="command">man php</strong> とすることで見ることができます。
+   <br />
+  </p></blockquote>
+  <p class="para">
+   <i class="literal">CLI SAPI</i> を他の <i class="literal">SAPI</i> と比べた時の
+   大きな違いを以下に示します。
+   <ul class="itemizedlist">
+    <li class="listitem">
+     <p class="para">
+      <i class="literal">CGI SAPI</i> と異なり、ヘッダが出力されません。
+     </p>
+     <p class="para">
+      <i class="literal">CGI SAPI</i> は HTTP ヘッダの出力を抑制する機能を
+      提供していますが、等価な機能は <i class="literal">CLI SAPI</i> では
+      サポートされていません。
+     </p>
+    <p class="para">
+     デフォルトでは CLI は静寂モードで起動されます。古い CGI スクリプトと互換性を
+     保って使えるように <span class="option">-q</span> スイッチが残されています。
+    </p>
+    <p class="para">
+     動作するディレクトリはスクリプトの場所に変更されることはありません
+     （<span class="option">-C</span> および <span class="option">--no-chdir</span> スイッチは
+     互換性のために残されています）。
+    </p>
+    <p class="para">
+     エラーメッセージはプレーンテキストで表示されます
+     （HTML でフォーマットされません）。
+    </p>
+    </li>
+    <li class="listitem">
+     <p class="para">
+      以下に示すいくつかの <var class="filename">php.ini</var> ディレクティブは、<i class="literal">CLI
+      SAPI</i> により上書きされます。これは、シェル環境では意味が
+      ないためです。
+      <table border="5">
+       <caption><b>上書きされる <var class="filename">php.ini</var> のディレクティブ</b></caption>
+       <colgroup>
+
+        <thead valign="middle">
+         <tr valign="middle">
+          <th colspan="1">ディレクティブ</th>
+          <th colspan="1"><i class="literal">CLI SAPI</i> のデフォルト値</th>
+          <th colspan="1">コメント</th>
+         </tr>
+
+        </thead>
+
+        <tbody valign="middle">
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left"><a href="ref.errorfunc.html#ini.html-errors" class="link">html_errors</a></td>
+          <td colspan="1" rowspan="1" align="left"><b><tt>FALSE</tt></b></td>
+          <td colspan="1" rowspan="1" align="left">
+           エラーメッセージに含まれる <i class="literal">HTML</i> タグは
+           シェル上では意味がなく、可読性をかなり低下させるため、この
+           ディレクティブはデフォルトで <b><tt>FALSE</tt></b> となっています。
+          </td>
+         </tr>
+
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left"><a href="ref.outcontrol.html#ini.implicit-flush" class="link">implicit_flush</a></td>
+          <td colspan="1" rowspan="1" align="left"><b><tt>TRUE</tt></b></td>
+          <td colspan="1" rowspan="1" align="left">
+           <a href="function.print.html" class="function">print()</a>, <a href="function.echo.html" class="function">echo()</a> および
+           関連するものによる全ての出力は、直ちに出力され、バッファに
+           キャッシュされないことが望ましいと言えます。この場合でも、
+           標準出力を保留または操作したい場合には、
+           <a href="ref.outcontrol.html" class="link">output buffering</a> を
+           使用することが可能です。
+          </td>
+         </tr>
+
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left"><a href="ref.info.html#ini.max-execution-time" class="link">max_execution_time</a></td>
+          <td colspan="1" rowspan="1" align="left">0 (unlimited)</td>
+          <td colspan="1" rowspan="1" align="left">
+           シェル環境では、PHP を際限なく使用できる
+           ようにするために、最大実行時間の制限は無しに設定されています。
+           Web 用アプリケーションは数秒単位で実行されるよう作られて
+           いますが、シェルアプリケーションの実行時間は、これよりかなり
+           長くなる傾向があります。
+          </td>
+         </tr>
+
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left"><a href="ini.core.html#ini.register-argc-argv" class="link">register_argc_argv</a></td>
+          <td colspan="1" rowspan="1" align="left"><b><tt>TRUE</tt></b></td>
+          <td colspan="1" rowspan="1" align="left">
+          <p class="para">
+           <i class="literal">CLI SAPI</i> を使用している場合、グローバル
+           PHP 変数 <i class="literal">$argc</i>
+           (アプリケーションに渡される引数の数)と
+           <i class="literal">$argv</i> (引数の値の配列)は常に登録され、
+           適切な値が代入されます。
+          </p>
+          <p class="para">
+           PHP 4.3.0以降、<i class="literal">CLI SAPI</i> を使用するときに
+           PHP の <var class="varname">$argc</var> 変数と
+           <var class="varname">$argv</var> 変数が登録され、適切な値がセットされます。
+           このバージョンより前では、<i class="literal">CGI</i> や
+           <i class="literal">MODULE</i> がこれらの変数を生成するには PHP の
+           <a href="ini.core.html#ini.register-globals" class="link">register_globals</a>
+           ディレクティブがオンになっている必要がありました。
+           バージョンや register_globals の設定がどうであろうと、
+           <a href="reserved.variables.html#reserved.variables.server" class="link">$_SERVER</a> または
+           <var class="varname">$HTTP_SERVER_VARS</var> は常に使用可能です。
+           例：<var class="varname">$_SERVER[&#039;argv&#039;]</var>
+          </p>
+          </td>
+         </tr>
+
+        </tbody>
+       </colgroup>
+
+      </table>
+
+     </p>
+     <blockquote><p><b class="note">注意</b>: 
+      
+       これらのディレクティブは、設定ファイル <var class="filename">php.ini</var> またはカスタム
+       設定ファイル(指定した場合のみ)で他の値に初期化できません。
+       この制限は、これらのデフォルト値が全ての設定ファイルをパースした後に
+       適用されるためです。しかし、これらの値は実行時に変更することが
+       可能です
+       (上記のディレクティブの全てについてこれが当てはまるわけでは
+       ありません。例えば、<a href="ini.core.html#ini.register-argc-argv" class="link">register_argc_argv</a>)。
+      <br />
+     </p></blockquote>
+    </li>
+    <li class="listitem">
+     <p class="para">
+      シェル環境での動作を容易とするために、以下の定数が定義されています。
+      <table border="5">
+       <caption><b>CLI 固有の定数</b></caption>
+       <colgroup>
+
+        <thead valign="middle">
+         <tr valign="middle">
+          <th colspan="1">定数</th>
+          <th colspan="1">説明</th>
+         </tr>
+
+        </thead>
+
+        <tbody valign="middle">
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left"><b><tt>STDIN</tt></b></td>
+          <td colspan="1" rowspan="1" align="left">
+           <i class="literal">stdin</i> へのオープン済みのストリーム。
+           これにより、以下のようにオープンする必要がなくなります。
+           <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$stdin&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">'php://stdin'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'r'</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+           </div>
+
+           <i class="literal">stdin</i> から1行読み込みたい場合、以下のようにします。
+           <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$line&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">trim</span><span style="color: #007700">(</span><span style="color: #0000BB">fgets</span><span style="color: #007700">(</span><span style="color: #0000BB">STDIN</span><span style="color: #007700">));&nbsp;</span><span style="color: #FF8000">//&nbsp;STDIN&nbsp;から&nbsp;1&nbsp;行読み込む<br /></span><span style="color: #0000BB">fscanf</span><span style="color: #007700">(</span><span style="color: #0000BB">STDIN</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"%d\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$number</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;STDIN&nbsp;から数値を読み込む<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+           </div>
+
+          </td>
+         </tr>
+
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left"><b><tt>STDOUT</tt></b></td>
+          <td colspan="1" rowspan="1" align="left">
+           <i class="literal">stdout</i> へのオープン済みのストリーム。
+           これにより、以下のようにオープンする必要がなくなります。
+           <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$stdout&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">'php://stdout'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'w'</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+           </div>
+
+          </td>
+         </tr>
+
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left"><b><tt>STDERR</tt></b></td>
+          <td colspan="1" rowspan="1" align="left">
+           <i class="literal">stderr</i> へのオープン済みのストリーム。
+           これにより、以下のようにオープンする必要がなくなります。
+           <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$stderr&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">'php://stderr'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'w'</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+           </div>
+
+          </td>
+         </tr>
+
+        </tbody>
+       </colgroup>
+
+      </table>
+
+     </p>
+     <p class="para">
+      上記のように、<i class="literal">stderr</i> のようなストリームを自分で
+      オープンする必要はなく、以下のようにストリームリソースの代わりに
+      定数を使用するだけでかまいません。
+     <div class="example-contents">
+<div class="cdata"><pre>
+php -r &#039;fwrite(STDERR, &quot;stderr\n&quot;);&#039;
+</pre></div>
+     </div>
+
+      これらのストリームを明示的に閉じる必要はありません。これは、
+      PHP により自動的に行われます。
+     </p>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      これらの定数は、PHP スクリプトを
+      <i class="literal">stdin</i> から読み込んだ場合は使用できません。
+     <br />
+    </p></blockquote>
+    </li>
+    <li class="listitem">
+     <p class="para">
+      <i class="literal">CLI SAPI</i> は、実行されるスクリプトのディレクトリに
+      カレントディレクトリを変更<em class="emphasis">しません
+      </em>!
+    </p>
+    <div class="informalexample">
+     <p class="para">
+      <i class="literal">CGI SAPI</i> との違いを示す例を以下に示します。
+     </p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;シンプルなテストアプリケーション<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">getcwd</span><span style="color: #007700">(),&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     <p class="para">
+      <i class="literal">CGI</i> 版により実行した場合、出力は以下のようになります。
+     </p>
+     <div class="example-contents"><pre>
+<div class="cdata"><pre>
+$ pwd
+/tmp
+
+$ php-cgi -f another_directory/test.php
+/tmp/another_directory
+</pre></div>
+     </pre></div>
+     <p class="para">
+      これは、PHP が実行するスクリプトのディレクトリに
+      カレントディレクトリを変更することを明らかに示しています。
+     </p>
+     <p class="para">
+      <i class="literal">CLI SAPI</i> を使用した場合の出力は次のようになります。
+     </p>
+     <div class="example-contents"><pre>
+<div class="cdata"><pre>
+$ pwd
+/tmp
+
+$ php -f another_directory/test.php
+/tmp
+</pre></div>
+      </pre></div>
+     <p class="para">
+      これにより、PHP でシェルツールを書く際の柔軟性をより大きくすることができます。
+     </p>
+    </div>
+     <blockquote><p><b class="note">注意</b>: 
+      
+       <i class="literal">CGI SAPI</i> は、この <i class="literal">CLI SAPI</i>
+       の動作をコマンドライン実行時のスイッチ <i class="literal">-C</i>
+       によりサポートしています。
+      <br />
+    </p></blockquote>
+    </li>
+   </ul>
+  </p>
+  <p class="para">
+   PHP バイナリにより提供されるコマンドラインオプションの一覧は、
+   <span class="option">-h</span> スイッチを指定して PHP を実行することにより
+   いつでも調べることができます。
+   <div class="example-contents"><pre>
+<div class="cdata"><pre>
+Usage: php [options] [-f] &lt;file&gt; [--] [args...]
+       php [options] -r &lt;code&gt; [--] [args...]
+       php [options] [-B &lt;begin_code&gt;] -R &lt;code&gt; [-E &lt;end_code&gt;] [--] [args...]
+       php [options] [-B &lt;begin_code&gt;] -F &lt;file&gt; [-E &lt;end_code&gt;] [--] [args...]
+       php [options] -- [args...]
+       php [options] -a
+
+  -a               Run interactively
+  -c &lt;path&gt;|&lt;file&gt; Look for php.ini file in this directory
+  -n               No php.ini file will be used
+  -d foo[=bar]     Define INI entry foo with value &#039;bar&#039;
+  -e               Generate extended information for debugger/profiler
+  -f &lt;file&gt;        Parse and execute &lt;file&gt;.
+  -h               This help
+  -i               PHP information
+  -l               Syntax check only (lint)
+  -m               Show compiled in modules
+  -r &lt;code&gt;        Run PHP &lt;code&gt; without using script tags &lt;?..?&gt;
+  -B &lt;begin_code&gt;  Run PHP &lt;begin_code&gt; before processing input lines
+  -R &lt;code&gt;        Run PHP &lt;code&gt; for every input line
+  -F &lt;file&gt;        Parse and execute &lt;file&gt; for every input line
+  -E &lt;end_code&gt;    Run PHP &lt;end_code&gt; after processing all input lines
+  -H               Hide any passed arguments from external tools.
+  -s               Display colour syntax highlighted source.
+  -v               Version number
+  -w               Display source with stripped comments and whitespace.
+  -z &lt;file&gt;        Load Zend extension &lt;file&gt;.
+
+  args...          Arguments passed to script. Use -- args when first argument
+                   starts with - or script is read from stdin
+
+  --ini            Show configuration file names
+
+  --rf &lt;name&gt;      Show information about function &lt;name&gt;.
+  --rc &lt;name&gt;      Show information about class &lt;name&gt;.
+  --re &lt;name&gt;      Show information about extension &lt;name&gt;.
+  --ri &lt;name&gt;      Show configuration for extension &lt;name&gt;.
+</pre></div>
+   </pre></div>
+  </p>
+  <p class="para">
+   <i class="literal">CLI SAPI</i> は、実行する PHP コードを
+   取得するために三種類の異なる手段をサポートしています。
+   <ol class="orderedlist">
+   <li class="listitem">
+     <p class="para">
+      PHP に特定のファイルの実行を指示する。
+     </p>
+    <div class="informalexample">
+      <div class="example-contents"><pre>
+<div class="cdata"><pre>
+php my_script.php
+
+php -f my_script.php
+</pre></div>
+      </pre></div>
+    </div>
+    <p class="para">
+      上記の方法は共に(<span class="option">-f</span> スイッチの使用の如何に関らず)
+      指定したファイル <var class="filename">my_script.php</var> を実行します。
+      実行ファイルとしてあらゆるファイルを指定することができ、
+      PHP スクリプトは拡張子
+      <i class="literal">.php</i> で終わる必要がなく、任意の名前や拡張子を
+      使用することができます。
+     </p>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      <span class="option">-f</span> スイッチを使用している時にスクリプトに引数を渡したい場合は、
+      最初の引数として <i class="literal">--</i> を渡す必要があります。
+     <br />
+    </p></blockquote>
+    </li>
+    <li class="listitem">
+     <p class="para">
+      実行する PHP コードをコマンドラインで直接指定する。
+     </p>
+    <div class="informalexample">
+      <div class="example-contents"><pre>
+<div class="cdata"><pre>
+php -r &#039;print_r(get_defined_constants());&#039;
+</pre></div>
+      </pre></div>
+    </div>
+    <p class="para">
+      シェル変数の置換と引用符の使用については特に注意してください。
+     </p>
+     <blockquote><p><b class="note">注意</b>: 
+      
+       この例をよくみてください。開始/終了タグがありません!
+       <span class="option">-r</span> スイッチを使用した場合、これらのタグは不要と
+       なります。これらのタグを使用するとパーサエラーを発生します。
+      <br />
+     </p></blockquote>
+    </li>
+    <li class="listitem">
+     <p class="para">
+      実行する PHP コードを標準入力
+      (<i class="literal">stdin</i>)で指定する。
+     </p>
+     <p class="para">
+      これは強力な機能で、以下の(仮想的な)例に示すように、動的に
+      PHP コードを生成し、実行バイナリに入力すること
+      ができます。
+    </p>
+    <div class="informalexample">
+      <div class="example-contents"><pre>
+<div class="cdata"><pre>
+$ some_application | some_filter | php | sort -u &gt;final_output.txt
+</pre></div>
+      </pre></div>
+    </div>
+    </li>
+  </ol>
+   これらのコードを実行する三種類の方法を組み合わせて使用することは
+   できません。
+  </p>
+  <p class="para">
+   他のシェルアプリケーションのように、PHP バイナリに
+   引数を指定することができるだけでなく、PHP スクリプトが
+   この引数を取得することも可能です。スクリプトに指定できる
+   引数の数は PHP による制限を受けません
+   (シェルは指定可能な文字数の最大値を設定しています。通常、この制限値を
+   越えることはできません)。スクリプトに指定した引数は、グローバル配列
+   <var class="varname">$argv</var> でアクセス可能です。
+   添字 0 は、常にスクリプト名が含まれています
+   (PHP コードが標準入力またはコマンドラインスイッチ
+   <i class="literal">-r</i> により指定された場合、スクリプト名は
+   <i class="literal">-</i> となります)。
+   登録される第 2 のグローバル変数は <var class="varname">$argc</var> で
+   (スクリプトに指定された引数の数では<em class="emphasis">なく
+   </em>)、配列 <var class="varname">$argv</var> の要素数が含まれます。
+  </p>
+  <p class="para">
+   スクリプトに指定する引数が文字 <i class="literal">-</i> で始まっていない
+   限り、特に留意すべきことはありません。スクリプトに指定する引数が文字
+   <i class="literal">-</i> で始まる場合、PHP 自体がこれを
+   パースする必要があるとみなすため、問題を発生します。
+   これを防止するため、引数リストセパレータ <i class="literal">--</i> を
+   使用してください。PHP にパースされる引数の後に
+   このセパレータを置くと、その後の全ての引数はそのままパースされずに
+   スクリプトに渡されます。
+  </p>
+ <div class="informalexample">
+  <div class="example-contents"><pre>
+<div class="cdata"><pre>
+# これは、指定したコードを実行せずに PHP の使用法を示します
+$ php -r &#039;var_dump($argv);&#039; -h
+Usage: php [options] [-f] &lt;file&gt; [args...]
+[...]
+
+# これは &#039;-h&#039; を引数として解釈し、PHP の使用法を表示しません
+$ php -r &#039;var_dump($argv);&#039; -- -h
+array(2) {
+  [0]=&gt;
+  string(1) &quot;-&quot;
+  [1]=&gt;
+  string(2) &quot;-h&quot;
+}
+</pre></div>
+  </pre></div>
+ </div>
+  <p class="para">
+   また、PHP をシェルスクリプトとして使用する他の手段があります。
+   最初の行が <i class="literal">#!/usr/bin/php</i> で始まり、
+   PHP の開始/終了タグの中に通常の
+   PHP コードが続くスクリプトを書き、適当なファイル
+   実行属性を設定する(例: <strong class="command">chmod +x test</strong>)ことが可能です。
+   この方法は、通常のシェル/Perl スクリプトと同様に実行することができます。
+ </p>
+ <div class="example">
+  <p><b>Example#1 シェルスクリプトとしての PHP スクリプトの実行</b></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+#!/usr/bin/php<br /><span style="color: #0000BB">&lt;?php<br />var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$argv</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  <div class="example-contents"><p>
+    このファイルの名前が <var class="filename">test</var> で、カレントディレクトリに
+    あるとすると、以下のように実行することができます。
+  </p></div>
+   <div class="example-contents"><pre>
+<div class="cdata"><pre>
+$ chmod +x test
+$ ./test -h -- foo
+array(4) {
+  [0]=&gt;
+  string(6) &quot;./test&quot;
+  [1]=&gt;
+  string(2) &quot;-h&quot;
+  [2]=&gt;
+  string(2) &quot;--&quot;
+  [3]=&gt;
+  string(3) &quot;foo&quot;
+}
+</pre></div>
+   </pre></div>
+ </div>
+ <p class="para">
+   見て分かるように、<i class="literal">-</i> で始まるスクリプトのパラメータを
+   指定する際に、特に注意する必要はありません。
+  </p>
+  <p class="para">
+   長いオプション指定は、PHP 4.3.3 以降で利用可能です。
+   <table border="5">
+    <caption><b>コマンドラインオプション</b></caption>
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">オプション</th>
+       <th colspan="1">長いオプション</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">-a</td>
+       <td colspan="1" rowspan="1" align="left">--interactive</td>
+       <td colspan="1" rowspan="1" align="left">
+        <p class="para">
+         PHP を対話的に実行します。PHP のコンパイル時に <a href="ref.readline.html" class="link">Readline</a> 拡張モジュール（Windows 
+         版では利用できません）を含めた場合、補完（例: 変数名の一部を
+         入力して TAB キーを押すと、PHP が完全な変数名に変換する）・
+         矢印キーによるコマンド履歴
+         などの高度な機能が利用できます。コマンドの履歴は
+         <var class="filename">~/.php_history</var> ファイルに保存されます。
+        </p>
+       <blockquote><p><b class="note">注意</b>: 
+        
+         <a href="ini.core.html#ini.auto-prepend-file" class="link">auto_prepend_file</a> および <a href="ini.core.html#ini.auto-append-file" class="link">auto_append_file</a> で
+         インクルードされたファイルはこのモードでもパースされますが、
+         いくつかの制限があります。例えば、関数はそれがコールされる前に
+         定義されていなければなりません。
+        <br />
+       </p></blockquote>
+       <blockquote><p><b class="note">注意</b>: 
+        
+         <a href="language.oop5.autoload.html" class="link">オートローディング</a>
+         は、PHP を CLI 対話シェルで実行している場合は使用できません。
+        <br />
+       </p></blockquote>
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">-c</td>
+       <td colspan="1" rowspan="1" align="left">--php-ini</td>
+       <td colspan="1" rowspan="1" align="left">
+        <p class="para">
+         このオプションを使用することにより、<var class="filename">php.ini</var> を探すディレクトリを
+         指定したり、カスタマイズされた <i class="literal">INI</i> ファイル
+         (<var class="filename">php.ini</var> という名前である必要はありません)を直接指定する
+         ことが可能です。例：
+       </p>
+       <p class="para"><div class="informalexample">
+         <div class="example-contents"><pre>
+<div class="cdata"><pre>
+$ php -c /custom/directory/ my_script.php
+
+$ php -c /custom/directory/custom-file.ini my_script.php
+</pre></div>
+         </pre></div>
+       </div></p>
+       <p class="para">
+         このオプションを指定しない場合、ファイルは、
+         <a href="configuration.html#configuration.file" class="link">デフォルトの位置</a>
+         で探索されます。
+        </p>
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">-n</td>
+       <td colspan="1" rowspan="1" align="left">--no-php-ini</td>
+       <td colspan="1" rowspan="1" align="left">
+        <p class="para">
+         <var class="filename">php.ini</var> を完全に無視します。このスイッチは、PHP 4.3.0 以降で
+         利用可能です。
+        </p>
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">-d</td>
+       <td colspan="1" rowspan="1" align="left">--define</td>
+       <td colspan="1" rowspan="1" align="left">
+        <p class="para">
+         このオプションにより <var class="filename">php.ini</var> で指定できる設定ディレクティブに
+         カスタム値を設定することができます。構文は以下のようになります。
+         <div class="example-contents"><pre>
+<div class="cdata"><pre>
+-d configuration_directive[=value]
+</pre></div>
+         </pre></div>
+        </p>
+       <p class="para"><div class="informalexample">
+        <p class="para">
+         例 (レイアウト上の理由により、長い行が折りたたまれています):
+        </p>
+         <div class="example-contents"><pre>
+<div class="cdata"><pre>
+# 値の部分を省略すると、設定ディレクティブに&quot;1&quot;を指定します
+$ php -d max_execution_time
+        -r &#039;$foo = ini_get(&quot;max_execution_time&quot;); var_dump($foo);&#039;
+string(1) &quot;1&quot;
+
+# 空の値を渡すと設定ディレクティブに&quot;&quot;を設定します
+php -d max_execution_time=
+        -r &#039;$foo = ini_get(&quot;max_execution_time&quot;); var_dump($foo);&#039;
+string(0) &quot;&quot;
+
+# 設定ディレクティブは文字&#039;=&#039;の後に指定したものを設定します
+$  php -d max_execution_time=20
+        -r &#039;$foo = ini_get(&quot;max_execution_time&quot;); var_dump($foo);&#039;
+string(2) &quot;20&quot;
+$  php
+        -d max_execution_time=doesntmakesense
+        -r &#039;$foo = ini_get(&quot;max_execution_time&quot;); var_dump($foo);&#039;
+string(15) &quot;doesntmakesense&quot;
+</pre></div>
+         </pre></div>
+       </div></p>
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">-e</td>
+       <td colspan="1" rowspan="1" align="left">--profile-info</td>
+       <td colspan="1" rowspan="1" align="left">
+        <p class="para">
+         デバッガ/プロファイラ用の拡張情報を出力します。
+        </p>
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">-f</td>
+       <td colspan="1" rowspan="1" align="left">--file</td>
+       <td colspan="1" rowspan="1" align="left">
+        <p class="para">
+         <span class="option">-f</span> オプションに指定したファイル名をパースし、
+         実行します。このスイッチはオプションで省略することもできます。
+         実行するスクリプトを指定するだけで充分です。
+        </p>
+       <blockquote><p><b class="note">注意</b>: 
+        
+         引数をスクリプトに渡すには、最初の引数を
+         <i class="literal">--</i> としなければなりません。
+         そうしないと、PHP は渡された内容を PHP のオプションとみなしてしまいます。
+        <br />
+       </p></blockquote>
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">-h と -?</td>
+       <td colspan="1" rowspan="1" align="left">--help と --usage</td>
+       <td colspan="1" rowspan="1" align="left">
+        このオプションを使用すると、実際の一連のコマンドラインオプションと
+        各1行の説明が情報を取得できます。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">-i</td>
+       <td colspan="1" rowspan="1" align="left">--info</td>
+       <td colspan="1" rowspan="1" align="left">
+        このコマンドラインオプションは、<a href="function.phpinfo.html" class="function">phpinfo()</a> をコールし、
+        結果を出力します。PHP が正しく動作していない場合、
+        <strong class="command">php -i</strong> を実行し、情報テーブルの前または中に
+        出力されるエラーメッセージを調べることをお勧めします。
+        出力は、<i class="literal">HTML</i> 形式で行なわれるため、かなり
+        量が多くなることに注意してください。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">-l</td>
+       <td colspan="1" rowspan="1" align="left">--syntax-check</td>
+       <td colspan="1" rowspan="1" align="left">
+       <p class="para">
+         このオプションにより、指定した PHP コードの
+         構文チェックのみを簡単に行なうことができます。成功した場合、
+         テキスト
+         <i class="literal">No syntax errors detected in &lt;filename&gt;</i>
+         が標準出力に書き込まれ、リターンコードは <i class="literal">0</i>
+         となります。失敗した場合、テキスト <i class="literal">Errors parsing
+          &lt;filename&gt;</i> に加え、内部パーサエラーメッセージ
+         が標準出力に書き込まれ、シェルリターンコードは、
+         <i class="literal">255</i> となります。
+        </p>
+        <p class="para">
+         このオプションは、(未定義の関数のような)致命的なエラー(fatal error)
+         はみつけません。致命的なエラーについても調べたい場合は、
+         <span class="option">-f</span> を使用してください。
+        </p>
+        <blockquote><p><b class="note">注意</b>: 
+         
+          このオプションは、オプション <span class="option">-r</span> と共に使用することは
+          できません。
+         <br />
+        </p></blockquote>
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">-m</td>
+       <td colspan="1" rowspan="1" align="left">--modules</td>
+       <td colspan="1" rowspan="1" align="left">
+       <p class="para"><div class="informalexample">
+        <p class="para">
+         このオプションを使用すると、PHP に組み込まれた
+         (そしてロードされた) Zend モジュールを出力します。
+        </p>
+         <div class="example-contents"><pre>
+<div class="cdata"><pre>
+$ php -m
+[PHP Modules]
+xml
+tokenizer
+standard
+session
+posix
+pcre
+overload
+mysql
+mbstring
+ctype
+
+[Zend Modules]
+</pre></div>
+        </pre></div>
+       </div></p>
+      </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">-r</td>
+       <td colspan="1" rowspan="1" align="left">--run</td>
+       <td colspan="1" rowspan="1" align="left">
+        <p class="para">
+         このオプションにより、コマンドラインのみで PHP
+         の実行ができるようになります。
+         PHP の開始および終了タグ
+         (<i class="literal">&lt;?php</i> および <i class="literal">?&gt;</i>)
+         は<em class="emphasis">不要</em>で、これらを付けると
+         パーサエラーとなります。
+        </p>
+        <blockquote><p><b class="note">注意</b>: 
+         
+          このように PHP を実行する際に、コマンドラインの
+          変数がシェルにより行なわれる置換と干渉しないように注意してください。
+         <br />
+        <div class="informalexample">
+         <p class="para">
+          パーサエラーを生じる例
+         </p>
+          <div class="example-contents"><pre>
+<div class="cdata"><pre>
+$ php -r &quot;$foo = get_defined_constants();&quot;
+Command line code(1) : Parse error - parse error, unexpected &#039;=&#039;
+</pre></div>
+          </pre></div>
+        </div>
+        
+          ここでの問題は、2 重引用符 <i class="literal">&quot;</i> を用いた場合でも
+          sh/bash が変数置換を行うことです。
+          <var class="varname">$foo</var> はおそらく定義されていないので、
+          空文字列に展開された後、実行用に PHP に
+          そのコードが渡され、以下のように読み込むことになります。
+        <br />
+        <div class="informalexample">
+          <div class="example-contents"><pre>
+<div class="cdata"><pre>
+$ php -r &quot; = get_defined_constants();&quot;
+</pre></div>
+          </pre></div>
+         <p class="para">
+          正しい方法は、1 重引用符<i class="literal">&#039;</i>を使用することです。
+          1 重引用符で括られた文字列の中の変数は、sh/bash により展開されません。
+         </p>
+          <div class="example-contents"><pre>
+<div class="cdata"><pre>
+$ php -r &#039;$foo = get_defined_constants(); var_dump($foo);&#039;
+array(370) {
+  [&quot;E_ERROR&quot;]=&gt;
+  int(1)
+  [&quot;E_WARNING&quot;]=&gt;
+  int(2)
+  [&quot;E_PARSE&quot;]=&gt;
+  int(4)
+  [&quot;E_NOTICE&quot;]=&gt;
+  int(8)
+  [&quot;E_CORE_ERROR&quot;]=&gt;
+  [...]
+</pre></div>
+          </pre></div>
+        </div>
+        
+          sh/bash 以外のシェルを使用している場合には、別の問題を経験したことが
+          あるかもしれません。バグを
+          <a href="http://bugs.php.net/" class="link external">&raquo; http://bugs.php.net/</a>
+          に報告してください。
+          シェル変数をコードに取得しようとしたり、エスケープを行なうために
+          バックスラッシュを使用したりした場合にも、容易に問題を発生する
+          可能性があります。注意が必要です。
+         <br />
+        </p></blockquote>
+       <blockquote><p><b class="note">注意</b>: 
+        
+         <span class="option">-r</span> は <em class="emphasis">CLI</em>
+         SAPI で有効で、<em class="emphasis">CGI</em> SAPI では使用できません。
+        <br />
+       </p></blockquote>
+       <blockquote><p><b class="note">注意</b>: 
+        
+         このオプションはあくまで基本的な機能を提供するものです。そのため、
+         いくつかの設定ディレクティブ（例: <a href="ini.core.html#ini.auto-prepend-file" class="link">auto_prepend_file</a> および <a href="ini.core.html#ini.auto-append-file" class="link">auto_append_file</a>）は
+         このモードでは無視されます。
+        <br />
+       </p></blockquote>
+       </td>
+      </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">-B</td>
+      <td colspan="1" rowspan="1" align="left">--process-begin</td>
+      <td colspan="1" rowspan="1" align="left">
+       <p class="para">
+        標準入力を処理する前に実行する PHP コードを指定します。
+        PHP 5 で追加されました。
+       </p>
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">-R</td>
+      <td colspan="1" rowspan="1" align="left">--process-code</td>
+      <td colspan="1" rowspan="1" align="left">
+       <p class="para">
+        それぞれの入力行に対して実行する PHP コードを指定します。
+        PHP 5 で追加されました。
+       </p>
+       <p class="para">
+        このモードには 2 つの特別な変数
+        <var class="varname">$argn</var> と <var class="varname">$argi</var>
+        が用意されています。
+        <var class="varname">$argn</var> は PHP がその瞬間に処理している行を含み、
+        <var class="varname">$argi</var> はその行番号を含んでいます。
+       </p>
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">-F</td>
+      <td colspan="1" rowspan="1" align="left">--process-file</td>
+      <td colspan="1" rowspan="1" align="left">
+       <p class="para">
+        全ての入力行に対して実行する PHP ファイルを指定します。
+        PHP 5 で追加されました。
+       </p>
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">-E</td>
+      <td colspan="1" rowspan="1" align="left">--process-end</td>
+      <td colspan="1" rowspan="1" align="left">
+       <p class="para">
+        入力を処理した後に実行する PHP コードを指定します。
+        PHP 5 で追加されました。
+       </p>
+       <p class="para"><div class="example">
+        <p><b>Example#2 
+         とあるプロジェクトの行数をカウントするための
+         <span class="option">-B</span>, <span class="option">-R</span> そして <span class="option">-E</span>
+         オプションの使用例
+        </b></p>
+        <div class="example-contents"><pre>
+<div class="cdata"><pre>
+$ find my_proj | php -B &#039;$l=0;&#039; -R &#039;$l += count(@file($argn));&#039; -E &#039;echo &quot;Total Lines: $l\n&quot;;&#039;
+Total Lines: 37328
+</pre></div>
+        </pre></div>
+        </div></p>
+      </td>
+     </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">-s</td>
+       <td colspan="1" rowspan="1" align="left">--syntax-highlight と --syntax-highlight</td>
+       <td colspan="1" rowspan="1" align="left">
+        <p class="para">
+         カラー構文ハイライト表示されたソースを表示します。
+        </p>
+       <p class="para">
+         このオプションは、ファイルをパースし、<i class="literal">HTML</i>
+         ハイライト表示版のファイルを生成し、標準出力に書き出す内部機
+         構を使用します。行うのは
+         <i class="literal">&lt;code&gt; [...] &lt;/code&gt;</i> のブロックを
+         生成することだけで、<i class="literal">HTML</i> ヘッダは
+         出力されないことに注意してください。
+        </p>
+        <blockquote><p><b class="note">注意</b>: 
+         
+          このオプションは、<span class="option">-r</span> オプションと同時に
+          使用することはできません。
+        <br />
+        </p></blockquote>
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">-v</td>
+       <td colspan="1" rowspan="1" align="left">--version</td>
+       <td colspan="1" rowspan="1" align="left">
+       <p class="para"><div class="informalexample">
+        <p class="para">
+         PHP, PHP SAPI, Zend のバージョンを標準出力に出力します。例：
+        </p>
+         <div class="example-contents"><pre>
+<div class="cdata"><pre>
+$ php -v
+PHP 4.3.0 (cli), Copyright (c) 1997-2002 The PHP Group
+Zend Engine v1.3.0, Copyright (c) 1998-2002 Zend Technologies
+</pre></div>
+         </pre></div>
+       </div></p>
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">-w</td>
+       <td colspan="1" rowspan="1" align="left">--strip</td>
+       <td colspan="1" rowspan="1" align="left">
+        <p class="para">
+         コメントと空白文字を削除してソースを表示します。
+        </p>
+       <blockquote><p><b class="note">注意</b>: 
+         
+          このオプションは、<span class="option">-r</span> オプションと同時に
+          使用することはできません。
+         <br />
+        </p></blockquote>
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">-z</td>
+       <td colspan="1" rowspan="1" align="left">--zend-extension</td>
+       <td colspan="1" rowspan="1" align="left">
+        <p class="para">
+         Zend エクステンションをロードします。ファイル名のみが指定された場合、
+         PHP はこの拡張をカレントのシステムのデフォルトライブラリパスから
+         ロードしようとします
+         (Linux システムの場合は <var class="filename">/etc/ld.so.conf</var> で
+         指定されています)。
+         ファイル名を絶対パスで指定した場合、システムのライブラリサーチパスを
+         使用しません。ディレクトリ情報を有する相対ファイル名を
+         指定すると、PHP は
+         カレントのディレクトリの相対パスから拡張モジュールをロードする
+         ことのみを行ないます。
+       </p>
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td class="empty">&nbsp;</td>
+      <td colspan="1" rowspan="1" align="left">--ini</td>
+      <td colspan="1" rowspan="1" align="left">
+       <p class="para">
+        設定ファイルの名前、設定ファイルを検索するディレクトリを表示します。
+        PHP 5.2.3 以降で使用可能です。         
+        <div class="example">
+         <p><b>Example#3 <i class="literal">--ini</i> の例</b></p>
+         <div class="example-contents">
+<div class="cdata"><pre>
+$ php --ini
+Configuration File (php.ini) Path: /usr/dev/php/5.2/lib
+Loaded Configuration File:         /usr/dev/php/5.2/lib/php.ini
+Scan for additional .ini files in: (none)
+Additional .ini files parsed:      (none)
+</pre></div>
+         </div>
+
+        </div>
+       </p>
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">--rf</td>
+      <td colspan="1" rowspan="1" align="left">--rfunction</td>
+      <td colspan="1" rowspan="1" align="left">
+       <p class="para">
+        指定した関数あるいはクラスメソッドについての情報
+        (たとえばパラメータの数と名前など) を表示します。
+        PHP 5.1.2 以降で使用可能です。
+       </p>
+       <p class="para">
+        このオプションは、PHP が
+        <a href="language.oop5.reflection.html" class="link">リフレクション</a>
+        のサポートつきでコンパイルされている場合にのみ使用可能です。
+       </p>
+       <p class="para">
+        <div class="example">
+         <p><b>Example#4 基本的な <i class="literal">--rf</i> の使用法</b></p>
+         <div class="example-contents">
+<div class="cdata"><pre>
+$ php --rf var_dump
+Function [ &lt;internal&gt; public function var_dump ] {
+
+  - Parameters [2] {
+    Parameter #0 [ &lt;required&gt; $var ]
+    Parameter #1 [ &lt;optional&gt; $... ]
+  }
+}
+</pre></div>
+         </div>
+
+        </div>
+       </p>
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">--rc</td>
+      <td colspan="1" rowspan="1" align="left">--rclass</td>
+      <td colspan="1" rowspan="1" align="left">
+       <p class="para">
+        指定したクラスについての情報 (定数、プロパティおよびメソッドの一覧)
+        を表示します。PHP 5.1.2 以降で使用可能です。
+       </p>
+       <p class="para">
+        このオプションは、PHP が
+        <a href="language.oop5.reflection.html" class="link">リフレクション</a>
+        のサポートつきでコンパイルされている場合にのみ使用可能です。
+       </p>
+       <p class="para">
+        <div class="example">
+         <p><b>Example#5 <i class="literal">--rc</i> の例</b></p>
+         <div class="example-contents">
+<div class="cdata"><pre>
+$ php --rc Directory
+Class [ &lt;internal:standard&gt; class Directory ] {
+
+  - Constants [0] {
+  }
+
+  - Static properties [0] {
+  }
+
+  - Static methods [0] {
+  }
+
+  - Properties [0] {
+  }
+
+  - Methods [3] {
+    Method [ &lt;internal&gt; public method close ] {
+    }
+
+    Method [ &lt;internal&gt; public method rewind ] {
+    }
+
+    Method [ &lt;internal&gt; public method read ] {
+    }
+  }
+}
+</pre></div>
+         </div>
+
+        </div>
+       </p>
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">--re</td>
+      <td colspan="1" rowspan="1" align="left">--rextension</td>
+      <td colspan="1" rowspan="1" align="left">
+       <p class="para">
+        指定した拡張モジュールについての情報 (<var class="filename">php.ini</var> オプション、
+        定義されている関数、定数およびクラスの一覧) を表示します。
+        PHP 5.1.2 以降で使用可能です。
+       </p>
+       <p class="para">
+        このオプションは、PHP が
+        <a href="language.oop5.reflection.html" class="link">リフレクション</a>
+        のサポートつきでコンパイルされている場合にのみ使用可能です。
+       </p>
+       <p class="para">
+        <div class="example">
+         <p><b>Example#6 <i class="literal">--re</i> の例</b></p>
+         <div class="example-contents">
+<div class="cdata"><pre>
+$ php --re json
+Extension [ &lt;persistent&gt; extension #19 json version 1.2.1 ] {
+
+  - Functions {
+    Function [ &lt;internal&gt; function json_encode ] {
+    }
+    Function [ &lt;internal&gt; function json_decode ] {
+    }
+  }
+}
+</pre></div>
+         </div>
+
+        </div>
+       </p>
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">--ri</td>
+      <td colspan="1" rowspan="1" align="left">--rextinfo</td>
+      <td colspan="1" rowspan="1" align="left">
+       <p class="para">
+        指定した拡張モジュールについての設定情報 (<a href="function.phpinfo.html" class="function">phpinfo()</a>
+        が返す情報と同じもの) を表示します。
+        PHP 5.2.2 以降で使用可能です。コア機能に関する設定情報は、
+        &quot;main&quot; というモジュール名で取得できます。
+       </p>
+       <p class="para">
+        <div class="example">
+         <p><b>Example#7 <i class="literal">--ri</i> の例</b></p>
+         <div class="example-contents">
+<div class="cdata"><pre>
+$ php --ri date
+
+date
+
+date/time support =&gt; enabled
+&quot;Olson&quot; Timezone Database Version =&gt; 2007.5
+Timezone Database =&gt; internal
+Default timezone =&gt; Europe/Oslo
+
+Directive =&gt; Local Value =&gt; Master Value
+date.timezone =&gt; Europe/Oslo =&gt; Europe/Oslo
+date.default_latitude =&gt; 59.22482 =&gt; 59.22482
+date.default_longitude =&gt; 11.018084 =&gt; 11.018084
+date.sunset_zenith =&gt; 90.583333 =&gt; 90.583333
+date.sunrise_zenith =&gt; 90.583333 =&gt; 90.583333
+</pre></div>
+         </div>
+
+        </div>
+        </p>
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+
+  </p>
+  <p class="para">
+   PHP 実行バイナリは、Web サーバから完全に独立して PHP スクリプトを
+   実行するために使用することができます。Unix システムを使用している場合、
+   実行可能とするためには PHP スクリプトの先頭に特別な一行を追加する必要が
+   あります。これにより、システムがそのスクリプトを実行するプログラムを
+   知ることができます。
+   Windows 環境では、<i class="literal">.php</i> ファイルのダブルクリック
+   オプションに <var class="filename">php.exe</var> を関連づけることができます。
+   または、PHP によりスクリプトを実行するバッチファイルを作成することも
+   可能です。Unix 上で動作させるためにスクリプトに追加された先頭行は、
+   Windows 環境での動作に悪影響を与えません。このため、この手法により、
+   クロスプラットフォーム環境で動作するプログラムを書くことができます。
+   コマンドライン PHP プログラムの書方の簡単な例を以下に示します。
+  </p>
+  <div class="example">
+   <p><b>Example#8 
+    コマンドラインから実行されることを意図したスクリプト(script.php)
+   </b></p>
+  <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+#!/usr/bin/php<br /><span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">$argc&nbsp;</span><span style="color: #007700">!=&nbsp;</span><span style="color: #0000BB">2&nbsp;</span><span style="color: #007700">||&nbsp;</span><span style="color: #0000BB">in_array</span><span style="color: #007700">(</span><span style="color: #0000BB">$argv</span><span style="color: #007700">[</span><span style="color: #0000BB">1</span><span style="color: #007700">],&nbsp;array(</span><span style="color: #DD0000">'--help'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'-help'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'-h'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'-?'</span><span style="color: #007700">)))&nbsp;{<br /></span><span style="color: #0000BB">?&gt;<br /></span><br />これは、ひとつのオプションをとるコマンドラインの&nbsp;PHP&nbsp;スクリプトです。<br /><br />&nbsp;&nbsp;使用法:<br />&nbsp;&nbsp;<span style="color: #0000BB">&lt;?php&nbsp;</span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">$argv</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">];&nbsp;</span><span style="color: #0000BB">?&gt;</span>&nbsp;&lt;option&gt;<br /><br />&nbsp;&nbsp;&lt;option&gt;&nbsp;は出力したい単語です。<br />&nbsp;&nbsp;--help,&nbsp;-help,&nbsp;-h,&nbsp;あるいは&nbsp;-?&nbsp;を指定すると、<br />&nbsp;&nbsp;このヘルプが表示されます。<br /><br /><span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$argv</span><span style="color: #007700">[</span><span style="color: #0000BB">1</span><span style="color: #007700">];<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+  <p class="para">
+   上のスクリプトでは、特殊な先頭行が用いられており、このファイルが
+   PHP により実行されることを示しています。ここでは CLI 版を使用しているため、
+   HTTP ヘッダは出力されません。PHP で
+   コマンドラインアプリケーションを使用する際には、2 つの変数
+   <var class="varname">$argc</var> および <var class="varname">$argv</var> を使用することが
+   できます。
+   最初の変数は、引数の数に 1 (実行中のスクリプトの名前)を加えたものです。
+   2 番目の変数は、引数を保持する配列で、スクリプト名を有する
+   要素 0 (<var class="varname">$argv[0]</var>) から始まっています。
+  </p>
+  <p class="para">
+   上のプログラムでは、引数が 1 より少ないかまたは多いかを調べています。
+   また、引数が <span class="option">--help</span>, <span class="option">-help</span>,
+   <span class="option">-h</span> または <span class="option">-?</span> の場合、
+   ヘルプメッセージを出力し、動的にスクリプト名を出力します。
+   他の引数を受け取った場合、これを出力します。
+  </p>
+  <p class="para">
+   上のスクリプトを Unix で実行する場合、実行可能とした後、
+   <strong class="command">script.php echothis</strong> または
+   <strong class="command">script.php -h</strong> とする必要があります。
+   Windows では、この処理を行なう以下のようなバッチファイルを作成することが
+   できます。
+  </p>
+  <div class="example">
+   <p><b>Example#9 
+    コマンドライン PHP スクリプトを実行するバッチファイル(script.bat)
+   </b></p>
+   <div class="example-contents">
+<div class="cdata"><pre>
+@C:\php\php.exe script.php %1 %2 %3 %4
+</pre></div>
+   </div>
+
+  </div>
+  <p class="para">
+   上のプログラムが <var class="filename">script.php</var> という名前であるとし、
+   <var class="filename">c:\php\php.exe</var> に <var class="filename">php.exe</var>
+   があるとすると、このバッチファイルは、追加オプション
+   <strong class="command">script.bat echothis</strong> または
+   <strong class="command">script.bat -h</strong>
+   を指定して、スクリプトを実行します。
+  </p>
+  <p class="para">
+   PHP のコマンドラインアプリケーションを拡張するために使用できる
+   その他の関数については、拡張モジュール
+   <a href="ref.readline.html" class="link">Readline</a> に関する
+   ドキュメントも参照してください。
+  </p>
+ </div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="features.html">機能</a></div>
+ <div class="next" style="float: right;"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="up"><a href="features.html">機能</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

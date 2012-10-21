@@ -1,0 +1,1465 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>セッション処理関数(session)</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.session-pgsql-status.html">session_pgsql_status</a></div>
+ <div class="next" style="float: right;"><a href="function.session-cache-expire.html">session_cache_expire</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">セッション処理関数(session)</h1>
+  
+
+  <div class="partintro">
+   <div id="session.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     PHPのセッションサポート機能は、複数回のアクセスを通じて特定のデー
+     タを保持する手段を実現するものです。これにより、よりカスタマイズさ
+     れたアプリケーションを構築し、自分の Web サイトのアピール度を増加
+     させることが可能となります。
+    </p>
+    <p class="para">
+     Web サイトの訪問者にはセッションIDというセッションIDと呼ばれるユニークなIDが割りつけられ
+     ます。このIDは、ユーザー側にクッキーとして保存するか、または、URL
+     に埋め込みます。
+    </p>
+    <p class="para">
+     セッションサポート機能により、任意の数の変数をリクエスト間で受けわたせる
+     ようになります。来訪者がサイトにアクセスした際、
+     PHP は特定のセッションIDがリクエストとともに送信されているかどうかを
+     (<a href="ref.session.html#ini.session.auto-start" class="link">
+      <i class="literal">session.auto_start</i></a>が1の場合は)自動的に、または
+     (<a href="function.session-start.html" class="function">session_start()</a> により明示的な、あるいは
+     <a href="function.session-register.html" class="function">session_register()</a> により暗黙の)
+     要求を受けて確認します。
+     このIDが送信されている場合には、以前保存された変数が再現されます。
+    </p>
+    <div class="caution"><b class="caution">警告</b>
+     <p class="para">
+      <a href="ref.session.html#ini.session.auto-start" class="link">
+       <i class="literal">session.auto_start</i></a>をonとした場合、
+      オブジェクトをセッション変数に代入することができなくなります。
+      これは、セッションにおいてオブジェクトを再現するためには、
+      セッション開始前にクラス定義がロードされている必要があるためです。
+     </p>
+    </div>
+    <p class="para">
+     全ての登録された変数は、リクエストが終了した後に、シリアル化されます。
+     未定義の登録変数は、未定義としてマーク付けされます。
+     これらの変数は、後でユーザーが定義しない限り、以降のアクセスにおいて
+     セッションモジュールにより定義されません。
+    </p>
+    <div class="warning"><b class="warning">警告</b>
+     <p class="para">
+      いくつかのデータ型はシリアライズできませんので、
+      セッションにストアされません。これは <a href="language.types.resource.html" class="type resource">resource</a> 型の変数、
+      もしくは循環参照しているオブジェクト (例えば、
+      自分自身への参照を他のオブジェクトに渡しているオブジェクト)
+      を含みます。
+     </p>
+    </div>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      セッション処理機能は、PHP 4.0.0 でサポートされました。
+     <br />
+    </p></blockquote>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      セッションを処理している時、
+      <a href="function.session-register.html" class="function">session_register()</a>関数を使用するか
+      スーパーグローバル配列<var class="varname">$_SESSION</var>へ新しいキーを
+      追加することにより変数が登録されるまで、セッションのレコードは作
+      成されないことに注意してください。これは、セッションが
+      <a href="function.session-start.html" class="function">session_start()</a>関数により開始されている場合で
+      も真です。
+     <br />
+    </p></blockquote>
+   </div>
+
+   <div id="session.security" class="section">
+    <h2 class="title">セッションとセキュリティ</h2>
+    <p class="para">
+     外部リンク: <a href="http://www.acros.si/papers/session_fixation.pdf" class="link external">&raquo; Session fixation</a>
+    </p>
+    <p class="para">
+     セッションモジュールは、セッションに保存した情報を見ることができる
+     のがそのセッションを作成したユーザーだけであることを保証することが
+     できません。セッションの完全性を積極的に守るには、そのセッションに
+     紐づく値に応じた追加措置が必要です。
+    </p>
+    <p class="para">
+     セッションに運ばれるデータの重要性を評価し、必要な保護策を講じてください。
+     この対策は、通常は何らかの犠牲を伴うもので、ユーザの利便性を損なうことになります。
+     例えば、単純なソーシャルエンジニアリングからユーザを守るためには
+     <i class="literal">session.use_only_cookies</i> を有効にする必要があります。
+     この場合、ユーザ側でクッキーが常に有効となっていなければならず、
+     有効でない場合はセッションが動作しなくなります。
+    </p>
+    <p class="para">
+     存在するセッションIDが第三者に洩れる手順は何種類かあります。
+     洩れたセッションIDにより、第三者が特定のIDに関連する全てのリソー
+     スにアクセスできるようになります。まず、セッションIDがURLにより伝
+     送される場合です。外部サイトにリンクを張っている場合、外部サイト
+     のreferrerログにセッションIDを含むURLが保存される可能性があります。
+     第二に、よりアクティブな攻撃者がネットワークのトラフィックをモニ
+     ターしている可能性があります。セッションIDが暗号化されていない場
+     合、セッションIDはネットワーク上を平文テキストで伝送されます。
+     解決策はサーバ上にSSLを実装し、ユーザにSSLを必ず使用させることです。
+    </p>
+   </div>
+
+   <div id="session.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">外部ライブラリを必要としません。</p>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      オプションで、Ralf S. Engelschallにより開発されたセッションの保
+      存用の共有メモリ(mm)を使用することも可能です。
+      <a href="http://www.ossp.org/pkg/lib/mm/" class="link external">&raquo; mm</a>をダウンロードし、インストールす
+      ることができます。このオプションは、Windowsプラットフォームでは
+      利用できません。mm用セッション保存モジュールは同一セッションのロッ
+      クに問題があるため、同時アクセスを保証することはできません。
+      ファイルにセッションを保存するためには、
+      (Solaris/LinuxまたはBSD上の/dev/md)ファイルシステムに
+      共有メモリを使用するためにより適当でしょう。
+      セッションのデータはメモリに保存されます。そのため、Web サーバを
+      再起動するとデータが削除されます。
+     <br />
+    </p></blockquote>
+   </div>
+
+   
+
+
+<div id="session.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  PHPのセッションサポートはデフォルトで有効となっています
+  セッションサポートを有効にしてPHPを構築したくない場合には、
+  configureにオプション<span class="option">--disable-session</span>を指定する必要があります。
+  セッション記憶領域として共有メモリ(mm)を使用するには、PHPのconfigure
+  に<span class="option">--with-mm[=DIR]</span>を指定します。
+ </p>
+ <p class="simpara">Windows 版の <i class="literal">PHP</i> には
+この拡張モジュールのサポートが組み込まれています。これらの関数を使用
+するために拡張モジュールを追加でロードする必要はありません。</p>
+ <blockquote><p><b class="note">注意</b>: 
+  
+   デフォルトでは、特定のセッションのすべての情報は
+   session.save_path INIオプションで指定されたディレクトリに生成される
+   ファイルに保存されます。
+   結びついている情報に関わらずセッション毎にひとつのファイルが生成されます。
+   セッションが開始され（ファイルが生成される）しかし何の情報も
+   そのファイルに書き込まれない場合もあります（サイズがゼロのファイルが残る）。
+   この振る舞いはファイルシステムを使っていることによる副作用であり、
+   カスタムセッションハンドラ（例：データベースを使ったもの）を
+   使う場合には何の情報も持たないセッションについて追跡しないように
+   することは可能です。
+  <br />
+ </p></blockquote> 
+</div>
+
+
+
+
+
+   
+
+
+
+<div id="session.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+ <table border="5">
+  <caption><b>セッションの設定オプション</b></caption>
+  <colgroup>
+
+   <thead valign="middle">
+    <tr valign="middle">
+     <th colspan="1">名前</th>
+     <th colspan="1">デフォルト</th>
+     <th colspan="1">変更の可否</th>
+     <th colspan="1">変更履歴</th>
+    </tr>
+
+   </thead>
+
+   <tbody valign="middle">
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">session.save_path</td>
+     <td colspan="1" rowspan="1" align="left">&quot;&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">session.name</td>
+     <td colspan="1" rowspan="1" align="left">&quot;PHPSESSID&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">session.save_handler</td>
+     <td colspan="1" rowspan="1" align="left">&quot;files&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">session.auto_start</td>
+     <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">session.gc_probability</td>
+     <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">session.gc_divisor</td>
+     <td colspan="1" rowspan="1" align="left">&quot;100&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.3.2 から利用可能</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">session.gc_maxlifetime</td>
+     <td colspan="1" rowspan="1" align="left">&quot;1440&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">session.serialize_handler</td>
+     <td colspan="1" rowspan="1" align="left">&quot;php&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">session.cookie_lifetime</td>
+     <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">session.cookie_path</td>
+     <td colspan="1" rowspan="1" align="left">&quot;/&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">session.cookie_domain</td>
+     <td colspan="1" rowspan="1" align="left">&quot;&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">session.cookie_secure</td>
+     <td colspan="1" rowspan="1" align="left">&quot;&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.0.4  から利用可能</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">session.cookie_httponly</td>
+     <td colspan="1" rowspan="1" align="left">&quot;&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 5.2.0 から使用可能</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">session.use_cookies</td>
+     <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">session.use_only_cookies</td>
+     <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.3.0  から利用可能</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">session.referer_check</td>
+     <td colspan="1" rowspan="1" align="left">&quot;&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">session.entropy_file</td>
+     <td colspan="1" rowspan="1" align="left">&quot;&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">session.entropy_length</td>
+     <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">session.cache_limiter</td>
+     <td colspan="1" rowspan="1" align="left">&quot;nocache&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">session.cache_expire</td>
+     <td colspan="1" rowspan="1" align="left">&quot;180&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">session.use_trans_sid</td>
+     <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL は PHP &lt;= 4.2.3、PHP_INI_PERDIR は PHP &lt; 5 から。PHP 4.0.3 から利用可能。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">session.bug_compat_42</td>
+     <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.3.0 から利用可能。PHP 6.0.0 で削除。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">session.bug_compat_warn</td>
+     <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.3.0 から利用可能。PHP 6.0.0 で削除。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">session.hash_function</td>
+     <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 5.0.0 から利用可能</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">session.hash_bits_per_character</td>
+     <td colspan="1" rowspan="1" align="left">&quot;4&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 5.0.0 から利用可能</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">url_rewriter.tags</td>
+     <td colspan="1" rowspan="1" align="left">&quot;a=href,area=href,frame=src,form=,fieldset=&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.0.4 から利用可能</td>
+    </tr>
+
+   </tbody>
+  </colgroup>
+
+ </table>
+
+ PHP_INI_* 定数の詳細および定義については
+<a href="ini.html" class="xref">php.ini ディレクティブ</a> を参照してください。
+ </p>
+ <p class="para">
+  セッション管理システムは、<var class="filename">php.ini</var>ファイルに記述可能な多くの設定オ
+  プションをサポートします。以下に概要を示します。
+ <dl>
+
+
+  <dt id="ini.session.save-handler">
+   <span class="term">
+    <i><tt class="parameter">session.save_handler</tt></i>
+
+    <a href="language.types.string.html" class="type string">string</a>
+   </span>
+   <dd>
+
+    <span class="simpara">
+      <i class="literal">session.save_handler</i> は、
+      セッションに関連するデータの保存および取得時に使用するハンドラを定義します。
+      デフォルトは、<i class="literal">files</i> です。各拡張モジュールで、
+      独自の <i class="literal">save_handler</i> を使用できることに注意しましょう。
+      インストール環境単位で登録されているハンドラを取得するには
+      <a href="function.phpinfo.html" class="function">phpinfo()</a> を使用します。
+      <a href="function.session-set-save-handler.html" class="function">session_set_save_handler()</a> も参照してください。
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt id="ini.session.save-path">
+   <span class="term">
+    <i><tt class="parameter">session.save_path</tt></i>
+
+    <a href="language.types.string.html" class="type string">string</a>
+   </span>
+   <dd>
+
+    <span class="simpara">
+      <i class="literal">session.save_path</i> は、保存ハンドラに渡される
+      引数を定義します。デフォルトのファイルハンドラを選択した場合、
+      ファイルが作成される場所のパスになります。
+      <a href="function.session-save-path.html" class="function">session_save_path()</a> も参照ください。
+    </span>
+    <p class="para">
+     オプションの引数としてN（数値）を指定できます。
+     これはセッションファイルを分散して保存する際に
+     ディレクトリ階層レベルを決定します。
+     例えば、<i class="literal">&#039;5;/tmp&#039;</i>とすると
+     <i class="literal">/tmp/4/b/1/e/3/sess_4b1e384ad74619bd212e236e52a5a174If</i>
+     という位置にセッションファイルを生成します。
+     Nを使用するには、これらすべてのディレクトリが
+     事前に作成されている必要があります。
+     そのためのシェルスクリプトが<var class="filename">ext/session</var>に
+     <var class="filename">mod_files.sh</var>というファイル名であります。
+     また、0以上のNが指定されている場合には自動ガーベッジコレクション
+     が機能しないことに注意してください。詳細は <var class="filename">php.ini</var> を見てください。
+     また、Nを指定する場合は、
+     <i class="literal">session.save_path</i>を&quot;quotes&quot;で囲う必要があります。
+     なぜならセパレータ(<i class="literal">;</i>) は
+     <var class="filename">php.ini</var> ではコメントとしても利用されているからです。
+    </p>
+    <div class="warning"><b class="warning">警告</b>
+     <p class="para">
+      この設定を<var class="filename">/tmp</var> (デフォルト)のようにどこか
+      らでも読み込み可能なディレクトリのままにしている場合、サーバ上
+      の他のユーザがこのディレクトリのファイルのリストを取得すること
+      により、セッションをハイジャックをすることが可能となります。
+     </p>
+    </div>
+    <blockquote><p><b class="note">注意</b>: 
+     <span class="simpara">
+      PHP 4.3.6 以前では、WindowsユーザがPHPのsession関数を使用するためには、
+      この変数を変更する必要があります。<var class="filename">c:/temp</var>
+      のような有効なパスを指定するようにしてください。
+     </span>
+    </p></blockquote>
+   </dd>
+
+  </dt>
+
+
+  <dt id="ini.session.name">
+   <span class="term">
+    <i><tt class="parameter">session.name</tt></i>
+
+    <a href="language.types.string.html" class="type string">string</a>
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <i class="literal">session.name</i> はセッション名を指定し、
+     クッキー名として使用されます。
+     アルファベット文字のみで指定する必要があります。
+     デフォルトは、<i class="literal">PHPSESSID</i> です。
+     <a href="function.session-name.html" class="function">session_name()</a>も参照してください。
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt id="ini.session.auto-start">
+   <span class="term">
+    <i><tt class="parameter">session.auto_start</tt></i>
+
+    <a href="language.types.boolean.html" class="type boolean">boolean</a>
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <i class="literal">session.auto_start</i> はリクエスト開始時に
+     セッションモジュールがセッションを自動的に開始するかどうかを
+     指定します。デフォルトは、<i class="literal">0</i>(無効)です。
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt id="ini.session.serialize-handler">
+   <span class="term">
+    <i><tt class="parameter">session.serialize_handler</tt></i>
+
+    <a href="language.types.string.html" class="type string">string</a>
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <i class="literal">session.serialize_handler</i> は、シリアル化または
+     シリアル化データを復元するために使用されるハンドラの名前を定義します。
+     現在、( <i class="literal">php</i> あるいは
+     <i class="literal">php_binary</i> という名前の) PHP
+     内部フォーマットおよび (<i class="literal">wddx</i> という名前の) WDDX
+     がサポートされています。WDDX は、PHP が<a href="ref.wddx.html" class="link">WDDX サポート</a>
+     を有効にしてコンパイルされている場合のみ使用可能です。デフォルトは、
+     <i class="literal">php</i> です。
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt id="ini.session.gc-probability">
+   <span class="term">
+    <i><tt class="parameter">session.gc_probability</tt></i>
+
+    <a href="language.types.integer.html" class="type integer">integer</a>
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <i class="literal">session.gc_probability</i>と
+     <i class="literal">session.gc_divisor</i>の組み合わせでgc
+    （ガーベッジコレクション）ルーチンの始動を制御します。
+     デフォルトは、<i class="literal">1</i> です。
+     詳細は<a href="ref.session.html#ini.session.gc-divisor" class="link">session.gc_divisor</a>
+     をご覧ください
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt id="ini.session.gc-divisor">
+   <span class="term">
+    <i><tt class="parameter">session.gc_divisor</tt></i>
+
+    <a href="language.types.integer.html" class="type integer">integer</a>
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <i class="literal">session.gc_divisor</i>と
+     <i class="literal">session.gc_probability</i>の組み合わせで
+     すべてのセッションの初期化過程でgc（ガーベッジコネクション）プロセス
+     も始動する確率を制御します。確率は gc_probability/gc_divisor
+     で計算されます。例えば、1/100は各リクエスト毎に1%の確率でGCプロセスが
+     始動します。
+     <i class="literal">session.gc_divisor</i>のデフォルトは<i class="literal">100</i>です。
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt id="ini.session.gc-maxlifetime">
+   <span class="term">
+    <i><tt class="parameter">session.gc_maxlifetime</tt></i>
+
+    <a href="language.types.integer.html" class="type integer">integer</a>
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <i class="literal">session.gc_maxlifetime</i> は、データが
+     &#039;ごみ&#039; とみなされ、消去されるまでの秒数を指定します。
+     ガベージコレクション (ごみの収集) は、
+     セッションの開始時に行われます。
+    </span>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      異なる値を <i class="literal">session.gc_maxlifetime</i> に指定している
+      別々のスクリプトがセッションデータの保存場所を共有している場合、
+      一番小さい設定値に達した時点でデータが消去されます。このような場合には、
+      お互いに <a href="ref.session.html#ini.session.save-path" class="link">session.save_path</a>
+      を使用します。
+     <br />
+    </p></blockquote>
+    <blockquote><p><b class="note">注意</b>: 
+     <span class="simpara">
+      デフォルトのファイルに基づくセッションハンドラを使用している場
+      合、使用するファイルシステムは、アクセス時間(atime)を記録できる
+      必要があります。Windows FATはこれができないため、
+      FATファイルシステムまたはatimeの記録ができない他のファイルシス
+      テムで問題を発生した場合は、セッションのガベージコレクト処理を
+      行う他の手段を用意する必要があります。
+      PHP4.2.3以降、atimeの代わりにmtime（更新時刻）が使用されます。
+      このため、atimeが利用できないファイルシステムでの問題は無くなりました。
+     </span>
+    </p></blockquote>
+   </dd>
+
+  </dt>
+
+
+  <dt id="ini.session.referer-check">
+   <span class="term">
+    <i><tt class="parameter">session.referer_check</tt></i>
+
+    <a href="language.types.string.html" class="type string">string</a>
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <i class="literal">session.referer_check</i> には、HTTP Referer に
+      おいて確認を行う文字列を指定します。Refererがクライアントにより
+     送信されており、かつ、指定した文字列が見付からない場合、埋め込
+      まれたセッションIDは無効となります。デフォルトは空の文字列です。
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt id="ini.session.entropy-file">
+   <span class="term">
+    <i><tt class="parameter">session.entropy_file</tt></i>
+
+    <a href="language.types.string.html" class="type string">string</a>
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <i class="literal">session.entropy_file</i> は、
+     セッションIDを作成する際の別のエントロピソースとして使用する
+     外部リソースへのパスを指定します。
+     例としては、多くの UNIX で利用可能な <i class="literal">/dev/random</i>
+     または <i class="literal">/dev/urandom</i> があげられます。
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt id="ini.session.entropy-length">
+   <span class="term">
+    <i><tt class="parameter">session.entropy_length</tt></i>
+
+    <a href="language.types.integer.html" class="type integer">integer</a>
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <i class="literal">session.entropy_length</i> は、前記のファイルから
+     読みこむバイト数を指定します。デフォルトは、<i class="literal">0</i>
+     (無効)です。
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt id="ini.session.use-cookies">
+   <span class="term">
+    <i><tt class="parameter">session.use_cookies</tt></i>
+
+    <a href="language.types.boolean.html" class="type boolean">boolean</a>
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <i class="literal">session.use_cookies</i>によりクライアント側にセッ
+     ションIDを保存する際にクッキーを使用するかどうかを指定します。デ
+     フォルトは<i class="literal">1</i> (有効)です。
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt id="ini.session.use-only-cookies">
+   <span class="term">
+    <i><tt class="parameter">session.use_only_cookies</tt></i>
+
+    <a href="language.types.boolean.html" class="type boolean">boolean</a>
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <i class="literal">session.use_only_cookies</i> は、
+     このモジュールがクライアント側へのセッション ID の保存に
+     Cookie <em class="emphasis">のみ</em>
+     を使用することを指定します。
+     この設定を有効にすることにより、セッション ID を URL
+     に埋め込む攻撃を防ぐことができます。この設定は、
+     <i class="literal">PHP</i> 4.3.0 で追加されました。
+     PHP 6.0 以降で、デフォルトは <i class="literal">1</i> (有効) となります。
+    </span>
+   </dd>
+
+  </dt>
+
+
+
+  <dt id="ini.session.cookie-lifetime">
+   <span class="term">
+    <i><tt class="parameter">session.cookie_lifetime</tt></i>
+
+    <a href="language.types.integer.html" class="type integer">integer</a>
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <i class="literal">session.cookie_lifetime</i> は、
+     ブラウザに送信するクッキーの有効期間を秒単位で指定します。
+     0 を指定すると &quot;ブラウザを閉じるまで&quot; という意味になります。
+     デフォルトは、<i class="literal">0</i> です。
+     <a href="function.session-get-cookie-params.html" class="function">session_get_cookie_params()</a> および
+     <a href="function.session-set-cookie-params.html" class="function">session_set_cookie_params()</a> も参照してください。
+    </span>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      有効期限のタイムスタンプは、サーバの時刻に基づいて決まります。
+      クライアントのブラウザの時刻がこれと同じであるとは限りません。
+     <br />
+    </p></blockquote> 
+   </dd>
+
+  </dt>
+
+
+  <dt id="ini.session.cookie-path">
+   <span class="term">
+    <i><tt class="parameter">session.cookie_path</tt></i>
+
+    <a href="language.types.string.html" class="type string">string</a>
+   </span>
+   <dd>
+
+    <span class="simpara">
+      <i class="literal">session.cookie_path</i>によりsession_cookieで設
+      定するパスを指定します。デフォルトは<i class="literal">/</i>です。
+     <a href="function.session-get-cookie-params.html" class="function">session_get_cookie_params()</a>および
+     <a href="function.session-set-cookie-params.html" class="function">session_set_cookie_params()</a>も参照してください。
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt id="ini.session.cookie-domain">
+   <span class="term">
+    <i><tt class="parameter">session.cookie_domain</tt></i>
+
+    <a href="language.types.string.html" class="type string">string</a>
+   </span>
+   <dd>
+
+    <span class="simpara">
+      <i class="literal">session.cookie_domain</i> により session_cookie で
+      指定するドメインを指定します。デフォルトでは指定されません。
+      この場合は、クッキーの仕様によって、クッキーを作成したサーバの
+      ホスト名が指定されます。
+     <a href="function.session-get-cookie-params.html" class="function">session_get_cookie_params()</a> および
+     <a href="function.session-set-cookie-params.html" class="function">session_set_cookie_params()</a> も参照ください。
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt id="ini.session.cookie-secure">
+   <span class="term">
+    <i><tt class="parameter">session.cookie_secure</tt></i>
+
+    <a href="language.types.boolean.html" class="type boolean">boolean</a>
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <i class="literal">session.cookie_secure</i>は、
+     セキュアな接続を通じてのみCookieを送信できるかどうかを指定します。
+     デフォルトは、<i class="literal">off</i>です。
+     この設定は、<i class="literal">PHP</i> 4.0.4で追加されました。
+     <a href="function.session-get-cookie-params.html" class="function">session_get_cookie_params()</a>および
+     <a href="function.session-set-cookie-params.html" class="function">session_set_cookie_params()</a>も参照してください。
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt id="ini.session.cookie-httponly">
+   <span class="term">
+    <i><tt class="parameter">session.cookie_httponly</tt></i>
+
+    <a href="language.types.boolean.html" class="type boolean">boolean</a>
+   </span>
+   <dd>
+
+    <span class="simpara">
+     クッキーに対して、HTTP を通してのみアクセスできるようにします。
+     つまり、JavaScript のようなスクリプト言語からはアクセスできなくなるということです。
+     この設定を使用すると、XSS 攻撃によって ID を盗まれる危険性を減らせます
+     (が、すべてのブラウザがこの設定をサポートしているというわけではありません)。
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt id="ini.session.cache-limiter">
+   <span class="term">
+    <i><tt class="parameter">session.cache_limiter</tt></i>
+
+    <a href="language.types.string.html" class="type string">string</a>
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <i class="literal">session.cache_limiter</i>により
+     セッションページにおけるキャッシュ制御の方法
+     (none/nocache/private/private_no_expire/public)
+     を指定します。デフォルトは、<i class="literal">nocache</i>です。
+     <a href="function.session-cache-limiter.html" class="function">session_cache_limiter()</a>も参照してください。
+    </span>
+   </dd>
+
+  </dt>
+
+
+
+  <dt id="ini.session.cache-expire">
+   <span class="term">
+    <i><tt class="parameter">session.cache_expire</tt></i>
+
+    <a href="language.types.integer.html" class="type integer">integer</a>
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <i class="literal">session.cache_expire</i>によりキャッシュされた
+     セッションページの有効期間を分単位で指定します。
+     このオプションは、nocacheリミッタに関しては効果がありません。
+     デフォルトは、<i class="literal">180</i>です。
+     <a href="function.session-cache-expire.html" class="function">session_cache_expire()</a>も参照してください。
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt id="ini.session.use-trans-sid">
+   <span class="term">
+    <i><tt class="parameter">session.use_trans_sid</tt></i>
+
+    <a href="language.types.boolean.html" class="type boolean">boolean</a>
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <i class="literal">session.use_trans_sid</i>は、透過的なセッション
+     IDの付加をするかどうかを指定します。
+     デフォルトは、<i class="literal">0</i>(無効)です。
+    </span>
+    <blockquote><p><b class="note">注意</b>: 
+     <span class="simpara">
+      PHP 4.1.2より前のバージョンでは、このオプションは
+      <a href="configure.html#configure.enable-trans-sid" class="link">
+       <i class="literal">--enable-trans-sid</i></a>により
+      コンパイル時に有効とされていました。
+      PHP 4.2.0以降、trans-sid機能は常にコンパイルされます。
+     </span>
+     <span class="simpara">
+      URLに基づくセッション管理は、Cookieに基づくセッション管理と比べ
+      てセキュリティリスクが大きくなります。例えば、ユーザは、emailに
+      より友人にアクティブなセッションIDを含むURLを送信する可能性があ
+      り、また、ユーザは自分のブックマークにセッションIDを含むURLを保
+      存し、常に同じセッションIDで使用するサイトにアクセスする可能性
+      があります。
+     </span>
+    </p></blockquote>
+   </dd>
+
+  </dt>
+
+
+  <dt id="ini.session.bug-compat-42">
+   <span class="term">
+    <i><tt class="parameter">session.bug_compat_42</tt></i>
+
+    <a href="language.types.boolean.html" class="type boolean">boolean</a>
+   </span>
+   <dd>
+
+    <span class="simpara">
+     PHP バージョンが 4.2.3 とそれ以前には、たとえ
+     <a href="ini.core.html#ini.register-globals" class="link">register_globals</a>
+     が無効の場合でもグローバルスコープでセッション変数の初期化を
+     許してしまうドキュメント化されていない特徴/バグがあります。
+     この機能を使用している場合で <a href="ref.session.html#ini.session.bug-compat-warn" class="link">
+     session.bug_compat_warn</a> も有効にしている場合、
+     PHP 4.3.0 とそれ以降のバージョンでは警告が発されます。
+     この特徴/バグは、
+     このディレクティブを無効にすることで無効にすることが可能です。
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt id="ini.session.bug-compat-warn">
+   <span class="term">
+    <i><tt class="parameter">session.bug_compat_warn</tt></i>
+
+    <a href="language.types.boolean.html" class="type boolean">boolean</a>
+   </span>
+   <dd>
+
+    <span class="simpara">
+     PHP バージョンが 4.2.3 とそれ以前には、たとえ
+     <a href="ini.core.html#ini.register-globals" class="link">register_globals</a>
+     が無効の場合でもグローバルスコープでセッション変数の初期化を
+     許してしまうドキュメント化されていない特徴/バグがあります。
+     この機能を
+     <a href="ref.session.html#ini.session.bug-compat-42" class="link">session.bug_compat_42</a>
+     と <a href="ref.session.html#ini.session.bug-compat-warn" class="link">
+     session.bug_compat_warn</a> を有効にして使用している場合、
+     PHP 4.3.0 とそれ以降のバージョンでは警告が発されます。
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt id="ini.session.hash-function">
+   <span class="term">
+    <i><tt class="parameter">session.hash_function</tt></i>
+
+    <a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a>
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <i class="literal">session.hash_function</i> によりセッション ID
+     を生成するために使用されるハッシュアルゴリズムを指定することが可能です。
+     &#039;0&#039; は MD5 (128 ビット) で、&#039;1&#039; は SHA-1 (160 ビット) を意味します。
+    </span>
+    <p class="para">
+     PHP 6.0.0 以降では、<a href="ref.hash.html" class="link">hash 拡張モジュール</a>
+	 の任意のアルゴリズムが (この拡張モジュールが使用可能な場合に)
+	 指定できるようになります。たとえば
+     <i class="literal">sha512</i> や
+     <i class="literal">whirlpool</i> などです。
+	 サポートされているアルゴリズムの一覧は、
+     <a href="function.hash-algos.html" class="function">hash_algos()</a> 関数で取得できます。
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      このディレクティブは PHP 5 で導入されました。
+     <br />
+    </p></blockquote>
+   </dd>
+
+  </dt>
+
+
+  <dt id="ini.session.hash-bits-per-character">
+   <span class="term">
+    <i><tt class="parameter">session.hash_bits_per_character</tt></i>
+
+    <a href="language.types.integer.html" class="type integer">integer</a>
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <i class="literal">session.hash_bits_per_character</i> により
+     バイナリのハッシュデータを何らかの可読なデータに変換する際、
+     それぞれの文字に何ビットストアさせるかを定義することが可能です。
+     指定可能な値は、&#039;4&#039; (0-9, a-f)、&#039;5&#039; (0-9, a-v) そして
+     &#039;6&#039; (0-9, a-z, A-Z, &quot;-&quot;, &quot;,&quot;) です。
+    </span>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      このディレクティブは PHP 5 で導入されました。
+     <br />
+    </p></blockquote>
+   </dd>
+
+  </dt>
+
+
+  <dt id="ini.url-rewriter.tags">
+   <span class="term">
+    <i><tt class="parameter">url_rewriter.tags</tt></i>
+
+    <a href="language.types.string.html" class="type string">string</a>
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <i class="literal">url_rewriter.tags</i>は、透過的なセッションIDの
+     付加機能が有効となった場合に、セッションIDを含めるために書き換
+     えられるHTMLタグを指定します。デフォルトは、
+     <i class="literal">a=href,area=href,frame=src,input=src,form=fakeentry,fieldset=</i>
+     です。
+    </span>
+    <blockquote><p><b class="note">注意</b>: 
+     <span class="simpara">
+      HTML/XHTML strict に適合させたい場合には <i class="literal">form</i> エントリは削除し、
+      formフィールドの前後に&lt;fieldset&gt; タグを使ってください。
+     </span>
+    </p></blockquote>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+ </p>
+
+ <p class="para">
+  <a href="ini.core.html#ini.track-vars" class="link"><i class="literal">track_vars</i></a>および
+  <a href="ini.core.html#ini.register-globals" class="link"><i class="literal">register_globals</i></a>
+  設定はセッション変数の保存および回復方法に影響を与えます。
+ </p>
+
+ <blockquote><p><b class="note">注意</b>: 
+  
+   PHP 4.0.3以降、<a href="ini.core.html#ini.track-vars" class="link"><i class="literal">track_vars</i></a> は常
+   にonとなっています。
+  <br />
+ </p></blockquote>
+
+</div>
+
+
+
+
+   <div id="session.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">リソース型は定義されていません。</p>
+   </div>
+
+   
+
+
+<div id="session.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <dl>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SID</tt></b> 
+    (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <i class="literal">&quot;name=ID&quot;</i>形式でセッション名とセッションIDを格納している定数。
+     セッションIDがセッションクッキーに適切にセットされている場合には空文字列が入る。
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+</div>
+
+
+
+
+
+   <div id="session.examples" class="section">
+    <h2 class="title">例</h2>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      PHP 4.1.0以降、<var class="varname">$_SESSION</var>は、
+      <var class="varname">$_POST</var>, <var class="varname">$_GET</var>,
+      <var class="varname">$_REQUEST</var>等のようにグローバル変数として利用可
+      能です。<var class="varname">$HTTP_SESSION_VARS</var>と異なり、
+      <var class="varname">$_SESSION</var>は常にグローバルです。そこで、
+      <a href="language.variables.scope.html" class="link"><strong class="command">global</strong></a>
+      は<var class="varname">$_SESSION</var>の場合は不要です。
+      このドキュメントでは、<var class="varname">$_SESSION</var> をあらゆる場
+      所で使用していることに注意してください。もし前者を使用したい場合に
+      は、<var class="varname">$_SESSION</var>を
+      <var class="varname">$HTTP_SESSION_VARS</var>で置き換えることができます。
+      また、<var class="varname">$_SESSION</var>を使用する前に
+      <a href="function.session-start.html" class="function">session_start()</a> を用いてセッションを開始して
+      おく必要があることに注意してください。
+     <br />
+     
+      連想配列<var class="varname">$_SESSION</var>のキーは、PHPの通常の変数名
+      と同じ制限があります。すなわち、数字で始まることはできず、文字ま
+      たはアンダースコアで始まる必要があります。
+      詳細については、本マニュアルの
+      <a href="language.variables.html" class="link">変数</a>の節を参照して下さ
+      い。
+     <br />
+    </p></blockquote>
+
+    <p class="para">
+     <a href="ini.core.html#ini.register-globals" class="link"><i class="literal">register_globals</i></a>
+     が無効の場合、グローバル連想配列<var class="varname">$_SESSION</var>のメ
+     ンバーのみがセッション変数として登録されます。
+     回復されたセッション変数は、配列<var class="varname">$_SESSION</var>での
+     み利用可能です。
+    </p>
+    <p class="para">
+     セキュリティとコードの可読性のために<var class="varname">$_SESSION</var>
+     (またはPHP 4.0.6以前は<var class="varname">$HTTP_SESSION_VARS</var>)の使用
+     が推奨されます。<var class="varname">$_SESSION</var>の場合、
+     <a href="function.session-register.html" class="function">session_register()</a>,
+     <a href="function.session-unregister.html" class="function">session_unregister()</a>,
+     <a href="function.session-is-registered.html" class="function">session_is_registered()</a>は不要です。ユーザは、
+     通常の変数と同様にセッション変数にアクセス可能
+     です。
+     <div class="example">
+      <p><b>Example#1 
+       <var class="varname">$_SESSION</var>で変数を登録
+      </b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />session_start</span><span style="color: #007700">();<br /></span><span style="color: #FF8000">//&nbsp;PHP&nbsp;4.0.6以前の場合は$HTTP_SESSION_VARSを使用してください<br /></span><span style="color: #007700">if&nbsp;(!isset(</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'count'</span><span style="color: #007700">]))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'count'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">;<br />}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'count'</span><span style="color: #007700">]++;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+     <div class="example">
+      <p><b>Example#2 
+       <a href="ini.core.html#ini.register-globals" class="link"><i class="literal">register_globals</i></a>
+       が無効な場合に、<var class="varname">$_SESSION</var>に登録されている変
+       数の登録を解除する
+       </b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />session_start</span><span style="color: #007700">();<br /></span><span style="color: #FF8000">//&nbsp;PHP&nbsp;4.0.6とそれ以前では$HTTP_SESSION_VARSを使用してください<br /></span><span style="color: #007700">unset(</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'count'</span><span style="color: #007700">]);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+    <p class="para">
+     <div class="caution"><b class="caution">警告</b>
+      <p class="para">
+       <i class="literal">unset($_SESSION)</i>によって
+       全ての<var class="varname">$_SESSION</var>を初期化してはいけません。
+       <var class="varname">$_SESSION</var>スーパーグローバル変数を用いた
+       セッション変数の登録ができなくなってしまうからです。
+      </p>
+     </div>
+    </p>
+    <div class="warning"><b class="warning">警告</b>
+     <p class="para">
+      セッション変数において参照を使用することはできません。
+      他の変数への参照の再現する方法がないからです。
+     </p>
+    </div>
+    <p class="para">
+     <a href="ini.core.html#ini.register-globals" class="link">register_globals</a>
+     が有効な場合、全てのグローバル変数はセッション変数として登録するこ
+     とが可能で、セッション変数は対応するグローバル変数として回復されま
+     す。PHPは、どのグローバル変数がセッション変数として登録されるのか
+     を知る必要があるため、ユーザは、変数を
+      <a href="function.session-register.html" class="function">session_register()</a>関数で登録する必要がありま
+      す。しかし、<var class="varname">$_SESSION</var>の場合は、エントリを設定
+      するだけでこれを行う必要はありません。
+     <div class="caution"><b class="caution">警告</b>
+      <p class="para">
+       <var class="varname">$_SESSION</var>を使用し、<a href="ini.core.html#ini.register-globals" class="link">register_globals</a>
+       を無効とする場合、自分のスクリプトをPHP 4.2より以前のバージョン
+        で動作させたい場合は、
+       <a href="function.session-register.html" class="function">session_register()</a>,
+       <a href="function.session-is-registered.html" class="function">session_is_registered()</a>,
+       <a href="function.session-unregister.html" class="function">session_unregister()</a>を使用しないでください。
+       PHP 4.3.0 以降ではこれらの関数を使用することができます。
+        セキュリティ面と性能面の双方より<a href="ini.core.html#ini.register-globals" class="link">register_globals</a>
+        を無効とすることが推奨されています。
+      </p>
+     </div>
+    </p>
+    <p class="para">
+     <a href="ini.core.html#ini.register-globals" class="link">register_globals</a>
+     が有効な場合、グローバル変数と<var class="varname">$_SESSION</var>の
+     エントリは、前のセッションインスタンスで登録されたセッション変数
+     の同じ値を参照することになります。
+     しかし、変数が <var class="varname">$_SESSION</var> で登録された場合、
+     グローバル変数が使用可能となるのは次のリクエスト以降です。
+    </p>
+    <p class="para">
+     PHP 4.2.3とそれ以前のバージョンのみに関係する問題があります。
+     <a href="function.session-register.html" class="function">session_register()</a>により新しいセッショ
+     ン変数を登録する場合、グローバルスコープのエントリと
+     <var class="varname">$_SESSION</var>のエントリは、次の
+     <a href="function.session-start.html" class="function">session_start()</a>まで同じ値へのリファレンスとは
+     なりません。
+     すなわち、グローバル変数への修正は、<var class="varname">$_SESSION</var>
+     のエントリには反映されません。PHP 4.3.0 では修正されています。
+    </p>
+   </div>
+
+   <div id="session.idpassing" class="section">
+    <h2 class="title">セッションIDの受渡し</h2>
+    <p class="para">
+     セッションIDの通知を行うためには次の二つの方法があります。
+     <ul class="itemizedlist">
+      <li class="listitem">
+       <span class="simpara">
+        Cookie
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        URLパラメータ
+       </span>
+      </li>
+     </ul>
+    </p>
+    <p class="para">
+     sessionモジュールは、両方の方法をサポートします。
+     Cookieは最適ですが、(クライアントがCookieを受け入れない可能性が
+     あるため)信頼性がなく、これに依存することができません。2番目の方
+     法は、セッションIDを直接URLに埋め込みます。
+    </p>
+    <p class="para">
+     PHPには、透過的にリンクを変換する機能を有しています。
+     PHP 4.2.0 以降を使用していない場合、PHP構築時にこの機能を有効にして
+     おく必要があります。UNIX環境では、
+     <a href="ref.session.html#ini.session.use-trans-sid" class="link">
+     --enable-trans-sid</a>をconfigureに指定して
+     ください。この構築オプションと実行時オプション
+     <i class="literal">session.use_trans_sid</i>が有効な場合、
+     相対URIは自動的にセッションIDを含むように変換されます。
+     <blockquote><p><b class="note">注意</b>: 
+      
+      <a href="ini.core.html#ini.arg-separator.output" class="link">arg_separator.output</a>
+      <var class="filename">php.ini</var> ディレクティブにより、引数セパレータをカスタマイズする
+      ことができます。XHTMLに完全準拠するためには、ここに
+       &amp;amp; を指定してください。
+      <br />
+     </p></blockquote>
+    </p>
+    <p class="para">
+     もしくは、セッションが開始している場合に定義されている定数 <i class="literal">
+     SID</i> を使用することもできます。クライアントが適当な
+     セッションクッキーを送信しなかった場合、この定数は <i class="literal">
+     session_name=session_id</i> の形式となります。
+     他方、送信された場合には、この定数は空の文字列に展開されます。
+     このため、この定数を無条件に URL に埋め込むことができます。
+    </p>
+    <p class="para">
+     次の例は、変数の登録法および SID を用いて他のページに正しくリンク
+     する方法のデモです。
+     <div class="example">
+      <p><b>Example#3 単一のユーザーに関するヒット数を数える</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />session_start</span><span style="color: #007700">();<br /><br />if&nbsp;(empty(</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'count'</span><span style="color: #007700">]))&nbsp;{<br />&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'count'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">;<br />}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'count'</span><span style="color: #007700">]++;<br />}<br /></span><span style="color: #0000BB">?&gt;<br /></span><br />&lt;p&gt;<br />こんにちは、あなたがこのページに来たのは&nbsp;<span style="color: #0000BB">&lt;?php&nbsp;</span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'count'</span><span style="color: #007700">];&nbsp;</span><span style="color: #0000BB">?&gt;</span>&nbsp;回目ですね。<br />&lt;/p&gt;<br /><br />&lt;p&gt;<br />続けるには、&lt;a&nbsp;href="nextpage.php?<span style="color: #0000BB">&lt;?php&nbsp;</span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">htmlspecialchars</span><span style="color: #007700">(</span><span style="color: #0000BB">SID</span><span style="color: #007700">);&nbsp;</span><span style="color: #0000BB">?&gt;</span>"&gt;ここをクリック&lt;/A&gt;<br />してください。<br />&lt;/p&gt;</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+    <p class="para">
+     XSSに関係する攻撃を防止するためにSIDを出力する際に、
+     <a href="function.htmlspecialchars.html" class="function">htmlspecialchars()</a>を使用します。
+    </p>
+    <p class="para">
+     PHPをコンパイルする際に
+     <a href="ref.session.html#ini.session.use-trans-sid" class="link">
+      --enable-trans-sid</a> を使用した場合、
+     上の例のように SID を出力する必要はありません。
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      相対URLでないURLは外部サイトを指していると仮定され、SIDが追加
+      されません。これは、SIDを外部のサーバに開示することはセキュリティ
+      上のリスクとなる可能性があるためです。
+     <br />
+    </p></blockquote>
+   </div>
+
+   <div id="session.customhandler" class="section">
+    <h2 class="title">カスタムセッションハンドラ</h2>
+    <p class="para">
+     セッション情報をデータベースに保存する機能か他の保存法を実装する
+     には、一連のユーザレベルの保存関数を作成し、
+     <a href="function.session-set-save-handler.html" class="function">session_set_save_handler()</a>を使用する必要があり
+     ます。
+    </p>
+   </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.session-cache-expire.html">session_cache_expire</a> ― 現在のキャッシュの有効期限を返す</li><li><a href="function.session-cache-limiter.html">session_cache_limiter</a> ― 現在のキャッシュリミッタを取得または設定する</li><li><a href="function.session-commit.html">session_commit</a> ― session_write_close のエイリアス</li><li><a href="function.session-decode.html">session_decode</a> ― 文字列からセッションデータをデコードする</li><li><a href="function.session-destroy.html">session_destroy</a> ― セッションに登録されたデータを全て破棄する</li><li><a href="function.session-encode.html">session_encode</a> ― 現在のセッションデータを文字列としてエンコードする</li><li><a href="function.session-get-cookie-params.html">session_get_cookie_params</a> ― セッションクッキーのパラメータを得る</li><li><a href="function.session-id.html">session_id</a> ― カレントのセッション ID を取得または設定する</li><li><a href="function.session-is-registered.html">session_is_registered</a> ― 変数がセッションに登録されているかどうかを調べる</li><li><a href="function.session-module-name.html">session_module_name</a> ― 現在のセッションモジュールを取得または設定する</li><li><a href="function.session-name.html">session_name</a> ― 現在のセッション名を取得または設定する</li><li><a href="function.session-regenerate-id.html">session_regenerate_id</a> ― 現在のセッションIDを新しく生成したものと置き換える</li><li><a href="function.session-register.html">session_register</a> ― 現在のセッションに1つ以上の変数を登録する</li><li><a href="function.session-save-path.html">session_save_path</a> ― 現在のセッションデータ保存パスを取得または設定する</li><li><a href="function.session-set-cookie-params.html">session_set_cookie_params</a> ― セッションクッキーパラメータを設定する</li><li><a href="function.session-set-save-handler.html">session_set_save_handler</a> ― ユーザ定義のセッション保存関数を設定する</li><li><a href="function.session-start.html">session_start</a> ― セッションデータを初期化する</li><li><a href="function.session-unregister.html">session_unregister</a> ― 現在のセッションから変数の登録を削除する</li><li><a href="function.session-unset.html">session_unset</a> ― 全てのセッション変数を開放する</li><li><a href="function.session-write-close.html">session_write_close</a> ― セッションデータを書き込んでセッションを終了する</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.session-pgsql-status.html">session_pgsql_status</a></div>
+ <div class="next" style="float: right;"><a href="function.session-cache-expire.html">session_cache_expire</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>オブジェクトのオートローディング</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="language.oop5.basic.html">クラスの基礎</a></div>
+ <div class="next" style="float: right;"><a href="language.oop5.decon.html">コンストラクタとデストラクタ</a></div>
+ <div class="up"><a href="language.oop5.html">クラスとオブジェクト (PHP 5)</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="language.oop5.autoload" class="sect1">
+ <h2 class="title">オブジェクトのオートローディング</h2>
+ <p class="para">
+  オブジェクト指向アプリケーションを作成する開発者の多くは、
+  クラス定義毎に一つのPHPソースファイルを作成します。
+  最大の問題は、各スクリプトの先頭に、必要な読み込みを行う長いリストを
+  記述する必要があることです(各クラスについて一つ)。
+ </p>
+ <p class="para">
+  PHP 5では、これはもう不用です。
+  未定義のクラスを使用しようとした時に
+  自動的にコールされる __autoload 関数を定義することができます。
+  この関数をコールすることにより、
+  スクリプトエンジンは、PHPがエラーで止まる前にクラスをロードする最後の
+  チャンスを与えます。
+ </p>
+ <blockquote><p><b class="note">注意</b>: 
+  
+   __autoload 関数の内部でスローされた例外は、
+   <a href="language.exceptions.html" class="link">catch</a> ブロックでキャッチすることが
+   できず、致命的なエラーとなります。
+  <br />
+ </p></blockquote>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    オートローディングは、PHP を CLI
+    <a href="features.commandline.html" class="link">対話モード</a>
+    で実行している場合は使用できません。
+   <br />
+  </p></blockquote>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    クラス名をたとえば <a href="function.call-user-func.html" class="function">call_user_func()</a> などで使用する場合、
+    <i class="literal">../</i> のような危険な文字が含まれることもあり得ます。
+    このような関数にはユーザの入力を渡さないことをおすすめします。
+    あるいは最低限 <b>__autoload()</b> の中で入力内容を検証するようにします。
+   <br />
+  </p></blockquote>
+ <p class="para">
+  <div class="example">
+   <p><b>Example#1 オートロードの例</b></p>
+   <div class="example-contents"><p>
+    この例は、 クラス <i class="literal">MyClass1</i> および
+    <i class="literal">MyClass2</i> をそれぞれ
+    <var class="filename">MyClass1.php</var> および
+    <var class="filename">MyClass2.php</var> からロードします。
+   </p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">__autoload</span><span style="color: #007700">(</span><span style="color: #0000BB">$class_name</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;include_once&nbsp;</span><span style="color: #0000BB">$class_name&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">'.php'</span><span style="color: #007700">;<br />}<br /><br /></span><span style="color: #0000BB">$obj&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MyClass1</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$obj2&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MyClass2</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+ </p>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="language.oop5.basic.html">クラスの基礎</a></div>
+ <div class="next" style="float: right;"><a href="language.oop5.decon.html">コンストラクタとデストラクタ</a></div>
+ <div class="up"><a href="language.oop5.html">クラスとオブジェクト (PHP 5)</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

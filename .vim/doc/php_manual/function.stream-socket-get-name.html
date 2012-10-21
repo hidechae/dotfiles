@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>ローカルまたはリモートのソケットの名前を取得する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.stream-socket-enable-crypto.html">stream_socket_enable_crypto</a></div>
+ <div class="next" style="float: right;"><a href="function.stream-socket-pair.html">stream_socket_pair</a></div>
+ <div class="up"><a href="ref.stream.html">ストリーム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.stream-socket-get-name" class="refentry">
+   <div class="refnamediv">
+    <h1 class="refname">stream_socket_get_name</h1>
+    <p class="verinfo">(PHP 5)</p><p class="refpurpose">stream_socket_get_name ― ローカルまたはリモートのソケットの名前を取得する</p>
+ 
+   </div>
+   <div class="refsect1 u">
+    <h3 class="title">説明</h3>
+     <div class="methodsynopsis">
+      <span class="type">string</span> <span class="methodname"><b><b>stream_socket_get_name</b></b></span>
+       ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$handle</tt></span>
+      , <span class="methodparam"><span class="type">bool</span> <tt class="parameter">$want_peer</tt></span>
+      )</div>
+
+    <p class="para">
+     与えられたソケット接続のローカルまたはリモートでの名前を取得します。
+     <i><tt class="parameter">want_peer</tt></i>
+ が <b><tt>TRUE</tt></b> にセットされている時は、
+     リモートでのソケットの名前が、<b><tt>FALSE</tt></b> の時は、ローカルでのソケットの名前が
+     返されます。
+    </p>
+    <p class="para">
+     <a href="function.stream-socket-accept.html" class="function">stream_socket_accept()</a> も参照ください。
+    </p>
+   </div>
+
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.stream-socket-enable-crypto.html">stream_socket_enable_crypto</a></div>
+ <div class="next" style="float: right;"><a href="function.stream-socket-pair.html">stream_socket_pair</a></div>
+ <div class="up"><a href="ref.stream.html">ストリーム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

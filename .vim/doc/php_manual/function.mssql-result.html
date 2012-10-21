@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>結果データを得る</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mssql-query.html">mssql_query</a></div>
+ <div class="next" style="float: right;"><a href="function.mssql-rows-affected.html">mssql_rows_affected</a></div>
+ <div class="up"><a href="ref.mssql.html">MS SQL Server</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mssql-result" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mssql_result</h1>
+  <p class="verinfo">(PHP 4, PHP 5, PECL odbtp:1.1.1-1.1.4)</p><p class="refpurpose">mssql_result ― 結果データを得る</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">string</span> <span class="methodname"><b><b>mssql_result</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$result</tt></span>
+   , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$row</tt></span>
+   , <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$field</tt></span>
+   )</div>
+
+  <p class="para">
+   <b>mssql_result()</b>は、MS SQL 結果行からセルの内容を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">result</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       処理対象となる結果リソース。これは
+       <a href="function.mssql-query.html" class="function">mssql_query()</a> のコールによって取得します。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">row</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       行番号。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">field</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       フィールドオフセット、フィールド名または
+       テーブル名.フィールド名の形式で指定することができます。
+       カラム名がエイリアス定義されている場合
+       (&#039;select foo as bar from...&#039;)、そのカラム名の代わりにエイリアスが使用されます。
+      </p>
+      <blockquote><p><b class="note">注意</b>: 
+       
+        <i><tt class="parameter">field</tt></i>
+
+        引数でオフセット番号を指定する方が、フィールド名または
+        テーブル名.フィールド名で引数で指定するよりもかなり高速です。
+       <br />
+      </p></blockquote>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   指定したセルの内容を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    大量の結果を処理する場合、(以下に示す)行全体を取得する関数のどれかを
+    使用することを考える必要があります。これらの関数は一回の関数
+    コールで複数のセルの内容を返すので、
+    <b>mssql_result()</b> よりもかなり高速です。
+   <br />
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   推奨される高性能な代替関数:
+   <ul class="simplelist">
+    <li class="member"><a href="function.mssql-fetch-row.html" class="function">mssql_fetch_row()</a></li>
+    <li class="member"><a href="function.mssql-fetch-array.html" class="function">mssql_fetch_array()</a></li>
+    <li class="member"><a href="function.mssql-fetch-object.html" class="function">mssql_fetch_object()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mssql-query.html">mssql_query</a></div>
+ <div class="next" style="float: right;"><a href="function.mssql-rows-affected.html">mssql_rows_affected</a></div>
+ <div class="up"><a href="ref.mssql.html">MS SQL Server</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

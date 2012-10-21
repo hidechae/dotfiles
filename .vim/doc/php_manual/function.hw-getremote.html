@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>リモートドキュメントを得る</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.hw-getrellink.html">hw_getrellink</a></div>
+ <div class="next" style="float: right;"><a href="function.hw-getremotechildren.html">hw_GetRemoteChildren</a></div>
+ <div class="up"><a href="ref.hw.html">Hyperwave</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.hw-getremote" class="refentry">
+   <div class="refnamediv">
+    <h1 class="refname">hw_GetRemote</h1>
+    <p class="verinfo">(PHP 4)</p><p class="refpurpose">hw_GetRemote ― リモートドキュメントを得る</p>
+
+   </div>
+   <div class="refsect1 u">
+    <h3 class="title">説明</h3>
+     <div class="methodsynopsis">
+      <span class="type">int</span> <span class="methodname"><b><b>hw_getremote</b></b></span>
+       ( <span class="methodparam"><span class="type">int</span> <tt class="parameter">$connection</tt></span>
+      , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$objectID</tt></span>
+      )</div>
+
+    <p class="para">
+     リモートドキュメントを返します。Hyperwave 表記のリモートドキュメントは、
+     外部ソースから取得されたドキュメントです。一般的なリモートドキュメントは、
+     例えば外部 Web ページまたはデータベースのクエリです。
+     外部ソースをアクセス可能とするために、Hyperwave では CGI に似た
+     HGI(Hyperwave Gateway Interface)を導入しています。現在、
+     ftp,http サーバといくつかのデータベースのみが HGI によりアクセス可能です。
+     <b>hw_GetRemote()</b> をコールすることにより
+     外部ソースからのドキュメントが返されます。この関数を使用したい場合、
+     HGI を熟知している必要があります。外部ソースをアクセスするために
+     Hyperwave のかわりに PHP を使用することも考慮する必要があります。
+     Hyperwave ゲートウエイにデータベースのサポートを付加するのは、PHP
+     において同じことを行うよりもより困難です。
+    </p>
+    <p class="para">
+     <a href="function.hw-getremotechildren.html" class="function">hw_getremotechildren()</a> も参照ください。
+    </p>
+   </div>
+
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.hw-getrellink.html">hw_getrellink</a></div>
+ <div class="next" style="float: right;"><a href="function.hw-getremotechildren.html">hw_GetRemoteChildren</a></div>
+ <div class="up"><a href="ref.hw.html">Hyperwave</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

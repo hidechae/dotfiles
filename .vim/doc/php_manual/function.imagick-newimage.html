@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>新しい画像を作成する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.imagick-distortimage.html">Imagick::distortImage</a></div>
+ <div class="next" style="float: right;"><a href="function.imagick-setimage.html">Imagick::setImage</a></div>
+ <div class="up"><a href="ref.imagick.html">Imagick 画像ライブラリ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.imagick-newimage" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">Imagick::newImage</h1>
+  <p class="verinfo">(No version information available, might be only in CVS)</p><p class="refpurpose">Imagick::newImage ― 新しい画像を作成する</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>Imagick::newImage</b></b></span>
+    ( <span class="methodparam"><span class="type">int</span> <tt class="parameter">$cols</tt></span>
+   , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$rows</tt></span>
+   , <span class="methodparam"><span class="type">ImagickPixel</span> <tt class="parameter">$background</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$format</tt></span>
+  ] )</div>
+
+  <div class="warning"><b class="warning">警告</b><p class="simpara">この関数は、
+現在のところ詳細な情報はありません。引数のリストのみが
+記述されています。</p></div>
+  <div class="warning"><b class="warning">警告</b><p class="simpara">この関数は、
+<em class="emphasis">実験的</em> なものです。この関数の動作・
+名前・その他ドキュメントに書かれている事項は、予告なく、将来的な PHP
+のリリースにおいて変更される可能性があります。
+この関数は自己責任で使用してください。</p></div>
+  <p class="para">
+   新しい画像を作成し、ImagickPixel の値を背景色として関連付けます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">cols</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+      新しい画像のカラム数。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">rows</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+      新しい画像の行数。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">background</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+      この画像で使用する背景色。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">format</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+      画像フォーマット。このパラメータは Imagick バージョン 2.0.1
+      で追加されました。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ 
+
+ 
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>Imagick::newImage()</b> の使用法</b></p>
+    <div class="example-contents"><p>
+     新しい画像を作成し、それを表示します。
+    </p></div>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$image&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Imagick</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$image</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">newImage</span><span style="color: #007700">(</span><span style="color: #0000BB">100</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">100</span><span style="color: #007700">,&nbsp;new&nbsp;</span><span style="color: #0000BB">ImagickPixel</span><span style="color: #007700">(</span><span style="color: #DD0000">'red'</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">$image</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setImageFormat</span><span style="color: #007700">(</span><span style="color: #DD0000">'png'</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">'Content-type:&nbsp;image/png'</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #0000BB">$image</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ 
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.imagick-distortimage.html">Imagick::distortImage</a></div>
+ <div class="next" style="float: right;"><a href="function.imagick-setimage.html">Imagick::setImage</a></div>
+ <div class="up"><a href="ref.imagick.html">Imagick 画像ライブラリ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>テキストドキュメントを取得する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.hw-getsrcbydestobj.html">hw_GetSrcByDestObj</a></div>
+ <div class="next" style="float: right;"><a href="function.hw-getusername.html">hw_getusername</a></div>
+ <div class="up"><a href="ref.hw.html">Hyperwave</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.hw-gettext" class="refentry">
+   <div class="refnamediv">
+    <h1 class="refname">hw_GetText</h1>
+    <p class="verinfo">(PHP 4)</p><p class="refpurpose">hw_GetText ― テキストドキュメントを取得する</p>
+
+   </div>
+   <div class="refsect1 u">
+    <h3 class="title">説明</h3>
+     <div class="methodsynopsis">
+      <span class="type">int</span> <span class="methodname"><b><b>hw_gettext</b></b></span>
+       ( <span class="methodparam"><span class="type">int</span> <tt class="parameter">$connection</tt></span>
+      , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$objectID</tt></span>
+      [, <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$rootID/prefix</tt></span>
+     ] )</div>
+
+    <p class="para">
+     オブジェクト ID <i><tt class="parameter">objectID</tt></i>
+ を有するドキュメントを
+     返します。ドキュメントが、挿入可能なアンカーを有している場合、
+     既に挿入されています。オプションのパラメータ
+     <i><tt class="parameter">rootID/prefix</tt></i>
+ は、文字列または整数とすることが
+     できます。整数の場合、ドキュメントに挿入されたリンクの数を定義
+     します。デフォルトは 0 であり、リンク先のオブジェクトの名前から
+     構成されたリンクが得られます。
+     この動作は、Web アプリケーションには便利です。
+     あるリンクが、名前 &#039;internet_movie&#039; を有するオブジェクトを指す
+     場合、HTML リンクは、&lt;A HREF=&quot;/internet_movie&quot;&gt; となり、
+     ドキュメント階層におけるリンク元およびリンク先のオブジェクトの
+     実際の位置は無視されます。Web サーバーを設定し、URL を
+     例えば、 &#039;/my_script.php3/internet_movie&#039; に書き変える必要があります。
+     &#039;my_script.php3&#039; は、$PATH_INFO を評価し、ドキュメントを
+     取得する必要があります。
+     全てのリンクは接頭辞 &#039;/my_script.php3/&#039;を有しています。
+     これが好ましくない場合、使用する接頭辞としてオプションのパラメータ 
+     <i><tt class="parameter">rootID/prefix</tt></i>
+ を設定することができます。
+     このパラメータは、文字列である必要があります。
+    </p>
+    <p class="para">
+     <i><tt class="parameter">rootID/prefix</tt></i>
+ が整数であり、
+     0 に等しくない場合、リンクは ID
+     <i><tt class="parameter">rootID/prefix</tt></i>
+ を有するオブジェクトで
+     始まる全ての名前から構成されます。
+     現在のオブジェクトに関したスラッシュにより分割された
+     全ての名前から構成されます。
+     例えば、前記のドキュメント &#039;internet_movie&#039; が &#039;a-b-c-internet_movie&#039; 
+     にあり、&#039;-&#039; が Hyperwave サーバの階層レベルの間のセパレータであり、
+     元のドキュメントが &#039;a-b-d-source&#039; にある場合、
+     結果の HTML リンクは次のようになります。
+     &lt;A HREF=&quot;../c/internet_movie&quot;&gt;
+     この動作は、サーバー全体の内容をディスクにダウンロードし
+     ドキュメント階層をファイルシステムに割り付けたい場合に便利です。
+    </p>
+    <p class="para">
+     この関数は、純粋なテキストドキュメントについてのみ動作します。
+     特別なデータ接続をオープンしないため、伝達の間、
+     制御用の接続はブロックされます。
+    </p>
+    <p class="para">
+     <a href="function.hw-pipedocument.html" class="function">hw_pipedocument()</a>、
+     <a href="function.hw-free-document.html" class="function">hw_free_document()</a>、
+     <a href="function.hw-document-bodytag.html" class="function">hw_document_bodytag()</a>、
+     <a href="function.hw-document-size.html" class="function">hw_document_size()</a> および
+     <a href="function.hw-output-document.html" class="function">hw_output_document()</a> も参照ください。
+    </p>
+   </div>
+
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.hw-getsrcbydestobj.html">hw_GetSrcByDestObj</a></div>
+ <div class="next" style="float: right;"><a href="function.hw-getusername.html">hw_getusername</a></div>
+ <div class="up"><a href="ref.hw.html">Hyperwave</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,263 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>定義済みの変数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="language.variables.html">変数</a></div>
+ <div class="next" style="float: right;"><a href="language.variables.scope.html">変数のスコープ</a></div>
+ <div class="up"><a href="language.variables.html">変数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="language.variables.predefined" class="sect1">
+   <h2 class="title">定義済みの変数</h2>
+   
+   <p class="simpara">
+    PHPは、実行する全てのスクリプトに定義済みの多くの変数を
+    提供します。しかし、これらの変数の多くは、
+    実行するサーバーの種類、サーバーのバージョンおよび設定、
+    その他の要素に依存しており、完全に記述することはできません。
+    これらの変数のいくつかは、PHPを
+    <a href="features.commandline.html" class="link">コマンドライン</a>
+    で実行した場合には利用できません。
+    これらの変数の一覧については、
+    <a href="reserved.variables.html" class="link">予約済みの定義済みの変数</a>
+    のセクションを参照してください。
+   </p>
+
+   <div class="warning"><b class="warning">警告</b>
+    <p class="simpara">
+     PHP 4.2.0以降では、PHPディレクティブ <a href="ini.core.html#ini.register-globals" class="link">register_globals</a>の
+     デフォルト値が<em class="emphasis">off</em>に変更されています。
+     これは、PHPにおける大きな変更です。
+     register_globalsを<em class="emphasis">off</em>にすると、
+     グローバルスコープに定義済みの変数に影響を与えます。
+     例えば、<var class="varname">DOCUMENT_ROOT</var>を取得するには、
+     <var class="varname">$DOCUMENT_ROOT</var>のかわりに
+     <var class="varname">$_SERVER[&#039;DOCUMENT_ROOT&#039;]</var>を使用することに
+     なります。また、URL 
+     <i class="literal">http://www.example.com/test.php?id=3</i>　から
+     <var class="varname">$id</var>の代わりに<var class="varname">$_GET[&#039;id&#039;]</var>、
+     <var class="varname">$HOME</var>のかわりに<var class="varname">$_ENV[&#039;HOME&#039;]</var>を
+     使用します。
+    </p>
+    <p class="simpara">
+     この変更に関する情報については、
+     <a href="ini.core.html#ini.register-globals" class="link">register_globals</a>に関する設定
+     エントリ、セキュリティに関する章の 
+     <a href="security.globals.html" class="link">register_globalsの使用</a>、
+     また、<a href="http://www.php.net/releases/4_1_0.php" class="link external">&raquo; 4.1.0</a>および
+     <a href="http://www.php.net/releases/4_2_0.php" class="link external">&raquo; 4.2.0</a>の
+     Release Announcementsを参照してください。
+    </p>
+    <p class="simpara">
+     <a href="language.variables.predefined.html#language.variables.superglobals" class="link">スーパーグローバル
+      配列</a>のようなPHPの予約済みの定義済み変数を使用することが
+     推奨されます。
+    </p>
+   </div>
+
+   <p class="simpara">
+    バージョン4.1.0以降、PHPに(使用する場合)Webサーバ、環境変数、
+    ユーザ入力からの変数を値とする定義済みの配列が追加されています。
+    これらの新しいは配列は、自動グローバル、すなわち、自動的に全ての
+    スコープで利用可能です。このため、これらは
+    &quot;スーパーグローバル&quot; といわれることもあります。
+    (PHPには、ユーザ定義のスーパーグローバルという機構はありません。)
+    スーパーグローバルのリストを以下に示します。
+    しかし、これらの内容のリストおよび定義済みのPHP変数とそれらの特性に
+    関する更なる議論については、
+    <a href="reserved.variables.html" class="link">定義済みの予約変数</a>の
+    セクションを参照してください。
+    より古い定義済みの変数(<var class="varname">$HTTP_*_VARS</var>)もまだ
+    存在します。
+
+    PHP 5.0.0 以降、PHP の長い
+<a href="language.variables.predefined.html" class="link">定義済みの変数</a>
+配列は <a href="ini.core.html#ini.register-long-arrays" class="link">register_long_arrays</a>
+ディレクティブにより無効にすることができます。
+   </p>
+
+   <blockquote><p><b class="note">注意</b>: 
+    <b>可変変数</b>
+    
+     <a href="language.variables.variable.html" class="link">可変変数</a>として
+     スーパーグローバルを使うことはできません。
+    <br />
+   </p></blockquote>
+
+   <blockquote><p><b class="note">注意</b>: 
+    
+     スーパーグローバルと HTTP_*_VARS は同時に存在させることができますが、
+     お互い同一ではありません。つまり、一方を変更してももう一方はそのままです。
+    <br />
+   </p></blockquote>
+
+   <p class="para">
+    <a href="ini.core.html#ini.variables-order" class="link">variables_order</a>に
+    ある変数が設定されていない場合、これらに対応するPHPの定義済み
+    変数も空のままとなります。
+   </p>
+
+   <dl>
+
+    <strong class="title">PHP スーパーグローバル</strong>
+    <dt>
+
+     <span class="term"><a href="reserved.variables.html#reserved.variables.globals" class="link">$GLOBALS</a></span>
+     <dd>
+
+      <span class="simpara">
+       スクリプトのグローバルスコープの中で現在利用可能な全ての
+       変数へのリファレンスを含みます。この配列のキーは、グローバル
+       変数の名前です。
+       <var class="varname">$GLOBALS</var> は、PHP 3以降存在します。
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><a href="reserved.variables.html#reserved.variables.server" class="link">$_SERVER</a></span>
+     <dd>
+
+      <span class="simpara">
+       Webサーバーまたはカレントのスクリプトの実行環境に直接関係する
+       ものにより設定された変数。以前の(まだ利用可能ですが、推奨
+       されません) <var class="varname">$HTTP_SERVER_VARS</var>配列に
+       類似のものです。
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><a href="reserved.variables.html#reserved.variables.get" class="link">$_GET</a></span>
+     <dd>
+
+      <span class="simpara">
+       URL クエリ文字列によりスクリプトに入力された変数。以前の
+       (まだ利用可能ですが、推奨されません) 
+       <var class="varname">$HTTP_GET_VARS</var>配列に類似のものです。
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><a href="reserved.variables.html#reserved.variables.post" class="link">$_POST</a></span>
+     <dd>
+
+      <span class="simpara">
+       HTTP POSTによりスクリプトに入力された変数。以前の
+       (まだ利用可能ですが、推奨されません) 
+       <var class="varname">$HTTP_POST_VARS</var>配列に類似のものです。
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><a href="reserved.variables.html#reserved.variables.cookies" class="link">$_COOKIE</a></span>
+     <dd>
+
+      <span class="simpara">
+       HTTP Cookieによりスクリプトに入力された変数。以前の
+       (まだ利用可能ですが、推奨されません) 
+       <var class="varname">$HTTP_COOKIE_VARS</var>配列に類似のものです。
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><a href="reserved.variables.html#reserved.variables.files" class="link">$_FILES</a></span>
+     <dd>
+
+      <span class="simpara">
+       HTTP POSTファイルアップロードによりスクリプトに渡される変数。
+       以前の<var class="varname">$HTTP_POST_FILES</var>配列(まだ利用可能ですが、
+       推奨されません)と類似しています。詳細については、
+       <a href="features.file-upload.html#features.file-upload.post-method" class="link">POSTメソッド
+        のアップロード</a>を参照してください。
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><a href="reserved.variables.html#reserved.variables.environment" class="link">$_ENV</a></span>
+     <dd>
+
+      <span class="simpara">
+       環境によりスクリプトに指定される変数。
+       以前の<var class="varname">$HTTP_ENV_VARS</var>配列(まだ利用可能ですが、
+       推奨されません)と類似しています。       
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><a href="reserved.variables.html#reserved.variables.request" class="link">$_REQUEST</a></span>
+     <dd>
+
+      <span class="simpara">
+       ユーザ入力機構によりスクリプトに入力される全ての変数で、
+       このため、信頼することができません。この配列に含まれる
+       変数の存在と順番は、設定ディレクティブ
+       <a href="ini.core.html#ini.variables-order" class="link">variables_order</a>
+       に基づき定義されます。この配列は、4.1.0より前のバージョンのPHP
+       には直接類似するものはありません。
+       <a href="function.import-request-variables.html" class="function">import_request_variables()</a>も参照してください。
+      </span>
+      <div class="caution"><b class="caution">警告</b>
+       <p class="simpara">
+        PHP 4.3.0以降、<var class="varname">$_FILES</var>によるファイル情報は
+        <var class="varname">$_REQUEST</var>には存在しません。
+       </p>
+      </div>
+      <blockquote><p><b class="note">注意</b>: 
+       <span class="simpara">
+        <a href="features.commandline.html" class="link">コマンドライン</a>
+        で実行している場合、この変数には、
+        <var class="varname">argv</var> および <var class="varname">argc</var>　エントリ
+        は含まれません。これらは、<var class="varname">$_SERVER</var>配列には
+        存在します。
+       </span>
+      </p></blockquote> 
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><a href="reserved.variables.html#reserved.variables.session" class="link">$_SESSION</a></span>
+     <dd>
+
+      <span class="simpara">
+       スクリプトのセッションに現在登録されている変数。
+       以前の<var class="varname">$HTTP_SESSION_VARS</var>配列(まだ利用可能ですが、
+       推奨されません)と類似しています。詳細については、
+       <a href="ref.session.html" class="link">セッション処理関数</a> を参照ください。
+      </span>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="language.variables.html">変数</a></div>
+ <div class="next" style="float: right;"><a href="language.variables.scope.html">変数のスコープ</a></div>
+ <div class="up"><a href="language.variables.html">変数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

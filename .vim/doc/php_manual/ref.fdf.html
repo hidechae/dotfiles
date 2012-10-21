@@ -1,0 +1,842 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>Forms Data Format 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.fam-suspend-monitor.html">fam_suspend_monitor</a></div>
+ <div class="next" style="float: right;"><a href="function.fdf-add-doc-javascript.html">fdf_add_doc_javascript</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">Forms Data Format 関数</h1>
+  
+
+  <div class="partintro">
+
+   <div id="fdf.intro" class="section">
+   <h2 class="title">導入</h2>
+   <p class="simpara">
+    Forms Data Format (FDF)は、PDF ドキュメント内部のフォームを処理する
+    ためのフォーマットです。FDF の詳細および一般的な用途については、
+    <a href="http://partners.adobe.com/asn/acrobat/forms.jsp" class="link external">&raquo; http://partners.adobe.com/asn/acrobat/forms.jsp</a> にある
+    ドキュメントを参照ください。
+   </p>
+   <p class="simpara">
+    FDF の基本的な考えは HTML フォームに似ています。基本的な違いは、
+    投稿ボタンが押された際にフォームに埋められたデータをサーバに送信する
+    方法のフォーマット(これが Form Data Format そのものです)およびフォームの
+    フォーマット自体(これは Portable Document Format、PDF です)です。
+    FDF データの処理は、fdf 関数が提供する機能の一つです。しかし他にも
+    機能はあります。既存の PDF フォームを用いてフォーム自体を修正せずに
+    入力フィールドのデータを入力させることもあるかと思われます。
+    このような場合、FDF ドキュメント を作成し
+    (<a href="function.fdf-create.html" class="function">fdf_create()</a>)、各入力フィールドの値を設定し
+    (<a href="function.fdf-set-value.html" class="function">fdf_set_value()</a>)、PDF フォームとそれを関連付けます
+    (<a href="function.fdf-set-file.html" class="function">fdf_set_file()</a>)。最後にブラウザに MIME 型
+    <i class="literal">application/vnd.fdf</i> で送信する必要があります。
+    ブラウザの Acrobat Reader プラグイン がこの MIME 型を認識し、
+    関連する PDF フォームを読み込み、FDF ドキュメントからのデータを
+    書き込みます。
+   </p>
+
+   <p class="simpara">
+    テキストエディタで FDF ドキュメントの中を見てみると、
+    <i class="literal">FDF</i> という名前のカタログオブジェクトが見つかる
+    はずです。このようなオブジェクトには <i class="literal">Fields</i>、
+    <i class="literal">F</i>、<i class="literal">Status</i> といった複数の
+    エントリが含まれます。
+    最も多く使用されるエントりは <i class="literal">Fields</i> および
+    <i class="literal">F</i> で、<i class="literal">Fields</i> は
+    一連の入力フィールドを指し、<i class="literal">F</i> は
+    このデータが属する PDF ドキュメントのファイル名を保持します。
+    これらのエントリは、FDF ドキュメントの中で /F-Key または /Status-Key
+    として参照されています。<a href="function.fdf-set-file.html" class="function">fdf_set_file()</a> および
+    <a href="function.fdf-set-status.html" class="function">fdf_set_status()</a> のような関数により、これらの
+    エントリを修正することが可能です。Fields は、
+    <a href="function.fdf-set-value.html" class="function">fdf_set_value()</a>、<a href="function.fdf-set-opt.html" class="function">fdf_set_opt()</a>
+    等で修整可能です。
+   </p>
+   </div>
+
+   <div id="fdf.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">
+     <a href="http://partners.adobe.com/asn/acrobat/forms.jsp" class="link external">&raquo; http://partners.adobe.com/asn/acrobat/forms.jsp</a> から取得可能な
+     FDF toolkit SDKが必要です。
+     PHP 4.3.0 以降では、少なくとも SDK version 5.0 が必要です。 
+     FDF toolkit library はバイナリ版のみ利用可能で、
+     Adobe によりサポートされているプラットフォームは
+     Win32、Linux、Solaris、AIX です。
+    </p>
+   </div>
+
+   
+
+
+<div id="fdf.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+  <p class="simpara">
+   <span class="option">--with-fdftk[=DIR]</span> を指定して PHP を
+   コンパイルする必要があります。
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+  <span class="simpara">
+   fdftk サポートを指定して PHP を設定した際に問題を発生した場合、
+   ヘッダファイル <var class="filename">fdftk.h</var> および
+   ライブラリ <var class="filename">libfdftk.so</var> が正しい場所にあることを
+   確認してください。configure スクリプトは、FDF SDK 配布ファイルおよび
+   通常の <var class="filename">DIR/include</var>、
+   <var class="filename">DIR/lib</var> といった配置のディレクトリ構造をともに
+   サポートします。このため、配布ファイルを展開したディレクトリにそのまま
+   おいておくか、あるいは
+   <var class="filename">/usr/local/include</var> および
+   <var class="filename">/usr/local/lib</var> のように使用するプラットフォームに
+   応じた適当なディレクトリに移動して
+   <span class="option">--with-fdftk=/usr/local</span> を指定して
+   設定することが可能です。
+  </span>
+ </p></blockquote>
+ <blockquote><p><b class="note">注意</b>: 
+  <b>Win32 ユーザへの注意</b>
+  
+   この拡張モジュールを動作させるには、
+Windows システムの <i class="literal">PATH</i> が通った場所に
+<acronym title="Dynamic Link Library">DLL</acronym> ファイルが存在する必要があります。
+<acronym>FAQ</acronym> の &quot;<a href="faq.installation.html#faq.installation.addtopath" class="link">Windows で PHP のディレクトリを
+PATH に追加するにはどうすればいいのですか?</a>&quot; で、その方法を説明しています。
+DLL ファイルを PHP のフォルダから Windows のシステムディレクトリにコピーしても動作します
+(システムディレクトリは、デフォルトで <i class="literal">PATH</i>
+に含まれるからです) が、これは推奨しません。
+<em class="emphasis">この拡張モジュールを使用するには、以下のファイルが
+<i class="literal">PATH</i> の通った場所にある必要があります。</em> 
+   <var class="filename">fdftk.dll</var>
+  <br />
+ </p></blockquote>
+</div>
+
+
+
+
+   <div id="fdf.configuration" class="section">
+    <h2 class="title">実行時設定</h2>
+    <p class="para">設定ディレクティブは定義されていません。</p>
+   </div>
+
+   <div id="fdf.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <div id="fdf.resources.fdf" class="section">
+     <h2 class="title">fdf</h2>
+     <p class="para">
+      多くの fdf 関数は、最初のパラメータとして
+      <i><tt class="parameter">fdf</tt></i>
+ リソースを必要とします。
+      <i><tt class="parameter">fdf</tt></i>
+ リソースは、オープンした fdf ファイルの
+      ハンドルです。<i><tt class="parameter">fdf</tt></i>
+ リソースは、
+      <a href="function.fdf-create.html" class="function">fdf_create()</a>、<a href="function.fdf-open.html" class="function">fdf_open()</a>、
+      <a href="function.fdf-open-string.html" class="function">fdf_open_string()</a> を用いて取得することが可能です。
+     </p>
+    </div>
+   </div>
+
+   
+
+
+<div id="fdf.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <dl>
+ 
+  <dt>
+
+   <span class="term">
+    <b><tt>FDFValue</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span> 
+   <dd>
+ 
+    <span class="simpara"> 
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FDFStatus</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span> 
+   <dd>
+ 
+    <span class="simpara"> 
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FDFFile</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span> 
+   <dd>
+ 
+    <span class="simpara"> 
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FDFID</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span> 
+   <dd>
+ 
+    <span class="simpara"> 
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FDFFf</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span> 
+   <dd>
+ 
+    <span class="simpara"> 
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FDFSetFf</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span> 
+   <dd>
+ 
+    <span class="simpara"> 
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FDFClearFf</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span> 
+   <dd>
+ 
+    <span class="simpara"> 
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FDFFlags</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span> 
+   <dd>
+ 
+    <span class="simpara"> 
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FDFSetF</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span> 
+   <dd>
+ 
+    <span class="simpara"> 
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FDFClrF</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span> 
+   <dd>
+ 
+    <span class="simpara"> 
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FDFAP</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span> 
+   <dd>
+ 
+    <span class="simpara"> 
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FDFAS</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span> 
+   <dd>
+ 
+    <span class="simpara"> 
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FDFAction</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span> 
+   <dd>
+ 
+    <span class="simpara"> 
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FDFAA</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span> 
+   <dd>
+ 
+    <span class="simpara"> 
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FDFAPRef</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span> 
+   <dd>
+ 
+    <span class="simpara"> 
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FDFIF</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span> 
+   <dd>
+ 
+    <span class="simpara"> 
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FDFEnter</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span> 
+   <dd>
+ 
+    <span class="simpara"> 
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FDFExit</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span> 
+   <dd>
+ 
+    <span class="simpara"> 
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FDFDown</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span> 
+   <dd>
+ 
+    <span class="simpara"> 
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FDFUp</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span> 
+   <dd>
+ 
+    <span class="simpara"> 
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FDFFormat</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span> 
+   <dd>
+ 
+    <span class="simpara"> 
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FDFValidate</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span> 
+   <dd>
+ 
+    <span class="simpara"> 
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FDFKeystroke</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span> 
+   <dd>
+ 
+    <span class="simpara"> 
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FDFCalculate</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span> 
+   <dd>
+ 
+    <span class="simpara"> 
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FDFNormalAP</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span> 
+   <dd>
+ 
+    <span class="simpara"> 
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FDFRolloverAP</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span> 
+   <dd>
+ 
+    <span class="simpara"> 
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FDFDownAP</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span> 
+   <dd>
+ 
+    <span class="simpara"> 
+
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+</div>
+
+
+
+
+   <div id="fdf.examples" class="section">
+   <h2 class="title">例</h2>
+    <p class="para">
+     以下の例でフォームデータの評価に関して説明します。
+     <div class="example">
+      <p><b>Example#1 FDF ドキュメントの評価</b></p>
+       <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;拡張モジュールが提供する入力文字列から&nbsp;fdf&nbsp;をオープンします。<br />//&nbsp;pdf&nbsp;フォームには&nbsp;volume,&nbsp;date,&nbsp;comment,&nbsp;publisher,&nbsp;preparer<br />//&nbsp;という名前のテキスト入力フィールドと&nbsp;2&nbsp;つのチェックボックス<br />//&nbsp;show_publisher&nbsp;および&nbsp;show_preparer&nbsp;があるものとします。<br /></span><span style="color: #0000BB">$fdf&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fdf_open_string</span><span style="color: #007700">(</span><span style="color: #0000BB">$HTTP_FDF_DATA</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$volume&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fdf_get_value</span><span style="color: #007700">(</span><span style="color: #0000BB">$fdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"volume"</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #DD0000">"volume&nbsp;フィールドの値は&nbsp;'&lt;b&gt;$volume&lt;/b&gt;'&lt;br&nbsp;/&gt;"</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$date&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fdf_get_value</span><span style="color: #007700">(</span><span style="color: #0000BB">$fdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"date"</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #DD0000">"date&nbsp;フィールドの値は&nbsp;'&lt;b&gt;$date&lt;/b&gt;'&lt;br&nbsp;/&gt;"</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$comment&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fdf_get_value</span><span style="color: #007700">(</span><span style="color: #0000BB">$fdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"comment"</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #DD0000">"comment&nbsp;フィールドの値は&nbsp;'&lt;b&gt;$comment&lt;/b&gt;'&lt;br&nbsp;/&gt;"</span><span style="color: #007700">;<br /><br />if&nbsp;(</span><span style="color: #0000BB">fdf_get_value</span><span style="color: #007700">(</span><span style="color: #0000BB">$fdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"show_publisher"</span><span style="color: #007700">)&nbsp;==&nbsp;</span><span style="color: #DD0000">"On"</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$publisher&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fdf_get_value</span><span style="color: #007700">(</span><span style="color: #0000BB">$fdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"publisher"</span><span style="color: #007700">);<br />&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"publisher&nbsp;フィールドの値は&nbsp;'&lt;b&gt;$publisher&lt;/b&gt;'&lt;br&nbsp;/&gt;"</span><span style="color: #007700">;<br />}&nbsp;else<br />&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Publisher&nbsp;は非公開です。&lt;br&nbsp;/&gt;"</span><span style="color: #007700">;<br /><br />if&nbsp;(</span><span style="color: #0000BB">fdf_get_value</span><span style="color: #007700">(</span><span style="color: #0000BB">$fdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"show_preparer"</span><span style="color: #007700">)&nbsp;==&nbsp;</span><span style="color: #DD0000">"On"</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$preparer&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fdf_get_value</span><span style="color: #007700">(</span><span style="color: #0000BB">$fdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"preparer"</span><span style="color: #007700">);<br />&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"preparer&nbsp;フィールドの値は&nbsp;'&lt;b&gt;$preparer&lt;/b&gt;'&lt;br&nbsp;/&gt;"</span><span style="color: #007700">;<br />}&nbsp;else<br />&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Preparer&nbsp;は非公開です。&lt;br&nbsp;/&gt;"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">fdf_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$fdf</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+       </div>
+
+     </div>
+    </p>
+   </div>
+   
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.fdf-add-doc-javascript.html">fdf_add_doc_javascript</a> ― FDF ドキュメントに javascript コードを追加する</li><li><a href="function.fdf-add-template.html">fdf_add_template</a> ― テンプレートを FDF ドキュメントに追加する</li><li><a href="function.fdf-close.html">fdf_close</a> ― FDF ドキュメントを閉じる</li><li><a href="function.fdf-create.html">fdf_create</a> ― 新規 FDF ドキュメントを作成する</li><li><a href="function.fdf-enum-values.html">fdf_enum_values</a> ― 各ドキュメントの値に対してユーザ定義関数をコールする</li><li><a href="function.fdf-errno.html">fdf_errno</a> ― 直近の fdf 操作に関するエラーコードを返す</li><li><a href="function.fdf-error.html">fdf_error</a> ― 直近の fdf エラーコードについての説明を返す</li><li><a href="function.fdf-get-ap.html">fdf_get_ap</a> ― フィールドの外観を取得する</li><li><a href="function.fdf-get-attachment.html">fdf_get_attachment</a> ― FDF に埋め込まれている、アップロードされたファイルを展開する</li><li><a href="function.fdf-get-encoding.html">fdf_get_encoding</a> ― /Encoding キーの値を取得する</li><li><a href="function.fdf-get-file.html">fdf_get_file</a> ― /F キーの値を得る</li><li><a href="function.fdf-get-flags.html">fdf_get_flags</a> ― フィールドのフラグを取得する</li><li><a href="function.fdf-get-opt.html">fdf_get_opt</a> ― フィールドのオプション配列から値を取得する</li><li><a href="function.fdf-get-status.html">fdf_get_status</a> ― /STATUS キーの値を得る</li><li><a href="function.fdf-get-value.html">fdf_get_value</a> ― フィールドの値を得る</li><li><a href="function.fdf-get-version.html">fdf_get_version</a> ― FDF API あるいはファイルのバージョンを取得する</li><li><a href="function.fdf-header.html">fdf_header</a> ― FDF 固有の出力ヘッダをセットする</li><li><a href="function.fdf-next-field-name.html">fdf_next_field_name</a> ― 次のフィールド名を得る</li><li><a href="function.fdf-open-string.html">fdf_open_string</a> ― 文字列から FDF ドキュメントを読み込む</li><li><a href="function.fdf-open.html">fdf_open</a> ― FDF ドキュメントをオープンする</li><li><a href="function.fdf-remove-item.html">fdf_remove_item</a> ― フォームのターゲットフレームを設定する</li><li><a href="function.fdf-save-string.html">fdf_save_string</a> ― FDF ドキュメントを文字列として返す</li><li><a href="function.fdf-save.html">fdf_save</a> ― FDF ドキュメントを保存する</li><li><a href="function.fdf-set-ap.html">fdf_set_ap</a> ― フィールドの外観を設定する</li><li><a href="function.fdf-set-encoding.html">fdf_set_encoding</a> ― FDF 文字エンコーディングを設定する</li><li><a href="function.fdf-set-file.html">fdf_set_file</a> ― FDF データを表示する PDF ドキュメントを設定する</li><li><a href="function.fdf-set-flags.html">fdf_set_flags</a> ― フィールドのフラグを設定する</li><li><a href="function.fdf-set-javascript-action.html">fdf_set_javascript_action</a> ― フィールドの javascript アクションを設定する</li><li><a href="function.fdf-set-on-import-javascript.html">fdf_set_on_import_javascript</a> ― Acrobat が FDF をオープンした際に実行される javascript のコードを追加する</li><li><a href="function.fdf-set-opt.html">fdf_set_opt</a> ― フィールドのオプションを設定する</li><li><a href="function.fdf-set-status.html">fdf_set_status</a> ― /STATUS キーの値を設定する</li><li><a href="function.fdf-set-submit-form-action.html">fdf_set_submit_form_action</a> ― フィールドの投稿フォームアクションを設定する</li><li><a href="function.fdf-set-target-frame.html">fdf_set_target_frame</a> ― フォームの表示対象となるフレームを設定する</li><li><a href="function.fdf-set-value.html">fdf_set_value</a> ― フィールドの値を設定する</li><li><a href="function.fdf-set-version.html">fdf_set_version</a> ― FDF ファイルのバージョン番号を設定する</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.fam-suspend-monitor.html">fam_suspend_monitor</a></div>
+ <div class="next" style="float: right;"><a href="function.fdf-add-doc-javascript.html">fdf_add_doc_javascript</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

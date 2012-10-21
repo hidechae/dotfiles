@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>HTTP クッキーをパースする</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ob-inflatehandler.html">ob_inflatehandler</a></div>
+ <div class="next" style="float: right;"><a href="function.http-parse-headers.html">http_parse_headers</a></div>
+ <div class="up"><a href="ref.http.html">http</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.http-parse-cookie" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">http_parse_cookie</h1>
+  <p class="verinfo">(PECL pecl_http:0.20.0-1.5.5)</p><p class="refpurpose">http_parse_cookie ― HTTP クッキーをパースする</p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">object</span> <span class="methodname"><b><b>http_parse_cookie</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$cookie</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$flags</tt></span>
+   [, <span class="methodparam"><span class="type">array</span> <tt class="parameter">$allowed_extras</tt></span>
+  ]] )</div>
+
+  <p class="para">
+   レスポンスとして送信されるのと同様の形式に HTTP
+   クッキーをパースし、構造体に格納します。
+  </p>
+ </div>
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">cookie</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       レスポンスヘッダ <i class="literal">Set-Cookie</i>
+       の値を含む文字列。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">flags</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       パースフラグ
+       (<a href="http.constants.html#http.constants.cookie" class="link"><b><tt>HTTP_COOKIE_PARSE_RAW</tt></b></a>)。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">allowed_extras</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <em class="emphasis">特別な</em> キーとして理解される内容を含む配列。
+       デフォルトでは、未知のキーはすべてクッキー名として扱われます。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合は stdClass オブジェクト、
+   失敗した場合は <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ 
+
+
+ 
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>http_parse_cookie()</b> の使用法</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">http_parse_cookie</span><span style="color: #007700">(</span><span style="color: #DD0000">"foo=bar;&nbsp;bar=baz;&nbsp;path=/;&nbsp;domain=example.com;&nbsp;comment=;&nbsp;secure"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;array(</span><span style="color: #DD0000">"comment"</span><span style="color: #007700">)));<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+stdClass Object
+(
+  [cookies] =&gt; Array
+  (
+    [foo] =&gt; bar
+    [bar] =&gt; baz
+  )
+
+  [extras] =&gt; Array
+  (
+    [comment] =&gt;
+  )
+
+  [flags] =&gt; 16
+  [expires] =&gt; 0
+  [path] =&gt; /
+  [domain] =&gt; example.com
+)
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+ </div>
+
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.http-parse-headers.html" class="function">http_parse_headers()</a></li>
+    <li class="member"><a href="function.http-parse-message.html" class="function">http_parse_message()</a></li>
+    <li class="member"><a href="function.http-build-cookie.html" class="function">http_build_cookie()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ob-inflatehandler.html">ob_inflatehandler</a></div>
+ <div class="next" style="float: right;"><a href="function.http-parse-headers.html">http_parse_headers</a></div>
+ <div class="up"><a href="ref.http.html">http</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>日付または日付の範囲に関して ID のリストを返す</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mcal-list-alarms.html">mcal_list_alarms</a></div>
+ <div class="next" style="float: right;"><a href="function.mcal-next-recurrence.html">mcal_next_recurrence</a></div>
+ <div class="up"><a href="ref.mcal.html">MCAL</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mcal-list-events" class="refentry">
+   <div class="refnamediv">
+    <h1 class="refname">mcal_list_events</h1>
+    <p class="verinfo">(PHP 4)</p><p class="refpurpose">mcal_list_events ― 
+     日付または日付の範囲に関して ID のリストを返す
+    </p>
+
+   </div>
+   <div class="refsect1 u">
+    <h3 class="title">説明</h3>
+     <div class="methodsynopsis">
+      <span class="type">array</span> <span class="methodname"><b><b>mcal_list_events</b></b></span>
+       ( <span class="methodparam"><span class="type">int</span> <tt class="parameter">$mcal_stream</tt></span>
+      [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$begin_year</tt></span>
+      ], <span class="methodparam"><span class="type">int</span> <tt class="parameter">$begin_month</tt></span>
+      , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$begin_day</tt></span>
+      , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$end_year</tt></span>
+      , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$end_month</tt></span>
+      , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$end_day</tt></span>
+      )</div>
+
+    <p class="para">
+     開始日および終了日の間のイベントのIDの配列を返します。ストリームだけを
+     指定した場合、グローバルイベント構造体の開始日および終了日を使用します。
+    </p>
+    <p class="para"> 
+     <b>mcal_list_events()</b> は、カレンダーストリームの
+     開始日およびオプションで終了日をとります。指定した日または内部イベントの
+     間にあるイベントの ID の配列が返されます。
+    </p>
+   </div>
+
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mcal-list-alarms.html">mcal_list_alarms</a></div>
+ <div class="next" style="float: right;"><a href="function.mcal-next-recurrence.html">mcal_next_recurrence</a></div>
+ <div class="up"><a href="ref.mcal.html">MCAL</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

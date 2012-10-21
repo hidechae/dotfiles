@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>現在のセッション名を取得または設定する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.session-module-name.html">session_module_name</a></div>
+ <div class="next" style="float: right;"><a href="function.session-regenerate-id.html">session_regenerate_id</a></div>
+ <div class="up"><a href="ref.session.html">セッション</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.session-name" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">session_name</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">session_name ― 現在のセッション名を取得または設定する</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">string</span> <span class="methodname"><b><b>session_name</b></b></span>
+    ([ <span class="methodparam"><span class="type">string</span> <tt class="parameter">$name</tt></span>
+  ] )</div>
+
+  <p class="para">
+   <b>session_name()</b> は、現在のセッション名を返します。
+  </p>
+  <p class="para">
+   セッション名は、リクエストが開始された際に
+   セッション名に保存された <i class="literal">session.name</i> の
+   デフォルト値にリセットされます。よって、各リクエスト毎に(そして
+   <a href="function.session-start.html" class="function">session_start()</a> または
+   <a href="function.session-register.html" class="function">session_register()</a> をコールする前に)
+   <b>session_name()</b> をコールする必要があります。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">name</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       セッション名は、クッキーおよび URL のセッション ID を参照します。
+       セッション名は英数字のみで構成されている必要があり、また、
+       短く、その内容が分かるようなものである必要があります
+       (これは、クッキー警告を有効にしているユーザ用です)。
+      </p>
+      <p class="para">
+       <div class="warning"><b class="warning">警告</b>
+        <p class="para">
+         セッション名は数字だけで構成することはできません。
+         少なくとも文字がひとつ以上現れる必要があります。そうでない場合、
+         新規セッション ID が毎回生成されます。
+        </p>
+       </div>
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   現在のセッションの名前を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>session_name()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">/*&nbsp;セッション名をWebsiteIDに設定する&nbsp;*/<br /><br /></span><span style="color: #0000BB">$previous_name&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">session_name</span><span style="color: #007700">(</span><span style="color: #DD0000">"WebsiteID"</span><span style="color: #007700">);<br /><br />echo&nbsp;</span><span style="color: #DD0000">"前回のセッション名は、$previous_name&nbsp;です。&lt;br&nbsp;/&gt;"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member">
+     設定ディレクティブ <a href="ref.session.html#ini.session.name" class="link">session.name</a>
+    </li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.session-module-name.html">session_module_name</a></div>
+ <div class="next" style="float: right;"><a href="function.session-regenerate-id.html">session_regenerate_id</a></div>
+ <div class="up"><a href="ref.session.html">セッション</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

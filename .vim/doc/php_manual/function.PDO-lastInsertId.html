@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>最後に挿入された行の ID あるいはシーケンスの値を返す</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.PDO-getAvailableDrivers.html">PDO->getAvailableDrivers()</a></div>
+ <div class="next" style="float: right;"><a href="function.PDO-prepare.html">PDO->prepare()</a></div>
+ <div class="up"><a href="ref.pdo.html">PDO</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.PDO-lastInsertId" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">PDO-&gt;lastInsertId()</h1>
+  <p class="verinfo">(PHP 5 &gt;= 5.1.0, PECL pdo:0.1-1.0.3)</p><p class="refpurpose">PDO->lastInsertId() ― 
+   最後に挿入された行の ID あるいはシーケンスの値を返す
+  </p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="classsynopsis">
+   <div class="ooclass"><b class="classname">PDO</b></div>
+   <div class="methodsynopsis">
+    <span class="type">string</span> <span class="methodname"><b><b>lastInsertId</b></b></span>
+     ([ <span class="methodparam"><span class="type">string</span> <tt class="parameter">$name</tt></span>
+   ] )</div>
+
+  </div>
+
+  <p class="para">
+   最後に挿入された行の ID、
+   あるいはシーケンスオブジェクトから次の値をを返します。
+   これは、構成しているドライバに依存します。例えば
+   <b>PDO_PGSQL()</b> の場合、<i><tt class="parameter">name</tt></i>
+
+   パラメータにシーケンスオブジェクト名を指定する必要があります。
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    このメソッドは、異なる PDO ドライバ間で意味のあるもしくは
+    一貫性のある結果を返さないかも知れません。
+    構成しているデータベースが自動インクリメントフィールド、
+    もしくはシーケンスの概念をサポートしていないかも知れないためです。
+   <br />
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">name</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       ID が返されるべきシーケンスオブジェクト名を指定します。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   もし <i><tt class="parameter">name</tt></i>
+
+   パラメータにシーケンス名が指定されなかった場合、
+   <a href="function.PDO-lastInsertId.html" class="xref">PDO->lastInsertId()</a>
+   はデータベースに挿入された最後の行の行IDに相当する文字列を返します。
+  </p>
+  <p class="para">
+   もし <i><tt class="parameter">name</tt></i>
+
+   パラメータにシーケンス名が指定された場合、
+   <a href="function.PDO-lastInsertId.html" class="xref">PDO->lastInsertId()</a>
+   は指定されたシーケンスオブジェクトから取得した最後の値に相当する
+   文字列を返します。
+  </p>
+  <p class="para">
+   もし PDO ドライバがサポートしていない場合、
+   <a href="function.PDO-lastInsertId.html" class="xref">PDO->lastInsertId()</a>
+   は <i class="literal">IM001</i> SQLSTATE を発生させます。
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.PDO-getAvailableDrivers.html">PDO->getAvailableDrivers()</a></div>
+ <div class="next" style="float: right;"><a href="function.PDO-prepare.html">PDO->prepare()</a></div>
+ <div class="up"><a href="ref.pdo.html">PDO</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

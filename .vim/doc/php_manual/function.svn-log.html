@@ -1,0 +1,272 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>指定したリポジトリ URL のコミットログメッセージを返す</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.svn-import.html">svn_import</a></div>
+ <div class="next" style="float: right;"><a href="function.svn-ls.html">svn_ls</a></div>
+ <div class="up"><a href="ref.svn.html">SVN</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.svn-log" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">svn_log</h1>
+  <p class="verinfo">(PECL svn:0.1-0.2)</p><p class="refpurpose">svn_log ― 指定したリポジトリ URL のコミットログメッセージを返す</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">array</span> <span class="methodname"><b><b>svn_log</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$repos_url</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$revision_no</tt></span>
+  ] )</div>
+
+  <p class="para">
+   <b>svn_log()</b> は、指定したリビジョン URL
+   <i><tt class="parameter">repos_url</tt></i>
+ の中身の完全な履歴を返します。
+   <i><tt class="parameter">revision_no</tt></i>
+ を指定した場合は、そのリビジョンの履歴を返します。
+   この関数は、<strong class="userinput"><code>svn log --verbose -r $revision_no $repos_url</code></strong>
+
+   と同等です。
+  </p>
+  <div class="warning"><b class="warning">警告</b>
+   <p class="para">
+    長い期間使用しているリポジトリでは、出力が巨大なものになる可能性があります
+    (すべてのリビジョンに対して配列の項目ができあがります)。
+    この関数は <strong class="userinput"><code>--limit NUM</code></strong>
+ フラグをサポートしていません。
+    また、リビジョンの範囲指定にも対応していません
+    (<strong class="userinput"><code>revision_no</code></strong>
+ は整数で指定しなければなりません)。
+   </p>
+  </div>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">repos_url</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       履歴を取得したいアイテムのリポジトリ URL。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">revision_no</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       ログを取得したいリビジョン番号。最新の情報を取得するには
+       <b><tt>SVN_REVISON_HEAD</tt></b> を使用します。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合は、この関数は次のような構造の配列を返します。
+   <div class="example-contents"><pre>
+<div class="cdata"><pre>
+[0] =&gt; Array (最新のリポジトリから順に並びます)
+(
+    [rev] =&gt; リビジョン番号
+    [author] =&gt; コミットした人の名前
+    [msg] =&gt; ログメッセージ
+    [date] =&gt; ISO 8601 形式、つまり date(&#039;c&#039;) と同じ形式の日付文字列
+    [paths] =&gt; Array (変更したファイルについての説明)
+        (
+            [0] =&gt; Array
+                (
+                    [action] =&gt; 変更の種類を表す文字
+                    [path] =&gt;  変更されたファイルの絶対パス
+                )
+            [1] =&gt; ...
+        )
+)
+[1] =&gt; ...
+</pre></div>
+    </pre></div>
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    出力は、常に数値添字の二次元配列となります。
+    ログメッセージがなかったり、ひとつだけだったりする場合でも同じです。
+   <br />
+  </p></blockquote>
+  <p class="para">
+   <var class="varname">action</var> の値は、
+   <a href="http://svnbook.red-bean.com/en/1.2/svn.ref.svn.c.status.html" class="link external">&raquo; status
+   の出力の最初の列の内容</a> のサブセットで、以下のいずれかとなります。
+  </p>
+  <table border="5">
+   <caption><b>アクション</b></caption>
+   <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">文字</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">M</td>
+       <td colspan="1" rowspan="1" align="left">アイテム/プロパティが変更されました</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">A</td>
+       <td colspan="1" rowspan="1" align="left">アイテムが追加されました</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">D</td>
+       <td colspan="1" rowspan="1" align="left">アイテムが削除されました</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">R</td>
+       <td colspan="1" rowspan="1" align="left">アイテムが置き換えられました</td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+  </table>
+
+  <p class="para">
+   何も変更されていない場合は、空の配列を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <div class="warning"><b class="warning">警告</b><p class="simpara">この関数は、
+<em class="emphasis">実験的</em> なものです。この関数の動作・
+名前・その他ドキュメントに書かれている事項は、予告なく、将来的な PHP
+のリリースにおいて変更される可能性があります。
+この関数は自己責任で使用してください。</p></div>
+ </div>
+
+
+ 
+
+ 
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>svn_log()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />print_r</span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">svn_log</span><span style="color: #007700">(</span><span style="color: #DD0000">'http://www.example.com/'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">23</span><span style="color: #007700">)&nbsp;);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は、たとえば
+以下のようになります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+Array
+(
+    [0] =&gt; Array
+    (
+        [rev] =&gt; 23
+        [author] =&gt; &#039;joe&#039;
+        [msg] =&gt; &#039;チーズとサラミをサンドイッチに追加した。&#039;
+        [date] =&gt; &#039;2007-04-06T16:00:27-04:00&#039;
+        [paths] =&gt; Array
+            (
+                [0] =&gt; Array
+                    (
+                        [action] =&gt; &#039;M&#039;
+                        [path] =&gt;  &#039;/sandwich.txt&#039;
+                    )
+            )
+    )
+)
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#2 <strong class="userinput"><code>svn</code></strong>
+ と <b>svn_log()</b> による <strong class="userinput"><code>--limit</code></strong>
+ のシミュレート</b></p>
+    <div class="example-contents"><p>
+     このサンプル関数は、SVN 実行ファイルを使用することで
+     <strong class="userinput"><code>--limit</code></strong>
+ スイッチの機能をシミュレートしたものです。
+     この結果をもとにして <b>svn_log()</b> を使用しています。
+    </p></div>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      この関数は、合計で <i><tt class="parameter">limit</tt></i>
+ + 1
+      回のリクエストを行います。最初の一回は必要なリビジョンを取得するためのもので、
+      必要な範囲について個別にログを取得します。
+     <br />
+    </p></blockquote>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/**<br />&nbsp;*&nbsp;直近の&nbsp;$limit&nbsp;件のログエントリを取得する<br />&nbsp;*&nbsp;@param&nbsp;$repos_url&nbsp;ログを取得したいアイテムのリポジトリ&nbsp;URL<br />&nbsp;*&nbsp;@param&nbsp;$limit&nbsp;取得する最大件数<br />&nbsp;*/<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">svn_log_limit</span><span style="color: #007700">(</span><span style="color: #0000BB">$repos_url</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$limit</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$limit&nbsp;</span><span style="color: #007700">=&nbsp;(int)&nbsp;</span><span style="color: #0000BB">$limit</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">$limit&nbsp;</span><span style="color: #007700">&lt;=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">)&nbsp;return&nbsp;array();<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;-q&nbsp;フラグを使用して、サーバがログメッセージを送信しないようにします<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$output&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">shell_exec</span><span style="color: #007700">(</span><span style="color: #DD0000">"svn&nbsp;log&nbsp;-q&nbsp;--limit&nbsp;$limit&nbsp;$repos_url"</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">preg_match_all</span><span style="color: #007700">(</span><span style="color: #DD0000">'/^r(\d+)&nbsp;/m'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$output</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$matches</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$ret&nbsp;</span><span style="color: #007700">=&nbsp;array();<br />&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;(</span><span style="color: #0000BB">$matches</span><span style="color: #007700">[</span><span style="color: #0000BB">1</span><span style="color: #007700">]&nbsp;as&nbsp;</span><span style="color: #0000BB">$rev</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$log&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">svn_log</span><span style="color: #007700">(</span><span style="color: #0000BB">$repos_url</span><span style="color: #007700">,&nbsp;(int)&nbsp;</span><span style="color: #0000BB">$rev</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$ret</span><span style="color: #007700">[]&nbsp;=&nbsp;</span><span style="color: #0000BB">$log</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">];&nbsp;</span><span style="color: #FF8000">//&nbsp;log&nbsp;is&nbsp;only&nbsp;one&nbsp;item&nbsp;long<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">}<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$ret</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member">
+     <a href="http://svnbook.red-bean.com/en/1.2/svn.ref.svn.c.log.html" class="link external">&raquo; 
+      SVN ドキュメントの svn log
+     </a>
+    </li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.svn-import.html">svn_import</a></div>
+ <div class="next" style="float: right;"><a href="function.svn-ls.html">svn_ls</a></div>
+ <div class="up"><a href="ref.svn.html">SVN</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

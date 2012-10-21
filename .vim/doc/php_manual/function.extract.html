@@ -1,0 +1,272 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>配列からシンボルテーブルに変数をインポートする</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.end.html">end</a></div>
+ <div class="next" style="float: right;"><a href="function.in-array.html">in_array</a></div>
+ <div class="up"><a href="ref.array.html">配列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.extract" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">extract</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">extract ― 
+   配列からシンボルテーブルに変数をインポートする
+  </p>
+
+ </div>
+ <div class="refsect1 u">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">int</span> <span class="methodname"><b><b>extract</b></b></span>
+    ( <span class="methodparam"><span class="type">array</span> <tt class="parameter">$var_array</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$extract_type</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$prefix</tt></span>
+  ]] )</div>
+
+  <p class="para">
+   この関数は、配列から現在のシンボルテーブルに変数をインポートするために使用されます。
+   この関数は連想配列 <i><tt class="parameter">var_array</tt></i>
+
+   を引数とし、そのキーを変数名、値を変数の値として処理します。
+   各キー/値の組に関して、<i><tt class="parameter">extract_type</tt></i>
+ および
+   <i><tt class="parameter">prefix</tt></i>
+ パラメータに基づき、
+   現在のシンボルテーブルに変数を一つ作成します。
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    バージョン 4.0.5 以降、この関数は展開された変数の数を返します。
+   <br />
+  </p></blockquote>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    <b><tt>EXTR_IF_EXISTS</tt></b> と
+    <b><tt>EXTR_PREFIX_IF_EXISTS</tt></b> はバージョン 4.2.0 で導入されました。
+   <br />
+  </p></blockquote>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    <b><tt>EXTR_REFS</tt></b> はバージョン 4.3.0 で導入されました。
+   <br />
+  </p></blockquote>
+  <p class="para">
+   <b>extract()</b> は、各キーについて変数名として有効であるかどうか、
+   そして、シンボルテーブルの既存の変数と衝突しないかどうかを確認します。
+   無効または数値キーおよび衝突に関する対処法は、
+   <i><tt class="parameter">extract_type</tt></i>
+ で定義されます。
+   これは以下の値のどれかとなります。
+   <dl>
+
+    <dt>
+
+     <span class="term"><b><tt>EXTR_OVERWRITE</tt></b></span>
+     <dd>
+
+      <span class="simpara">
+       衝突があった場合、存在する変数が上書きされます。
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><b><tt>EXTR_SKIP</tt></b></span>
+     <dd>
+
+      <span class="simpara">
+       衝突があった場合、存在する変数は上書きされません。
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><b><tt>EXTR_PREFIX_SAME</tt></b></span>
+     <dd>
+
+      <span class="simpara">
+       衝突があった場合、<i><tt class="parameter">prefix</tt></i>
+
+       を前につけた新しい変数となります。
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><b><tt>EXTR_PREFIX_ALL</tt></b></span>
+     <dd>
+
+      <span class="simpara">
+       全ての変数の前に <i><tt class="parameter">prefix</tt></i>
+ を付けます。PHP
+       4.0.5 以降、接頭辞を数値とすることも可能です。
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><b><tt>EXTR_PREFIX_INVALID</tt></b></span>
+     <dd>
+
+      <span class="simpara">
+       無効または数値の変数名のみに接頭辞
+       <i><tt class="parameter">prefix</tt></i>
+ を付ける。このフラグは、PHP
+       4.0.5 で追加されました。
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><b><tt>EXTR_IF_EXISTS</tt></b></span>
+     <dd>
+
+      <span class="simpara">
+       カレントのシンボルテーブルに既に存在する場合にのみ上書きします。
+       例えば $_REQUEST 以外にあなたが定義した変数のみを展開し
+       有効な変数としたいような場合に有用です。このフラグは
+       PHP 4.2.0 で追加されました。
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><b><tt>EXTR_PREFIX_IF_EXISTS</tt></b></span>
+     <dd>
+
+      <span class="simpara">
+       同じ変数だが接頭辞をつけていないバージョンの変数が
+       カレントのシンボルテーブルに存在する場合にのみ
+       変数を生成します。このフラグは PHP 4.2.0 で追加されました。
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><b><tt>EXTR_REFS</tt></b></span>
+     <dd>
+
+      <span class="simpara">
+       変数を参照として展開します。
+       これはインポート済みの変数が、
+       <i><tt class="parameter">var_array</tt></i>
+
+       パラメータの値に常に参照付けられることを意味します。
+       このフラグを単独で使用するか、
+       あるいは<i><tt class="parameter">extract_type</tt></i>
+と和算することにより、
+       他のフラグとそれを組み合わせることができます。
+       このフラグは PHP 4.3.0 で追加されました。
+      </span>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+  <p class="para">
+   <i><tt class="parameter">extract_type</tt></i>
+ が指定されない場合、
+   <b><tt>EXTR_OVERWRITE</tt></b> とみなされます。
+  </p>
+  <p class="para">
+   <i><tt class="parameter">prefix</tt></i>
+ は、
+   <i><tt class="parameter">extract_type</tt></i>
+ が
+   <b><tt>EXTR_PREFIX_SAME</tt></b>、<b><tt>EXTR_PREFIX_ALL</tt></b>、
+   <b><tt>EXTR_PREFIX_INVALID</tt></b> あるいは
+   <b><tt>EXTR_PREFIX_IF_EXISTS</tt></b> の場合にのみ必要であることに注意してください。
+   接頭辞を付けた変数名が有効な変数名でない場合、
+   この変数はシンボルテーブルにインポートされません。接頭辞は、
+   アンダースコア文字で配列のキーから自動的に分割されます。
+  </p>
+  <p class="para">
+   <b>extract()</b> は、
+   各キーが有効な変数名からなるかどうかを確認し、
+   有効な変数名である場合のみインポート処理を行います。
+  </p>
+  <div class="warning"><b class="warning">警告</b>
+   <p class="para">
+    <b>extract()</b> をユーザー入力 ($_GET, ...)
+    のような信頼できないデータについて使用しないでください。
+    もし行う場合、例えば
+    <a href="security.globals.html" class="link">register_globals</a>
+    を信頼しているような古いコードを一時的に実行したい場合、
+    <b><tt>EXTR_SKIP</tt></b> のような
+    <i><tt class="parameter">extract_type</tt></i>
+
+    の値が上書きされていないことを確認してください。そして
+    <a href="ini.html" class="link"><var class="filename">php.ini</var></a> の
+    <a href="ini.core.html#ini.variables-order" class="link">variables_order</a>
+    で定義されたものと同じ順で展開すべきであることに留意してください。
+   </p>
+  </div>
+  <p class="para">
+   extract の使用例としては、シンボルテーブルに
+   <a href="function.wddx-deserialize.html" class="function">wddx_deserialize()</a> から返された連想配列を
+    インポートすることが考えられます。
+  </p>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>extract()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">/*&nbsp;$var_array&nbsp;はwddx_deserializeから返された配列と仮定します<br />&nbsp;*/<br /><br /></span><span style="color: #0000BB">$size&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"large"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$var_array&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #DD0000">"color"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"blue"</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"size"&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"medium"</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"shape"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"sphere"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">extract</span><span style="color: #007700">(</span><span style="color: #0000BB">$var_array</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">EXTR_PREFIX_SAME</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"wddx"</span><span style="color: #007700">);<br /><br />echo&nbsp;</span><span style="color: #DD0000">"$color,&nbsp;$size,&nbsp;$shape,&nbsp;$wddx_size\n"</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+blue, large, sphere, medium
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+  <p class="para">
+   <b><tt>EXTR_PREFIX_SAME</tt></b> を指定したため、<var class="varname">$size</var>
+   は上書きされず、<var class="varname">$wddx_size</var> が作成されます。
+   <b><tt>EXTR_SKIP</tt></b> が指定された場合、$wddx_sizeは作成されません。
+   <b><tt>EXTR_OVERWRITE</tt></b>
+   の場合は、<var class="varname">$size</var> の値は &quot;medium&quot; となります。
+   <b><tt>EXTR_PREFIX_ALL</tt></b> の場合は新規の変数
+   <var class="varname">$wddx_color</var>,
+   <var class="varname">$wddx_size</var>, <var class="varname">$wddx_shape</var>
+   が作成されます。
+  </p>
+  <p class="para">
+   連想配列を使用する必要があります。<b><tt>EXTR_PREFIX_ALL</tt></b>
+   または <b><tt>EXTR_PREFIX_INVALID</tt></b> を使用しない限り、
+   数値添字の配列には結果は出力されません。
+  </p>
+  <p class="para">
+   <a href="function.compact.html" class="function">compact()</a> も参照ください。
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.end.html">end</a></div>
+ <div class="next" style="float: right;"><a href="function.in-array.html">in_array</a></div>
+ <div class="up"><a href="ref.array.html">配列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

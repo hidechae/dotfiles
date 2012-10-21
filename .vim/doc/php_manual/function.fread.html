@@ -1,0 +1,204 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>バイナリセーフなファイルの読み込み</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.fputs.html">fputs</a></div>
+ <div class="next" style="float: right;"><a href="function.fscanf.html">fscanf</a></div>
+ <div class="up"><a href="ref.filesystem.html">ファイルシステム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.fread" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">fread</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">fread ― バイナリセーフなファイルの読み込み</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">string</span> <span class="methodname"><b><b>fread</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$handle</tt></span>
+   , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$length</tt></span>
+   )</div>
+
+  <p class="para">
+   <b>fread()</b> は、<i><tt class="parameter">handle</tt></i>
+
+   が指すファイルポインタから最高 <i><tt class="parameter">length</tt></i>
+
+   バイト読み込みます。
+   以下のいずれかの条件を満たしたら、読み込みを終了します。
+   <ul class="itemizedlist">
+    <li class="listitem">
+     <span class="simpara">
+      <i><tt class="parameter">length</tt></i>
+ バイトぶん読み込んだ
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      EOF (ファイルの終端) に達した
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      パケットが利用可能になった (ネットワークストリームの場合)
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      8192 バイトぶん読み込んだ (ユーザ定義ストリームをオープンした後)
+     </span>
+    </li>
+   </ul>
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">handle</tt></i>
+</span>
+     <dd>
+
+      <p class="para"><a href="function.fopen.html" class="function">fopen()</a>
+を使用して作成したファイルシステムポインタリソース。</p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">length</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       最大 <i><tt class="parameter">length</tt></i>
+ バイトまで読み込む。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   読み込んだ文字列、またはエラー時には <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 シンプルな <b>fread()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;ファイルの中身を読んで文字列に格納する<br /></span><span style="color: #0000BB">$filename&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"/usr/local/something.txt"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$handle&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #0000BB">$filename</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"r"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$contents&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fread</span><span style="color: #007700">(</span><span style="color: #0000BB">$handle</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">filesize</span><span style="color: #007700">(</span><span style="color: #0000BB">$filename</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">fclose</span><span style="color: #007700">(</span><span style="color: #0000BB">$handle</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#2 バイナリの <b>fread()</b> の例</b></p>
+    <div class="warning"><b class="warning">警告</b>
+     <p class="para">
+      バイナリとテキストファイルの形式が異なるシステム(すなわち
+      Windows)では、<a href="function.fopen.html" class="function">fopen()</a>の mode パラメータに &#039;b&#039;
+      を指定してファイルをオープンする必要があります。
+     </p>
+    </div>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$filename&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"c:\\files\\somepic.gif"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$handle&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #0000BB">$filename</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"rb"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$contents&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fread</span><span style="color: #007700">(</span><span style="color: #0000BB">$handle</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">filesize</span><span style="color: #007700">(</span><span style="color: #0000BB">$filename</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">fclose</span><span style="color: #007700">(</span><span style="color: #0000BB">$handle</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#3 リモートファイルの <b>fread()</b> の例</b></p>
+    <div class="warning"><b class="warning">警告</b>
+     <p class="para">
+      通常のローカルファイル以外のもの、例えば
+      <a href="features.remote-files.html" class="link">リモートファイル</a> や
+      <a href="function.popen.html" class="function">popen()</a>、<a href="function.fsockopen.html" class="function">fsockopen()</a> が返す
+      ストリームを読み込んでいる場合には、
+      パケットが有効になった後に読み込みはストップします。
+      つまり以下の例のように分割されたデータを結合すべきであるということです。
+     </p>
+    </div>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;PHP&nbsp;5&nbsp;以降での例<br /></span><span style="color: #0000BB">$handle&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">"http://www.example.com/"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"rb"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$contents&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">stream_get_contents</span><span style="color: #007700">(</span><span style="color: #0000BB">$handle</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">fclose</span><span style="color: #007700">(</span><span style="color: #0000BB">$handle</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$handle&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">"http://www.example.com/"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"rb"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$contents&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">''</span><span style="color: #007700">;<br />while&nbsp;(!</span><span style="color: #0000BB">feof</span><span style="color: #007700">(</span><span style="color: #0000BB">$handle</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$contents&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #0000BB">fread</span><span style="color: #007700">(</span><span style="color: #0000BB">$handle</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">8192</span><span style="color: #007700">);<br />}<br /></span><span style="color: #0000BB">fclose</span><span style="color: #007700">(</span><span style="color: #0000BB">$handle</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+<div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    文字列にファイルを読み込みたいだけならば、<a href="function.file-get-contents.html" class="function">file_get_contents()</a>
+    を使うほうが上記の例よりも効率的です。
+   <br />
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.fwrite.html" class="function">fwrite()</a></li>
+    <li class="member"><a href="function.fopen.html" class="function">fopen()</a></li>
+    <li class="member"><a href="function.fsockopen.html" class="function">fsockopen()</a></li>
+    <li class="member"><a href="function.popen.html" class="function">popen()</a></li>
+    <li class="member"><a href="function.fgets.html" class="function">fgets()</a></li>
+    <li class="member"><a href="function.fgetss.html" class="function">fgetss()</a></li>
+    <li class="member"><a href="function.fscanf.html" class="function">fscanf()</a></li>
+    <li class="member"><a href="function.file.html" class="function">file()</a></li>
+    <li class="member"><a href="function.fpassthru.html" class="function">fpassthru()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.fputs.html">fputs</a></div>
+ <div class="next" style="float: right;"><a href="function.fscanf.html">fscanf</a></div>
+ <div class="up"><a href="ref.filesystem.html">ファイルシステム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

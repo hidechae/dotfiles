@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>文の属性を設定する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.PDOStatement-rowCount.html">PDOStatement->rowCount()</a></div>
+ <div class="next" style="float: right;"><a href="function.PDOStatement-setFetchMode.html">PDOStatement->setFetchMode()</a></div>
+ <div class="up"><a href="ref.pdo.html">PDO</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.PDOStatement-setAttribute" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">PDOStatement-&gt;setAttribute()</h1>
+  <p class="verinfo">(PHP 5 &gt;= 5.1.0, PECL pdo:0.2-1.0.3)</p><p class="refpurpose">PDOStatement->setAttribute() ― 
+   文の属性を設定する
+  </p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="classsynopsis">
+   <div class="ooclass"><b class="classname">PDOStatement</b></div>
+   <div class="methodsynopsis">
+    <span class="type">bool</span> <span class="methodname"><b><b>setAttribute</b></b></span>
+     ( <span class="methodparam"><span class="type">int</span> <tt class="parameter">$attribute</tt></span>
+    , <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$value</tt></span>
+    )</div>
+
+  </div>
+
+  <p class="para">
+   文の属性を設定します。現時点で共通の属性は存在しませんが、
+   ドライバ固有の属性のみ存在します。
+   <ul class="itemizedlist">
+    <li class="listitem"><p class="para"><i class="literal">PDO::ATTR_CURSOR_NAME</i>
+     (Firebird と ODBC 固有):
+     <i class="literal">UPDATE ... WHERE CURRENT OF</i>
+     に対するカーソル名を取得する
+    </p></li>
+   </ul>
+  </p>
+
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.PDO-getAttribute.html" class="xref">PDO->getAttribute()</a></li>
+    <li class="member"><a href="function.PDO-setAttribute.html" class="xref">PDO->setAttribute()</a></li>
+    <li class="member"><a href="function.PDOStatement-getAttribute.html" class="xref">PDOStatement->getAttribute()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.PDOStatement-rowCount.html">PDOStatement->rowCount()</a></div>
+ <div class="next" style="float: right;"><a href="function.PDOStatement-setFetchMode.html">PDOStatement->setFetchMode()</a></div>
+ <div class="up"><a href="ref.pdo.html">PDO</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

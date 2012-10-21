@@ -1,0 +1,181 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>乱数を生成する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.rad2deg.html">rad2deg</a></div>
+ <div class="next" style="float: right;"><a href="function.round.html">round</a></div>
+ <div class="up"><a href="ref.math.html">Math</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.rand" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">rand</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">rand ― 乱数を生成する</p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+   <div class="methodsynopsis">
+    <span class="type">int</span> <span class="methodname"><b><b>rand</b></b></span>
+     ([ <span class="methodparam"><span class="type">int</span> <tt class="parameter">$min</tt></span>
+    ], <span class="methodparam"><span class="type">int</span> <tt class="parameter">$max</tt></span>
+    )</div>
+
+  <p class="simpara">
+   オプションの引数
+   <i><tt class="parameter">min</tt></i>
+,<i><tt class="parameter">max</tt></i>
+
+   を省略してコールした場合、<b>rand()</b> は 0 と
+   <b><tt>RAND_MAX</tt></b> の間の擬似乱数(整数)を返します。 
+   例えば、5 から 15 まで（両端を含む）の乱数を得たい場合、
+   <i class="literal">rand(5,15)</i> とします。
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   <span class="simpara">
+    （Windows のような）いくつかのプラットフォームでは、<b><tt>RAND_MAX</tt></b>
+    は 32768 と小さな値となっています。
+    32768 より広い範囲にしたい場合、
+    <i><tt class="parameter">min</tt></i>
+ および <i><tt class="parameter">max</tt></i>
+ を指定することで、
+    RAND_MAX より大きな範囲の乱数を生成することができます。
+    もしくは、
+    <a href="function.mt-rand.html" class="function">mt_rand()</a> をかわりに使用してみてください。
+   </span>
+  </p></blockquote>
+
+  <blockquote><p><b class="note">注意</b>: <span class="simpara">PHP 4.2.0 以降、
+<a href="function.srand.html" class="function">srand()</a> または
+<a href="function.mt-srand.html" class="function">mt_srand()</a>
+によりランダム数生成器にシードを与える必要はありません。
+これは、この処理が自動的に行われるためです。</span></p></blockquote>
+
+ </div>
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">min</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       返す値の最小値 (デフォルトは 0)。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">max</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       返す値の最大値 (デフォルトは RAND_MAX)。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   <i><tt class="parameter">min</tt></i>
+ (あるいは 0)
+   から <i><tt class="parameter">max</tt></i>
+ (あるいは RAND_MAX、それぞれ端点を含む)
+   までの間の疑似乱数値を返します。
+  </p>
+ </div>
+
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">3.0.7 以降</td>
+       <td colspan="1" rowspan="1" align="left">
+        3.0.7 より前のバージョンでは、<i><tt class="parameter">max</tt></i>
+ の意味は
+        <i><tt class="parameter">range</tt></i>
+ でした。これらのバージョンにおいて
+        同じ結果を得るために簡単な例を示すと、
+        5 から 15 までの乱数を得たい場合には <i class="literal">rand (5, 11)</i>
+        とする必要があります。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>rand()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">rand</span><span style="color: #007700">()&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br />echo&nbsp;</span><span style="color: #0000BB">rand</span><span style="color: #007700">()&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br /><br />echo&nbsp;</span><span style="color: #0000BB">rand</span><span style="color: #007700">(</span><span style="color: #0000BB">5</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">15</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は、たとえば
+以下のようになります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+7771
+22264
+11
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+ </div>
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.srand.html" class="function">srand()</a></li>
+    <li class="member"><a href="function.getrandmax.html" class="function">getrandmax()</a></li>
+    <li class="member"><a href="function.mt-rand.html" class="function">mt_rand()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.rad2deg.html">rad2deg</a></div>
+ <div class="next" style="float: right;"><a href="function.round.html">round</a></div>
+ <div class="up"><a href="ref.math.html">Math</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

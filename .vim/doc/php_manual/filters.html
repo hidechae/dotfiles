@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>利用できるフィルタのリスト</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="wrappers.expect.html">対話的プロセスストリーム</a></div>
+ <div class="next" style="float: right;"><a href="filters.convert.html">変換フィルタ</a></div>
+ <div class="up"><a href="appendices.html">付録</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+ <h1>利用できるフィルタのリスト</h1>
+<h2>目次</h2><ul class="chunklist chunklist_appendix"><li><a href="filters.convert.html">変換フィルタ</a></li><li><a href="filters.compression.html">圧縮フィルタ</a></li><li><a href="filters.encryption.html">暗号化フィルタ</a></li></ul>
+
+ <p class="para">
+  以下は、<a href="function.stream-filter-append.html" class="function">stream_filter_append()</a> で利用できる
+  組み込みフィルタのリストです。PHP のバージョンによっては
+  このリスト以外のフィルタがあったり、このリストにあるフィルタが存在
+  しなかったりするかもしれません。
+ </p>
+
+ <p class="para">
+  <a href="function.stream-filter-append.html" class="function">stream_filter_append()</a>
+  と <a href="function.stream-filter-prepend.html" class="function">stream_filter_prepend()</a> のちょっとした違いに
+  ついて説明します。
+  すべての PHP ストリームはその内部に小さな<em class="emphasis">読み込みバッファ</em>
+  を持っており、ファイルシステムもしくは他のリソースから読み込まれた
+  データはこのバッファに格納されます。このことで、データをより効率的に
+  扱うことができるのです。リソースがストリームの内部バッファに
+  取り込まれたら、アプリケーション側で準備ができているかどうかに
+  かかわらずすぐにフィルタ処理が行われます。フィルタが
+  <em class="emphasis">append</em> されていた場合、読み込みバッファに
+  はいってきたデータはすぐにフィルタ処理されます。つまり、バッファの
+  存在をまったく意識せずに扱えるということです。しかし、もしフィルタが
+  <em class="emphasis">prepend</em> されていた場合、読み込みバッファにデータが
+  入ってきた段階ではフィルタ処理<em class="emphasis">されません</em>。
+  リソースから次のデータブロックが読み込まれるまで、フィルタ処理を
+  待機するのです。
+ </p>
+
+ <p class="para">
+  あなたが使っている PHP にどのようなフィルタが登録されているかを
+  知るには、<a href="function.stream-get-filters.html" class="function">stream_get_filters()</a> を利用します。
+ </p>
+
+ <div id="filters.string" class="section">
+  <h2 class="title">文字列フィルタ</h2>
+
+  <p class="simpara">
+   これらのフィルタは、まさしくその名が示すとおりの働きをし、PHP 組み込み
+   の文字列処理関数と同じように動作します。これらのフィルタについての
+   より詳しい情報は、対応する関数のマニュアルを参照してください。
+  </p>
+
+  <p class="simpara">
+   <i class="literal">string.rot13</i>
+   (PHP 4.3.0 以降)
+   このフィルタは、すべてのストリームデータに対して
+   <a href="function.str-rot13.html" class="function">str_rot13()</a> 関数を適用するのと同じ動作をします。
+  </p>
+  <div class="example">
+   <p><b>Example#1 string.rot13</b></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$fp&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">'php://output'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'w'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">stream_filter_append</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'string.rot13'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"This&nbsp;is&nbsp;a&nbsp;test.\n"</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">/*&nbsp;出力:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Guvf&nbsp;vf&nbsp;n&nbsp;grfg.&nbsp;&nbsp;&nbsp;*/<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+
+  <p class="simpara">
+   <i class="literal">string.toupper</i>
+   (PHP 5.0.0 以降)
+   このフィルタは、すべてのストリームデータに対して
+   <a href="function.strtoupper.html" class="function">strtoupper()</a> 関数を適用するのと同じ動作をします。
+  </p>
+  <div class="example">
+   <p><b>Example#2 string.toupper</b></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$fp&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">'php://output'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'w'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">stream_filter_append</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'string.toupper'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"This&nbsp;is&nbsp;a&nbsp;test.\n"</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">/*&nbsp;Outputs:&nbsp;&nbsp;THIS&nbsp;IS&nbsp;A&nbsp;TEST.&nbsp;&nbsp;&nbsp;*/<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+
+  <p class="simpara">
+   <i class="literal">string.tolower</i>
+   (PHP 5.0.0 以降)
+   このフィルタは、すべてのストリームデータに対して
+   <a href="function.strtolower.html" class="function">strtolower()</a> 関数を適用するのと同じ動作をします。
+  </p>
+  <div class="example">
+   <p><b>Example#3 string.tolower</b></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$fp&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">'php://output'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'w'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">stream_filter_append</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'string.tolower'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"This&nbsp;is&nbsp;a&nbsp;test.\n"</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">/*&nbsp;出力:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this&nbsp;is&nbsp;a&nbsp;test.&nbsp;&nbsp;&nbsp;*/<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+
+  <p class="simpara">
+   <i class="literal">string.strip_tags</i>
+   (PHP 5.0.0 以降)
+   このフィルタは、すべてのストリームデータに対して
+   <a href="function.strip-tags.html" class="function">strip_tags()</a> 関数を適用するのと同じ動作をします。
+   以下の２つのうちどちらかの形式でパラメータを渡すことができます。
+   ひとつは、<a href="function.strip-tags.html" class="function">strip_tags()</a> 関数の第２パラメータと同じ
+   形式でタグを並べた文字列、もうひとつはタグ名の配列です。
+  </p>
+  <div class="example">
+   <p><b>Example#4 string.strip_tags</b></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$fp&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">'php://output'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'w'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">stream_filter_append</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'string.strip_tags'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">STREAM_FILTER_WRITE</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"&lt;b&gt;&lt;i&gt;&lt;u&gt;"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"&lt;b&gt;bolded&nbsp;text&lt;/b&gt;&nbsp;enlarged&nbsp;to&nbsp;a&nbsp;&lt;h1&gt;level&nbsp;1&nbsp;heading&lt;/h1&gt;\n"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">fclose</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">/*&nbsp;出力:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;b&gt;bolded&nbsp;text&lt;/b&gt;&nbsp;enlarged&nbsp;to&nbsp;a&nbsp;level&nbsp;1&nbsp;heading&nbsp;&nbsp;&nbsp;*/<br /><br /></span><span style="color: #0000BB">$fp&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">'php://output'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'w'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">stream_filter_append</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'string.strip_tags'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">STREAM_FILTER_WRITE</span><span style="color: #007700">,&nbsp;array(</span><span style="color: #DD0000">'b'</span><span style="color: #007700">,</span><span style="color: #DD0000">'i'</span><span style="color: #007700">,</span><span style="color: #DD0000">'u'</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"&lt;b&gt;bolded&nbsp;text&lt;/b&gt;&nbsp;enlarged&nbsp;to&nbsp;a&nbsp;&lt;h1&gt;level&nbsp;1&nbsp;heading&lt;/h1&gt;\n"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">fclose</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">/*&nbsp;出力:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;b&gt;bolded&nbsp;text&lt;/b&gt;&nbsp;enlarged&nbsp;to&nbsp;a&nbsp;level&nbsp;1&nbsp;heading&nbsp;&nbsp;&nbsp;*/<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+   
+ </div>
+
+ 
+
+ 
+
+ 
+
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="wrappers.expect.html">対話的プロセスストリーム</a></div>
+ <div class="next" style="float: right;"><a href="filters.convert.html">変換フィルタ</a></div>
+ <div class="up"><a href="appendices.html">付録</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

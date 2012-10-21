@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>メッセージキューにメッセージを送信する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.msg-remove-queue.html">msg_remove_queue</a></div>
+ <div class="next" style="float: right;"><a href="function.msg-set-queue.html">msg_set_queue</a></div>
+ <div class="up"><a href="ref.sem.html">Semaphore</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.msg-send" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">msg_send</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.3.0, PHP 5)</p><p class="refpurpose">msg_send ― メッセージキューにメッセージを送信する</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>msg_send</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$queue</tt></span>
+   , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$msgtype</tt></span>
+   , <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$message</tt></span>
+   [, <span class="methodparam"><span class="type">bool</span> <tt class="parameter">$serialize</tt></span>
+   [, <span class="methodparam"><span class="type">bool</span> <tt class="parameter">$blocking</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter reference">&$errorcode</tt></span>
+  ]]] )</div>
+
+  <p class="para">
+   <b>msg_send()</b> は、<i><tt class="parameter">queue</tt></i>
+
+   で指定したメッセージキューに対して <i><tt class="parameter">msgtype</tt></i>
+
+   で指定した型 (0 より大きい数値である必要があります) のメッセージ
+   <i><tt class="parameter">message</tt></i>
+ を送信します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">queue</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">msgtype</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">message</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">serialize</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       オプションのパラメータ <i><tt class="parameter">serialize</tt></i>
+ は、
+       <i><tt class="parameter">message</tt></i>
+ を送信する方法を制御します。
+       <i><tt class="parameter">serialize</tt></i>
+ のデフォルト値は <b><tt>TRUE</tt></b> で、
+       この場合 <i><tt class="parameter">message</tt></i>
+ が送信される前に
+       セッションモジュールと同じ方法でシリアライズされます。
+       これにより、配列やオブジェクトのような複雑な形式のデータを
+       他の PHP スクリプトに送信することが可能となります。
+       また、もし WDDX シリアライザを使用しているなら、あらゆる WDDX
+       互換クライアントに対して同じことが可能となります。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">blocking</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       メッセージがキューに収まらないほど大きい場合は、他のプロセスが
+       現在キューにあるメッセージを読み込んでキューの空き容量が確保されれまで
+       スクリプトの実行を待ち続けます。この関数はブロックモードでコール
+       されます。オプションのパラメータ <i><tt class="parameter">blocking</tt></i>
+
+       を <b><tt>FALSE</tt></b> に設定することでブロックモードではなくすることが可能で、
+       この場合、もしキューの空き容量よりも大きなメッセージを送信すると
+       <b>msg_send()</b> はすぐに <b><tt>FALSE</tt></b> を返します。
+       また、オプションのパラメータ <i><tt class="parameter">errorcode</tt></i>
+
+       を <b><tt>MSG_EAGAIN</tt></b> に設定すると、
+       このような場合に少し時間をおいてメッセージを再度送信します。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">errorcode</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+  <p class="para">
+   処理が正常に完了すると、メッセージキューデータ構造体は以下のように更新されます。
+   <i><tt class="parameter">msg_lspid</tt></i>
+ には呼び出し元のプロセス ID が
+   設定され、<i><tt class="parameter">msg_qnum</tt></i>
+ が 1 増加し、
+   <i><tt class="parameter">msg_stime</tt></i>
+ が現在の時刻に設定されます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.msg-remove-queue.html" class="function">msg_remove_queue()</a></li>
+    <li class="member"><a href="function.msg-receive.html" class="function">msg_receive()</a></li>
+    <li class="member"><a href="function.msg-stat-queue.html" class="function">msg_stat_queue()</a></li>
+    <li class="member"><a href="function.msg-set-queue.html" class="function">msg_set_queue()</a></li>
+   </ul>
+  </p>
+ </div>
+  
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.msg-remove-queue.html">msg_remove_queue</a></div>
+ <div class="next" style="float: right;"><a href="function.msg-set-queue.html">msg_set_queue</a></div>
+ <div class="up"><a href="ref.sem.html">Semaphore</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

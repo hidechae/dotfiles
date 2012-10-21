@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>グローバル ID を仮想的なローカル ID に割りつける</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.hw-insertobject.html">hw_InsertObject</a></div>
+ <div class="next" style="float: right;"><a href="function.hw-modifyobject.html">hw_Modifyobject</a></div>
+ <div class="up"><a href="ref.hw.html">Hyperwave</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.hw-mapid" class="refentry">
+   <div class="refnamediv">
+    <h1 class="refname">hw_mapid</h1>
+    <p class="verinfo">(PHP 4)</p><p class="refpurpose">hw_mapid ― グローバル ID を仮想的なローカル ID に割りつける</p>
+
+   </div>
+   <div class="refsect1 u">
+    <h3 class="title">説明</h3>
+     <div class="methodsynopsis">
+      <span class="type">int</span> <span class="methodname"><b><b>hw_mapid</b></b></span>
+       ( <span class="methodparam"><span class="type">int</span> <tt class="parameter">$connection</tt></span>
+      , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$server id</tt></span>
+      , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$object id</tt></span>
+      )</div>
+
+    <p class="para">
+      hyperwave サーバのグローバルオブジェクト ID を、
+      仮想的なオブジェクト ID に割りつけます。
+      これは、<a href="function.hw-connect.html" class="function">hw_connect()</a> で接続を行っていない場合でも
+      行われます。
+      この仮想オブジェクト ID は、
+      <a href="function.hw-getobject.html" class="function">hw_getobject()</a> でオブジェクトレコードを得るといった用途に
+      他のオブジェクト ID と同様に使用することが可能です。
+      サーバ ID は、オブジェクトのグローバルオブジェクト ID(GOid)の最初の
+      部分であり、実際にはサーバの IP アドレスを整数で表したものとなります。</p>
+    <p class="para">
+      注意: この関数を使用するには、F_DISTRIBUTED フラグを設定しておく必要があります。
+      このフラグは、現在のところコンパイル時に hg_comm.c の中で設定することのみが可能です。
+      このフラグは、デフォルトでは設定されていません。
+      hg_comm.c の先頭にあるコメントをお読みください。
+      </p> 
+   </div>
+
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.hw-insertobject.html">hw_InsertObject</a></div>
+ <div class="next" style="float: right;"><a href="function.hw-modifyobject.html">hw_Modifyobject</a></div>
+ <div class="up"><a href="ref.hw.html">Hyperwave</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

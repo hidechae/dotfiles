@@ -1,0 +1,439 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>Microsoft IIS / PWS</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="install.windows.activescript.html">ActiveScript</a></div>
+ <div class="next" style="float: right;"><a href="install.windows.apache1.html">Apache 1.3.x （Microsoft Windows 用）</a></div>
+ <div class="up"><a href="install.windows.html">Windows システムへのインストール</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="install.windows.iis" class="sect1">
+ <h2 class="title">Microsoft IIS / PWS</h2>
+ <p class="para">
+  この章では、IIS (Microsoft Internet Information Server) に関する
+  注意やヒントを取り上げます。
+ </p>
+
+ <div class="warning"><b class="warning">警告</b><p class="para">
+CGI としてセットアップすると、サーバは様々な攻撃を受ける可能性があります。
+これらの攻撃からサーバを守る方法については、
+<a href="security.cgi-bin.html" class="link">CGI セキュリティ</a>
+のセクションを参照してください。</p></div>
+
+ <div id="install.windows.iis.general" class="sect2">
+  <h3 class="title">IIS あるいは PWS で PHP を使用する際に、一般的に考慮すべき点</h3>
+  <p class="para">
+   <ul class="itemizedlist">
+    <li class="listitem">
+     <span class="simpara">
+      まず最初に、<a href="install.windows.manual.html" class="link">
+      マニュアルインストール</a> をお読みください。 ここには
+      Windows 上に PHP をインストールするための重要な情報が含まれているので、
+      決して読み飛ばしてはいけません。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      CGI を利用する場合は、<var class="filename">php.ini</var> 内で <a href="ini.core.html#ini.cgi.force-redirect" class="link">
+      cgi.force_redirect</a> PHP ディレクティブを <i class="literal">0</i>
+      に設定する必要があります。<a href="faq.installation.html#faq.installation.forceredirect" class="link">
+      cgi.force_redirect に関する FAQ</a> に重要な情報がありますので
+      お読みください。また、CGI を利用する場合は
+      <a href="ini.core.html#ini.cgi.redirect-status-env" class="link">cgi.redirect_status_env</a>
+      ディレクティブを設定することもあるかもしれません。これらの
+      ディレクティブを使用する際には、<var class="filename">php.ini</var> 内でその項目が
+      コメントアウトされていないことを確認してください。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      PHP 4 では CGI は <var class="filename">php.exe</var> という名前ですが、
+      PHP 5 ではその名前は <var class="filename">php-cgi.exe</var> となります。
+      PHP 5 では <var class="filename">php.exe</var> は CLI であり、CGI
+      ではありません。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      Windows の環境変数 <i class="literal">PATH</i> を変更し、PHP の
+      ディレクトリを含めるようにしてください。こうすることによって
+      PHP の DLL ファイルや PHP 実行ファイルを
+      PHP ディレクトリの中に置いておくことが可能となり、Windows
+      のシステムディレクトリを汚すことが避けられます。
+      詳細な情報は、FAQ の
+      <a href="faq.installation.html#faq.installation.addtopath" class="link">PATH を設定する方法</a>
+      を参照ください。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      IIS ユーザ (通常は IUSR_MACHINENAME) に対しては、
+      <var class="filename">php.ini</var>、ドキュメントルートおよびセッションの一時ディレクトリなどの
+      さまざまなファイルやディレクトリへの読み込み権限を与えておくことが
+      必要です。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <var class="filename">php.ini</var> 内のディレクティブ <a href="ini.core.html#ini.extension-dir" class="link">
+      extension_dir</a> および <a href="ini.core.html#ini.doc-root" class="link">
+      doc_root</a> は、必ず適切に設定するようにしましょう。
+      これらのディレクティブの内容は、PHP がインストールされている
+      システムに依存します。PHP 4 では extension_dir は
+      <var class="filename">extensions</var> となりますが、PHP 5 では
+      <var class="filename">ext</var> です。そのため PHP 5 の extensions_dir
+      の値は例えば <var class="filename">&quot;c:\php\ext&quot;</var> のようになり、
+      IIS の doc_root の値は例えば
+      <var class="filename">&quot;c:\Inetpub\wwwroot&quot;</var> のようになります。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <var class="filename">php_mysql.dll</var> や <var class="filename">php_curl.dll</var>
+      のような PHP 拡張モジュールの DLL ファイルは、zip パッケージ版の
+      PHP 配布物に含まれています (インストーラ版には含まれません)。
+      PHP 5 では多くの拡張モジュールが PECL に含まれるようになり、
+      &quot;Collection of PECL modules&quot; パッケージとしてダウンロード
+      できるようになりました。この中には
+      <var class="filename">php_zip.dll</var> や
+      <var class="filename">php_ssh2.dll</var> などが含まれます。
+      <a href="http://www.php.net/downloads.php" class="link external">&raquo; PHP はここからダウンロードできます</a>。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      実行ファイルを定義する際に「ファイルの存在を確認する」をチェックします。
+      少しパフォーマンス は落ちますが、IIS (もしくは PWS) が PHP を起動する前に、
+      そのスクリプトが存在し認証上の問題がないかをチェックするようになります。
+      PHP は CGI エラー時に空白の画面しか出力しませんが、こうすることで、
+      より解りやすい 404 エラーメッセージを出力させるようにすることができます。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      配布されている PHP の実行ファイルは 32bit アプリケーションです。
+      64bit 版の Windows を使用している場合は、自分でバイナリを再ビルドするか、
+      あるいは 32bit の拡張モジュールを実行できるように IIS を設定します。
+      この設定は、通常は IIS の管理スクリプトで
+      Cscript.exe adsutil.vbs SET W3SVC/AppPools/Enable32bitAppOnWin64 1
+      のようにします。
+     </span>
+    </li>
+   </ul>
+  </p>
+ </div>
+
+ <div id="install.windows.iis.iis4" class="sect2">
+  <h3 class="title">Windows NT/200x/XP 上の IIS 4 以降</h3>
+
+  <p class="simpara">
+   PHP は、CGI バイナリあるいは ISAPI モジュールのいずれかの形式で
+   インストールされていることでしょう。いずれにしても、まず
+   「マイクロソフトマネージメントコンソール」
+   (Windows NT 4.0 オプションパック環境では「インターネット
+   サービスマネージャ」、Windows 2000/XP では
+   コントロールパネル=&gt;管理ツールにあります) を起動する必要があります。
+   次に、Web サーバノード (たいていは「既定の Web サイト」と表示されています)
+   上で右クリックし、「プロパティ」を選択します。
+  </p>
+
+  <p class="para">
+   CGI バイナリを使う場合は、次のようにしてください。
+   <ul class="itemizedlist">
+    <li class="listitem">
+     <span class="simpara">
+      「ホームディレクトリ」あるいは「仮想ディレクトリ」「ディレクトリ」タブで
+      以下のようにします。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      実行アクセス許可を「スクリプトのみ」に変更します。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      「構成」ボタンをクリックし、「マッピング」タブを選択します。
+      「追加」をクリックし、実行可能ファイルに適切な CGI ファイルを指定します。
+      たとえば PHP 5 では <var class="filename">C:\php\php-cgi.exe</var> となります。
+      「拡張子」に <i class="literal">.php</i> を指定し、「動詞」は空白のまま、
+      「スクリプトエンジン」チェックボックスをチェックしてください。
+      そして、「OK」ボタンを何度かクリックしてください。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      適切なセキュリティを設定してください (これは
+      インターネットサービスマネージャで行います)。もし NT サーバで
+      NTFS ファイルシステムを使用しているなら、
+      <var class="filename">php.exe</var> / <var class="filename">php-cgi.exe</var>
+      があるディレクトリへの実行権限を I_USR_ に追加してください。
+     </span>
+    </li>
+   </ul>
+  </p>
+  <p class="para">
+   ISAPI モジュールを使う場合、次のようにしてください。
+   <ul class="itemizedlist">
+    <li class="listitem">
+     <span class="simpara">
+      PHP を使用した HTTP 認証を実行しない場合は、この手順を飛ばしてください。
+      「ISAPI フィルタ」タブで新規フィルタを追加します。「フィルタ名」として
+      PHP を使用し、「実行ファイル」には <var class="filename">php4isapi.dll</var> /
+      <var class="filename">php5isapi.dll</var> へのパスを入力してください。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      「ホームディレクトリ」あるいは「仮想ディレクトリ」「ディレクトリ」タブで
+      以下のようにします。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      実行アクセス許可を「スクリプトのみ」に変更します。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      「構成」ボタンをクリックし、「マッピング」タブを選択します。
+      「追加」をクリックし、実行可能ファイルに適切な ISAPI DLL を指定します。
+      たとえば PHP 5 では <var class="filename">C:\php\php5isapi.dll</var> となります。
+      「拡張子」に <i class="literal">.php</i> を指定し、「動詞」は空白のまま、
+      「スクリプトエンジン」チェックボックスをチェックしてください。
+      そして、「OK」ボタンを何度かクリックしてください。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      IIS を停止させます (NET STOP iisadmin)。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      IIS を再度起動します (NET START w3svc)。
+     </span>
+    </li>
+   </ul>
+  </p>
+  <p class="para">
+   IIS 6 (2003 Server) の場合は IIS マネージャを開き、「Web サービス拡張」に
+   移動し、「新しい Web サービス拡張を追加」を選択し、たとえば「PHP」などと
+   拡張名を入力し、「追加」ボタンを押して ISAPI ファイル
+   (<var class="filename">php4isapi.dll</var> または <var class="filename">php5isapi.dll</var>)
+   あるいは CGI (<var class="filename">php.exe</var> または <var class="filename">php-cgi.exe</var>)
+   を選択し、「拡張の状態を許可済みに設定する」をチェックして「OK」ボタンを
+   クリックします。
+  </p>
+  <p class="para">
+   デフォルトのページとして <var class="filename">index.php</var> を使用するには
+   以下のようにします。
+   (訳注:「既定の Web サイト」のプロパティダイアログで)
+   「ドキュメント」タブを選択し、「追加」を選択します。そこで
+   <var class="filename">index.php</var> と入力し、「OK」をクリックします。
+   「上に移動」や「下に移動」を使用して順番を調整します。
+   これは Apache での DirectoryIndex の設定と同じです。
+  </p>
+  <p class="para">
+   上記の手順を PHP スクリプトに関連づけたい拡張子ごとに繰り返してください。
+   一般的な拡張子は <i class="literal">.php</i> ですが、
+   古いアプリケーションでは <i class="literal">.php3</i> が必要な場合があります。
+  </p>
+  <p class="para">
+   CPU 使用率が 100% となる場合は、IIS の設定「<i class="literal">ISAPI 
+   アプリケーションをキャッシュ</i>」をオフにしてください。
+  </p>
+ </div>
+
+ <div id="install.windows.iis.pws4" class="sect2">
+  <h3 class="title">Windows 上の PWS 4</h3>
+  <p class="simpara">
+   PWS 4 は ISAPI をサポートしていません。PHP CGI のみが使用可能です。
+  </p>
+  <p class="para">
+   <ul class="itemizedlist">
+    <li class="listitem">
+     <span class="simpara">
+      配布ファイル内の <var class="filename">pws-php4cgi.reg</var> /
+      <var class="filename">pws-php5cgi.reg</var> ファイル (PHP 4 の場合は SAPI フォルダ、
+      PHP 5 の場合メインフォルダを参照）を編集し、<var class="filename">php.exe</var> / 
+      <var class="filename">php-cgi.exe</var> の設置場所を反映させます。
+      バックスラッシュはエスケープする必要があります。例、
+      <i class="literal">[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\w3svc\parameters\Script
+       Map] &quot;.php&quot;=&quot;C:\\php\\php.exe&quot;</i> (PHP 5 の場合は
+      <i class="literal">C:\\php\\php-cgi.exe</i> とします)。
+      編集を終えたらダブルクリックして、レジストリファイルをシステムに反映させます。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      PWS マネージャで、PHP を実行させたいフォルダで右クリックし、
+      プロパティを選択します。「実行」チェックボックスをチェックし、確認を押します。
+     </span>
+    </li>
+   </ul>
+  </p>
+ </div>
+
+ <div id="install.windows.iis.iis3" class="sect2">
+  <h3 class="title">Windows 上の PWS/IIS 3</h3>
+  <p class="simpara">
+   PWS/IIS 3 サーバを設定するには、配布ファイルに含まれる REG ファイル 
+   (SAPI フォルダの <var class="filename">pws-php4cgi.reg</var> が PHP 4 用、
+   メインフォルダの <var class="filename">pws-php5cgi.reg</var> が PHP 5 用) を使用することを推奨します。
+   このファイルを編集し、拡張子および PHP インストールディレクトリを自分用の設定に
+   調整することが可能です。さもなくば、以下の手順により、手動でこの設定を行うことも可能です。
+  </p>
+  <div class="warning"><b class="warning">警告</b>
+   <p class="para">
+    以下の手順では Windows レジストリに対して直接変更を加えます。
+    ひとつでも間違えると、システムが不安定になる可能性があります。
+    レジストリのバックアップをとることをを強く推奨します。
+    PHP 開発チームは、レジストリが損傷した場合の責任を負いません。
+   </p>
+  </div>
+
+  <p class="para">
+   <ul class="itemizedlist">
+    <li class="listitem">
+     <span class="simpara">
+      Regedit を起動します。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <i class="literal">HKEY_LOCAL_MACHINE /System
+       /CurrentControlSet /Services /W3Svc /Parameters
+       /ScriptMap</i> へ移動します。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+     「編集」メニューから、<i class="literal">新規 -&gt; 文字列値</i> を選択します。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      PHP スクリプトに使用したい拡張子を入力します。
+      たとえば <i class="literal">.php</i> となります。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      この新しく作成した文字列値をダブルクリックし、入力欄に
+      <var class="filename">php.exe</var> までのパスを入力します。たとえば
+      PHP 4 では <var class="filename">C:\php\php.exe &quot;%s&quot; %s</var>、
+      PHP 5 では <var class="filename">C:\php\php-cgi.exe &quot;%s&quot; %s</var> となります。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      PHP スクリプトに関連付けたいすべての拡張子に対して、
+      上記の手順を繰り返します。
+     </span>
+    </li>
+   </ul>
+  </p>
+  <p class="para">
+   以下の手順は、Web サーバのインストールに影響を与えるものではなく、
+   PHP スクリプトをコマンドライン (例:「ファイル名を指定して実行」で
+   <var class="filename">C:\myscripts\test.php</var> を入力するなど)
+   やダブルクリックで実行させたい場合にのみ行ってください。
+   ダブルクリックした際にテキストエディタに読み込まれるままとしたいのなら、
+   以下の手順はスキップしてください。
+  </p>
+  <p class="para">
+   <ul class="itemizedlist">
+    <li class="listitem">
+     <span class="simpara">
+      <i class="literal">HKEY_CLASSES_ROOT</i> へ移動します。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      編集メニューから、<i class="literal">新規 -&gt; キー</i> を選択します。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      キーを先に入力した拡張子と同じ名前にします。例、<i class="literal">.php</i>
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      作成した新しいキーを選択した状態にし、右の欄で 「(既定)」 をダブルクリックして
+      <i class="literal">phpfile</i> と入力します。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      先に登録したすべての拡張子に対して繰り返します。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <i class="literal">HKEY_CLASSES_ROOT</i> で、再度
+      <i class="literal">新規-&gt;キー</i> とし、<i class="literal">phpfile</i>
+      という名前にします。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      新しいキー <i class="literal">phpfile</i> を選択した状態にし、
+      右の欄で 「(既定)」 をダブルクリックして
+      <i class="literal">PHP Script</i> と入力します。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <i class="literal">phpfile</i> を右クリックし、<i class="literal">新規-&gt;キー</i>
+      を選択し、新しくできたキーを <i class="literal">Shell</i> という名前にします。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <i class="literal">Shell</i> を右クリックし、<i class="literal">新規-&gt;キー</i>
+      を選択し、新しくできたキーを <i class="literal">open</i> という名前にします。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <i class="literal">open</i> を右クリックし、<i class="literal">新規-&gt;キー</i>
+      を選択し、新しくできたキーを <i class="literal">command</i> という名前にします。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      新しくできた <i class="literal">command</i> を選択した状態にし、
+      右の欄で 「(既定)」 をダブルクリックして <var class="filename">php.exe</var> への
+      パスを入力します。例、<i class="literal">c:\php\php.exe -q %1</i> 
+     （<i class="literal">%1</i> を忘れずに入力すること）。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      Regedit を終了します。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      Windows 上で PWS を使用している場合、レジストリを再ロードするために
+      再起動します。
+     </span>
+    </li>
+   </ul>
+  </p>
+  <p class="simpara">
+   ここまでの作業で、PWSおよび IIS 3用のシステムインストールは完了しました。
+   IIS 3 用の良くできた <a href="http://www.genusa.com/iis/iiscfg.html" class="link external">&raquo; 設定ツール</a> が Steven Genusa により
+   配布されており、これを使用してスクリプトマッピングを設定することができます。
+  </p>
+ </div>
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="install.windows.activescript.html">ActiveScript</a></div>
+ <div class="next" style="float: right;"><a href="install.windows.apache1.html">Apache 1.3.x （Microsoft Windows 用）</a></div>
+ <div class="up"><a href="install.windows.html">Windows システムへのインストール</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

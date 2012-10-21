@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>リンクされているSQLiteライブラリのエンコーディングを返す</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.sqlite-last-insert-rowid.html">sqlite_last_insert_rowid</a></div>
+ <div class="next" style="float: right;"><a href="function.sqlite-libversion.html">sqlite_libversion</a></div>
+ <div class="up"><a href="ref.sqlite.html">SQLite</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.sqlite-libencoding" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">sqlite_libencoding</h1>
+  <p class="verinfo">(PHP 5, PECL sqlite:1.0-1.0.3)</p><p class="refpurpose">sqlite_libencoding ― リンクされているSQLiteライブラリのエンコーディングを返す</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">string</span> <span class="methodname"><b><b>sqlite_libencoding</b></b></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+
+  <p class="para">
+   SQLiteライブラリは、ISO-8859-1またはUTF-8互換モードのどちらかでコン
+   パイルすることができます。この関数により、使用するライブラリのエン
+   コーディングを特定することが可能です。
+  </p>
+  <div class="warning"><b class="warning">警告</b>
+   <p class="para">
+    デフォルトのPHPのディストリビューションでは、libsqliteをISO-8859-1
+    エンコーディングモードで構築します。しかし、この名前は誤りです。
+    ISO-8859-1を処理するというのではなく、このモードは文字列の比較やソー
+    トに使用するカレントのロケールを使用します。
+    このため、ISO-8859-1ではなく、&#039;8ビット&#039;とみなすべきです。
+   </p>
+  </div>
+  <p class="para">
+   UTF-8サポートを指定してコンパイルした場合、sqliteは データ中のUTF-8
+   マルチバイト文字のエンコードおよびデコードを行います。
+   しかし、データ処理を完全に行うことはまだできず(例えば、正規化は行わ
+   れません)、いくつかの比較処理は、まだ、正しく行うことができません。
+  </p>
+  <div class="warning"><b class="warning">警告</b>
+   <p class="para">
+    UTF-8サポートを指定してコンパイルされたバージョンのSQLiteライブラ
+    リを組み込んでWebサーバ版のPHPを使用することは推奨されません。
+    これは、UTF-8エンコーディングで問題が検出された場合にlibsqliteがプ
+    ロセスを強制終了するためです。
+   </p>
+  </div>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><b>sqlite_lib_version()</b></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.sqlite-last-insert-rowid.html">sqlite_last_insert_rowid</a></div>
+ <div class="next" style="float: right;"><a href="function.sqlite-libversion.html">sqlite_libversion</a></div>
+ <div class="up"><a href="ref.sqlite.html">SQLite</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

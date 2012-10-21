@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>¥Ç¥Õ¥©¥ë¥È¤Î¥í¥±¡¼¥ë¤òÀßÄê¤¹¤ë</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.i18n.html">i18n</a></div>
+ <div class="next" style="float: right;"><a href="ref.pdo-ibm.html">IBM (PDO)</a></div>
+ <div class="up"><a href="ref.i18n.html">i18n</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.locale-set-default" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">locale_set_default</h1>
+  <p class="verinfo">(No version information available, might be only in CVS)</p><p class="refpurpose">locale_set_default ¡½ ¥Ç¥Õ¥©¥ë¥È¤Î¥í¥±¡¼¥ë¤òÀßÄê¤¹¤ë</p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">ÀâÌÀ</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>locale_set_default</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$name</tt></span>
+   )</div>
+
+  <p class="para">
+   PHP ¥×¥í¥°¥é¥à¤Î¥Ç¥Õ¥©¥ë¥È¤Î¥í¥±¡¼¥ë¤òÀßÄê¤·¤Þ¤¹¡£
+   ¤³¤Î´Ø¿ô¤Ï¡¢<a href="function.setlocale.html" class="function">setlocale()</a>
+   ¤ä¥·¥¹¥Æ¥à¥í¥±¡¼¥ë¤Ë¤Ï²¿¤Î±Æ¶Á¤âµÚ¤Ü¤µ¤Ê¤¤¤³¤È¤ËÃí°Õ¤·¤Þ¤·¤ç¤¦¡£
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">¥Ñ¥é¥á¡¼¥¿</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">name</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       ¿·¤·¤¤¥í¥±¡¼¥ëÌ¾¡£¥µ¥Ý¡¼¥È¤µ¤ì¤ë¥í¥±¡¼¥ë¤Î°ìÍ÷¤Ï
+       <a href="http://demo.icu-project.org/icu-bin/locexp" class="link external">&raquo; http://demo.icu-project.org/icu-bin/locexp</a> ¤Ë¤¢¤ê¤Þ¤¹¡£
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">ÊÖ¤êÃÍ</h3>
+  <p class="para">
+   À®¸ù¤·¤¿¾ì¹ç¤Ë <b><tt>TRUE</tt></b> ¤ò¡¢¼ºÇÔ¤·¤¿¾ì¹ç¤Ë <b><tt>FALSE</tt></b> ¤òÊÖ¤·¤Þ¤¹¡£
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">Îã</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>locale_set_default()</b> ¤ÎÎã</b></p>
+    <div class="example-contents"><p>
+     ¤³¤³¤Ç¤Ï¡¢
+     <b>locale_set_default()</b> ¤ò»ÈÍÑ¤·¤Æ
+     <a href="function.sort.html" class="function">sort()</a> ´Ø¿ô¤ò¥í¡¼¥«¥é¥¤¥º¤¹¤ëÎã¤ò¼¨¤·¤Þ¤¹¡£
+    </p></div>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">//&nbsp;¥½¡¼¥È¤¹¤ëÊ¸»úÎó¤Î¥ê¥¹¥È<br /></span><span style="color: #0000BB">$array&nbsp;</span><span style="color: #007700">=&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'caramelo'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'cacto'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'caÀada'<br /></span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;¥í¥±¡¼¥ë¤òÀßÄê¤·¤Þ¤¹&nbsp;(¤³¤Î¾ì¹ç¤Ï¥Ý¥ë¥È¥¬¥ë¸ì)<br /></span><span style="color: #0000BB">locale_set_default</span><span style="color: #007700">(</span><span style="color: #DD0000">'pt_PT'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;ÀßÄê¤·¤¿¥í¥±¡¼¥ë¤ò»ÈÍÑ¤·¤ÆÊÂ¤ÙÂØ¤¨¤Þ¤¹<br /></span><span style="color: #0000BB">sort</span><span style="color: #007700">(</span><span style="color: #0000BB">$array</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">SORT_LOCALE_STRING</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$array</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>¾å¤ÎÎã¤Î½ÐÎÏ¤Ï°Ê²¼¤È¤Ê¤ê¤Þ¤¹¡£</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+Array
+(
+    [0] =&gt; caÀada
+    [1] =&gt; cacto
+    [2] =&gt; caramelo
+)
+</pre></div>
+    </pre></div>
+    <div class="example-contents"><p>
+     ¥í¥±¡¼¥ë¤ò»ÈÍÑ¤·¤Ê¤¤¾ì¹ç¤Ï¡¢PHP ¤Ï ASCII
+     Ê¸»ú¥³¡¼¥É¤ò»ÈÍÑ¤·¤Æ¥½¡¼¥È¤ò¹Ô¤¤¤Þ¤¹¡£¤½¤Î¤¿¤á¡¢
+     °Ê²¼¤Î¤è¤¦¤Ê·ë²Ì¤È¤Ê¤ê¤Þ¤¹ (¤³¤ì¤Ï´Ö°ã¤Ã¤¿·ë²Ì¤Ç¤¹)
+    </p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+Array
+(
+    [0] =&gt; cacto
+    [1] =&gt; caramelo
+    [2] =&gt; caÀada
+)
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">»²¹Í</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.locale-get-default.html" class="function">locale_get_default()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.i18n.html">i18n</a></div>
+ <div class="next" style="float: right;"><a href="ref.pdo-ibm.html">IBM (PDO)</a></div>
+ <div class="up"><a href="ref.i18n.html">i18n</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

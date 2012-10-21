@@ -1,0 +1,381 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>出力制御関数(output control)</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.pdo-oci.connection.html">PDO_OCI DSN</a></div>
+ <div class="next" style="float: right;"><a href="function.flush.html">flush</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">出力制御関数(output control)</h1>
+  
+
+  <div class="partintro">
+   <div id="outcontrol.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     出力制御関数により、スクリプトから送信される出力を制御することが可
+     能になります。この機能は、複数の異なった場面、特にスクリプトがデー
+     タ出力を開始した後にヘッダをブラウザに送信する必要がある場合に有用
+     です。出力制御関数は、<a href="function.header.html" class="function">header()</a> または
+     <a href="function.setcookie.html" class="function">setcookie()</a>を使用して送信されたヘッダには作用せ
+     ず、<a href="function.echo.html" class="function">echo()</a> のような関数とPHPコードのブロック間
+     のデータにのみ作用します。
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      PHP 4.1.x (および 4.2.x) から 4.3.x に更新する際、前のバージョンのバグのせいで、
+      <var class="filename">php.ini</var> の <i class="literal">implict_flush</i> を
+      <i class="literal">OFF</i> にする必要があります。さもないと、
+      <a href="function.ob-start.html" class="function">ob_start()</a> を使用する全ての出力は、
+      出力を抑制することができなくなります。
+     <br />
+    </p></blockquote>
+   </div>
+
+   <div id="outcontrol.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">外部ライブラリを必要としません。</p>
+   </div>
+
+   <div id="outcontrol.installation" class="section">
+    <h2 class="title">インストール手順</h2>
+    <p class="para">PHP コアに含まれるため、
+追加のインストール無しで使用できます。</p>
+   </div>
+
+   
+
+
+<div id="outcontrol.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+  <table border="5">
+   <caption><b>出力制御設定オプション</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">名前</th>
+      <th colspan="1">デフォルト</th>
+      <th colspan="1">変更の可否</th>
+      <th colspan="1">変更履歴</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">output_buffering</td>
+     <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_PERDIR</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">output_handler</td>
+     <td colspan="1" rowspan="1" align="left">NULL</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_PERDIR</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.0.4 以降で使用可能です。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">implicit_flush</td>
+     <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP &lt;= 4.2.3 では PHP_INI_PERDIR です。</td>
+    </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+   PHP_INI_* 定数の詳細および定義については
+<a href="ini.html" class="xref">php.ini ディレクティブ</a> を参照してください。
+ </p>
+ 
+ <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+ 
+ <p class="para">
+  <dl>
+
+   <dt id="ini.output-buffering">
+    <span class="term">
+     <i><tt class="parameter">output_buffering</tt></i>
+
+     <a href="language.types.boolean.html" class="type boolean">boolean</a>/<a href="language.types.integer.html" class="type integer">integer</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      このディレクティブを &#039;On&#039; と設定することにより、全てのファイルに
+      関して出力バッファリングを有効にすることができます。
+      特定の大きさにバッファの大きさを制限したい場合、このディレクティブの
+      値として &#039;On&#039; の代わりに最大バイト数(例:output_buffering=4096)
+      を使用することができます。
+      PHP 4.3.5 以降、PHP-CLI ではこのディレクティブが常に Off となります。
+    </p>
+    </dd>
+
+   </dt>
+
+   
+   <dt id="ini.output-handler">
+    <span class="term">
+     <i><tt class="parameter">output_handler</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      スクリプトの全ての出力を関数にリダイレクトすることができます。
+      例えば、output_handler に <a href="function.mb-output-handler.html" class="function">mb_output_handler()</a>
+      を指定した場合、文字エンコーディングは透過的に指定したエンコーディングに
+      変換されます。出力ハンドラを指定することにより自動的に出力
+      バッファリングを on にします。
+     </p>
+     <blockquote><p><b class="note">注意</b>: 
+      
+       <a href="function.ob-iconv-handler.html" class="function">ob_iconv_handler()</a> と
+       <a href="function.mb-output-handler.html" class="function">mb_output_handler()</a> の両方で使用することは
+       できません。また、
+       <a href="function.ob-gzhandler.html" class="function">ob_gzhandler()</a> と
+       <a href="ref.zlib.html#ini.zlib.output-compression" class="link">zlib.output_compression</a>
+       の両方を使用することはできません。
+      <br />
+     </p></blockquote>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      このディレクティブには、組み込み関数のみが使用可能です。ユーザ定義の
+      関数については、<a href="function.ob-start.html" class="function">ob_start()</a> を使用してください。
+     <br />
+    </p></blockquote>
+    </dd>
+
+   </dt>
+
+   
+   <dt id="ini.implicit-flush">
+    <span class="term">
+     <i><tt class="parameter">implicit_flush</tt></i>
+
+     <a href="language.types.boolean.html" class="type boolean">boolean</a>
+    </span>
+    <dd>
+
+    <p class="para">
+      デフォルトは <b><tt>FALSE</tt></b> です。これを <b><tt>TRUE</tt></b> に変更すると、PHP が
+      各出力ブロックの後で自動的に出力レイヤをフラッシュするよう
+      指定します。これは、各 <a href="function.print.html" class="function">print()</a> および
+      <i class="literal">HTML</i> ブロックの後で
+      <a href="function.flush.html" class="function">flush()</a> 関数をコールすることと等価です。
+    </p>
+     <p class="para">
+      Web 環境の中で PHP を使用している時に
+      このオプションを on に変更すると、著しい性能低下が生じるため、
+      通常はデバッグ目的のみにすることが推奨されます。<i class="literal">CLI
+      SAPI</i> のもとで実行される時、この値はデフォルトで <b><tt>TRUE</tt></b>
+      になっています。
+     </p>
+     <p class="para">
+      <a href="function.ob-implicit-flush.html" class="function">ob_implicit_flush()</a> も参照ください。
+     </p>
+    </dd>
+
+   </dt>
+
+  </dl>
+
+ </p>
+</div>
+
+
+
+
+   <div id="outcontrol.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">リソース型は定義されていません。</p>
+   </div>
+
+   <div id="outcontrol.constants" class="section">
+    <h2 class="title">定義済み定数</h2>
+    <p class="para">定数は定義されていません。</p>
+   </div>
+
+   <div id="outcontrol.examples" class="section">
+    <h2 class="title">例</h2>
+    <p class="para">
+     <div class="example">
+      <p><b>Example#1 出力制御の例</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />ob_start</span><span style="color: #007700">();<br />echo&nbsp;</span><span style="color: #DD0000">"Hello\n"</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">setcookie</span><span style="color: #007700">(</span><span style="color: #DD0000">"cookiename"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"cookiedata"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">ob_end_flush</span><span style="color: #007700">();<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+    <p class="para">
+     上記の例では、<a href="function.echo.html" class="function">echo()</a>からの出力は、
+     <a href="function.ob-end-flush.html" class="function">ob_end_flush()</a> がコールされるまで出力バッファに
+     保存されます。この際、
+     <a href="function.setcookie.html" class="function">setcookie()</a>をコールするとエラーを発生することな
+     くクッキーが保存されます。(通常、データの送信後はブラウザにヘッダ
+     を送信することはできません。)
+    </p>
+   </div>
+
+   <div id="outcontrol.seealso" class="section">
+    <h2 class="title">参考</h2>
+    <p class="para">
+     <a href="function.header.html" class="function">header()</a>および<a href="function.setcookie.html" class="function">setcookie()</a>
+     も参照ください。
+    </p>
+   </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.flush.html">flush</a> ― 出力バッファをフラッシュする</li><li><a href="function.ob-clean.html">ob_clean</a> ― 出力バッファをクリア(消去)する</li><li><a href="function.ob-end-clean.html">ob_end_clean</a> ― 出力用バッファをクリア(消去)し、出力のバッファリングをオフにする</li><li><a href="function.ob-end-flush.html">ob_end_flush</a> ― 出力用バッファをフラッシュ(送信)し、出力のバッファリングをオフにする</li><li><a href="function.ob-flush.html">ob_flush</a> ― 出力バッファをフラッシュ(送信)する</li><li><a href="function.ob-get-clean.html">ob_get_clean</a> ― 現在のバッファの内容を取得し、出力バッファを削除する</li><li><a href="function.ob-get-contents.html">ob_get_contents</a> ― 出力用バッファの内容を返す</li><li><a href="function.ob-get-flush.html">ob_get_flush</a> ― 出力バッファをフラッシュし、その内容を文字列として返した後で出力バッファリングを終了する</li><li><a href="function.ob-get-length.html">ob_get_length</a> ― 出力バッファの長さを返す</li><li><a href="function.ob-get-level.html">ob_get_level</a> ― 出力バッファリング機構のネストレベルを返す</li><li><a href="function.ob-get-status.html">ob_get_status</a> ― 出力バッファのステータスを取得する</li><li><a href="function.ob-gzhandler.html">ob_gzhandler</a> ― 出力バッファを gzip 圧縮するための ob_start コールバック関数</li><li><a href="function.ob-implicit-flush.html">ob_implicit_flush</a> ― 自動フラッシュをオンまたはオフにする</li><li><a href="function.ob-list-handlers.html">ob_list_handlers</a> ― 使用中の出力ハンドラの一覧を取得する</li><li><a href="function.ob-start.html">ob_start</a> ― 出力のバッファリングを有効にする</li><li><a href="function.output-add-rewrite-var.html">output_add_rewrite_var</a> ― URL リライタの値を追加する</li><li><a href="function.output-reset-rewrite-vars.html">output_reset_rewrite_vars</a> ― URL リライタの値をリセットする</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.pdo-oci.connection.html">PDO_OCI DSN</a></div>
+ <div class="next" style="float: right;"><a href="function.flush.html">flush</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

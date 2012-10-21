@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>現在のセッションから変数の登録を削除する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.session-start.html">session_start</a></div>
+ <div class="next" style="float: right;"><a href="function.session-unset.html">session_unset</a></div>
+ <div class="up"><a href="ref.session.html">セッション</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.session-unregister" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">session_unregister</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">session_unregister ― 現在のセッションから変数の登録を削除する</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>session_unregister</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$name</tt></span>
+   )</div>
+
+  <p class="para">
+   <b>session_unregister()</b> は現在のセッションから
+   <i><tt class="parameter">name</tt></i>
+ という名前のグローバル変数の登録を削除します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">name</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       変数名。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    <var class="varname">$_SESSION</var> (または PHP 4.0.6 以前の場合は
+    <var class="varname">$HTTP_SESSION_VARS</var>)
+    が使用されている場合、セッション変数の登録を削除する際に
+    <a href="function.unset.html" class="function">unset()</a>を 使用してください。
+    <var class="varname">$_SESSION</var> 自身を <a href="function.unset.html" class="function">unset()</a> しないでください。
+    さもないと、<var class="varname">$_SESSION</var>
+    スーパーグローバルの特殊な機能が無効化されてしまいます。
+   <br />
+  </p></blockquote>
+  <div class="caution"><b class="caution">警告</b>
+   <p class="para">
+    この関数は、<i><tt class="parameter">name</tt></i>
+
+    に対応するグローバル変数の登録を削除しません。
+    セッションとしてその変数が保存されるのを妨げるだけです。
+    対応するグローバル変数を削除するには、
+    <a href="function.unset.html" class="function">unset()</a> をコールする必要があります。
+   </p>
+  </div>
+  <div class="caution"><b class="caution">警告</b>
+   <p class="para">
+    <var class="varname">$_SESSION</var> (あるいは
+    <var class="varname">$HTTP_SESSION_VARS</var>) を使用する場合は、
+    <a href="function.session-register.html" class="function">session_register()</a>、
+    <a href="function.session-is-registered.html" class="function">session_is_registered()</a> および
+    <b>session_unregister()</b> を使用しないでください。
+   </p>
+  </div>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.session-start.html">session_start</a></div>
+ <div class="next" style="float: right;"><a href="function.session-unset.html">session_unset</a></div>
+ <div class="up"><a href="ref.session.html">セッション</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

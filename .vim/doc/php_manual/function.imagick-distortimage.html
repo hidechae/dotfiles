@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>さまざまな方式で画像を歪める</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.imagick-negateimage.html">Imagick::negateImage</a></div>
+ <div class="next" style="float: right;"><a href="function.imagick-newimage.html">Imagick::newImage</a></div>
+ <div class="up"><a href="ref.imagick.html">Imagick 画像ライブラリ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.imagick-distortimage" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">Imagick::distortImage</h1>
+  <p class="verinfo">(No version information available, might be only in CVS)</p><p class="refpurpose">Imagick::distortImage ― さまざまな方式で画像を歪める</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>Imagick::distortImage</b></b></span>
+    ( <span class="methodparam"><span class="type">int</span> <tt class="parameter">$method</tt></span>
+   , <span class="methodparam"><span class="type">array</span> <tt class="parameter">$arguments</tt></span>
+   , <span class="methodparam"><span class="type">bool</span> <tt class="parameter">$bestfit</tt></span>
+   )</div>
+
+  <div class="warning"><b class="warning">警告</b><p class="simpara">この関数は、
+<em class="emphasis">実験的</em> なものです。この関数の動作・
+名前・その他ドキュメントに書かれている事項は、予告なく、将来的な PHP
+のリリースにおいて変更される可能性があります。
+この関数は自己責任で使用してください。</p></div>
+  <p class="para">
+  さまざまな方式で画像を歪めます。
+  これは、元画像の色を新たな画像の色に対応させることで行います。
+  新たな画像は、&#039;bestfit&#039; を true に設定しない限りは元画像と同じ大きさになります。
+
+  &#039;bestfit&#039; を有効にし、使用する歪め方式がサイズ変更を許可していた場合は、
+  変換後の画像に合わせて画像のサイズやオフセットが調整されます。
+  多くの場合、元画像の仮想オフセットも考慮したマッピングが行われます。
+
+   この機能は、Imagick を ImageMagick 6.3.6 以降でコンパイルした場合にのみ存在します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">method</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       画像の歪め方式。
+       <a href="imagick.constants.html#imagick.constants.distortion" class="link">歪め定数</a>
+       を参照ください。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">arguments</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       歪め方式の引数。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">bestfit</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       元画像のサイズを変更する。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 errors">
+  <h3 class="title">エラー / 例外</h3>
+  <p class="para">
+   エラー時に ImagickException をスローします。
+  </p>
+ </div>
+
+
+ 
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>Imagick::distortImage()</b> の使用法</b></p>
+    <div class="example-contents"><p>
+     画像を歪めてディスクに書き込みます。
+    </p></div>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$im&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">imagick</span><span style="color: #007700">(&nbsp;</span><span style="color: #DD0000">"example.jpg"&nbsp;</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$im</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">distortImage</span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">Imagick</span><span style="color: #007700">::</span><span style="color: #0000BB">DISTORTION_PERSPECTIVE</span><span style="color: #007700">,&nbsp;array(&nbsp;</span><span style="color: #0000BB">7</span><span style="color: #007700">,</span><span style="color: #0000BB">40</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">4</span><span style="color: #007700">,</span><span style="color: #0000BB">30</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">4</span><span style="color: #007700">,</span><span style="color: #0000BB">124</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">4</span><span style="color: #007700">,</span><span style="color: #0000BB">123</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">85</span><span style="color: #007700">,</span><span style="color: #0000BB">122</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">100</span><span style="color: #007700">,</span><span style="color: #0000BB">123</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">85</span><span style="color: #007700">,</span><span style="color: #0000BB">2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">100</span><span style="color: #007700">,</span><span style="color: #0000BB">30&nbsp;</span><span style="color: #007700">),&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$im</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">writeImage</span><span style="color: #007700">(&nbsp;</span><span style="color: #DD0000">"example_out.jpg"&nbsp;</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.imagick-blurimage.html" class="function">Imagick::blurImage()</a></li>
+    <li class="member"><a href="function.imagick-motionblurimage.html" class="function">Imagick::motionBlurImage()</a></li>
+    <li class="member"><a href="function.imagick-radialblurimage.html" class="function">Imagick::radialBlurImage()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.imagick-negateimage.html">Imagick::negateImage</a></div>
+ <div class="next" style="float: right;"><a href="function.imagick-newimage.html">Imagick::newImage</a></div>
+ <div class="up"><a href="ref.imagick.html">Imagick 画像ライブラリ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

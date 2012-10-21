@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>下位互換性のない変更点</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="migration5.html">PHP 4 から PHP 5 への移行</a></div>
+ <div class="next" style="float: right;"><a href="migration5.cli-cgi.html">CLI と CGI</a></div>
+ <div class="up"><a href="migration5.html">PHP 4 から PHP 5 への移行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="migration5.incompatible" class="section">
+   <h2 class="title">下位互換性のない変更点</h2>
+   <p class="para">
+    多くの既存の PHP 4 のコードは変更無しで動作するはずですが、
+    以下の下位互換性がない変更点について注意する必要があります。
+   </p>
+   <ul class="itemizedlist">
+    <li class="listitem">
+     <span class="simpara">
+      <a href="reserved.html#reserved.keywords" class="link">新たな予約キーワード</a>がいくつか
+      あります。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <a href="function.strrpos.html" class="function">strrpos()</a> と <a href="function.strripos.html" class="function">strripos()</a> は、
+      needle として文字列全体を使用するようになりました。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      文字列オフセットの不正な使用は、<b><tt>E_WARNING</tt></b> ではなく
+      <b><tt>E_ERROR</tt></b> を発生します。不正な使用の例は、次のようなものです。
+      <i class="literal">$str = &#039;abc&#039;; unset($str[0]);</i>
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <a href="function.array-merge.html" class="function">array_merge()</a> は、配列のみを指定できるよう
+      変更されました。配列以外の変数を指定した場合は、各パラメータ毎に
+      <b><tt>E_WARNING</tt></b> が発生します。あなたのコードで
+      突然 <b><tt>E_WARNING</tt></b> が発生し始める可能性が
+      あるため注意してください。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      サーバー変数 PATH_TRANSLATED は、Apache2 SAPI では暗黙のうちに設定されません。
+      この動作は、Apache により設定されていない場合に SCRIPT_FILENAME と同じ値に
+      設定する PHP 4 と異なります。
+      この変更は、<a href="http://hoohoo.ncsa.uiuc.edu/cgi/" class="link external">&raquo; CGI の規約</a>に従う
+      ためのものです。詳細については、
+      <a href="http://bugs.php.net/23610" class="link external">&raquo; bug #23610</a> を参照してください。
+      また、マニュアルの <a href="reserved.variables.html#reserved.variables.server" class="link">
+      $_SERVER[&#039;PATH_TRANSLATED&#039;]</a> についての記述も参照してください。
+      この問題は、PHP のバージョン &gt;= 4.3.2 でも影響を及ぼします。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      定数 <b><tt>T_ML_CONSTANT</tt></b> は、
+      <a href="ref.tokenizer.html" class="link">Tokenizer</a>エクステンションで
+      定義されなくなりました。error_reporting に<b><tt>E_ALL</tt></b>
+      を指定した場合、PHPは通知(notice)を生成します。
+      <b><tt>T_ML_CONSTANT</tt></b>は、全く使用されていませんが、
+      PHP 4 では定義されていました。PHP 4とPHP 5の両方において、
+      // と /* */ は、共に <b><tt>T_COMMENT</tt></b> 定数と
+      解釈されます。
+      しかし、PHP5からPHPにより解釈されるようになった
+      PHPDoc形式のコメント /** */  は、<b><tt>T_DOC_COMMENT</tt></b>
+      と認識されます。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <a href="ini.core.html#ini.variables-order" class="link">variables_order</a> に
+      &quot;S&quot;が含まれる場合に、$_SERVER が argc および argv と共に設定されます。
+      $_SERVERを作成しないような特別な設定を行った場合、当然、argc および argv は
+      設定されません。
+      この変更は、CLI 版において
+      <a href="ini.core.html#ini.variables-order" class="link">variables_order</a> の
+      設定によらず常に argc および argv を作成するために行われました。
+      これにより、CLI 版では、常にグローバル変数 $argc および $argv
+      が設定されるようになりました。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      プロパティを持たないオブジェクトはもはや&quot;空&quot;とはみなされません。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      クラスを使用する前に宣言する必要がある場合もあります。
+      これは、PHP 5 の新機能 (たとえば <a href="language.oop5.interfaces.html" class="link">interfaces</a> など) 
+      を使用する場合にのみ生じます。
+      その他の場合の動作は従来と同じです。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <a href="function.get-class.html" class="function">get_class()</a>, <a href="function.get-parent-class.html" class="function">get_parent_class()</a>
+      および <a href="function.get-class-methods.html" class="function">get_class_methods()</a> は、
+      ケース依存（大文字小文字を区別）で
+      宣言時に使用されたクラス/メソッドの名前を返すようになっています
+      これにより、以前の動作（クラス名は小文字で返される）に依存している古いスクリプト
+      では問題を発生する可能性があります。
+      解決策としては、全てのスクリプトでこれらの関数を検索し、
+      <a href="function.strtolower.html" class="function">strtolower()</a>を使用するというものが考えられます。
+     </span>
+     <span class="simpara">
+      このケース依存性に関する変更は、
+      <a href="language.constants.predefined.html" class="link">
+       自動的に定義される定数</a> <b><tt>__CLASS__</tt></b>, 
+      <b><tt>__METHOD__</tt></b>, および
+      <b><tt>__FUNCTION__</tt></b>にも適用されます。
+      これらの値は、宣言時と同様に（ケース依存で）返されます。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <a href="function.ip2long.html" class="function">ip2long()</a> は、
+      無効なIPアドレスが関数の引数として渡された場合、
+      <i class="literal">-1</i>ではなく、<b><tt>FALSE</tt></b> を返すようになりました。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      読み込まれるファイルの中で関数が宣言されている場合、それが
+      <a href="function.return.html" class="function">return()</a> の前もしくは後のどちらにあるかにかかわらず、
+      メインファイルの中でその関数を使用可能です。
+      このファイルが二度読み込まれると、関数が既に宣言済みであるため、
+      PHP 5 は致命的なエラーを発生します。一方、PHP 4 ではエラーを発生しません。
+      ファイルが読み込み済であるかどうかを調べて
+      読みこまれたファ入ルの内容を条件分岐でかえすのではなく、
+      <a href="function.include-once.html" class="function">include_once()</a> を使用することを推奨します。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      Windows上で、
+      <a href="function.include-once.html" class="function">include_once()</a> と <a href="function.require-once.html" class="function">require_once()</a>
+      は、まず、読みこまれるファイルのパスを正規化します。
+      これにより、A.php と a.php を読みこむ場合でもファイルは一度だけ読みこまれます。
+     </span>
+    </li>
+   </ul>
+   
+   <p class="para">
+    <div class="example">
+     <p><b>Example#1 <a href="function.strrpos.html" class="function">strrpos()</a> と <a href="function.strripos.html" class="function">strripos()</a> は、
+      needleとして文字列全体を使用する</b></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">strrpos</span><span style="color: #007700">(</span><span style="color: #DD0000">'ABCDEF'</span><span style="color: #007700">,</span><span style="color: #DD0000">'DEF'</span><span style="color: #007700">));&nbsp;</span><span style="color: #FF8000">//int(3)<br /><br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">strrpos</span><span style="color: #007700">(</span><span style="color: #DD0000">'ABCDEF'</span><span style="color: #007700">,</span><span style="color: #DD0000">'DAF'</span><span style="color: #007700">));&nbsp;</span><span style="color: #FF8000">//bool(false)<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+   <p class="para">
+    <div class="example">
+     <p><b>Example#2 プロパティを持たないオブジェクトはもはや&quot;空&quot;とはみなされない</b></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">test&nbsp;</span><span style="color: #007700">{&nbsp;}<br /></span><span style="color: #0000BB">$t&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">test</span><span style="color: #007700">();<br /><br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(empty(</span><span style="color: #0000BB">$t</span><span style="color: #007700">));&nbsp;</span><span style="color: #FF8000">//&nbsp;echo&nbsp;bool(false)<br /><br /></span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">$t</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;実行される<br /></span><span style="color: #007700">}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+   <p class="para">
+    以下の例はPHP 4では有効でしたが、PHP 5では致命的なエラーを
+    発生します。
+   </p>
+   <p class="para">
+    <div class="example">
+     <p><b>Example#3 クラスは使用前に宣言する必要がある</b></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$test&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">fubar</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$test</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">barfu</span><span style="color: #007700">();<br /><br />class&nbsp;</span><span style="color: #0000BB">fubar&nbsp;</span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;</span><span style="color: #0000BB">barfu</span><span style="color: #007700">()&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">'fubar'</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="migration5.html">PHP 4 から PHP 5 への移行</a></div>
+ <div class="next" style="float: right;"><a href="migration5.cli-cgi.html">CLI と CGI</a></div>
+ <div class="up"><a href="migration5.html">PHP 4 から PHP 5 への移行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

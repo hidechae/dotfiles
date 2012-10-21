@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>トランザクションをコミットする</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.db2-columns.html">db2_columns</a></div>
+ <div class="next" style="float: right;"><a href="function.db2-conn-error.html">db2_conn_error</a></div>
+ <div class="up"><a href="ref.ibm-db2.html">ibm_db2</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.db2-commit" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">db2_commit</h1>
+  <p class="verinfo">(PECL ibm_db2:1.0-1.6.2)</p><p class="refpurpose">db2_commit ― 
+   トランザクションをコミットする
+  </p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>db2_commit</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$connection</tt></span>
+   )</div>
+
+
+
+  <p class="para">
+   指定した接続リソース上で実行中のトランザクションをコミットし、
+   新しいトランザクションを開始します。PHP アプリケーションのデフォルトは
+   AUTOCOMMIT モードなので、接続リソースに対して AUTOCOMMIT
+   を無効にしていない限り <b>db2_commit()</b> は必要ありません。
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    指定した接続が持続的接続であった場合、持続的接続を使用している
+    すべてのアプリケーションで実行中のトランザクションがコミットされます。
+    そのため、トランザクションが必要なアプリケーションでは
+    持続的接続の使用は推奨されません。
+   <br />
+  </p></blockquote>
+
+ </div>
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">connection</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <a href="function.db2-connect.html" class="function">db2_connect()</a> あるいは <a href="function.db2-pconnect.html" class="function">db2_pconnect()</a>
+       が返した有効なデータベース接続リソース。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ 
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.db2-autocommit.html" class="function">db2_autocommit()</a></li>
+    <li class="member"><a href="function.db2-rollback.html" class="function">db2_rollback()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.db2-columns.html">db2_columns</a></div>
+ <div class="next" style="float: right;"><a href="function.db2-conn-error.html">db2_conn_error</a></div>
+ <div class="up"><a href="ref.ibm-db2.html">ibm_db2</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

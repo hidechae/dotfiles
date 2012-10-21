@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>その他の互換性</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="migration.html">PHP/FI 2 から PHP 3 への移行</a></div>
+ <div class="next" style="float: right;"><a href="debugger.html">PHP のデバッグ</a></div>
+ <div class="up"><a href="migration.html">PHP/FI 2 から PHP 3 への移行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="migration-other" class="section">
+  <h2 class="title">その他の互換性</h2>
+
+  <ul class="itemizedlist">
+   <li class="listitem"><span class="simpara">
+    PHP 3.0 の Apache モジュールは、もはや バージョン 1.2 以前の
+    Apache をサポートしません。Apache 1.2 以降が必要となります。
+   </span></li>
+
+   <li class="listitem"><span class="simpara">
+    <a href="function.echo.html" class="function">echo()</a> はもはやフォーマット文字列をサポート
+    しません。<a href="function.printf.html" class="function">printf()</a> 関数を使ってください。
+   </span></li>
+
+   <li class="listitem"><span class="simpara">
+    PHP/FI 2.0 では、実装面に起因する副作用として、
+    <i class="literal">$foo[0]</i> が <i class="literal">$foo</i>
+    と同じ値になるということがありました。
+    これは PHP 3.0 では等しくなくなりました。
+   </span></li>
+
+   <li class="listitem">
+    <span class="simpara">
+     <i class="literal">$array[]</i> で配列を読み込む機能は、
+     もはやサポートされません。
+    </span>
+    <span class="simpara">
+     すなわち、<i class="literal">$data = $array[]</i>
+     といったループで配列の中身を取り出すことはできないということです。
+     この代わりに <a href="function.current.html" class="function">current()</a> と <a href="function.next.html" class="function">next()</a>
+     を使ってください。     
+    </span>
+    <span class="simpara">
+     また、<i class="literal">$array1[] = $array2</i> では
+     <i class="literal"> $array2</i> の値を <i class="literal">$array1</i>
+     に追加することにはならず、
+     <i class="literal">$array1</i> の最後のエントリに
+     <i class="literal">$array2</i> を追加することになってしまいます。
+     多次元配列のサポートを参照してください。
+    </span>
+   </li>
+
+   <li class="listitem">
+    <span class="simpara">
+     <i class="literal">&quot;+&quot;</i> は、もはや文字列の連結演算子にはならず、
+     その代わりにその引数を数値に変換して数値の加算を行ってしまいます。
+     <i class="literal">&quot;.&quot;</i> を使用してください。
+    </span>
+   </li>
+  </ul>
+
+  <div class="example">
+   <p><b>Example#1 2.0 からの移行: 文字列の連結</b></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+echo&nbsp;"1"&nbsp;+&nbsp;"1";</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p> 
+    PHP 2.0 ではこれで 11 が表示されますが、PHP 3.0 ではこれは
+    2 になります。代わりに次のようにしてください。
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+echo&nbsp;"1"."1";</span>
+</code></div>
+    </div>
+
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+$a&nbsp;=&nbsp;1;<br />$b&nbsp;=&nbsp;1;<br />echo&nbsp;$a&nbsp;+&nbsp;$b;</span>
+</code></div>
+    </div>
+
+   </p></div>
+   <div class="example-contents"><p>
+    これは PHP 2.0 でも 3.0 でも 2 になります。
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+$a&nbsp;=&nbsp;1;<br />$b&nbsp;=&nbsp;1;<br />echo&nbsp;$a.$b;</span>
+</code></div>
+    </div>
+
+    これは PHP 3.0 では 11 になります。
+   </p></div>
+  </div>
+ </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="migration.html">PHP/FI 2 から PHP 3 への移行</a></div>
+ <div class="next" style="float: right;"><a href="debugger.html">PHP のデバッグ</a></div>
+ <div class="up"><a href="migration.html">PHP/FI 2 から PHP 3 への移行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

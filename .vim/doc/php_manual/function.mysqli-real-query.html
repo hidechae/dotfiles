@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>SQL クエリを実行する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mysqli-real-escape-string.html">mysqli_real_escape_string</a></div>
+ <div class="next" style="float: right;"><a href="function.mysqli-report.html">mysqli_report</a></div>
+ <div class="up"><a href="ref.mysqli.html">mysqli</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mysqli-real-query" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mysqli_real_query</h1>
+  <h1 class="refname">mysqli-&gt;real_query()</h1>
+  <p class="verinfo">(PHP 5)</p><p class="refpurpose">mysqli->real_query() ― SQL クエリを実行する</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <p class="para">手続き型</p>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>mysqli_real_query</b></b></span>
+    ( <span class="methodparam"><span class="type">mysqli</span> <tt class="parameter">$link</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$query</tt></span>
+   )</div>
+
+  <p class="para">オブジェクト指向型（メソッド）:</p>
+  <div class="classsynopsis">
+   <div class="ooclass"><b class="classname">mysqli</b></div>
+   <div class="methodsynopsis">
+    <span class="type">bool</span> <span class="methodname"><b><b>real_query</b></b></span>
+     ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$query</tt></span>
+    )</div>
+
+  </div>
+  <p class="para">
+   データベースに対して単一のクエリを実行します。
+   その結果を取得したり保存したりするには、関数
+   <a href="function.mysqli-store-result.html" class="function">mysqli_store_result()</a> あるいは
+   <a href="function.mysqli-use-result.html" class="function">mysqli_use_result()</a> を使用します。
+  </p>
+  <p class="para">
+   指定したクエリが結果を返すかどうかを調べるには、
+   <a href="function.mysqli-field-count.html" class="function">mysqli_field_count()</a> を参照ください。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+<span class="term"><i><tt class="parameter">
+link</tt></i>
+</span><dd>
+<p class="para">手続き型のみ:
+<a href="function.mysqli-connect.html" class="function">mysqli_connect()</a> あるいは <a href="function.mysqli-init.html" class="function">mysqli_init()</a> が返すリンク ID。
+</p></dd>
+</dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">query</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       クエリを表す文字列。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.mysqli-query.html" class="function">mysqli_query()</a></li>
+    <li class="member"><a href="function.mysqli-store-result.html" class="function">mysqli_store_result()</a></li>
+    <li class="member"><a href="function.mysqli-use-result.html" class="function">mysqli_use_result()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mysqli-real-escape-string.html">mysqli_real_escape_string</a></div>
+ <div class="next" style="float: right;"><a href="function.mysqli-report.html">mysqli_report</a></div>
+ <div class="up"><a href="ref.mysqli.html">mysqli</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

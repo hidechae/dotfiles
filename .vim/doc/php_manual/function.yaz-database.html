@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>セッション内のデータベースを指定する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.yaz-connect.html">yaz_connect</a></div>
+ <div class="next" style="float: right;"><a href="function.yaz-element.html">yaz_element</a></div>
+ <div class="up"><a href="ref.yaz.html">YAZ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.yaz-database" class="refentry">
+   <div class="refnamediv">
+    <h1 class="refname">yaz_database</h1>
+    <p class="verinfo">(PHP 4 &gt;= 4.0.6, PECL yaz:0.9-1.0.9)</p><p class="refpurpose">yaz_database ― 
+     セッション内のデータベースを指定する
+    </p>
+
+   </div>
+   <div class="refsect1 u">
+    <h3 class="title">説明</h3>
+     <div class="methodsynopsis">
+      <span class="type">int</span> <span class="methodname"><b><b>yaz_database</b></b></span>
+       ( <span class="methodparam"><span class="type">int</span> <tt class="parameter">$id</tt></span>
+      , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$databases</tt></span>
+      )</div>
+
+    <p class="para">
+     この関数は、検索、取得等で使用する１つまたは複数のデータベースを
+     指定します。<a href="function.yaz-connect.html" class="function">yaz_connect()</a>をコールする際に指定
+     したデータベースを上書きします。複数のデータベースは、可算記号
+     <i class="literal">+</i>で区切ります。
+    </p>
+    <p class="para">
+     この関数は、あるセッションの中で異なるデータベースの集合を使用す
+     ることを可能にします。
+    </p>
+    <p class="para">
+     成功時に<b><tt>TRUE</tt></b>、エラー時に<b><tt>FALSE</tt></b>を返します。
+    </p>
+   </div>
+
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.yaz-connect.html">yaz_connect</a></div>
+ <div class="next" style="float: right;"><a href="function.yaz-element.html">yaz_element</a></div>
+ <div class="up"><a href="ref.yaz.html">YAZ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

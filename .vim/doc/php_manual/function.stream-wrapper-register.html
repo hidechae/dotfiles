@@ -1,0 +1,499 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>PHP のクラスとして実装された URL ラッパを登録する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.stream-socket-shutdown.html">stream_socket_shutdown</a></div>
+ <div class="next" style="float: right;"><a href="function.stream-wrapper-restore.html">stream_wrapper_restore</a></div>
+ <div class="up"><a href="ref.stream.html">ストリーム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.stream-wrapper-register" class="refentry">
+   <div class="refnamediv">
+    <h1 class="refname">stream_wrapper_register</h1>
+    <p class="verinfo">(PHP 4 &gt;= 4.3.2, PHP 5)</p><p class="refpurpose">stream_wrapper_register ― PHP のクラスとして実装された URL ラッパを登録する</p>
+
+   </div>
+   <div class="refsect1 u">
+    <h3 class="title">説明</h3>
+    <div class="methodsynopsis">
+     <span class="type">bool</span> <span class="methodname"><b><b>stream_wrapper_register</b></b></span>
+      ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$protocol</tt></span>
+     , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$classname</tt></span>
+     )</div>
+
+    <p class="para">
+     <b>stream_wrapper_register()</b> は、自分で作った
+     プロトコルハンドラとストリームを実装し、それを <a href="function.fopen.html" class="function">fopen()</a>
+     や <a href="function.fread.html" class="function">fread()</a> といったファイルシステムの関数と利用することを可能にします。
+    </p>
+    <p class="para">
+     ラッパを実装するには、下記のようないくつかのメンバ関数を持った
+     クラスを定義しなくてはなりません。もし、誰かがあなたの作った
+     ストリームを <a href="function.fopen.html" class="function">fopen()</a> したとき、
+     <i class="literal">PHP</i> は <i><tt class="parameter">classname</tt></i>
+ のインスタンスを作り
+     以後そのインスタンスと共にメソッドを呼び出そうとします。
+     これらのメソッドは、下記に示したとおり、正確に実装されなければなりません。
+     さもないと、定義されていない動作をします。
+    </p>
+    <p class="para">
+     PHP 5.0.0 より新たに、<i><tt class="parameter">classname</tt></i>
+
+     のインスタンス内の <i><tt class="parameter">context</tt></i>
+ プロパティが、
+     <i class="literal">コンテキストリソース</i> を参照する形で
+     初期化されるようになります。なお、
+     この <i class="literal">コンテキストリソース</i>は、
+     <a href="function.stream-context-get-options.html" class="function">stream_context_get_options()</a> によっても
+     取得することができます。
+     もし、コンテキストがストリーム生成関数に対し渡されていない場合は、
+     <i><tt class="parameter">context</tt></i>
+ の値は <b><tt>NULL</tt></b> にセットされます。
+    </p>
+    <p class="para">
+     <b>stream_wrapper_register()</b> は、
+     <i><tt class="parameter">protocol</tt></i>
+ というハンドラが既にある場合、
+     <b><tt>FALSE</tt></b> を返します。
+    </p>
+
+    <div class="methodsynopsis">
+     <span class="type">bool</span> <span class="methodname"><b><b>stream_open</b></b></span>
+      ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$path</tt></span>
+     , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$mode</tt></span>
+     , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$options</tt></span>
+     , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$opened_path</tt></span>
+     )</div>
+
+    <p class="para">
+     このメソッドは、ストリームオブジェクトが生成された直後に呼び出されます。
+     <i><tt class="parameter">path</tt></i>
+ には、<a href="function.fopen.html" class="function">fopen()</a> に
+     与えられ、データの取得元となる URL が入ります。
+     <a href="function.parse-url.html" class="function">parse_url()</a> を使えば、この URL を解釈できます。
+    </p>
+    <p class="para">
+     <i><tt class="parameter">mode</tt></i>
+ は、ファイルを開く際に使われるモードです。
+     <a href="function.fopen.html" class="function">fopen()</a> で詳しく述べられているように、
+     この関数の側で、<i><tt class="parameter">mode</tt></i>
+ が要求された
+     <i><tt class="parameter">path</tt></i>
+ に適切かどうかを調べなくてはなりません。
+    </p>
+    <p class="para">
+     <i><tt class="parameter">options</tt></i>
+ は、ストリーム API によってセットされる
+     付加的なフラグです。この値は次に挙げた値のいずれかか、
+     それらを二つ以上 OR 演算した値となります。
+     <table class="informaltable">
+      <colgroup>
+
+       <thead valign="middle">
+        <tr valign="middle">
+         <th colspan="1">フラグ</th>
+         <th colspan="1">説明</th>
+        </tr>
+
+       </thead>
+
+       <tbody valign="middle">
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">STREAM_USE_PATH</td>
+         <td colspan="1" rowspan="1" align="left">もし <i><tt class="parameter">path</tt></i>
+ が相対パスだった場合、
+          include_path で指定されたパス内を探索します。
+         </td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">STREAM_REPORT_ERRORS</td>
+         <td colspan="1" rowspan="1" align="left">このフラグがセットされている場合は、ストリームのオープン時に
+          ラッパ側で <a href="function.trigger-error.html" class="function">trigger_error()</a> 関数を使い、エラーを
+          発生させる必要があります。逆に、このフラグがセットされていない場合は、
+          ラッパ側でエラーを発生させてはいけません。
+         </td>
+        </tr>
+
+       </tbody>
+      </colgroup>
+
+     </table>
+    </p>
+    <p class="para">
+     もし <i><tt class="parameter">path</tt></i>
+ に対するストリームのオープンに成功し、
+     STREAM_USE_PATH が <i><tt class="parameter">options</tt></i>
+ にセットされていた
+     際には、<i><tt class="parameter">opened_path</tt></i>
+ に、実際に開かれた
+     ファイルまたはリソースへの絶対パスをセットしなくてはなりません。
+    </p>
+    <p class="para">
+     もし要求されたリソースを正常に開けた場合、<b><tt>TRUE</tt></b> を、そうでなければ、
+     <b><tt>FALSE</tt></b> を返さなくてはなりません。
+    </p>
+
+    <div class="methodsynopsis">
+     <span class="type">void</span> <span class="methodname"><b><b>stream_close</b></b></span>
+      ( <span class="methodparam">void</span>
+     )</div>
+
+    <p class="para">
+     このメソッドは、<a href="function.fclose.html" class="function">fclose()</a>によってストリームが閉じられるときに呼び出されます。
+     この時点で、カスタムストリームの中でロックされたか確保されたリソースを
+     開放しなくてはなりません。
+    </p>
+
+    <div class="methodsynopsis">
+     <span class="type">string</span> <span class="methodname"><b><b>stream_read</b></b></span>
+      ( <span class="methodparam"><span class="type">int</span> <tt class="parameter">$count</tt></span>
+     )</div>
+
+    <p class="para">
+     このメソッドはカスタムストリームに対する <a href="function.fread.html" class="function">fread()</a> または
+     <a href="function.fgets.html" class="function">fgets()</a> に対応して呼び出されます。
+     <i><tt class="parameter">count</tt></i>
+ バイトを超えない長さのデータが返される
+     ようにする必要があります。
+     <i><tt class="parameter">count</tt></i>
+ バイトよりも少ないデータしか準備できていない
+     場合は、その時点にあるだけを返します。もし渡すべきデータがもうなければ、
+     <b><tt>FALSE</tt></b> または空文字列を返してください。
+     また、正常に読み込めた分だけ、ストリームの読み込み/書き出し操作における
+     内部位置を更新しなくてはなりません。
+    </p>
+
+    <div class="methodsynopsis">
+     <span class="type">int</span> <span class="methodname"><b><b>stream_write</b></b></span>
+      ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$data</tt></span>
+     )</div>
+
+    <p class="para">
+     このメソッドは、カスタムストリームに対する <a href="function.fwrite.html" class="function">fwrite()</a> などの
+     書き出し動作に対応して呼び出されます。<i><tt class="parameter">data</tt></i>
+ には、
+     カスタムストリームで使われている下層にあるストレージに書き出されるべき
+     データが入っています。渡されたデータをすべて書き出せない場合は、
+     書き出せるだけ書き出します。このとき、正常にデータを書き出せた場合は、
+     その書き出せたバイト数を、書き出せなかった場合は 0 を返さなくては
+     なりません。
+     また、正常に読み込めた分だけ、ストリームの読み込み/書き出し操作における
+     内部位置を更新しなくてはなりません。
+    </p>
+   
+    <div class="methodsynopsis">
+     <span class="type">bool</span> <span class="methodname"><b><b>stream_eof</b></b></span>
+      ( <span class="methodparam">void</span>
+     )</div>
+
+    <p class="para">
+     このメソッドは、ストリームに対する <a href="function.feof.html" class="function">feof()</a> 関数の実行に
+     対応して呼び出されます。
+     もし、ストリームの読み込み/書き出し操作における内部位置が、
+     ストリームの終端にある場合は、あるいは、もう読み込むべきデータがない
+     場合は <b><tt>TRUE</tt></b> を、その他の場合には <b><tt>FALSE</tt></b> をそれぞれ返さなくては
+     なりません。
+    </p>
+
+    <div class="methodsynopsis">
+     <span class="type">int</span> <span class="methodname"><b><b>stream_tell</b></b></span>
+      ( <span class="methodparam">void</span>
+     )</div>
+
+    <p class="para">
+     このメソッドは、ストリームに対する <a href="function.ftell.html" class="function">ftell()</a> 関数の
+     実行に対応して呼び出されます。
+     ストリームの読み込み/書き出し操作における内部位置を返します。
+    </p>
+
+    <div class="methodsynopsis">
+     <span class="type">bool</span> <span class="methodname"><b><b>stream_seek</b></b></span>
+      ( <span class="methodparam"><span class="type">int</span> <tt class="parameter">$offset</tt></span>
+     , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$whence</tt></span>
+     )</div>
+
+    <p class="para">
+     このメソッドは、ストリームに対する <a href="function.fseek.html" class="function">fseek()</a> 関数の
+     実行に対応して呼び出されます。
+     ストリームの読み込み/書き出し操作における内部位置を、
+     <i><tt class="parameter">offset</tt></i>
+ パラメータと <i><tt class="parameter">whence</tt></i>
+
+     パラメータの値に従って更新しなければなりません。
+     なお、これらの値の取り方については、<a href="function.fseek.html" class="function">fseek()</a> を参照ください。
+     正常に位置が更新できた場合には <b><tt>TRUE</tt></b> を、失敗した場合は <b><tt>FALSE</tt></b>
+     を返します。
+    </p>
+
+    <div class="methodsynopsis">
+     <span class="type">bool</span> <span class="methodname"><b><b>stream_flush</b></b></span>
+      ( <span class="methodparam">void</span>
+     )</div>
+
+    <p class="para">
+     このメソッドは、ストリームに対する <a href="function.fflush.html" class="function">fflush()</a> 関数の
+     実行に対応して呼び出されます。
+     もしカスタムストリームがデータをキャッシュしていて、
+     それをまだ下層にあるストレージへ記録していない場合は、
+     このメソッドが呼ばれた時に、それを書き出します。
+     もしキャッシュされたデータが正常に書き出された (あるいは、もう書くべきデータ
+     がない) 場合は、<b><tt>TRUE</tt></b> を、もしくは、データを書き出すことができなかった
+     場合は <b><tt>FALSE</tt></b> を返します。
+    </p>
+    <div class="methodsynopsis">
+     <span class="type">array</span> <span class="methodname"><b><b>stream_stat</b></b></span>
+      ( <span class="methodparam">void</span>
+     )</div>
+
+    <p class="para">
+     このメソッドは、ストリームに対する <a href="function.fstat.html" class="function">fstat()</a> 関数の
+     実行に対応して呼び出されます。
+     <a href="function.fstat.html" class="function">fstat()</a> が返すのと同じような要素をもつ配列に、
+     適切な値を入れて返さなくてはなりません。
+    </p>
+
+    <div class="methodsynopsis">
+     <span class="type">bool</span> <span class="methodname"><b><a href="function.unlink.html" class="function">unlink</a></b></span>
+      ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$path</tt></span>
+     )</div>
+
+    <p class="para">
+     このメソッドは、ラッパに関連付けられた URL のパスに対する
+     <a href="function.unlink.html" class="function">unlink()</a> 関数の実行に対応して呼び出されます。
+     <i><tt class="parameter">path</tt></i>
+ で指定されたパスにあるアイテムを
+     削除しようと試みなければなりません。その時、削除に成功したら
+     <b><tt>TRUE</tt></b> を、失敗したら <b><tt>FALSE</tt></b> を返してください。
+     適切なエラーメッセージがユーザに返されるよう、ラッパ側で削除を
+     サポートしない場合は、このメソッドを定義しないでください。
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     <span class="simpara">
+      ユーザ定義のラッパにおける unlink メソッドは、
+      PHP 5.0.0 以前ではサポートされていません。
+     </span>
+    </p></blockquote>
+
+    <div class="methodsynopsis">
+     <span class="type">bool</span> <span class="methodname"><b><a href="function.rename.html" class="function">rename</a></b></span>
+      ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$path_from</tt></span>
+     , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$path_to</tt></span>
+     )</div>
+
+    <p class="para">
+     このメソッドは、ラッパに関連付けられた URL のパスに対する
+     <a href="function.rename.html" class="function">rename()</a> 関数の実行に対応して呼び出され、
+     <i><tt class="parameter">path_from</tt></i>
+ で指定されたパスにある項目を
+     <i><tt class="parameter">path_to</tt></i>
+ にリネームすることを試みなければなりません。
+     成功した場合に <b><tt>TRUE</tt></b>、失敗した場合に <b><tt>FALSE</tt></b> を返さなければなりません。
+     適切なエラーメッセージが返されるよう、ラッパ側でリネームをサポートしない
+     場合はこのメソッドを定義しないでください。
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     <span class="simpara">
+      ユーザ定義のラッパにおける rename メソッドは、
+      PHP 5.0.0 以前ではサポートされていません。
+     </span>
+    </p></blockquote>
+
+    <div class="methodsynopsis"> 
+     <span class="type">bool</span> <span class="methodname"><b><a href="function.mkdir.html" class="function">mkdir</a></b></span>
+      ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$path</tt></span>
+     , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$mode</tt></span>
+     , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$options</tt></span>
+     )</div>
+ 
+    <p class="para"> 
+     このメソッドは、ラッパに関連付けられた URL のパスに対する
+     <a href="function.mkdir.html" class="function">mkdir()</a> 関数の実行に対応して呼び出され、
+     <i><tt class="parameter">path</tt></i>
+ で指定されたディレクトリの作成を
+     試みなければなりません。
+     成功した場合に <b><tt>TRUE</tt></b>、失敗した場合に <b><tt>FALSE</tt></b> を返さなければなりません。
+     適切なエラーメッセージが返されるよう、ラッパ側でディレクトリの作成を
+     サポートしない場合はこのメソッドを定義しないでください。
+     <i><tt class="parameter">options</tt></i>
+ でとりうる値には
+     <b><tt>STREAM_REPORT_ERRORS</tt></b> および
+     <b><tt>STREAM_MKDIR_RECURSIVE</tt></b> が含まれます。
+    </p> 
+    <blockquote><p><b class="note">注意</b>: 
+     <span class="simpara">
+      ユーザ定義のラッパにおける mkdir メソッドは、
+      PHP 5.0.0 以前ではサポートされていません。
+     </span>
+    </p></blockquote>
+
+    <div class="methodsynopsis">
+     <span class="type">bool</span> <span class="methodname"><b><a href="function.rmdir.html" class="function">rmdir</a></b></span>
+      ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$path</tt></span>
+     , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$options</tt></span>
+     )</div>
+
+    <p class="para">
+     このメソッドは、ラッパに関連付けられた URL のパスに対する
+     <a href="function.rmdir.html" class="function">rmdir()</a> 関数の実行に対応して呼び出され、
+     <i><tt class="parameter">path</tt></i>
+ で指定されたディレクトリの削除を
+     試みなければなりません。
+     成功した場合に <b><tt>TRUE</tt></b>、失敗した場合に <b><tt>FALSE</tt></b> を返さなければなりません。
+     適切なエラーメッセージが返されるよう、ラッパ側でディレクトリの削除を
+     サポートしない場合はこのメソッドを定義しないでください。
+     <i><tt class="parameter">options</tt></i>
+ でとりうる値には
+     <b><tt>STREAM_REPORT_ERRORS</tt></b> が含まれます。
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     <span class="simpara">
+      ユーザ定義のラッパにおける rmdir メソッドは、
+      PHP 5.0.0 以前ではサポートされていません。
+     </span>
+    </p></blockquote>
+
+    <div class="methodsynopsis"> 
+     <span class="type">bool</span> <span class="methodname"><b><b>dir_opendir</b></b></span> 
+      ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$path</tt></span> 
+     , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$options</tt></span> 
+     )</div>
+ 
+    <p class="para"> 
+     このメソッドは、ディレクトリの内容を走査するために、
+     ストリームオブジェクトが <a href="function.opendir.html" class="function">opendir()</a>によって
+     生成されるその時に呼び出されます。
+
+     <i><tt class="parameter">path</tt></i>
+ は、<a href="function.opendir.html" class="function">opendir()</a> に
+     渡された、このオブジェクトが走査すべき場所を示す URL を指定します。
+     このとき、<a href="function.parse-url.html" class="function">parse_url()</a> を使えば、この URL を
+     細分することができます。
+    </p> 
+
+    <div class="methodsynopsis"> 
+     <span class="type">array</span> <span class="methodname"><b><b>url_stat</b></b></span>
+      ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$path</tt></span>
+     , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$flags</tt></span>
+     )</div>
+
+    <p class="para">
+     このメソッドは、ラッパに関連付けられた URL のパスに対する
+     <a href="function.stat.html" class="function">stat()</a> 関数の実行に対応して呼び出され、
+     システムの関数が返す要素とできるだけ同じ内容を返さなければなりません。
+     不明な、あるいは取得できない値には、妥当な値を設定しておくべきです
+     （通常は <b><tt>0</tt></b> です）。
+    </p>
+    <p class="para">
+     <i><tt class="parameter">flags</tt></i>
+ には、ストリーム API によって設定された
+     追加のフラグを保持します。以下のうちのひとつまたは複数を OR で結合した
+     値を保持します。
+     <table class="informaltable">
+      <colgroup>
+
+       <thead valign="middle">
+        <tr valign="middle">
+         <th colspan="1">フラグ</th>
+         <th colspan="1">説明</th>
+        </tr>
+
+       </thead>
+
+       <tbody valign="middle">
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">STREAM_URL_STAT_LINK</td>
+         <td colspan="1" rowspan="1" align="left">
+          他のリソースへのリンク機能があるリソース（たとえば
+          HTTP の Location: forward やファイルシステムのシンボリック
+          リンクなど）。このフラグはリンクそのものについての情報のみを
+          返し、リンクが指している先のリソースについては返しません。
+          このフラグは <a href="function.lstat.html" class="function">lstat()</a>、
+          <a href="function.is-link.html" class="function">is_link()</a> あるいは <a href="function.filetype.html" class="function">filetype()</a>
+          のコールへの応答として設定されます。
+         </td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">STREAM_URL_STAT_QUIET</td>
+         <td colspan="1" rowspan="1" align="left">このフラグが設定されている場合、ラッパは一切エラーを
+          報告してはいけません。このフラグが設定されていない場合は、
+          パスを調べている間に発生したエラーについて
+          <a href="function.trigger-error.html" class="function">trigger_error()</a> で報告する義務があります。
+         </td>
+        </tr>
+
+       </tbody>
+      </colgroup>
+
+     </table>
+    </p>
+
+    <div class="methodsynopsis">
+     <span class="type">string</span> <span class="methodname"><b><b>dir_readdir</b></b></span> 
+      ( <span class="methodparam">void</span> 
+     )</div>
+ 
+    <p class="para">
+     このメソッドは、<a href="function.readdir.html" class="function">readdir()</a> 関数の呼び出しに
+     対応して呼ばれます。<b>dir_opendir()</b> メソッドにおいて
+     指定された場所にあるファイルのリスト上の、次のファイル名を表す
+     文字列を返さなくてはなりません。
+    </p> 
+  
+    <div class="methodsynopsis"> 
+     <span class="type">bool</span> <span class="methodname"><b><b>dir_rewinddir</b></b></span> 
+      ( <span class="methodparam">void</span> 
+     )</div>
+ 
+    <p class="para"> 
+     このメソッドは、<a href="function.rewinddir.html" class="function">rewinddir()</a> 関数の呼び出しに
+     対応して呼ばれます。このとき、<b>dir_readdir()</b>
+     メソッドにおいて変更された状態をリセットしなくてはなりません。
+     つまり、このメソッドの呼び出しに続いて <b>dir_readdir()</b> が
+     呼ばれると、<b>dir_opendir()</b> によって開かれた
+     ファイルのリスト上の、最初のエントリを返すことになります。
+    </p> 
+  
+    <div class="methodsynopsis"> 
+     <span class="type">bool</span> <span class="methodname"><b><b>dir_closedir</b></b></span> 
+      ( <span class="methodparam">void</span> 
+     )</div>
+ 
+    <p class="para"> 
+     このメソッドは、<a href="function.closedir.html" class="function">closedir()</a> 関数の呼び出しに
+     対応して呼ばれます。このとき、ディレクトリストリームの利用に際して
+     確保されたりロックされたリソースを全て開放しなければなりません。
+    </p> 
+
+    <p class="para">
+     下記の例は、var:// プロトコルハンドラを実装し、
+     <a href="function.fread.html" class="function">fread()</a> などの標準のファイルシステム関数
+     を利用して、指定されたグローバル変数に対するアクセスができるように
+     するものです。
+     var:// プロトコルは、&quot;var://foo&quot; として与えられた URL に対応して、
+     $GLOBALS[&quot;foo&quot;] からデータを読み込んだり、そこにデータを書き込んだり
+     します。
+
+     <div class="example"> 
+      <p><b>Example#1 グローバル変数を読み書きするストリーム</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">VariableStream&nbsp;</span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;</span><span style="color: #0000BB">$position</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;</span><span style="color: #0000BB">$varname</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;</span><span style="color: #0000BB">stream_open</span><span style="color: #007700">(</span><span style="color: #0000BB">$path</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mode</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$options</span><span style="color: #007700">,&nbsp;&amp;</span><span style="color: #0000BB">$opened_path</span><span style="color: #007700">)&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$url&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">parse_url</span><span style="color: #007700">(</span><span style="color: #0000BB">$path</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">varname&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$url</span><span style="color: #007700">[</span><span style="color: #DD0000">"host"</span><span style="color: #007700">];<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">position&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;</span><span style="color: #0000BB">stream_read</span><span style="color: #007700">(</span><span style="color: #0000BB">$count</span><span style="color: #007700">)&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$ret&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">substr</span><span style="color: #007700">(</span><span style="color: #0000BB">$GLOBALS</span><span style="color: #007700">[</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">varname</span><span style="color: #007700">],&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">position</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$count</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">position&nbsp;</span><span style="color: #007700">+=&nbsp;</span><span style="color: #0000BB">strlen</span><span style="color: #007700">(</span><span style="color: #0000BB">$ret</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$ret</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;</span><span style="color: #0000BB">stream_write</span><span style="color: #007700">(</span><span style="color: #0000BB">$data</span><span style="color: #007700">)&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$left&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">substr</span><span style="color: #007700">(</span><span style="color: #0000BB">$GLOBALS</span><span style="color: #007700">[</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">varname</span><span style="color: #007700">],&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">position</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$right&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">substr</span><span style="color: #007700">(</span><span style="color: #0000BB">$GLOBALS</span><span style="color: #007700">[</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">varname</span><span style="color: #007700">],&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">position&nbsp;</span><span style="color: #007700">+&nbsp;</span><span style="color: #0000BB">strlen</span><span style="color: #007700">(</span><span style="color: #0000BB">$data</span><span style="color: #007700">));<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$GLOBALS</span><span style="color: #007700">[</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">varname</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">$left&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$data&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$right</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">position&nbsp;</span><span style="color: #007700">+=&nbsp;</span><span style="color: #0000BB">strlen</span><span style="color: #007700">(</span><span style="color: #0000BB">$data</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">strlen</span><span style="color: #007700">(</span><span style="color: #0000BB">$data</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;</span><span style="color: #0000BB">stream_tell</span><span style="color: #007700">()&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">position</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;</span><span style="color: #0000BB">stream_eof</span><span style="color: #007700">()&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">position&nbsp;</span><span style="color: #007700">&gt;=&nbsp;</span><span style="color: #0000BB">strlen</span><span style="color: #007700">(</span><span style="color: #0000BB">$GLOBALS</span><span style="color: #007700">[</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">varname</span><span style="color: #007700">]);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;</span><span style="color: #0000BB">stream_seek</span><span style="color: #007700">(</span><span style="color: #0000BB">$offset</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$whence</span><span style="color: #007700">)&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switch&nbsp;(</span><span style="color: #0000BB">$whence</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;</span><span style="color: #0000BB">SEEK_SET</span><span style="color: #007700">:<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">$offset&nbsp;</span><span style="color: #007700">&lt;&nbsp;</span><span style="color: #0000BB">strlen</span><span style="color: #007700">(</span><span style="color: #0000BB">$GLOBALS</span><span style="color: #007700">[</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">varname</span><span style="color: #007700">])&nbsp;&amp;&amp;&nbsp;</span><span style="color: #0000BB">$offset&nbsp;</span><span style="color: #007700">&gt;=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">position&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$offset</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;</span><span style="color: #0000BB">SEEK_CUR</span><span style="color: #007700">:<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">$offset&nbsp;</span><span style="color: #007700">&gt;=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">position&nbsp;</span><span style="color: #007700">+=&nbsp;</span><span style="color: #0000BB">$offset</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;</span><span style="color: #0000BB">SEEK_END</span><span style="color: #007700">:<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">strlen</span><span style="color: #007700">(</span><span style="color: #0000BB">$GLOBALS</span><span style="color: #007700">[</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">varname</span><span style="color: #007700">])&nbsp;+&nbsp;</span><span style="color: #0000BB">$offset&nbsp;</span><span style="color: #007700">&gt;=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">position&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">strlen</span><span style="color: #007700">(</span><span style="color: #0000BB">$GLOBALS</span><span style="color: #007700">[</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">varname</span><span style="color: #007700">])&nbsp;+&nbsp;</span><span style="color: #0000BB">$offset</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default:<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br /></span><span style="color: #0000BB">stream_wrapper_register</span><span style="color: #007700">(</span><span style="color: #DD0000">"var"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"VariableStream"</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;or&nbsp;die(</span><span style="color: #DD0000">"プロトコルの登録に失敗しました"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$myvar&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">""</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;<br /></span><span style="color: #0000BB">$fp&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">"var://myvar"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"r+"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"line1\n"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"line2\n"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"line3\n"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">rewind</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">);<br />while&nbsp;(!</span><span style="color: #0000BB">feof</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">fgets</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">);<br />}<br /></span><span style="color: #0000BB">fclose</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$myvar</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+  
+   </div>
+
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.stream-socket-shutdown.html">stream_socket_shutdown</a></div>
+ <div class="next" style="float: right;"><a href="function.stream-wrapper-restore.html">stream_wrapper_restore</a></div>
+ <div class="up"><a href="ref.stream.html">ストリーム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,394 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>メールボックスへの IMAP ストリームをオープンする</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.imap-num-recent.html">imap_num_recent</a></div>
+ <div class="next" style="float: right;"><a href="function.imap-ping.html">imap_ping</a></div>
+ <div class="up"><a href="ref.imap.html">IMAP</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.imap-open" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">imap_open</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">imap_open ― メールボックスへの IMAP ストリームをオープンする</p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">resource</span> <span class="methodname"><b><b>imap_open</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$mailbox</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$username</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$password</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$options</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$n_retries</tt></span>
+  ]] )</div>
+
+  <p class="para">
+   <i><tt class="parameter">mailbox</tt></i>
+ への IMAP ストリームをオープンします。
+  </p>
+  <p class="para">
+   この関数は、POP3 や NNTP サーバへのストリームをオープンする際にも使用可能です。
+   しかし、いくつかの関数および機能は IMAP サーバでしか利用できません。
+  </p>
+ </div>
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">mailbox</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       メールボックス名(mailbox)は、サーバ名の部分と使用するサーバにおける
+       メールボックスへのパスから構成されます。特別な名前 <i class="literal">INBOX</i> は、
+       カレントユーザの個人メールボックスを意味します。
+       ASCII 空間で出力可能な文字以外の外国文字を含むメールボックス名は
+       <a href="function.imap-utf7-encode.html" class="function">imap_utf7_encode()</a> でエンコードする必要があります。
+      </p>
+      <p class="para">
+       サーバ部は &#039;{&#039;
+       および &#039;}&#039; で括られ、サーバ名または IP アドレス、オプションの &#039;:&#039;
+       から始まるポート指定子、(&#039;/&#039; で始まる)オプションのプロトコル指定子
+       から構成されます。
+      </p>
+      <p class="para">
+       サーバ部は、全ての mailbox パラメータで必須です。
+      </p>
+      <p class="para">
+       <i class="literal">{</i> で始まる名前はすべてリモート名で、
+       <i class="literal">&quot;{&quot; remote_system_name [&quot;:&quot; port] [flags] &quot;}&quot;
+       [mailbox_name]</i> のような形式となります。
+       <ul class="itemizedlist">
+        <li class="listitem">
+         <span class="simpara">
+          <i class="literal">remote_system_name</i> - Internet ドメイン名
+          あるいは括弧でかこまれたサーバの IP アドレス。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <i class="literal">port</i> - オプションの TCP ポート番号。デフォルトは
+          そのサービスのデフォルトポート。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <i class="literal">flags</i> - オプションのフラグ。以下の表を参照ください。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <i class="literal">mailbox_name</i> - リモートメールボックス名。デフォルトは INBOX 。
+         </span>
+        </li>
+       </ul>
+      </p>
+      <p class="para">
+       <table border="5">
+        <caption><b>オプションのフラグ名</b></caption>
+        <colgroup>
+
+         <thead valign="middle">
+          <tr valign="middle">
+           <th colspan="1">フラグ</th>
+           <th colspan="1">説明</th>
+          </tr>
+
+         </thead>
+
+         <tbody valign="middle">
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><i class="literal">/service=</i><em class="emphasis">service</em></td>
+           <td colspan="1" rowspan="1" align="left">メールボックスにアクセスするサービス。デフォルトは &quot;imap&quot; 。</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><i class="literal">/user=</i><em class="emphasis">user</em></td>
+           <td colspan="1" rowspan="1" align="left">サーバへのログイン時のユーザ名。</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><i class="literal">/authuser=</i><em class="emphasis">user</em></td>
+           <td colspan="1" rowspan="1" align="left">リモートの認証ユーザ。指定されていた場合は、このユーザのパスワードが
+            認証に使用されます（例: administrator）。</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><i class="literal">/anonymous</i></td>
+           <td colspan="1" rowspan="1" align="left">匿名ユーザとしてアクセスします。</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><i class="literal">/debug</i></td>
+           <td colspan="1" rowspan="1" align="left">プロトコルの通信内容をアプリケーションのデバッグログに記録します。</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><i class="literal">/secure</i></td>
+           <td colspan="1" rowspan="1" align="left">ネットワーク越しにプレーンテキストのパスワードを送信しません。</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><i class="literal">/imap</i>, <i class="literal">/imap2</i>,
+            <i class="literal">/imap2bis</i>, <i class="literal">/imap4</i>,
+            <i class="literal">/imap4rev1</i></td>
+           <td colspan="1" rowspan="1" align="left">/service=imap と同じです。</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><i class="literal">/pop3</i></td>
+           <td colspan="1" rowspan="1" align="left">/service=pop3 と同じです。</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><i class="literal">/nntp</i></td>
+           <td colspan="1" rowspan="1" align="left">/service=nntp と同じです。</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><i class="literal">/norsh</i></td>
+           <td colspan="1" rowspan="1" align="left">事前に認証済みの IMAP セッションを確立する際に、rsh や ssh
+            を使用しません。</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><i class="literal">/ssl</i></td>
+           <td colspan="1" rowspan="1" align="left">セッションの暗号化に SSL（Secure Socket Layer）を使用します。</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><i class="literal">/validate-cert</i></td>
+           <td colspan="1" rowspan="1" align="left">TLS/SSL サーバの証明書を検証します（デフォルトの挙動です）。</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><i class="literal">/novalidate-cert</i></td>
+           <td colspan="1" rowspan="1" align="left">TLS/SSL サーバの証明書を検証しません。サーバが自己証明の
+            証明書を使用している際に必要となります。</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><i class="literal">/tls</i></td>
+           <td colspan="1" rowspan="1" align="left">セッションの暗号化に start-TLS の使用を強制し、それを
+            サポートしていないサーバとの接続を拒否します。</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><i class="literal">/notls</i></td>
+           <td colspan="1" rowspan="1" align="left">たとえサーバがそれをサポートしていたとしても、
+            セッションで start-TLS による暗号化を使用しません。</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><i class="literal">/readonly</i></td>
+           <td colspan="1" rowspan="1" align="left">読み込み専用でのメールボックスのオープンを要求します（IMAP のみ。
+            NNTP では無視され、SMTP および POP3 ではエラーとなります）。</td>
+          </tr>
+
+         </tbody>
+        </colgroup>
+
+       </table>
+
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">username</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       ユーザ名。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">password</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">username</tt></i>
+ のパスワード。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">options</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">options</tt></i>
+ はビットマスクであり、以下の組み合わせとなります。
+       <ul class="itemizedlist">
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>OP_READONLY</tt></b> - メールボックスを読み込み専用でオープンします。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>OP_ANONYMOUS</tt></b> - news に関して
+          <var class="filename">.newsrc</var> を使用せず、更新もしません（NNTP のみ）。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>OP_HALFOPEN</tt></b> - IMAP 及び NNTP 名について、
+          接続をオープンしますがメールボックスはオープンしません。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>CL_EXPUNGE</tt></b> - メールボックスを閉じる際に、
+          自動的にメールボックスを削除します（<a href="function.imap-delete.html" class="function">imap_delete()</a>
+          および <a href="function.imap-expunge.html" class="function">imap_expunge()</a> も参照ください）。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>OP_DEBUG</tt></b> - プロトコルネゴシエーションをデバッグします。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>OP_SHORTCACHE</tt></b> - 短い（elt-only）キャッシングを行います。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>OP_SILENT</tt></b> - イベントを受信しません（内部で使用します）。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>OP_PROTOTYPE</tt></b> - ドライバのプロトタイプを返します。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>OP_SECURE</tt></b> - セキュアでない認証を行いません。
+         </span>
+        </li>
+       </ul>
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">n_retries</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       接続試行の最大数。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合は IMAP ストリームを、失敗した場合は <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">5.2.0</td>
+       <td colspan="1" rowspan="1" align="left"><i><tt class="parameter">n_retries</tt></i>
+ が追加されました。</td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>imap_open()</b> のさまざまな使用例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;ローカルマシンのポート&nbsp;143&nbsp;で稼動している&nbsp;IMAP&nbsp;サーバに接続するには<br />//&nbsp;以下のようにします。<br /></span><span style="color: #0000BB">$mbox&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">imap_open</span><span style="color: #007700">(</span><span style="color: #DD0000">"{localhost:143}INBOX"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"user_id"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"password"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;ローカルマシンのポート&nbsp;110&nbsp;で稼動している&nbsp;POP3&nbsp;サーバに接続するには、<br /></span><span style="color: #0000BB">$mbox&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">imap_open&nbsp;</span><span style="color: #007700">(</span><span style="color: #DD0000">"{localhost:110/pop3}INBOX"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"user_id"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"password"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;SSL&nbsp;IMAP&nbsp;あるいは&nbsp;POP3&nbsp;サーバに接続するには、プロトコル指定のあとに<br />//&nbsp;/ssl&nbsp;を追加します。<br /></span><span style="color: #0000BB">$mbox&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">imap_open&nbsp;</span><span style="color: #007700">(</span><span style="color: #DD0000">"{localhost:993/imap/ssl}INBOX"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"user_id"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"password"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;自分でサインした証明書で&nbsp;SSL&nbsp;IMAP&nbsp;あるいは&nbsp;POP3&nbsp;サーバに接続するには、<br />//&nbsp;プロトコル指定のあとに&nbsp;/ssl/novalidate-cert&nbsp;を追加します。<br /></span><span style="color: #0000BB">$mbox&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">imap_open&nbsp;</span><span style="color: #007700">(</span><span style="color: #DD0000">"{localhost:995/pop3/ssl/novalidate-cert}"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"user_id"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"password"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;ローカルマシンのポート&nbsp;119&nbsp;で稼動している&nbsp;NNTP&nbsp;サーバに接続するには、<br /></span><span style="color: #0000BB">$nntp&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">imap_open&nbsp;</span><span style="color: #007700">(</span><span style="color: #DD0000">"{localhost:119/nntp}comp.test"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">""</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">""</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">//&nbsp;リモートサーバに接続する際は、"localhost"&nbsp;を接続したいサーバの<br />//&nbsp;名前または&nbsp;IP&nbsp;アドレスに置き換えます。<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+   <div class="example">
+    <p><b>Example#2 <b>imap_open()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$mbox&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">imap_open</span><span style="color: #007700">(</span><span style="color: #DD0000">"{imap.example.org:143}"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"username"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"password"</span><span style="color: #007700">);<br /><br />echo&nbsp;</span><span style="color: #DD0000">"&lt;h1&gt;Mailboxes&lt;/h1&gt;\n"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$folders&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">imap_listmailbox</span><span style="color: #007700">(</span><span style="color: #0000BB">$mbox</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"{imap.example.org:143}"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"*"</span><span style="color: #007700">);<br /><br />if&nbsp;(</span><span style="color: #0000BB">$folders&nbsp;</span><span style="color: #007700">==&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"コールが失敗しました&lt;br&nbsp;/&gt;\n"</span><span style="color: #007700">;<br />}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;(</span><span style="color: #0000BB">$folders&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$val</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$val&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"&lt;br&nbsp;/&gt;\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br />echo&nbsp;</span><span style="color: #DD0000">"&lt;h1&gt;INBOX&nbsp;のヘッダ&lt;/h1&gt;\n"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$headers&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">imap_headers</span><span style="color: #007700">(</span><span style="color: #0000BB">$mbox</span><span style="color: #007700">);<br /><br />if&nbsp;(</span><span style="color: #0000BB">$headers&nbsp;</span><span style="color: #007700">==&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"コールが失敗しました&lt;br&nbsp;/&gt;\n"</span><span style="color: #007700">;<br />}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;(</span><span style="color: #0000BB">$headers&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$val</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$val&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"&lt;br&nbsp;/&gt;\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br /></span><span style="color: #0000BB">imap_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$mbox</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.imap-close.html" class="function">imap_close()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.imap-num-recent.html">imap_num_recent</a></div>
+ <div class="next" style="float: right;"><a href="function.imap-ping.html">imap_ping</a></div>
+ <div class="up"><a href="ref.imap.html">IMAP</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

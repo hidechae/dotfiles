@@ -1,0 +1,510 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>その他の関数（Misc）</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ming-useswfversion.html">ming_useswfversion</a></div>
+ <div class="next" style="float: right;"><a href="function.connection-aborted.html">connection_aborted</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">その他の関数（Misc）</h1>
+  
+
+  <div class="partintro">
+
+   <div id="misc.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     他のカテゴリには当てはまらない関数群を、こちらに収録しています。
+    </p>
+   </div>
+
+   <div id="misc.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">外部ライブラリを必要としません。</p>
+   </div>
+   
+   <div id="misc.installation" class="section">
+    <h2 class="title">インストール手順</h2>
+    <p class="para">PHP コアに含まれるため、
+追加のインストール無しで使用できます。</p>
+   </div>
+
+   
+
+
+
+<div id="misc.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+  <table border="5">
+   <caption><b>Misc の設定オプション</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">名前</th>
+      <th colspan="1">デフォルト</th>
+      <th colspan="1">変更の可否</th>
+      <th colspan="1">変更履歴</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">ignore_user_abort</td>
+      <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">highlight.string</td>
+      <td colspan="1" rowspan="1" align="left">&quot;#DD0000&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">highlight.comment</td>
+      <td colspan="1" rowspan="1" align="left">&quot;#FF8000&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">highlight.keyword</td>
+      <td colspan="1" rowspan="1" align="left">&quot;#007700&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">highlight.bg</td>
+      <td colspan="1" rowspan="1" align="left">&quot;#FFFFFF&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td colspan="1" rowspan="1" align="left">PHP 6.0.0 で削除。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">highlight.default</td>
+      <td colspan="1" rowspan="1" align="left">&quot;#0000BB&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">highlight.html</td>
+      <td colspan="1" rowspan="1" align="left">&quot;#000000&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">browscap</td>
+      <td colspan="1" rowspan="1" align="left">NULL</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+  PHP_INI_* 定数の詳細および定義については
+<a href="ini.html" class="xref">php.ini ディレクティブ</a> を参照してください。
+ </p>
+ 
+ <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+ 
+ <p class="para">
+  <dl>
+
+
+   <dt id="ini.ignore-user-abort">
+    <span class="term">
+     <i><tt class="parameter">ignore_user_abort</tt></i>
+
+     <a href="language.types.boolean.html" class="type boolean">boolean</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      デフォルトは <b><tt>FALSE</tt></b>。<b><tt>TRUE</tt></b> に変更すると、
+      クライアントが接続を破棄した後もスクリプトは終了しません。
+     </p>
+     <p class="para">
+      <a href="function.ignore-user-abort.html" class="function">ignore_user_abort()</a> も参照ください。
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.syntax-highlighting">
+     <span class="term">
+      <i><tt class="parameter">highlight.bg</tt></i>
+
+      <a href="language.types.string.html" class="type string">string</a>
+     </span>
+     <span class="term">
+      <i><tt class="parameter">highlight.comment</tt></i>
+
+      <a href="language.types.string.html" class="type string">string</a>
+     </span>
+     <span class="term">
+      <i><tt class="parameter">highlight.default</tt></i>
+
+      <a href="language.types.string.html" class="type string">string</a>
+     </span>
+     <span class="term">
+      <i><tt class="parameter">highlight.html</tt></i>
+
+      <a href="language.types.string.html" class="type string">string</a>
+     </span>
+     <span class="term">
+      <i><tt class="parameter">highlight.keyword</tt></i>
+
+      <a href="language.types.string.html" class="type string">string</a>
+     </span>
+     <span class="term">
+      <i><tt class="parameter">highlight.string</tt></i>
+
+      <a href="language.types.string.html" class="type string">string</a>
+     </span>
+    <dd>
+
+     <p class="para">
+      構文ハイライト表示モードの色。
+      &lt;font color=&quot;??????&quot;&gt; 形式のものは全て動作します。
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.browscap">
+    <span class="term">
+     <i><tt class="parameter">browscap</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      browser capabilities file (ブラウザ機能ファイル) の
+      名前 (例: <var class="filename">browscap.ini</var>) と場所。
+      <a href="function.get-browser.html" class="function">get_browser()</a> も参照ください。
+     </p>
+    </dd>
+
+   </dt>
+
+
+  </dl>
+
+ </p>
+</div>
+
+
+
+
+   <div id="misc.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">リソース型は定義されていません。</p>
+   </div>
+
+   
+
+
+<div id="misc.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <dl>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>CONNECTION_ABORTED</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>CONNECTION_NORMAL</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>CONNECTION_TIMEOUT</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>__COMPILER_HALT_OFFSET__</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     PHP 5.1 で追加されました。
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+</div>
+
+
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.connection-aborted.html">connection_aborted</a> ― クライアントとの接続が切断されているかどうかを調べる</li><li><a href="function.connection-status.html">connection_status</a> ― 接続ステータスのビットフィールドを返す</li><li><a href="function.connection-timeout.html">connection_timeout</a> ― スクリプトがタイムアウトしたかどうかを調べる</li><li><a href="function.constant.html">constant</a> ― 定数の値を返す</li><li><a href="function.define.html">define</a> ― 名前を指定して定数を定義する</li><li><a href="function.defined.html">defined</a> ― 指定した名前の定数が存在するかどうかを調べる</li><li><a href="function.die.html">die</a> ― exit と同等</li><li><a href="function.eval.html">eval</a> ― 文字列を PHP コードとして評価する</li><li><a href="function.exit.html">exit</a> ― メッセージを出力し、現在のスクリプトを終了する</li><li><a href="function.get-browser.html">get_browser</a> ― ユーザのブラウザの機能を取得する</li><li><a href="function.halt-compiler.html">__halt_compiler</a> ― コンパイラの実行を中止する</li><li><a href="function.highlight-file.html">highlight_file</a> ― ファイルの構文ハイライト表示</li><li><a href="function.highlight-string.html">highlight_string</a> ― 文字列の構文ハイライト表示</li><li><a href="function.ignore-user-abort.html">ignore_user_abort</a> ― クライアントの接続が切断された際にスクリプトの実行を終了するかどうかを設定する</li><li><a href="function.pack.html">pack</a> ― データをバイナリ文字列にパックする</li><li><a href="function.php-check-syntax.html">php_check_syntax</a> ― 指定したファイルの文法チェック（と実行）を行う</li><li><a href="function.php-strip-whitespace.html">php_strip_whitespace</a> ― コメントと空白文字を取り除いたソースを返す</li><li><a href="function.show-source.html">show_source</a> ― highlight_file のエイリアス</li><li><a href="function.sleep.html">sleep</a> ― 実行を遅延させる</li><li><a href="function.sys-getloadavg.html">sys_getloadavg</a> ― システムの平均負荷を取得する</li><li><a href="function.time-nanosleep.html">time_nanosleep</a> ― 秒およびナノ秒単位で実行を遅延する</li><li><a href="function.time-sleep-until.html">time_sleep_until</a> ― 指定した時刻まで実行を遅延する</li><li><a href="function.uniqid.html">uniqid</a> ― 一意な ID を生成する</li><li><a href="function.unpack.html">unpack</a> ― バイナリ文字列からデータを切り出す</li><li><a href="function.usleep.html">usleep</a> ― マイクロ秒単位で実行を遅延する</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ming-useswfversion.html">ming_useswfversion</a></div>
+ <div class="next" style="float: right;"><a href="function.connection-aborted.html">connection_aborted</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

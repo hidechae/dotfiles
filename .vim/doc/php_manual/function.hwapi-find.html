@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>オブジェクトを検索する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.hwapi-error-reason.html">hw_api_error->reason</a></div>
+ <div class="next" style="float: right;"><a href="function.hwapi-ftstat.html">hw_api->ftstat</a></div>
+ <div class="up"><a href="ref.hwapi.html">Hyperwave API</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.hwapi-find" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">hw_api-&gt;find</h1>
+  <p class="verinfo">(No version information available, might be only in CVS)</p><p class="refpurpose">hw_api->find ― オブジェクトを検索する</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="classsynopsis">
+   <div class="ooclass"><b class="classname">hw_api</b></div>
+   <div class="methodsynopsis">
+    <span class="type">array</span> <span class="methodname"><b><b>find</b></b></span>
+     ( <span class="methodparam"><span class="type">array</span> <tt class="parameter">$parameter</tt></span>
+    )</div>
+
+  </div>
+  <p class="para">
+   この関数は、キーやフルテキストクエリを使用してオブジェクトを検索します。
+   見つかったオブジェクトは、オプションのオブジェクトクエリによって
+   さらに絞り込むことができます。また、その重要性の順に並べ替えられます。
+   2 回目の検索は相対的に遅くなり、その結果はある程度絞り込まれます。
+   これによりインクリメンタルな検索ができ、前の検索の結果をもとに
+   検索を進めていくことが可能となります。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">parameter</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       パラメータの配列には、
+       検索したい方法に応じて &#039;keyquery&#039; や &#039;fulltextquery&#039;
+       が含まれます。オプションのパラメータは
+       &#039;objectquery&#039;、&#039;scope&#039;、&#039;languages&#039; および &#039;attributeselector&#039;
+       です。インクリメンタルな検索の場合、オプションのパラメータ
+       &#039;startIndex&#039;、&#039;numberOfObjectsToGet&#039; および &#039;exactMatchUnit&#039;
+       が渡されます。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.hwapi-error-reason.html">hw_api_error->reason</a></div>
+ <div class="next" style="float: right;"><a href="function.hwapi-ftstat.html">hw_api->ftstat</a></div>
+ <div class="up"><a href="ref.hwapi.html">Hyperwave API</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,227 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>ローカルタイムを得る</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.idate.html">idate</a></div>
+ <div class="next" style="float: right;"><a href="function.microtime.html">microtime</a></div>
+ <div class="up"><a href="ref.datetime.html">日付/時刻</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.localtime" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">localtime</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">localtime ― ローカルタイムを得る</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">array</span> <span class="methodname"><b><b>localtime</b></b></span>
+    ([ <span class="methodparam"><span class="type">int</span> <tt class="parameter">$timestamp</tt></span>
+   [, <span class="methodparam"><span class="type">bool</span> <tt class="parameter">$is_associative</tt></span>
+  ]] )</div>
+
+  <p class="para">
+   <b>localtime()</b> 関数は、C 言語の
+   同名の関数コールにより返される構造体と同じ内容の配列を返します。
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    
+    
+<dt>
+<span class="term"><i><tt class="parameter">timestamp</tt></i>
+</span><dd>
+<p class="para">
+オプションのパラメータ <i><tt class="parameter">timestamp</tt></i>
+ は、
+<a href="language.types.integer.html" class="type integer">integer</a> 型の Unix タイムスタンプです。
+<i><tt class="parameter">timestamp</tt></i>
+ が指定されなかった場合のデフォルト値は、
+現在の時刻です。言い換えると、デフォルトは
+<a href="function.time.html" class="function">time()</a> の返り値となります。
+</p></dd>
+</dt>
+
+   
+    <dt>
+
+     <span class="term"><i><tt class="parameter">is_associative</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <b><tt>FALSE</tt></b> に設定されるか省略された場合は、
+       配列は通常の数値を添字とした配列として返されます。
+       <b><tt>TRUE</tt></b> に設定された場合は、
+       <b>localtime()</b> は C 言語の関数 localtime
+       のコールにより返される構造体の全ての要素を有する連想配列を返します。
+       この連想配列の各キーの名前は次のようになります。
+      </p>
+      <p class="para">
+       <ul class="itemizedlist">
+        <li class="listitem">
+         <span class="simpara">
+          &quot;tm_sec&quot; - 秒
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          &quot;tm_min&quot; - 分
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          &quot;tm_hour&quot; - 時
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          &quot;tm_mday&quot; - 月の日付
+         </span>
+         <span class="simpara">
+          月は 0 (1 月) から 11 (12 月) で、曜日は 0 (日曜日) から 6 (土曜日) となります。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          &quot;tm_mon&quot; - 月。0 が 1 月を表します。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          &quot;tm_year&quot; - 1900 年からの年数。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          &quot;tm_wday&quot; - 曜日。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          &quot;tm_yday&quot; - 年単位の日付。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          &quot;tm_isdst&quot; - 夏時間の適用中かどうか。
+         </span>
+        </li>
+       </ul>
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 errors">
+  <h3 class="title">エラー / 例外</h3>
+   
+   <p class="para">
+すべての日付/時刻関数は、
+有効なタイムゾーンが設定されていない場合に <b><tt>E_NOTICE</tt></b>
+を発生させます。また、システム設定のタイムゾーンあるいは環境変数
+<var class="varname">TZ</var> を使用した場合には <b><tt>E_STRICT</tt></b>
+を発生させます。
+<a href="function.date-default-timezone-set.html" class="function">date_default_timezone_set()</a> も参照ください。</p>
+ 
+ </div>
+
+
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      
+      <tr valign="middle"><td colspan="1" rowspan="1" align="left">5.1.0</td><td colspan="1" rowspan="1" align="left"><p class="para">
+タイムゾーンがおかしい場合に <b><tt>E_STRICT</tt></b> や
+<b><tt>E_NOTICE</tt></b> が発生するようになりました。</p></td></tr>
+
+     
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <a href="function.time.html" class="function">time()</a> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$localtime&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">localtime</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$localtime_assoc&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">localtime</span><span style="color: #007700">(</span><span style="color: #0000BB">time</span><span style="color: #007700">(),&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$localtime</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$localtime_assoc</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は、たとえば
+以下のようになります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+Array
+(
+    [0] =&gt; 24
+    [1] =&gt; 3
+    [2] =&gt; 19
+    [3] =&gt; 3
+    [4] =&gt; 3
+    [5] =&gt; 105
+    [6] =&gt; 0
+    [7] =&gt; 92
+    [8] =&gt; 1
+)
+
+Array
+(
+    [tm_sec] =&gt; 24
+    [tm_min] =&gt; 3
+    [tm_hour] =&gt; 19
+    [tm_mday] =&gt; 3
+    [tm_mon] =&gt; 3
+    [tm_year] =&gt; 105
+    [tm_wday] =&gt; 0
+    [tm_yday] =&gt; 92
+    [tm_isdst] =&gt; 1
+)
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.idate.html">idate</a></div>
+ <div class="next" style="float: right;"><a href="function.microtime.html">microtime</a></div>
+ <div class="up"><a href="ref.datetime.html">日付/時刻</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

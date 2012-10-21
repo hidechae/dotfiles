@@ -1,0 +1,1108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>Hyperwave 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.http-build-url.html">http_build_url</a></div>
+ <div class="next" style="float: right;"><a href="function.hw-array2objrec.html">hw_Array2Objrec</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">Hyperwave 関数</h1>
+  
+
+  <div class="partintro">
+
+   <div id="hw.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     <span class="productname">Hyperwave</span> は、Graz の <a href="http://www.iicm.edu/" class="link external">&raquo; IICM</a> において開発されました。
+     当初は <acronym>Hyper-G</acronym> という名前でしたが、
+     (1996年に)商品化された際に Hyperwave に変更されました。
+    </p>
+    <p class="para">
+     Hyperwave はフリーソフトウエアではありません。
+     最新版は5.5で、<a href="http://www.hyperwave.com/" class="link external">&raquo; http://www.hyperwave.com/</a>
+     から得ることができます。30 日間試用可能な版を注文することができます。
+    </p>
+    <p class="para">
+     <a href="ref.hwapi.html" class="link">Hyperwave API</a> モジュールも参照ください。
+    </p>
+    <p class="para">
+     Hyperwave は、データベースに似た情報システム
+     (<acronym title="Hyperwave Information Server">HIS</acronym>, Hyperwave Information Server)です。この
+     システムは、文書の保存と管理に着目しています。文書には、あらゆる
+     データとすることが可能で、同時にファイルに保存することもできます。
+     各文書には、オブジェクトレコードが付属しています。
+     オブジェクトレコードは、その文書のメタデータを有しています。
+     メタデータは、ユーザーにより拡張可能な属性のリストです。
+     ある種の属性は、Hyperwave サーバーにより常に設定されますが、
+     その他は、ユーザーにより修正可能です。
+     属性は、名前=値 という形式の 名前/値 の組です。
+     完全なオブジェクトレコードは、ユーザーの指定した数のこの
+     組を有することができます。
+     属性の名前は、ユニークである必要はありません。
+     例えば、title はオブジェクトレコードの中に複数回現れる
+     可能性があります。
+     これは、複数の言語で title を指定したい場合に意味があります。
+     このような場合、
+     各 title の値は、2文字の言語の短縮型の後にコロンが続くものを
+     前に置くという慣習があります。
+     例えば、<i class="literal">&#039;en:Title in English&#039;</i>または 
+     <i class="literal">&#039;ge:Titel in deutsch&#039;</i>。
+     description または keywords のような他の属性は、潜在的な候補です。
+     残りの属性の値とコロンで区切ることにより他の文字列で言語の短縮形を
+     置換することも可能です。
+    </p>
+    <p class="para">
+     各オブジェクトレコードは、各名前/キーの組で表した文字列であり、改
+     行で区切られています。Hyperwave拡張には、属性名をキーとした連想配
+     列としての第二の表現も有しています。多言語属性値は、それ自体で言
+     語の短縮形をキーとする別の連想配列を構成します。実際、複数の属性
+     は、属性値をキーとし、左にコロンがある文字列で連想配列を構成しま
+     す。(これは完全に実装されていません。まだ、適正に処理されるのは、
+     属性 Title, Description, Keyword のみです。)
+    </p>
+    <p class="para">
+     文書と共に文書中の全てのハイパーリンクは、同じくオブジェクトレコー
+     ドとして保存されます。文書がデータベースに挿入される際には、文書
+     中のハイパーリンクは文書から取り除かれ独立したオブジェクトとして
+     保存されます。リンクに関するオブジェクトレコードは、リンクに関す
+     る記述を開始した場所と終了した場所に関する情報を有しています。
+     オリジナルの文書を得るためには、リンクの無いプレーンな文書とリン
+     クのリストを取り出し、リンクを再び挿入する必要があります。
+     (関数 <a href="function.hw-pipedocument.html" class="function">hw_pipedocument()</a> および 
+     <a href="function.hw-gettext.html" class="function">hw_gettext()</a> がこれを行います。)
+     リンクを文書から分離する利点は明白です。リンクをされている文書が
+     名前を変更した場合でも、そのリンクは簡単に適宜変更可能です。
+     そのリンクを有する文書は、全く影響を受けません。
+     文書自体を変更せずに文書にリンクを追加することさえ可能です。
+    </p>
+    <p class="para">
+     <a href="function.hw-pipedocument.html" class="function">hw_pipedocument()</a> および
+     <a href="function.hw-gettext.html" class="function">hw_gettext()</a> が自動的にリンクの挿入を行う
+     というのは、耳で聞く程簡単なことではありません。リンクの挿入は、
+     ある種のドキュメント階層の操作を含んでいます。Web サーバーではこ
+     の機能はファイルシステムにより提供されますが、Hyperwave は固有の
+     階層を有しており、名前はその階層のオブジェクトの位置を反映しませ
+     ん。このため、リンク作成時はまず Hyperwave の階層および名前空間か
+     ら各Web名前空間の階層への対応付けを必要とします。HyperwaveとWebの
+     間の根本的な違いは、Hyperwaveでは名前と階層の間を明確に区別するこ
+     とです。名前は、階層におけるオブジェクトの位置に関する情報を全く
+     有していません。Webでは、名前もオブジェクトの階層における位置に関
+     する情報を有しています。このため、対応付けには2種類の手法があります。
+     つまり、Hyperwaveの階層およびHyperwaveオブジェクトの名前がURLに反
+     映されたものまたは名前のみのどちらかです。簡単のため、第2の方法が
+     使用されます。<i class="literal">my_object</i>という名前のHyperwaveオ
+     ブジェクトは、Hyperwave階層のどこに位置するかによらず
+     <i class="literal">http://host/my_object</i>に対応付けます。
+     Hyperwave階層においては、名前<i class="literal">parent/my_object</i>
+     を有するオブジェクトは、Hyperwave階層の
+     <i class="literal">my_object</i>の子となります。
+     しかし、Web の名前空間では正反対となるため、ユーザーに混乱を生じる
+     可能性があります。これは、適当なオブジェクト名を選択することによっ
+     てのみ防止することができます。
+    </p>
+    <p class="para">
+     この選択により第2の問題が生じます。PHPをどうやって起動しますか?
+     URL <i class="literal">http://host/my_object</i>は、例えば、Webサー
+     バーに対してこのURLを
+     <i class="literal">http://host/php_script/my_object</i>に書き換えさせ
+     ない限り、いかなる PHPスクリプトもコールしません。
+     スクリプト<i class="literal">php_script</i>は
+     <var class="varname">$PATH_INFO</var>変数を評価し、Hyperwaveサーバーから
+     名前<i class="literal">my_object</i>を有するオブジェクトを取得します。
+     一つだけ欠点がありますが、簡単に修正可能です。URLの書き換えは、そ
+     のWebサーバー上の他のドキュメントにアクセスする時には許可されませ
+     ん。Hyperwaveサーバーで検索を行うPHPスクリプトは実現不可能です。
+     このため、例えば<i class="literal">http://host/Hyperwave</i>で始まる
+     ようなURLを除くような少なくとも第2の書き換え規則を必要とします。
+    </p>
+    <p class="para">
+     上記の機構的なリンクは、他のドキュメントに挿入されます。
+    </p>
+    <p class="para">
+     PHPがサーバーモジュールでもCGIスクリプトでもなく、例えばCD-ROM上
+     にHyperwaveサーバーの内容をダンプするといったスタンドアロンのアプ
+     リケーションとして実行されている場合はより複雑になります。
+     このような場合、Hyperwave 階層を保ち、ファイルシステムに対応付けを
+     行う必要があります。
+     これは、(例えば、&#039;/&#039; を含む名前を選択することにより)固有の階層に
+     対応付けている場合には、オブジェクト名と衝突する可能性があります。
+     このため、&#039;/&#039; は他の文字、例えば &#039;_&#039; に置換されるべきです。
+    </p>
+    <p class="para">
+     Hyperwaveサーバーと通信するためのネットワークプロトコルは、<a href="http://citeseer.ist.psu.edu/andrews95serving.html" class="link external">&raquo; HG-CSP</a>(Hyper-G Client/Serverプロト
+     コル)という名前です。このプロトコルは、例えばオブジェクトレコード
+     を得るといったある動作を始めるためのメッセージに基づいています。
+     Hyperwaveサーバーの初期の版では、二つの専用クライアント
+     (Harmony,Amadeus) がサーバーとの通信用に提供されていました。
+     これらは、Hyperwaveが商品化された際になくなりました。代わりに、
+     wavemasterが提供されました。wavemasterは、<abbr class="abbrev">HTTP</abbr>か
+     ら<abbr class="abbrev">HG-CSP</abbr>へのプロトコルコンバーターのようなもので
+     す。これは、データベースの管理とドキュメントの可視化を全てWebイン
+     ターフェースにより行うという考えによるものです。wavemasterは、イ
+     ンターフェースをカスタマイズするための作業用に一連のプレースホル
+     ダーを導入しています。この一連のプレースホルダーは、
+     <abbr class="abbrev">PLACE</abbr>言語と呼ばれています。      
+     <abbr class="abbrev">PLACE</abbr>は、通常のプログラミング言語の機能の
+     多くを欠いており、言語への拡張としては、プレースホルダーの
+     リストを拡大するだけです。
+     このことは、JavaScript を使用することにより作業が楽になったわけでは
+     ないということと類似しています。
+    </p>
+    <p class="para">
+     Hyperwave サポートを PHP に付加することにより、インターフェース
+     のカスタマイズ用のプログラミング言語を有していないという穴を
+     埋めることになります。
+     この機能は、<abbr class="abbrev">HG-CSP</abbr> により定義された
+     全てのメッセージをサポートするだけでなく、
+     完全なドキュメントの取得といった更に強力なコマンドも提供します。
+    </p>
+    <p class="para">
+     Hyperwave は、情報の特定の部分を名付けるために固有の用語法を
+     用います。
+     この方法は、広範に用いられ、拡張されています。
+     ほとんどすべの関数は、次のデータ型のどれかを操作します。
+
+     <ul class="itemizedlist">
+      <li class="listitem">
+       <span class="simpara">
+        object ID: Hyperwave サーバーの各オブジェクトについてユニークな
+        整数値。オブジェクトレコード (ObjectID) の属性の一つでもあります。
+        object id は、オブジェクトを指定するための入力パラメータとして
+        しばしば用いられます。
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        object record:  attribute=value 形式の属性-値の組となる文字列。
+        この組は、復改文字で他と区切られています。
+        オブジェクトレコードは、<b>hw_object2array()</b> により
+        オブジェクトレコードに簡単に変換できます。
+        いくつかの関数は、オブジェクトレコードを返します。
+        これらの関数の名前は、obj で終わります。
+       </span>
+      </li> 
+      <li class="listitem">
+       <span class="simpara">
+        object array: オブジェクトの全ての属性を有する連想配列。
+        キーは属性名です。ある属性が、
+        オブジェクトレコードに複数回現れる場合、別の添字または連想配列
+        が生成されます。(title,keyword,description のような)
+        言語に依存する属性は、省略語をキーとした連想配列として
+        作成されます。
+        他の複数の属性は、添字配列として作成されます。
+        PHP 関数は、オブジェクト配列を返しません。
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        hw_document: これは、完全に新規のデータ型であり、
+        HTML,PDF 等といった実際のドキュメントを保持します。
+        これは、幾分 HTML 用に最適化されていますが、他のフォーマット
+        に使用することが可能です。 
+       </span>
+      </li>
+     </ul>
+    </p> 
+    <p class="para">
+     オブジェクトレコードの配列を返すいくつかの関数は、そのレコードに
+     関する統計情報を有する連想配列も返します。この配列は、オブジェク
+     トレコード配列の最後の要素です。統計配列には、次のエントリがあり
+     ます。
+     <dl>
+
+      <dt>
+
+       <span class="term">Hidden</span>
+       <dd>
+
+        <span class="simpara">
+         属性 PresentationHints が Hidden であるオブジェクトレコードの数
+        </span>
+       </dd>
+
+      </dt>
+
+      <dt>
+
+       <span class="term">CollectionHead</span>
+       <dd>
+
+        <span class="simpara">
+         属性 PresentationHints が CollectionHead であるオブジェクト
+         レコードの数
+        </span>
+       </dd>
+
+      </dt>
+
+      <dt>
+
+       <span class="term">FullCollectionHead</span>
+       <dd>
+
+        <span class="simpara">
+         属性 PresentationHints が FullCollectionHead であるオブジェクト
+         レコードの数
+        </span>
+       </dd>
+
+      </dt>
+
+      <dt>
+
+       <span class="term">CollectionHeadNr</span>
+       <dd>
+
+        <span class="simpara">
+         属性 PresentationHints が CollectionHead であるオブジェクト
+         レコードの配列のインデックス
+        </span>
+       </dd>
+
+      </dt>
+
+      <dt>
+
+       <span class="term">FullCollectionHeadNr</span>
+       <dd>
+
+        <span class="simpara">
+         属性 PresentationHints が FullCollectionHead であるオブジェクト
+         レコードの配列のインデックス
+        </span>
+       </dd>
+
+      </dt>
+
+      <dt>
+
+       <span class="term">Total</span>
+       <dd>
+
+        <span class="simpara">
+         Total: オブジェクトレコードの数
+        </span>
+       </dd>
+
+      </dt>
+
+     </dl>
+
+    </p>
+   </div>
+
+   <div id="hw.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">
+     この拡張モジュールは、Hyperwaveサーバを必要とします。このサーバ
+     は、<a href="http://www.hyperwave.com/" class="link external">&raquo; http://www.hyperwave.com/</a>でダウン
+     ロード可能です。
+    </p>
+   </div>
+
+   
+
+
+<div id="hw.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  この <a href="http://pecl.php.net/" class="link external">&raquo; PECL</a> 拡張
+モジュールは PHP にバンドルされていません。
+  
+ </p>
+ <p class="para">
+  これらの関数を使用するには、オプション
+  <span class="option">--with-hyperwave[=DIR]</span> を使用して
+  Hyperwave サポートつきで PHP をコンパイルする必要があります。
+ </p>
+ <p class="para">
+  Windows ユーザがこれらの関数を使用するには、<var class="filename">php.ini</var> の中で
+  <var class="filename">php_hyperwave.dll</var> を有効にします。
+  
+この <acronym title="PHP Extension and Application Repository">PECL</acronym> 拡張モジュール用の <acronym title="Dynamic Link Library">DLL</acronym>
+は、<a href="http://www.php.net/downloads.php" class="link external">&raquo; PHP のダウンロード</a> ページあるいは
+<a href="http://pecl4win.php.net/" class="link external">&raquo; http://pecl4win.php.net/</a> からダウンロードできます。
+ </p>
+</div>
+
+
+
+
+   <div id="hw.apache" class="section">
+    <h2 class="title">Apache との組み合わせ</h2>
+    <p class="para">
+     Hyperwave モジュールは、PHP が Apache モジュールとしてコンパイル
+     された場合に、最適化されています。
+     この場合、Apache が書き換えエンジンを使用する場合、内部の
+     Hyperwave サーバーをほぼ完全にユーザーから隠すことが可能です。
+     以下の手順によりこのことを説明します。
+    </p>
+    <p class="para">
+     Hyperwaveサポートを有効にしてApacheに組み込んだPHPは、wavemaster
+     に基づく本来のHyperwaveの手法を置換するものなので、Apacheサーバー
+     は、Hyperwave Webインターフェースとしてのみ処理を行うと仮定します。
+     これは必然ではありませんが、設定が容易になります。考え方は非常に
+     簡単です。まず最初に<var class="varname">$_ENV[&#039;PATH_INFO&#039;]</var>変数を評
+     価し、Hyperwaveオブジェクトの名前としてその値を処理するPHPスクリ
+     プトが必要です。このスクリプトを<i class="literal">&#039;Hyperwave&#039;</i>と
+     呼びましょう。URL <code class="systemitem systemitem">http://your.hostname/Hyperwave/name_of_object</code>
+
+     <i class="literal">&#039;name_of_object&#039;</i>という名前のHyperwaveオブジェ
+     クトを返します。オブジェクトの型に応じて、スクリプトは対応した処
+     理を行う必要があります。collectionの場合、恐らく子のリストを返す
+     ことになります。ドキュメントの場合、MIME型と内容を返すことになり
+     ます。Apacheの書換エンジンを使用した場合、若干の改善が見込まれま
+     す。ユーザーの立場で見ると、URL 
+     <code class="systemitem systemitem">http://your.hostname/name_of_object</code>
+
+     がオブジェクトを返せば、より簡単になります。書き換えの規則は非常
+     に簡単です。
+
+     <div class="informalexample">
+      <div class="example-contents">
+<div class="cdata"><pre>
+RewriteRule ^/(.*) /usr/local/apache/htdocs/HyperWave/$1 [L]
+</pre></div>
+      </div>
+
+     </div>
+
+     この状態で、全てのURLはHyperwaveサーバーのオブジェクトに関係付け
+     られています。これにより問題の解決が容易になります。&#039;Hyperwave&#039;
+     スクリプト以外の検索といった他のスクリプトを実行することはできま
+     せん。これは次のような別の規則により修正することができます。
+
+     <div class="informalexample">
+      <div class="example-contents">
+<div class="cdata"><pre>
+RewriteRule ^/hw/(.*) /usr/local/apache/htdocs/hw/$1 [L]
+</pre></div>
+      </div>
+
+     </div>
+
+     これにより、ディレクトリ<var class="filename">/usr/local/apache/htdocs/hw</var>が追加の
+     スクリプトや他のファイル用に確保されます。この規則は、一つ前の規
+     則よりも前に評価されることに注意してください。これには若干の欠点が
+     あります。つまり、<i class="literal">&#039;hw/&#039;</i>で始まる名前を有する
+     Hyperwave オブジェクトは全て隠されてしまいます。このため、このよ
+     うな名前を使用しないようにしてください。例えば画像用により多くのディ
+     レクトリが必要な場合、更に規則を加えるか一つのディレクトリに全て
+     を置くかしてください。最後にRewriteEngineをオンにすることを忘れない
+     でください。
+
+     <div class="informalexample">
+      <div class="example-contents">
+<div class="cdata"><pre>
+RewriteEngine on
+</pre></div>
+      </div>
+
+     </div>
+
+     経験上、次のようなスクリプトが必要になることと思われます。
+
+     <ul class="itemizedlist">
+       <li class="listitem">
+        <span class="simpara">
+        オブジェクト自身を返す
+        </span>
+       </li>
+       <li class="listitem">
+        <span class="simpara">
+        検索を許可する
+        </span>
+       </li>
+       <li class="listitem">
+        <span class="simpara">
+        自分を定義する
+        </span>
+       </li>
+       <li class="listitem">
+        <span class="simpara">
+        プロファイルを設定する
+        </span>
+       </li>
+       <li class="listitem">
+        <span class="simpara">
+        オブジェクト属性を表示したり、ユーザーに関する情報を表示したり、
+        サーバーのステータスを表示したり等する追加される関数毎に一つ
+        </span>
+       </li>
+     </ul>
+    </p>
+    <p class="para">
+     Rewrite Engineの一つの代わりとして、Apache
+     <i class="literal">ErrorDocument</i>ディレクティブを使用することもで
+     きます。しかし、<i class="literal">ErrorDocument</i> でリダイレクトさ
+     れたページは、POSTデータを受け取ることはできないことに注意して下
+     さい。
+    </p>
+   </div>
+
+    
+
+
+<div id="hw.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+ <table border="5">
+  <caption><b>Hyperwave 設定オプション</b></caption>
+  <colgroup>
+
+   <thead valign="middle">
+    <tr valign="middle">
+     <th colspan="1">名前</th>
+     <th colspan="1">デフォルト</th>
+     <th colspan="1">変更の可否</th>
+     <th colspan="1">変更履歴</th>
+    </tr>
+
+   </thead>
+
+   <tbody valign="middle">
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">hyperwave.allow_persistent</td>
+     <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.3.2 以降で使用可能です。PHP 5.0.0 で削除されました。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">hyperwave.default_port</td>
+     <td colspan="1" rowspan="1" align="left">&quot;418&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 5.0.0 以降で削除されました。</td>
+    </tr>
+
+   </tbody>
+  </colgroup>
+
+ </table>
+
+ PHP_INI_* 定数の詳細および定義については
+<a href="ini.html" class="xref">php.ini ディレクティブ</a> を参照してください。
+ </p>
+</div>
+
+
+
+
+   <div id="hw.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">リソース型は定義されていません。</p>
+   </div>
+
+   
+
+
+<div id="hw.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <dl>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>HW_ATTR_LANG</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>HW_ATTR_NR</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>HW_ATTR_NONE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+</div>
+
+
+
+
+   <div id="hw.todo" class="section">
+    <h2 class="title">Todo</h2>
+    <p class="para">
+    まだやるべきことがいくつかあります。
+     <ul class="itemizedlist">
+      <li class="listitem">
+       <span class="simpara">
+        hw_InsertDocument は、
+        <a href="function.hw-insertobject.html" class="function">hw_insertobject()</a>と
+        <b>hw_putdocument()</b>に分割する必要があります。
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        いくつかの関数の名前はまだ修正されていません。
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        多くの関数は最初のパラメータとして現在の接続 ID を
+        必要とします。これにより入力が多くかつ頻繁になってますが、
+        一つだけの接続をオープンしている場合には必要ないはずです。
+        デフォルト接続の導入により改善される見込みです。
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        多重属性を処理するには、オブジェクトレコードからオブジェクト配
+        列への変換機能が必要です。
+       </span>
+      </li>
+     </ul>
+    </p>
+   </div>
+  </div>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+   
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.hw-array2objrec.html">hw_Array2Objrec</a> ― オブジェクト配列からオブジェクトレコードに属性を変換する</li><li><a href="function.hw-changeobject.html">hw_changeobject</a> ― オブジェクトの属性を変更する(古い関数)</li><li><a href="function.hw-children.html">hw_Children</a> ― 子のオブジェクト ID</li><li><a href="function.hw-childrenobj.html">hw_ChildrenObj</a> ― 子のオブジェクトレコード</li><li><a href="function.hw-close.html">hw_Close</a> ― Hyperwave 接続を閉じる</li><li><a href="function.hw-connect.html">hw_Connect</a> ― 接続をオープンする</li><li><a href="function.hw-connection-info.html">hw_connection_info</a> ― Hyperwave サーバへの接続に関する情報を出力する</li><li><a href="function.hw-cp.html">hw_cp</a> ― オブジェクトをコピーする</li><li><a href="function.hw-deleteobject.html">hw_Deleteobject</a> ― オブジェクトを削除する</li><li><a href="function.hw-docbyanchor.html">hw_DocByAnchor</a> ― アンカーに属するオブジェクトのオブジェクト ID</li><li><a href="function.hw-docbyanchorobj.html">hw_DocByAnchorObj</a> ― アンカーが指すオブジェクトレコード</li><li><a href="function.hw-document-attributes.html">hw_Document_Attributes</a> ― hw_document のオブジェクトレコード</li><li><a href="function.hw-document-bodytag.html">hw_Document_BodyTag</a> ― hw_document の BODY タグ</li><li><a href="function.hw-document-content.html">hw_Document_Content</a> ― hw_document の内容を返す</li><li><a href="function.hw-document-setcontent.html">hw_Document_SetContent</a> ― hw_document の内容を設定/置換する</li><li><a href="function.hw-document-size.html">hw_Document_Size</a> ― hw_document のサイ?</li><li><a href="function.hw-dummy.html">hw_dummy</a> ― Hyperwave ダミー関数</li><li><a href="function.hw-edittext.html">hw_EditText</a> ― テキストドキュメントを取得する</li><li><a href="function.hw-error.html">hw_Error</a> ― エラー番号</li><li><a href="function.hw-errormsg.html">hw_ErrorMsg</a> ― エラーメッセージを返す</li><li><a href="function.hw-free-document.html">hw_Free_Document</a> ― hw_document を解放する</li><li><a href="function.hw-getanchors.html">hw_GetAnchors</a> ― ドキュメントのアンカーのオブジェクト ID</li><li><a href="function.hw-getanchorsobj.html">hw_GetAnchorsObj</a> ― ドキュメントのアンカーのオブジェクトレコード</li><li><a href="function.hw-getandlock.html">hw_GetAndLock</a> ― オブジェクトレコードを返しおよびオブジェクトをロックする</li><li><a href="function.hw-getchildcoll.html">hw_GetChildColl</a> ― 子のコレクションのオブジェクト ID</li><li><a href="function.hw-getchildcollobj.html">hw_GetChildCollObj</a> ― 子のコレクションのオブジェクトレコード</li><li><a href="function.hw-getchilddoccoll.html">hw_GetChildDocColl</a> ― コレクションの子ドキュメントのオブジェクト ID</li><li><a href="function.hw-getchilddoccollobj.html">hw_GetChildDocCollObj</a> ― コレクションの子ドキュメントのオブジェクトレコード</li><li><a href="function.hw-getobject.html">hw_GetObject</a> ― オブジェクトレコード</li><li><a href="function.hw-getobjectbyquery.html">hw_GetObjectByQuery</a> ― オブジェクトを検索する</li><li><a href="function.hw-getobjectbyquerycoll.html">hw_GetObjectByQueryColl</a> ― コレクションのオブジェクトを検索する</li><li><a href="function.hw-getobjectbyquerycollobj.html">hw_GetObjectByQueryCollObj</a> ― コレクションのオブジェクトを検索する</li><li><a href="function.hw-getobjectbyqueryobj.html">hw_GetObjectByQueryObj</a> ― オブジェクトを検索する</li><li><a href="function.hw-getparents.html">hw_GetParents</a> ― 親のオブジェクト ID</li><li><a href="function.hw-getparentsobj.html">hw_GetParentsObj</a> ― 親のオブジェクトレコード</li><li><a href="function.hw-getrellink.html">hw_getrellink</a> ― rootid に相対的な source から dest へのリンクを得る</li><li><a href="function.hw-getremote.html">hw_GetRemote</a> ― リモートドキュメントを得る</li><li><a href="function.hw-getremotechildren.html">hw_GetRemoteChildren</a> ― リモートドキュメントの子を得る</li><li><a href="function.hw-getsrcbydestobj.html">hw_GetSrcByDestObj</a> ― オブジェクトを指すアンカーを返す</li><li><a href="function.hw-gettext.html">hw_GetText</a> ― テキストドキュメントを取得する</li><li><a href="function.hw-getusername.html">hw_getusername</a> ― 現在ログインしているユーザーの名前</li><li><a href="function.hw-identify.html">hw_Identify</a> ― ユーザとして認証する</li><li><a href="function.hw-incollections.html">hw_InCollections</a> ― コレクションにオブジェクト ID があるかどうかを確認する</li><li><a href="function.hw-info.html">hw_Info</a> ― 接続に関する情報</li><li><a href="function.hw-inscoll.html">hw_InsColl</a> ― コレクションを挿入する</li><li><a href="function.hw-insdoc.html">hw_InsDoc</a> ― ドキュメントを挿入する</li><li><a href="function.hw-insertanchors.html">hw_insertanchors</a> ― テキストにアンカーのみを挿入する</li><li><a href="function.hw-insertdocument.html">hw_InsertDocument</a> ― ドキュメントをアップロードする</li><li><a href="function.hw-insertobject.html">hw_InsertObject</a> ― オブジェクトレコードを挿入する</li><li><a href="function.hw-mapid.html">hw_mapid</a> ― グローバル ID を仮想的なローカル ID に割りつける</li><li><a href="function.hw-modifyobject.html">hw_Modifyobject</a> ― オブジェクトレコードを修正する</li><li><a href="function.hw-mv.html">hw_mv</a> ― オブジェクトを移動する</li><li><a href="function.hw-new-document.html">hw_New_Document</a> ― 新しいドキュメントを作成する</li><li><a href="function.hw-objrec2array.html">hw_objrec2array</a> ― 属性をオブジェクトレコードからオブジェクト配列に変換する</li><li><a href="function.hw-output-document.html">hw_Output_Document</a> ― hw_document を出力する</li><li><a href="function.hw-pconnect.html">hw_pConnect</a> ― 持続的データベース接続を作成する</li><li><a href="function.hw-pipedocument.html">hw_PipeDocument</a> ― ドキュメントを取得する</li><li><a href="function.hw-root.html">hw_Root</a> ― ルートオブジェクト ID</li><li><a href="function.hw-setlinkroot.html">hw_setlinkroot</a> ― 計算されたリンクの ID を設定する</li><li><a href="function.hw-stat.html">hw_stat</a> ― ステータス文字列を返す</li><li><a href="function.hw-unlock.html">hw_Unlock</a> ― オブジェクトをアンロックする</li><li><a href="function.hw-who.html">hw_Who</a> ― 現在ログイン中のユーザのリスト</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.http-build-url.html">http_build_url</a></div>
+ <div class="next" style="float: right;"><a href="function.hw-array2objrec.html">hw_Array2Objrec</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

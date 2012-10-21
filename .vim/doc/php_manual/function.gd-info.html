@@ -1,0 +1,183 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>現在インストールされているGDライブラリに関する情報を取得する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.image.html">イメージ</a></div>
+ <div class="next" style="float: right;"><a href="function.getimagesize.html">getimagesize</a></div>
+ <div class="up"><a href="ref.image.html">イメージ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.gd-info" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">gd_info</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.3.0, PHP 5)</p><p class="refpurpose">gd_info ― 現在インストールされているGDライブラリに関する情報を取得する</p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">array</span> <span class="methodname"><b><b>gd_info</b></b></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+
+  <p class="para">
+   インストールされている GD ライブラリのバージョンとスペックに関する情報を取得します。
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   連想配列を返します。
+  </p>
+  <p class="para">
+   <table border="5">
+    <caption><b><b>gd_info()</b> が返す配列の要素</b></caption>
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">属性</th>
+       <th colspan="1">意味</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">GD Version</td>
+       <td colspan="1" rowspan="1" align="left"><a href="language.types.string.html" class="type string">string</a>。インストールされている
+        <i class="literal">libgd</i>のバージョン</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">Freetype Support</td>
+       <td colspan="1" rowspan="1" align="left"><a href="language.types.boolean.html" class="type boolean">boolean</a> value.  <b><tt>TRUE</tt></b> 
+        の場合Freetypeサポートはインストールされている</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">Freetype Linkage</td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.types.string.html" class="type string">string</a>値。Freetypeのリンク方法の情報。
+        &#039;with freetype&#039;, &#039;with TTF library&#039;, &#039;with unknown library&#039;など。
+        <i class="literal">Freetype Support</i>が<b><tt>TRUE</tt></b>にセットされている場合にのみ
+        この要素が定義されます。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">T1Lib Support</td>
+       <td colspan="1" rowspan="1" align="left"><a href="language.types.boolean.html" class="type boolean">boolean</a>値。
+        <i class="literal">T1Lib</i>サポートが含まれている場合に<b><tt>TRUE</tt></b></td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">GIF Read Support</td>
+       <td colspan="1" rowspan="1" align="left"><a href="language.types.boolean.html" class="type boolean">boolean</a>値。
+        <i class="literal">GIF</i>画像の<em class="emphasis">読み込み</em>
+        がサポートされている場合に<b><tt>TRUE</tt></b></td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">GIF Create Support</td>
+       <td colspan="1" rowspan="1" align="left"><a href="language.types.boolean.html" class="type boolean">boolean</a>値。
+        <i class="literal">GIF</i>画像の<em class="emphasis">生成</em>
+        がサポートされている場合に<b><tt>TRUE</tt></b></td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">JPG Support</td>
+       <td colspan="1" rowspan="1" align="left"><a href="language.types.boolean.html" class="type boolean">boolean</a>値。
+       <i class="literal">JPG</i>サポートが含まれている場合に<b><tt>TRUE</tt></b></td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">PNG Support</td>
+       <td colspan="1" rowspan="1" align="left"><a href="language.types.boolean.html" class="type boolean">boolean</a>値。
+        <i class="literal">PNG</i>サポートが含まれている場合に<b><tt>TRUE</tt></b></td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">WBMP Support</td>
+       <td colspan="1" rowspan="1" align="left"><a href="language.types.boolean.html" class="type boolean">boolean</a>値。
+        <i class="literal">WBMP</i>サポートが含まれている場合に<b><tt>TRUE</tt></b></td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">XBM Support</td>
+       <td colspan="1" rowspan="1" align="left"><a href="language.types.boolean.html" class="type boolean">boolean</a>値。
+        <i class="literal">XBM</i>サポートが含まれている倍に<b><tt>TRUE</tt></b></td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+
+  </p>
+ </div>
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>gd_info()</b> の使用法</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">gd_info</span><span style="color: #007700">());<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は、たとえば
+以下のようになります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+array(9) {
+  [&quot;GD Version&quot;]=&gt;
+  string(24) &quot;bundled (2.0 compatible)&quot;
+  [&quot;FreeType Support&quot;]=&gt;
+  bool(false)
+  [&quot;T1Lib Support&quot;]=&gt;
+  bool(false)
+  [&quot;GIF Read Support&quot;]=&gt;
+  bool(true)
+  [&quot;GIF Create Support&quot;]=&gt;
+  bool(false)
+  [&quot;JPG Support&quot;]=&gt;
+  bool(false)
+  [&quot;PNG Support&quot;]=&gt;
+  bool(true)
+  [&quot;WBMP Support&quot;]=&gt;
+  bool(true)
+  [&quot;XBM Support&quot;]=&gt;
+  bool(false)
+}
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+ </div>
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.imagepng.html" class="function">imagepng()</a></li>
+    <li class="member"><a href="function.imagejpeg.html" class="function">imagejpeg()</a></li>
+    <li class="member"><a href="function.imagegif.html" class="function">imagegif()</a></li>
+    <li class="member"><a href="function.imagewbmp.html" class="function">imagewbmp()</a></li>
+    <li class="member"><a href="function.imagetypes.html" class="function">imagetypes()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.image.html">イメージ</a></div>
+ <div class="next" style="float: right;"><a href="function.getimagesize.html">getimagesize</a></div>
+ <div class="up"><a href="ref.image.html">イメージ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

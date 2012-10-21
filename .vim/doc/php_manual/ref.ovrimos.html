@@ -1,0 +1,240 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>Ovrimos SQL 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.output-reset-rewrite-vars.html">output_reset_rewrite_vars</a></div>
+ <div class="next" style="float: right;"><a href="function.ovrimos-close.html">ovrimos_close</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">Ovrimos SQL 関数</h1>
+  
+
+  <div class="partintro">
+   <div id="ovrimos.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     Ovrimos SQL サーバはクライアント/サーバ形式で
+     トランザクション機能を持つ RDBMS で、Web に対応しており
+     高速なトランザクション処理が可能です。
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      
+この拡張モジュールは <a href="http://pecl.php.net/" class="link external">&raquo; PECL</a> レポジトリに移動
+されており、以下のバージョン以降 PHP にバンドルされなくなっています。 PHP 4.4.5 および PHP 5.1.0。
+     <br />
+    </p></blockquote>
+    <blockquote><p><b class="note">注意</b>: <span class="simpara">この拡張モジュールは Windows
+環境では利用できません。</span></p></blockquote>
+   </div>
+   
+   <div id="ovrimos.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">
+     Ovrimos SQL サーバの配布ファイルから入手可能な sqlcli ライブラリを
+     インストールする必要があります。
+    </p>
+   </div>
+
+   
+
+
+<div id="ovrimos.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  PHP で Ovrimos サポートを有効にするには、パラメータ <span class="option">--with-ovrimos[=DIR]</span> を configure スクリプト
+  に指定して PHP をコンパイルします。ただし、DIR は Ovrimos の libsqlcli
+  をインストールしたディレクトリです。
+ </p>
+</div>
+
+
+
+
+
+   <div id="ovrimos.configuration" class="section">
+    <h2 class="title">実行時設定</h2>
+    <p class="para">設定ディレクティブは定義されていません。</p>
+   </div>
+
+   <div id="ovrimos.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">
+    </p>
+   </div>
+
+   <div id="ovrimos.examples" class="section">
+   <h2 class="title">例</h2>
+    <p class="para">
+     <div class="example">
+      <p><b>Example#1 
+       Ovrimos SQL サーバに接続し、システムテーブルからデータを読み込む
+      </b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$conn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">ovrimos_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">"server.domain.com"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"8001"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"admin"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"password"</span><span style="color: #007700">);<br />if&nbsp;(</span><span style="color: #0000BB">$conn&nbsp;</span><span style="color: #007700">!=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Connection&nbsp;ok!"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$res&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">ovrimos_exec</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"select&nbsp;table_id,&nbsp;table_name&nbsp;from&nbsp;sys.tables"</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">$res&nbsp;</span><span style="color: #007700">!=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Statement&nbsp;ok!"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">ovrimos_result_all</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">ovrimos_free_result</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">ovrimos_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">);<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+     この例は、Ovrimos SQL サーバに接続するだけのものです。
+    </p>
+   </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.ovrimos-close.html">ovrimos_close</a> ― ovrimos への接続を閉じる</li><li><a href="function.ovrimos-commit.html">ovrimos_commit</a> ― トランザクションをコミットする</li><li><a href="function.ovrimos-connect.html">ovrimos_connect</a> ― 指定したデータベースに接続する</li><li><a href="function.ovrimos-cursor.html">ovrimos_cursor</a> ― カーソルの名前を返す</li><li><a href="function.ovrimos-exec.html">ovrimos_exec</a> ― SQL 文を実行する</li><li><a href="function.ovrimos-execute.html">ovrimos_execute</a> ― 準備された SQL 命令を実行する</li><li><a href="function.ovrimos-fetch-into.html">ovrimos_fetch_into</a> ― 結果セットから行を取得する</li><li><a href="function.ovrimos-fetch-row.html">ovrimos_fetch_row</a> ― 結果セットからレコードを取得する</li><li><a href="function.ovrimos-field-len.html">ovrimos_field_len</a> ― 出力カラムの長さを返す</li><li><a href="function.ovrimos-field-name.html">ovrimos_field_name</a> ― 出力のカラム名を返す</li><li><a href="function.ovrimos-field-num.html">ovrimos_field_num</a> ― 出力カラムの (1 から始まる) インデックスを返す</li><li><a href="function.ovrimos-field-type.html">ovrimos_field_type</a> ― 出力カラムの型を返す</li><li><a href="function.ovrimos-free-result.html">ovrimos_free_result</a> ― 指定した result_id を開放する</li><li><a href="function.ovrimos-longreadlen.html">ovrimos_longreadlen</a> ― long データ型から取得されるバイト数を指定する</li><li><a href="function.ovrimos-num-fields.html">ovrimos_num_fields</a> ― カラム数を返す</li><li><a href="function.ovrimos-num-rows.html">ovrimos_num_rows</a> ― update 命令により変更された行の数を返す</li><li><a href="function.ovrimos-prepare.html">ovrimos_prepare</a> ― SQL 命令を準備する</li><li><a href="function.ovrimos-result-all.html">ovrimos_result_all</a> ― 結果全体を HTML テーブルとして出力する</li><li><a href="function.ovrimos-result.html">ovrimos_result</a> ― 出力カラムを取得する</li><li><a href="function.ovrimos-rollback.html">ovrimos_rollback</a> ― トランザクションをロールバックする</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.output-reset-rewrite-vars.html">output_reset_rewrite_vars</a></div>
+ <div class="next" style="float: right;"><a href="function.ovrimos-close.html">ovrimos_close</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

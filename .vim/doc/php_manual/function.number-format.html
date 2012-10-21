@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>数字を千位毎にグループ化してフォーマットする</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.nl2br.html">nl2br</a></div>
+ <div class="next" style="float: right;"><a href="function.ord.html">ord</a></div>
+ <div class="up"><a href="ref.strings.html">Strings</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.number-format" class="refentry">
+   <div class="refnamediv">
+    <h1 class="refname">number_format</h1>
+    <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">number_format ― 数字を千位毎にグループ化してフォーマットする</p>
+
+   </div>
+   <div class="refsect1 u">
+    <h3 class="title">説明</h3>
+     <div class="methodsynopsis">
+      <span class="type">string</span> <span class="methodname"><b><b>number_format</b></b></span>
+       ( <span class="methodparam"><span class="type">float</span> <tt class="parameter">$number</tt></span>
+      [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$decimals</tt></span>
+      [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$dec_point</tt></span>
+      ]], <span class="methodparam"><span class="type">string</span> <tt class="parameter">$thousands_sep</tt></span>
+      )</div>
+
+    <p class="para">
+     <b>number_format()</b>
+     は <i><tt class="parameter">number</tt></i>
+ をフォーマットして返します。
+     この機能は 1 つか 2 つもしくは 4 つのパラメータを受け取ります
+     (3 つはありません) :
+    </p>
+    <p class="para">パラメータが 1 つだけ渡された場合、
+    <i><tt class="parameter">number</tt></i>
+ は千位毎にカンマ (&quot;,&quot;) が追加され、
+    小数なしでフォーマットされます。
+    </p>
+    <p class="para">
+     パラメータが 2 つ渡された場合、<i><tt class="parameter">number</tt></i>
+
+     は <i><tt class="parameter">decimals</tt></i>
+ 桁の小数の前にドット (&quot;.&quot;) 、
+     千位毎にカンマ (&quot;,&quot;) が追加されてフォーマットされます。
+    </p>
+    <p class="para">
+     パラメータが 4 つ全て渡された場合、<i><tt class="parameter">number</tt></i>
+
+     はドット (&quot;.&quot;) の代わりに <i><tt class="parameter">dec_point</tt></i>
+ が
+     <i><tt class="parameter">decimals</tt></i>
+ 桁の小数の前に、千位毎にカンマ
+      (&quot;,&quot;) の代わりに <i><tt class="parameter">thousands_sep</tt></i>
+
+     が追加されてフォーマットされます。
+    </p>
+    <p class="para">
+     <i><tt class="parameter">thousands_sep</tt></i>
+ は最初の文字だけが使用されます。
+     例えば、数字の <i class="literal">1000</i> に対する
+     <i><tt class="parameter">thousands_sep</tt></i>
+ として <i class="literal">bar</i>
+     を使用した場合、<b>number_format()</b> は
+     <i class="literal">1b000</i> を返します。
+    </p>
+    <p class="para">
+     <div class="example">
+      <p><b>Example#1 <b>number_format()</b> の例</b></p>
+      <div class="example-contents"><p>
+       例えばフランスの表記法では、通常カンマ (&quot;,&quot;)
+       を小数の区切りとした二桁の小数と、千位毎の区切りとしてスペース
+        (&quot; &quot;) が使用されます。これは次のように処理することができます：
+      </p></div>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$number&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">1234.56</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">//&nbsp;英語での表記&nbsp;(デフォルト)<br /></span><span style="color: #0000BB">$english_format_number&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">number_format</span><span style="color: #007700">(</span><span style="color: #0000BB">$number</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">//&nbsp;1,235<br /><br />//&nbsp;フランスの表記<br /></span><span style="color: #0000BB">$nombre_format_francais&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">number_format</span><span style="color: #007700">(</span><span style="color: #0000BB">$number</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">','</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'&nbsp;'</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">//&nbsp;1&nbsp;234,56<br /><br /></span><span style="color: #0000BB">$number&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">1234.5678</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">//&nbsp;千位毎の区切りがない英語での表記<br /></span><span style="color: #0000BB">$english_format_number&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">number_format</span><span style="color: #007700">(</span><span style="color: #0000BB">$number</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'.'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">''</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">//&nbsp;1234.57<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+    <p class="para">
+     <a href="function.money-format.html" class="function">money_format()</a>、
+     <a href="function.sprintf.html" class="function">sprintf()</a>、
+     <a href="function.printf.html" class="function">printf()</a> および
+     <a href="function.sscanf.html" class="function">sscanf()</a>
+     も参照ください。
+    </p>
+   </div>
+
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.nl2br.html">nl2br</a></div>
+ <div class="next" style="float: right;"><a href="function.ord.html">ord</a></div>
+ <div class="up"><a href="ref.strings.html">Strings</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

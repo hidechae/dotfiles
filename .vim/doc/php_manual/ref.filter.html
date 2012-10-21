@@ -1,0 +1,1272 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>フィルタ関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.unlink.html">unlink</a></div>
+ <div class="next" style="float: right;"><a href="function.filter-has-var.html">filter_has_var</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+ <h1 class="title">フィルタ関数</h1>
+ 
+
+ <div class="partintro">
+  <div id="filter.intro" class="section">
+   <h2 class="title">導入</h2>
+   <p class="para">
+    この拡張モジュールは、
+    ユーザ入力などのセキュアでないデータの検証およびフィルタリングを行います。
+   </p>
+   <p class="para">
+    現在存在するのは、以下のフィルタです。各定数の振る舞いについての説明は
+    <a href="ref.filter.html#filter.constants" class="link">フィルタ定数</a>
+    の節を参照ください。
+    <table border="5">
+     <caption><b>存在するフィルタ</b></caption>
+     <colgroup>
+
+      <thead valign="middle">
+       <tr valign="middle">
+        <th colspan="1">ID</th>
+        <th colspan="1">名前</th>
+        <th colspan="1">オプション</th>
+        <th colspan="1">フラグ</th>
+        <th colspan="1">説明</th>
+       </tr>
+
+      </thead>
+
+      <tbody valign="middle">
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left"><b><tt>FILTER_VALIDATE_INT</tt></b></td>
+        <td colspan="1" rowspan="1" align="left">&quot;int&quot;</td>
+        <td colspan="1" rowspan="1" align="left">
+         <i><tt class="parameter">min_range</tt></i>
+,
+         <i><tt class="parameter">max_range</tt></i>
+
+        </td>
+        <td colspan="1" rowspan="1" align="left">
+         <b><tt>FILTER_FLAG_ALLOW_OCTAL</tt></b>,
+         <b><tt>FILTER_FLAG_ALLOW_HEX</tt></b>
+        </td>
+        <td colspan="1" rowspan="1" align="left">値が整数であるかどうか、オプションで指定した範囲内にあるかどうかを検証します。</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left"><b><tt>FILTER_VALIDATE_BOOLEAN</tt></b></td>
+        <td colspan="1" rowspan="1" align="left">&quot;boolean&quot;</td>
+        <td class="empty">&nbsp;</td>
+        <td colspan="1" rowspan="1" align="left">
+          <b><tt>FILTER_NULL_ON_FAILURE</tt></b>
+        </td>
+        <td colspan="1" rowspan="1" align="left">
+         <p class="para">
+          &quot;1&quot;、&quot;true&quot;、&quot;on&quot; および &quot;yes&quot; の場合に <b><tt>TRUE</tt></b>、
+          それ以外の場合に <b><tt>FALSE</tt></b> を返します。
+         </p>
+         <p class="para">
+          <b><tt>FILTER_NULL_ON_FAILURE</tt></b> が設定されている場合は、
+          <b><tt>FALSE</tt></b> が返されるのは
+          &quot;0&quot;、&quot;false&quot;、&quot;off&quot;、&quot;no&quot; および &quot;&quot; の場合のみとなります。
+          boolean 以外の値については <b><tt>NULL</tt></b> を返します。
+         </p>
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left"><b><tt>FILTER_VALIDATE_FLOAT</tt></b></td>
+        <td colspan="1" rowspan="1" align="left">&quot;float&quot;</td>
+        <td colspan="1" rowspan="1" align="left">
+         <i><tt class="parameter">decimal</tt></i>
+
+        </td>
+        <td colspan="1" rowspan="1" align="left">
+         <b><tt>FILTER_FLAG_ALLOW_THOUSAND</tt></b>
+        </td>
+        <td colspan="1" rowspan="1" align="left">値が float であるかどうかを検証します。</td>
+       </tr>
+
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left"><b><tt>FILTER_VALIDATE_REGEXP</tt></b></td>
+        <td colspan="1" rowspan="1" align="left">&quot;validate_regexp&quot;</td>
+        <td colspan="1" rowspan="1" align="left">
+         <i><tt class="parameter">regexp</tt></i>
+
+        </td>
+        <td class="empty">&nbsp;</td>
+        <td colspan="1" rowspan="1" align="left">
+         値が、<a href="ref.pcre.html" class="link">Perl 互換の</a>
+         正規表現 <i><tt class="parameter">regexp</tt></i>
+ に一致するかどうかを検証します。
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left"><b><tt>FILTER_VALIDATE_URL</tt></b></td>
+        <td colspan="1" rowspan="1" align="left">&quot;validate_url&quot;</td>
+        <td class="empty">&nbsp;</td>
+        <td colspan="1" rowspan="1" align="left">
+         <b><tt>FILTER_FLAG_PATH_REQUIRED</tt></b>,
+         <b><tt>FILTER_FLAG_QUERY_REQUIRED</tt></b>
+        </td>
+        <td colspan="1" rowspan="1" align="left">
+         値が URL 形式であるかどうか、
+         オプションで指定したコンポーネントが含まれているかどうかを検証します。
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left"><b><tt>FILTER_VALIDATE_EMAIL</tt></b></td>
+        <td colspan="1" rowspan="1" align="left">&quot;validate_email&quot;</td>
+        <td class="empty">&nbsp;</td>
+        <td class="empty">&nbsp;</td>
+        <td colspan="1" rowspan="1" align="left">値が e-mail 形式であるかどうかを検証します。</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left"><b><tt>FILTER_VALIDATE_IP</tt></b></td>
+        <td colspan="1" rowspan="1" align="left">&quot;validate_ip&quot;</td>
+        <td class="empty">&nbsp;</td>
+        <td colspan="1" rowspan="1" align="left">
+         <b><tt>FILTER_FLAG_IPV4</tt></b>,
+         <b><tt>FILTER_FLAG_IPV6</tt></b>,
+         <b><tt>FILTER_FLAG_NO_PRIV_RANGE</tt></b>,
+         <b><tt>FILTER_FLAG_NO_RES_RANGE</tt></b>
+        </td>
+        <td colspan="1" rowspan="1" align="left">
+         値が IP アドレスであるかどうかを検証します。
+         オプションで IPv4 あるいは IPv6 のみの指定、
+         プライベートアドレスや予約済みアドレスではないことの指定もできます。
+        </td>
+       </tr>
+
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left"><b><tt>FILTER_SANITIZE_STRING</tt></b></td>
+        <td colspan="1" rowspan="1" align="left">&quot;string&quot;</td>
+        <td class="empty">&nbsp;</td>
+        <td colspan="1" rowspan="1" align="left">
+         <b><tt>FILTER_FLAG_NO_ENCODE_QUOTES</tt></b>,
+         <b><tt>FILTER_FLAG_STRIP_LOW</tt></b>,
+         <b><tt>FILTER_FLAG_STRIP_HIGH</tt></b>,
+         <b><tt>FILTER_FLAG_ENCODE_LOW</tt></b>,
+         <b><tt>FILTER_FLAG_ENCODE_HIGH</tt></b>,
+         <b><tt>FILTER_FLAG_ENCODE_AMP</tt></b>
+        </td>
+        <td colspan="1" rowspan="1" align="left">
+         タグを取り除きます。オプションで、
+         特殊文字を取り除いたりエンコードしたりします。
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left"><b><tt>FILTER_SANITIZE_STRIPPED</tt></b></td>
+        <td colspan="1" rowspan="1" align="left">&quot;stripped&quot;</td>
+        <td class="empty">&nbsp;</td>
+        <td class="empty">&nbsp;</td>
+        <td colspan="1" rowspan="1" align="left">&quot;string&quot; フィルタのエイリアス。</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left"><b><tt>FILTER_SANITIZE_ENCODED</tt></b></td>
+        <td colspan="1" rowspan="1" align="left">&quot;encoded&quot;</td>
+        <td class="empty">&nbsp;</td>
+        <td colspan="1" rowspan="1" align="left">
+         <b><tt>FILTER_FLAG_STRIP_LOW</tt></b>,
+         <b><tt>FILTER_FLAG_STRIP_HIGH</tt></b>,
+         <b><tt>FILTER_FLAG_ENCODE_LOW</tt></b>,
+         <b><tt>FILTER_FLAG_ENCODE_HIGH</tt></b>
+        </td>
+        <td colspan="1" rowspan="1" align="left">
+         文字列を URL エンコードします。オプションで、
+         特殊文字を取り除いたりエンコードしたりします。
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left"><b><tt>FILTER_SANITIZE_SPECIAL_CHARS</tt></b></td>
+        <td colspan="1" rowspan="1" align="left">&quot;special_chars&quot;</td>
+        <td class="empty">&nbsp;</td>
+        <td colspan="1" rowspan="1" align="left">
+         <b><tt>FILTER_FLAG_STRIP_LOW</tt></b>,
+         <b><tt>FILTER_FLAG_STRIP_HIGH</tt></b>,
+         <b><tt>FILTER_FLAG_ENCODE_HIGH</tt></b>
+        </td>
+        <td colspan="1" rowspan="1" align="left">
+         <i class="literal">&#039;&quot;&lt;&gt;&amp;</i> および
+         ASCII 値が 32 未満の文字を HTML エスケープします。オプションで、
+         特殊文字を取り除いたりエンコードしたりします。
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left"><b><tt>FILTER_UNSAFE_RAW</tt></b></td>
+        <td colspan="1" rowspan="1" align="left">&quot;unsafe_raw&quot;</td>
+        <td class="empty">&nbsp;</td>
+        <td colspan="1" rowspan="1" align="left">
+         <b><tt>FILTER_FLAG_STRIP_LOW</tt></b>,
+         <b><tt>FILTER_FLAG_STRIP_HIGH</tt></b>,
+         <b><tt>FILTER_FLAG_ENCODE_LOW</tt></b>,
+         <b><tt>FILTER_FLAG_ENCODE_HIGH</tt></b>,
+         <b><tt>FILTER_FLAG_ENCODE_AMP</tt></b>
+        </td>
+        <td colspan="1" rowspan="1" align="left">何もせず、オプションで特殊文字を取り除いたりエンコードしたりします。</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left"><b><tt>FILTER_SANITIZE_EMAIL</tt></b></td>
+        <td colspan="1" rowspan="1" align="left">&quot;email&quot;</td>
+        <td class="empty">&nbsp;</td>
+        <td class="empty">&nbsp;</td>
+        <td colspan="1" rowspan="1" align="left">
+         英字、数字および
+         <i class="literal">!#$%&amp;&#039;*+-/=?^_`{|}~@.[]</i>
+         以外のすべての文字を取り除きます。
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left"><b><tt>FILTER_SANITIZE_URL</tt></b></td>
+        <td colspan="1" rowspan="1" align="left">&quot;url&quot;</td>
+        <td class="empty">&nbsp;</td>
+        <td class="empty">&nbsp;</td>
+        <td colspan="1" rowspan="1" align="left">
+         英字、数字および
+         <i class="literal">$-_.+!*&#039;(),{}|\\^~[]`&lt;&gt;#%&quot;;/?:@&amp;=</i>
+         以外のすべての文字を取り除きます。
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left"><b><tt>FILTER_SANITIZE_NUMBER_INT</tt></b></td>
+        <td colspan="1" rowspan="1" align="left">&quot;number_int&quot;</td>
+        <td class="empty">&nbsp;</td>
+        <td class="empty">&nbsp;</td>
+        <td colspan="1" rowspan="1" align="left">
+         数字、プラス記号、マイナス記号
+         以外のすべての文字を取り除きます。
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left"><b><tt>FILTER_SANITIZE_NUMBER_FLOAT</tt></b></td>
+        <td colspan="1" rowspan="1" align="left">&quot;number_float&quot;</td>
+        <td class="empty">&nbsp;</td>
+        <td colspan="1" rowspan="1" align="left">
+         <b><tt>FILTER_FLAG_ALLOW_FRACTION</tt></b>,
+         <b><tt>FILTER_FLAG_ALLOW_THOUSAND</tt></b>,
+         <b><tt>FILTER_FLAG_ALLOW_SCIENTIFIC</tt></b>
+        </td>
+        <td colspan="1" rowspan="1" align="left">
+         数字、<i class="literal">+-</i> および
+         オプションで <i class="literal">.,eE</i>
+         以外のすべての文字を取り除きます。
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left"><b><tt>FILTER_SANITIZE_MAGIC_QUOTES</tt></b></td>
+        <td colspan="1" rowspan="1" align="left">&quot;magic_quotes&quot;</td>
+        <td class="empty">&nbsp;</td>
+        <td class="empty">&nbsp;</td>
+        <td colspan="1" rowspan="1" align="left"><a href="function.addslashes.html" class="function">addslashes()</a> を適用します。</td>
+       </tr>
+
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left"><b><tt>FILTER_CALLBACK</tt></b></td>
+        <td colspan="1" rowspan="1" align="left">&quot;callback&quot;</td>
+        <td colspan="1" rowspan="1" align="left"><a href="language.pseudo-types.html#language.types.callback" class="type callback">callback</a> 関数あるいはメソッド</td>
+        <td class="empty">&nbsp;</td>
+        <td colspan="1" rowspan="1" align="left">ユーザ定義の関数をコールしてデータをフィルタリングします。</td>
+       </tr>
+
+      </tbody>
+     </colgroup>
+
+    </table>
+
+   </p>
+  </div>
+  <div id="filter.requirements" class="section">
+   <h2 class="title">要件</h2>
+   <p class="para">外部ライブラリを必要としません。</p>
+  </div>
+
+  
+
+
+<div id="filter.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  簡単なインストールメモ。コンソールで、ただ単に
+  <div class="example-contents"><pre>
+$ pecl install filter
+  </pre></div>
+  とタイプします。
+ </p>
+</div>
+
+
+
+
+  
+
+
+<div id="filter.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+  <table border="5">
+   <caption><b>フィルタ設定オプション</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">名前</th>
+      <th colspan="1">デフォルト</th>
+      <th colspan="1">変更の可否</th>
+      <th colspan="1">変更履歴</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">filter.default</td>
+      <td colspan="1" rowspan="1" align="left">&quot;unsafe_raw&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_PERDIR</td>
+      <td colspan="1" rowspan="1" align="left">filter &lt;= 0.9.4 では PHP_INI_ALL。PHP 5.2.0 以降で使用可能です。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">filter.default_flags</td>
+      <td colspan="1" rowspan="1" align="left">NULL</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_PERDIR</td>
+      <td colspan="1" rowspan="1" align="left">filter &lt;= 0.9.4 では PHP_INI_ALL。PHP 5.2.0 以降で使用可能です。</td>
+     </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+  PHP_INI_* 定数の詳細および定義については
+<a href="ini.html" class="xref">php.ini ディレクティブ</a> を参照してください。
+</p>
+
+<p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+
+<p class="para">
+ <dl>
+
+  <dt id="ini.filter.default">
+   <span class="term">
+    <i><tt class="parameter">filter.default</tt></i>
+
+    <a href="language.types.string.html" class="type string">string</a>
+   </span>
+   <dd>
+
+    <p class="para">
+     このフィルタで $_GET, $_POST, $_COOKIE および $_REQUEST
+     のすべてのデータをフィルタリングします。
+     もとのデータへは <a href="function.filter-input.html" class="function">filter_input()</a>
+     でアクセスが可能です。
+    </p>
+    <p class="para">
+     デフォルトで使用するフィルタの名前を指定することができます。
+     既存のフィルタの一覧を参照し、フィルタ名を指定してください。
+    </p>
+   </dd>
+
+  </dt>
+
+  
+  <dt id="ini.filter.default-flags">
+   <span class="term">
+    <i><tt class="parameter">filter.default_flags</tt></i>
+
+    <a href="language.types.integer.html" class="type integer">integer</a>
+   </span>
+   <dd>
+
+    <p class="para">
+     デフォルトのフラグ。
+    </p>
+   </dd>
+
+  </dt>
+
+  
+ </dl>
+
+ </p>
+</div>
+
+
+
+
+  <div id="filter.resources" class="section">
+   <h2 class="title">リソース型</h2>
+   <p class="para">リソース型は定義されていません。</p>
+  </div>
+  
+
+
+
+<div id="filter.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <dl>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INPUT_POST</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="reserved.variables.html#reserved.variables.post" class="link">POST</a> 変数。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INPUT_GET</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="reserved.variables.html#reserved.variables.get" class="link">GET</a> 変数。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INPUT_COOKIE</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="reserved.variables.html#reserved.variables.cookies" class="link">COOKIE</a> 変数。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INPUT_ENV</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="reserved.variables.html#reserved.variables.environment" class="link">ENV</a> 変数。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INPUT_SERVER</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="reserved.variables.html#reserved.variables.server" class="link">SERVER</a> 変数。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INPUT_SESSION</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="reserved.variables.html#reserved.variables.session" class="link">SESSION</a> 変数
+     (まだ実装されていません)。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INPUT_REQUEST</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="reserved.variables.html#reserved.variables.request" class="link">REQUEST</a> 変数
+     (まだ実装されていません)。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_FLAG_NONE</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     フィルタしない。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_REQUIRE_SCALAR</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+      入力値としてスカラーを要求するために使用するフラグ。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_REQUIRE_ARRAY</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+      入力として配列を要求します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_FORCE_ARRAY</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     常に配列として返します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_NULL_ON_FAILURE</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     失敗した場合に FALSE ではなく NULL を使用します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_VALIDATE_INT</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;int&quot; フィルタの ID。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_VALIDATE_BOOLEAN</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;boolean&quot; フィルタの ID。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_VALIDATE_FLOAT</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;float&quot; フィルタの ID。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_VALIDATE_REGEXP</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;validate_regexp&quot; フィルタの ID。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_VALIDATE_URL</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;validate_url&quot; フィルタの ID。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_VALIDATE_EMAIL</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;validate_email&quot; フィルタの ID。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_VALIDATE_IP</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;validate_ip&quot; フィルタの ID。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_DEFAULT</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     デフォルト (&quot;string&quot;) フィルタの ID。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_UNSAFE_RAW</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;unsafe_raw&quot; フィルタの ID。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_SANITIZE_STRING</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;string&quot; フィルタの ID。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_SANITIZE_STRIPPED</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;stripped&quot; フィルタの ID。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_SANITIZE_ENCODED</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;encoded&quot; フィルタの ID。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_SANITIZE_SPECIAL_CHARS</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;special_chars&quot; フィルタの ID。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_SANITIZE_EMAIL</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;email&quot; フィルタの ID。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_SANITIZE_URL</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;url&quot; フィルタの ID。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_SANITIZE_NUMBER_INT</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;number_int&quot; フィルタの ID。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_SANITIZE_NUMBER_FLOAT</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;number_float&quot; フィルタの ID。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_SANITIZE_MAGIC_QUOTES</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;magic_quotes&quot; フィルタの ID。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_CALLBACK</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;callback&quot; フィルタの ID。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_FLAG_ALLOW_OCTAL</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;int&quot; フィルタで 8 進表記 (<i class="literal">0[0-7]+</i>) を許可します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_FLAG_ALLOW_HEX</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;int&quot; フィルタで 16 進表記 (<i class="literal">0x[0-9a-fA-F]+</i>) を許可します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_FLAG_STRIP_LOW</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     ASCII 値が 32 未満の文字を取り除きます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_FLAG_STRIP_HIGH</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     ASCII 値が 127 より大きい文字を取り除きます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_FLAG_ENCODE_LOW</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     ASCII 値が 32 未満の文字をエンコードします。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_FLAG_ENCODE_HIGH</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     ASCII 値が 127 より大きい文字をエンコードします。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_FLAG_ENCODE_AMP</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <i class="literal">&amp;</i> をエンコードします。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_FLAG_NO_ENCODE_QUOTES</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <i class="literal">&#039;</i> および <i class="literal">&quot;</i> をエンコードしません。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_FLAG_EMPTY_STRING_NULL</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     (現在は使用されていません)
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_FLAG_ALLOW_FRACTION</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;number_float&quot; フィルタで小数を許可します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_FLAG_ALLOW_THOUSAND</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;number_float&quot; フィルタで桁区切り文字 (<i class="literal">,</i>) を許可します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_FLAG_ALLOW_SCIENTIFIC</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;number_float&quot; フィルタで科学記法 (<i class="literal">e</i>, <i class="literal">E</i>)
+     を許可します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_FLAG_SCHEME_REQUIRED</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;validate_url&quot; フィルタでスキームを必須とします。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_FLAG_HOST_REQUIRED</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;validate_url&quot; フィルタでホスト名を必須とします。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_FLAG_PATH_REQUIRED</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;validate_url&quot; フィルタでパスを必須とします。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_FLAG_QUERY_REQUIRED</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;validate_url&quot; フィルタでクエリ文字列を必須とします。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_FLAG_IPV4</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;validate_ip&quot; フィルタで IPv4 アドレスのみを許可します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_FLAG_IPV6</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;validate_ip&quot; フィルタで IPv6 アドレスのみを許可します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_FLAG_NO_RES_RANGE</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;validate_ip&quot; フィルタで予約済みアドレスを拒否します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>FILTER_FLAG_NO_PRIV_RANGE</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     &quot;validate_ip&quot; フィルタでプライベートアドレスを拒否します。
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+</div>
+
+
+
+ </div>
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.filter-has-var.html">filter_has_var</a> ― 指定した型の変数が存在するかどうかを調べる</li><li><a href="function.filter-id.html">filter_id</a> ― フィルタの名前からフィルタ ID を返す</li><li><a href="function.filter-input-array.html">filter_input_array</a> ― PHP の外部から複数の変数を受け取り、オプションでそれらをフィルタリングする</li><li><a href="function.filter-input.html">filter_input</a> ― PHP の外部から変数を受け取り、オプションでそれをフィルタリングする</li><li><a href="function.filter-list.html">filter_list</a> ― サポートされるフィルタの一覧を返す</li><li><a href="function.filter-var-array.html">filter_var_array</a> ― 複数の変数を受け取り、オプションでそれらをフィルタリングする</li><li><a href="function.filter-var.html">filter_var</a> ― 指定したフィルタでデータをフィルタリングする</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.unlink.html">unlink</a></div>
+ <div class="next" style="float: right;"><a href="function.filter-has-var.html">filter_has_var</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

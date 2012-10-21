@@ -1,0 +1,226 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>Mimetype 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mhash.html">mhash</a></div>
+ <div class="next" style="float: right;"><a href="function.mime-content-type.html">mime_content_type</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">Mimetype 関数</h1>
+  
+
+  <div class="partintro">
+   <div id="mime-magic.intro" class="section">
+    <h2 class="title">導入</h2>
+    <div class="warning"><b class="warning">警告</b>
+     <p class="para">
+      この拡張モジュールは廃止予定です。PECL の
+      <a href="ref.fileinfo.html" class="link">Fileinfo</a>
+      拡張モジュールが、同等の機能（に加えてそれ以上の機能）を
+      よりきれいな方法で提供しています。
+     </p>
+    </div>
+    <p class="para">
+     このモジュールの関数は、ファイル内の特定の位置にある
+     <em class="emphasis">magic</em> バイトシーケンスを探すことにより
+     ファイルの content type とエンコーディングの推定を試みます。
+     この手法は失敗する可能性がないわけではありませんが、経験上
+     非常に良い結果が得られます。
+    </p>
+    <p class="para">
+     この拡張モジュールは、Apache の mod_mime_magic から派生したものです。
+     mod_mime_magic は、Ian F. Darwin により管理されている
+     <var class="filename">file</var> コマンドに基づいています。
+     より詳細な履歴や著作権についてはソースコードを参照してください。
+    </p>
+   </div>
+
+   <div id="mime-magic.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">外部ライブラリを必要としません。</p>
+   </div>
+
+   
+
+
+
+<div id="mime-magic.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  mime-type 関数をサポートするためには、configure スイッチ
+  <span class="option">--with-mime-magic</span> を付けて
+  PHP をコンパイルする必要があります。この拡張モジュールは、
+  Apache httpd と共に配布されているシンプル版の
+  <var class="filename">magic</var> ファイルのコピーを必要とします。
+ </p>
+ <blockquote><p><b class="note">注意</b>: 
+  
+   configure オプションは、PHP 4.3.2 以降
+   <span class="option">--enable-mime-magic</span> から
+   <span class="option">--with-mime-magic</span> に変更されています。
+  <br />
+ </p></blockquote>
+ <blockquote><p><b class="note">注意</b>: 
+  
+   この拡張モジュールには、付加機能が多くついた <var class="filename">magic</var>
+   ファイルを処理する機能はありません（この <var class="filename">magic</var>
+   ファイルは、標準的なLinuxディストリビューションに付属しており、
+   最近のバージョンの <var class="filename">file</var> コマンドで使用されている
+   ようです）。
+  <br />
+ </p></blockquote>
+ <blockquote><p><b class="note">注意</b>: 
+  <b>Win32 ユーザへの注意</b>
+  
+   このモジュールを Windows 環境で使用するには、バンドルされた
+   <var class="filename">magic.mime</var> へのパスを <var class="filename">php.ini</var> に設定する必要
+   があります。
+  <br />
+  
+   <div class="example">
+    <p><b>Example#1 <var class="filename">magic.mime</var> のパスの設定例</b></p>
+    <div class="example-contents">
+<div class="cdata"><pre>
+mime_magic.magicfile = &quot;$PHP_INSTALL_DIR\magic.mime&quot;
+</pre></div>
+    </div>
+
+   </div>
+  <br />
+  
+   上の例の <var class="filename">$PHP_INSTALL_DIR</var> を実際の
+   PHP のパス、例えば、<var class="filename">c:\php</var>
+   に置き換えてください。
+  <br />
+ </p></blockquote>
+</div>
+
+
+
+
+
+   
+
+
+<div id="mime-magic.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+    <table border="5">
+     <caption><b>Mimetype 設定オプション</b></caption>
+  <colgroup>
+
+   <thead valign="middle">
+    <tr valign="middle">
+     <th colspan="1">名前</th>
+     <th colspan="1">デフォルト</th>
+     <th colspan="1">変更の可否</th>
+     <th colspan="1">変更履歴</th>
+    </tr>
+
+   </thead>
+
+    <tbody valign="middle">
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">mime_magic.debug</td>
+      <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+      <td colspan="1" rowspan="1" align="left">PHP 5.0.0 以降で利用可能</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">mime_magic.magicfile</td>
+      <td colspan="1" rowspan="1" align="left">&quot;/path/to/php/magic.mime&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+      <td colspan="1" rowspan="1" align="left">PHP 4.3.0 以降で利用可能</td>
+     </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+  PHP_INI_* 定数の詳細および定義については
+<a href="ini.html" class="xref">php.ini ディレクティブ</a> を参照してください。
+ </p>
+
+ <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+
+ <p class="para">
+  <dl>
+
+   <dt id="ini.mime-magic.debug">
+    <span class="term">
+     <i><tt class="parameter">mime_magic.debug</tt></i>
+
+     <a href="language.types.boolean.html" class="type bool">bool</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      デバッグを有効/無効にする
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt id="ini.mime-magic.magicfile">
+    <span class="term">
+     <i><tt class="parameter">mime_magic.magicfile</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      magic.mime ファイルへのパス
+     </p>
+    </dd>
+
+   </dt>
+
+  </dl>
+
+ </p>
+</div>
+
+
+
+
+
+   <div id="mime-magic.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">リソース型は定義されていません。</p>
+   </div>
+
+   <div id="mime-magic.constants" class="section">
+    <h2 class="title">定義済み定数</h2>
+    <p class="para">定数は定義されていません。</p>
+   </div>
+
+  </div>
+
+  
+
+
+
+
+
+
+
+
+
+ </div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mhash.html">mhash</a></div>
+ <div class="next" style="float: right;"><a href="function.mime-content-type.html">mime_content_type</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

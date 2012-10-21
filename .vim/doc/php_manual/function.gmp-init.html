@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>GMP 数を作成する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.gmp-hamdist.html">gmp_hamdist</a></div>
+ <div class="next" style="float: right;"><a href="function.gmp-intval.html">gmp_intval</a></div>
+ <div class="up"><a href="ref.gmp.html">GMP</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.gmp-init" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">gmp_init</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.0.4, PHP 5)</p><p class="refpurpose">gmp_init ― GMP 数を作成する</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">resource</span> <span class="methodname"><b><b>gmp_init</b></b></span>
+    ( <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$number</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$base</tt></span>
+  ] )</div>
+
+  <p class="para">
+   整数または文字列から GMP 数を生成します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">number</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       整数値あるいは文字列。文字列表現には、
+       十進数か十六進数、あるいは八進数を使用可能です。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">base</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       基数。デフォルトは 0。
+      </p>
+      <p class="para">
+       基数には 2 から 36 までの値を指定することができます。
+       基数を 0 (デフォルト値) にすると、最初の文字に応じて実際の基数を決定します。
+       最初の二文字が <i class="literal">0x</i> あるいは <i class="literal">0X</i>
+       の場合は十六進数、それ以外で最初の文字が &quot;0&quot; の場合は八進数、
+       それ以外の場合は十進数となります。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   A GMP number <a href="language.types.resource.html" class="type resource">resource</a>.
+  </p>
+ </div>
+
+
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">4.1.0</td>
+       <td colspan="1" rowspan="1" align="left">
+        オプションのパラメータ <i><tt class="parameter">base</tt></i>
+
+        が追加されました。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 GMP 数の作成</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">gmp_init</span><span style="color: #007700">(</span><span style="color: #0000BB">123456</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$b&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">gmp_init</span><span style="color: #007700">(</span><span style="color: #DD0000">"0xFFFFDEBACDFEDF7200"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    <a href="function.gmp-add.html" class="function">gmp_add()</a> のような GMP 関数において、GMP
+    数を指定するところに整数または文字列を使用したい場合には、
+    この関数をコールする必要はありません。この場合、変換が必要な場合には、
+    <b>gmp_init()</b> と同様の方法で関数の引数は自動的に
+    GMP 数に変換されます。
+   <br />
+  </p></blockquote>
+ </div>
+
+ 
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.gmp-hamdist.html">gmp_hamdist</a></div>
+ <div class="next" style="float: right;"><a href="function.gmp-intval.html">gmp_intval</a></div>
+ <div class="up"><a href="ref.gmp.html">GMP</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>共有メモリセグメントを作成またはオープンする</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.sem-remove.html">sem_remove</a></div>
+ <div class="next" style="float: right;"><a href="function.shm-detach.html">shm_detach</a></div>
+ <div class="up"><a href="ref.sem.html">Semaphore</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.shm-attach" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">shm_attach</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">shm_attach ― 共有メモリセグメントを作成またはオープンする</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">int</span> <span class="methodname"><b><b>shm_attach</b></b></span>
+    ( <span class="methodparam"><span class="type">int</span> <tt class="parameter">$key</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$memsize</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$perm</tt></span>
+  ]] )</div>
+
+  <p class="para">
+   <b>shm_attach()</b> は ID を返します。
+   これは、指定されたキー <i><tt class="parameter">key</tt></i>
+
+   で System V 共有メモリにアクセスする際に使用することが可能です。
+   最初のコールの際に、サイズが <i><tt class="parameter">memsize</tt></i>
+、
+   オプションのパーミッション <i><tt class="parameter">perm</tt></i>
+
+   を指定した共有メモリセグメントを作成します。
+  </p>
+  <p class="para">
+   同じ <i><tt class="parameter">key</tt></i>
+ で
+   <b>shm_attach()</b> を 2 回コールした場合は
+   別の共有メモリ ID が返されますが、両方の ID は同じ共有メモリをアクセスします。
+   <i><tt class="parameter">memsize</tt></i>
+ および
+   <i><tt class="parameter">perm</tt></i>
+ は無視されます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">key</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">memsize</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       メモリのサイズ。省略した場合のデフォルトは <var class="filename">php.ini</var> の
+       <i class="literal">sysvshm.init_mem</i>、あるいは 10000
+       バイトとなります。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">perm</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       オプションのパーミッション設定。デフォルトは 0666 です。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   共有メモリセグメントの ID を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><b>sem_detach()</b></li>
+    <li class="member"><a href="function.ftok.html" class="function">ftok()</a></li>
+   </ul>
+  </p>
+ </div>
+  
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.sem-remove.html">sem_remove</a></div>
+ <div class="next" style="float: right;"><a href="function.shm-detach.html">shm_detach</a></div>
+ <div class="up"><a href="ref.sem.html">Semaphore</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

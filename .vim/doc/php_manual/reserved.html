@@ -1,0 +1,334 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>予約語の一覧</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="aliases.html">関数エイリアスのリスト</a></div>
+ <div class="next" style="float: right;"><a href="reserved.variables.html">定義済の変数</a></div>
+ <div class="up"><a href="appendices.html">付録</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1>予約語の一覧</h1>
+<h2>目次</h2><ul class="chunklist chunklist_appendix"><li><a href="reserved.variables.html">定義済の変数</a></li><li><a href="reserved.classes.html">定義済のクラス</a></li><li><a href="reserved.constants.html">定義済みの定数</a></li></ul>
+
+  <p class="para">
+  以下に PHP で定義済みの ID の一覧を示します。ここに示す ID はいずれも
+  スクリプトの中で ID として使用することはできません。これらの一覧には
+  キーワード、定義済みの変数、定数、クラス名が含まれています。これらの一覧は、
+  全てを網羅しているわけではありません。
+  </p>
+
+  <div id="reserved.keywords" class="sect1">
+   <h2 class="title">キーワードのリスト</h2>
+   <p class="simpara">
+    これらのキーワードは、PHP では特別な意味があります。これらのいくつかは
+    関数やメソッドのようなものを表し、いくつかは定数のようなものを表す、
+    といったようになっていますが、実際にはそうではありません。実際には、
+    これらは言語を構成するものです。以下のキーワードはいずれも定数、クラス名、
+    関数名として使用することはできません。
+    これらを変数名として使用することは一般的には可能ですが、
+    混乱を生じる可能性があります。
+   </p>
+
+   <table border="5">
+    <caption><b>PHP のキーワード</b></caption>
+    <colgroup>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.operators.logical.html" class="link">and</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.operators.logical.html" class="link">or</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.operators.logical.html" class="link">xor</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.constants.predefined.html" class="link">__FILE__</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="reserved.classes.html#reserved.classes.php5" class="link">exception</a> (PHP 5)
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="reserved.classes.html#reserved.classes.php5" class="link">php_user_filter</a>
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.constants.predefined.html" class="link">__LINE__</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="function.array.html" class="function">array()</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="control-structures.foreach.html" class="link">as</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="control-structures.break.html" class="link">break</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="control-structures.switch.html" class="link">case</a>
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.oop.html#keyword.class" class="link">class</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.oop5.constants.html" class="link">const</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="control-structures.continue.html" class="link">continue</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="control-structures.declare.html" class="link">declare</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="control-structures.switch.html" class="link">default</a>
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">
+        <a href="function.die.html" class="function">die()</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="control-structures.do.while.html" class="link">do</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="function.echo.html" class="function">echo()</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="control-structures.else.html" class="link">else</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="control-structures.elseif.html" class="link">elseif</a>
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">
+        <a href="function.empty.html" class="function">empty()</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="control-structures.declare.html" class="link">enddeclare</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="control-structures.alternative-syntax.html" class="link">endfor</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="control-structures.alternative-syntax.html" class="link">endforeach</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="control-structures.alternative-syntax.html" class="link">endif</a>
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">
+        <a href="control-structures.alternative-syntax.html" class="link">endswitch</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="control-structures.alternative-syntax.html" class="link">endwhile</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="function.eval.html" class="function">eval()</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="function.exit.html" class="function">exit()</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.oop.html#keyword.class" class="link">extends</a>
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">
+        <a href="control-structures.for.html" class="link">for</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="control-structures.foreach.html" class="link">foreach</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.functions.html#functions.user-defined" class="link">function</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.variables.scope.html" class="link">global</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="control-structures.if.html" class="link">if</a>
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">
+        <a href="function.include.html" class="function">include()</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="function.include-once.html" class="function">include_once()</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="function.isset.html" class="function">isset()</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="function.list.html" class="function">list()</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.oop.html#keyword.class" class="link">new</a>
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">
+        <a href="function.print.html" class="function">print()</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="function.require.html" class="function">require()</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="function.require-once.html" class="function">require_once()</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="function.return.html" class="function">return()</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.variables.scope.html" class="link">static</a>
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">
+        <a href="control-structures.switch.html" class="link">switch</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="function.unset.html" class="function">unset()</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        use
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.oop.html#keyword.class" class="link">var</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="control-structures.while.html" class="link">while</a>
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.constants.predefined.html" class="link">__FUNCTION__</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.constants.predefined.html" class="link">__CLASS__</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.constants.predefined.html" class="link">__METHOD__</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.oop5.final.html" class="link">final</a> (PHP 5 以降)
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="reserved.classes.html#reserved.classes.php5" class="link">php_user_filter</a> (PHP 5 以降)
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.oop5.interfaces.html" class="link">interface</a> (PHP 5 以降)
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.oop5.interfaces.html" class="link">implements</a> (PHP 5 以降)
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.oop5.basic.html" class="link">extends</a>
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.oop5.visibility.html" class="link">public</a> (PHP 5 以降)
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.oop5.visibility.html" class="link">private</a> (PHP 5 以降)
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.oop5.visibility.html" class="link">protected</a> (PHP 5 以降)
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.oop5.abstract.html" class="link">abstract</a> (PHP 5 以降)
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.oop5.cloning.html" class="link">clone</a> (PHP 5 以降)
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.exceptions.html" class="link">try</a> (PHP 5 以降)
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.exceptions.html" class="link">catch</a> (PHP 5 以降)
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.exceptions.html" class="link">throw</a> (PHP 5 以降)
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="migration.old-function.html" class="link">cfunction</a> (PHP 4 のみ)
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="migration.old-function.html" class="link">old_function</a> (PHP 4 のみ)
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="language.oop.html#keyword.class" class="link">this</a> (PHP 5 以降)
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        namespace (PHP 6 のみ)
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">
+        import (PHP 6 のみ)
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+        goto (PHP 6 のみ)
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+       </td>
+       <td colspan="1" rowspan="1" align="left">
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+
+  </div>
+
+  
+  
+  
+  
+ 
+ 
+ 
+
+
+
+
+  </div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="aliases.html">関数エイリアスのリスト</a></div>
+ <div class="next" style="float: right;"><a href="reserved.variables.html">定義済の変数</a></div>
+ <div class="up"><a href="appendices.html">付録</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

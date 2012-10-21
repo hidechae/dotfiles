@@ -1,0 +1,598 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>dbx 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.dbmreplace.html">dbmreplace</a></div>
+ <div class="next" style="float: right;"><a href="function.dbx-close.html">dbx_close</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">dbx 関数</h1>
+  
+
+  <div class="partintro">
+   <div id="dbx.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     dbx モジュールは、データベース抽象化レイヤ（db &#039;X&#039; の &#039;X&#039; は、
+     サポートされるデータベースの一つを意味します）のことです。dbx 関数
+     により、サポートされる全てのデータベースを単一の呼出表記により
+     アクセスすることが可能になります。dbx 関数自体は、データベースへの
+     直接のインターフェイスを有しませんが、それらのデータベースをサポート
+     するために使用されるモジュールへのインターフェイスを有します。
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      
+この拡張モジュールは <a href="http://pecl.php.net/" class="link external">&raquo; PECL</a> レポジトリに移動
+されており、以下のバージョン以降 PHP にバンドルされなくなっています。 PHP 5.1.0.
+     <br />
+    </p></blockquote>
+   </div>
+   
+   <div id="dbx.required" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">
+     dbx モジュールでデータベースを使用可能とするには、そのモジュールが
+     PHP にリンクされるかロードされる必要があり、そのデータベースを
+     dbx モジュールがサポートされている必要があります。現在
+     以下のデータベースがサポートされていますが、他のデータベースも
+     追加される予定です。
+     <ul class="itemizedlist">
+      <li class="listitem">
+       <span class="simpara">
+        <a href="ref.fbsql.html" class="link">FrontBase</a> (PHP 4.1.0 以降で利用可能)
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        <a href="ref.mssql.html" class="link">Microsoft SQL Server</a>
+       </span>
+       </li>
+      <li class="listitem">
+       <span class="simpara">
+        <a href="ref.mysql.html" class="link">MySQL</a>
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        <a href="ref.uodbc.html" class="link">ODBC</a>
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        <a href="ref.pgsql.html" class="link">PostgreSQL</a>
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        <a href="ref.sybase.html" class="link">Sybase-CT</a> (PHP 4.2.0 以降で利用可能)
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        <a href="ref.oci8.html" class="link">Oracle (oci8)</a> (PHP 4.3.0 以降で利用可能)
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        <a href="ref.sqlite.html" class="link">SQLite</a> (PHP 5)
+       </span>
+      </li>
+     </ul>
+    </p>
+    <p class="para">
+     dbx にデータベースのサポートを追加するためのドキュメントは、
+     <a href="http://www.guidance.nl/php/dbx/doc/" class="link external">&raquo; http://www.guidance.nl/php/dbx/doc/</a> にあります。
+    </p>
+   </div>
+
+   
+
+
+<div id="dbx.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  これらの関数を利用可能にするには、
+  <span class="option">--enable-dbx</span> オプションを使用して
+  dbx サポートを有効にし、また、使用するデータベースに関するオプション、
+  例えば MySQL の場合は 
+  <span class="option">--with-mysql=[DIR]</span>
+  も指定して PHP をコンパイルする必要があります。
+  他のサポートされるデータベースを dbx モジュールで動作させるには、
+  個別のドキュメントを参照してください。
+ </p>
+</div>
+
+
+
+
+   
+
+
+<div id="dbx.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+  <table border="5">
+   <caption><b>DBX 設定オプション</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">名前</th>
+      <th colspan="1">デフォルト</th>
+      <th colspan="1">変更の可否</th>
+      <th colspan="1">変更履歴</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">dbx.colnames_case</td>
+      <td colspan="1" rowspan="1" align="left">&quot;unchanged&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+      <td colspan="1" rowspan="1" align="left">PHP 4.3.0 以降で有効です。PHP 5.1.0 で削除されました。</td>
+     </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+  PHP_INI_* 定数の詳細および定義については
+<a href="ini.html" class="xref">php.ini ディレクティブ</a> を参照してください。
+</p>
+
+<p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+
+<p class="para">
+ <dl>
+
+   <dt id="ini.dbx.colnames-case">
+   <span class="term">
+    <i><tt class="parameter">dbx.colnames_case</tt></i>
+
+    <a href="language.types.string.html" class="type string">string</a>
+   </span>
+   <dd>
+
+    <p class="para">
+     カラム名は、変更されず(&quot;unchanged&quot;の場合)に返すか、大文字
+     (&quot;uppercase&quot;の場合)または小文字(&quot;lowercase&quot;の場合)に変換すること
+     ができます。このディレクティブは、<a href="function.dbx-query.html" class="function">dbx_query()</a>
+     のフラグで上書きすることが可能です。
+    </p>
+   </dd>
+
+  </dt>
+
+ 
+ </dl>
+
+ </p>
+</div>
+
+
+
+
+
+   <div id="dbx.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">
+     dbx モジュールでは2種類のリソース型があります。最初のリソースは、
+     データベース接続用のリンク <a href="language.types.object.html" class="type object">object</a> で、2 番目はクエリ結果を
+     結果 <a href="language.types.object.html" class="type object">object</a> です。
+    </p>
+   </div>
+   
+   
+
+
+ <div id="constants.dbx" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+  <dl>
+
+    <dt>
+
+     <span class="term">
+      <b><tt>DBX_MYSQL</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </span>
+     <dd>
+
+      <span class="simpara">
+       
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term">
+      <b><tt>DBX_ODBC</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </span>
+     <dd>
+
+      <span class="simpara">
+       
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term">
+      <b><tt>DBX_PGSQL</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </span>
+     <dd>
+
+      <span class="simpara">
+       
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term">
+      <b><tt>DBX_MSSQL</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </span>
+     <dd>
+
+      <span class="simpara">
+       
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term">
+      <b><tt>DBX_FBSQL</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </span>
+     <dd>
+
+      <span class="simpara">
+       
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term">
+      <b><tt>DBX_OCI8</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>) (PHP 4.3.0 以降で有効)
+     </span>
+     <dd>
+
+      <span class="simpara">
+       
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term">
+      <b><tt>DBX_SYBASECT</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </span>
+     <dd>
+
+      <span class="simpara">
+       
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term">
+      <b><tt>DBX_SQLITE</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>) (PHP 5)
+     </span>
+     <dd>
+
+      <span class="simpara">
+       
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term">
+      <b><tt>DBX_PERSISTENT</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </span>
+     <dd>
+
+      <span class="simpara">
+       
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term">
+      <b><tt>DBX_RESULT_INFO</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </span>
+     <dd>
+
+      <span class="simpara">
+       
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term">
+      <b><tt>DBX_RESULT_INDEX</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </span>
+     <dd>
+
+      <span class="simpara">
+       
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term">
+      <b><tt>DBX_RESULT_ASSOC</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </span>
+     <dd>
+
+      <span class="simpara">
+       
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term">
+      <b><tt>DBX_RESULT_UNBUFFERED</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>) (PHP 5)
+     </span>
+     <dd>
+
+      <span class="simpara">
+       
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term">
+      <b><tt>DBX_COLNAMES_UNCHANGED</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>) (PHP 4.3.0 以降で有効)
+     </span>
+     <dd>
+
+      <span class="simpara">
+       
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term">
+      <b><tt>DBX_COLNAMES_UPPERCASE</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>) (PHP 4.3.0 以降で有効)
+     </span>
+     <dd>
+
+      <span class="simpara">
+       
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term">
+      <b><tt>DBX_COLNAMES_LOWERCASE</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>) (PHP 4.3.0 以降で有効)
+     </span>
+     <dd>
+
+      <span class="simpara">
+       
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term">
+      <b><tt>DBX_CMP_NATIVE</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </span>
+     <dd>
+
+      <span class="simpara">
+       
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term">
+      <b><tt>DBX_CMP_TEXT</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </span>
+     <dd>
+
+      <span class="simpara">
+       
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term">
+      <b><tt>DBX_CMP_NUMBER</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </span>
+     <dd>
+
+      <span class="simpara">
+       
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term">
+      <b><tt>DBX_CMP_ASC</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </span>
+     <dd>
+
+      <span class="simpara">
+       
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term">
+      <b><tt>DBX_CMP_DESC</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </span>
+     <dd>
+
+      <span class="simpara">
+       
+      </span>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </div>
+
+
+
+   
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.dbx-close.html">dbx_close</a> ― オープンされた接続/データベースを閉じる</li><li><a href="function.dbx-compare.html">dbx_compare</a> ― ソートするために二つのレコードを比較する</li><li><a href="function.dbx-connect.html">dbx_connect</a> ― 接続/データベースをオープンする</li><li><a href="function.dbx-error.html">dbx_error</a> ― 使用するモジュールの最新の関数コールにおけるエラーメッセージを出力する</li><li><a href="function.dbx-escape-string.html">dbx_escape_string</a> ― SQL ステートメントで安全に使用できるように文字列をエスケープする</li><li><a href="function.dbx-fetch-row.html">dbx_fetch_row</a> ― DBX_RESULT_UNBUFFERED フラグを指定した
+  クエリ結果から、行を取得する</li><li><a href="function.dbx-query.html">dbx_query</a> ― クエリを送信し、(ある場合には)結果を全て取得する</li><li><a href="function.dbx-sort.html">dbx_sort</a> ― カスタマイズされたソート関数により、dbx_query から結果をソートする</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.dbmreplace.html">dbmreplace</a></div>
+ <div class="next" style="float: right;"><a href="function.dbx-close.html">dbx_close</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

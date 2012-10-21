@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>クッキー</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="migration4.strings.html">文字列中の変数置換</a></div>
+ <div class="next" style="float: right;"><a href="migration4.variables.html">グローバル変数の扱い</a></div>
+ <div class="up"><a href="migration4.html">PHP 3 から PHP 4 への移行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="migration4.cookies" class="section">
+   <h2 class="title">クッキー</h2>
+   <p class="para">
+    PHP 3は、コード中の<a href="function.setcookie.html" class="function">setcookie()</a>のコールとは逆
+    の順番でクッキーを設定するという好ましくない動作をしていました。
+    PHP 4はこの動作を変更し、コードでクッキーを設定したのと同じ順番
+    で正しくクッキーを設定するヘッダ行を生成します。
+   </p>
+   <p class="para">
+    これによりいくつかの既存のコードが動作しなくなる可能性がありますが、
+    従来の動作は理解しにくく、将来的な更なる問題を防ぐために変更望まれ
+    ていました。
+   </p>
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="migration4.strings.html">文字列中の変数置換</a></div>
+ <div class="next" style="float: right;"><a href="migration4.variables.html">グローバル変数の扱い</a></div>
+ <div class="up"><a href="migration4.html">PHP 3 から PHP 4 への移行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

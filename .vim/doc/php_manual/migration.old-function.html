@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>old_function</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="migration.html">PHP/FI 2 から PHP 3 への移行</a></div>
+ <div class="next" style="float: right;"><a href="migration.startendtags.html">開始／終了タグ</a></div>
+ <div class="up"><a href="migration.html">PHP/FI 2 から PHP 3 への移行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="migration.old-function" class="section">
+  <h2 class="title"><i class="literal">old_function</i></h2>
+  <p class="simpara">
+   <i class="literal">old_function</i> を使用すると、
+   PHP/FI2 と同じ構文で関数を宣言できるようになります
+   (ただし、&#039;function&#039; を &#039;old_function&#039; に書き換える必要があります)。
+  </p>
+  <p class="simpara">
+   この機能は非推奨です。PHP/FI2-&gt;PHP 3
+   コンバータ以外で使用してはいけません。
+  </p>
+  <div class="warning"><b class="warning">警告</b>
+   <p class="para">
+    <i class="literal">old_function</i> で宣言した関数は、
+    PHP の内部コードからコールすることはできません。
+    つまり、<a href="function.usort.html" class="function">usort()</a>
+    や <a href="function.array-walk.html" class="function">array_walk()</a>、そして
+    <a href="function.register-shutdown-function.html" class="function">register_shutdown_function()</a>
+    といった関数内では使用できないということです。
+    この制限を回避するには、その
+    <i class="literal">old_function</i>
+    をコールするラッパー関数を (通常の PHP 3 形式で)
+    作成します。
+   </p>
+  </div>
+ </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="migration.html">PHP/FI 2 から PHP 3 への移行</a></div>
+ <div class="next" style="float: right;"><a href="migration.startendtags.html">開始／終了タグ</a></div>
+ <div class="up"><a href="migration.html">PHP/FI 2 から PHP 3 への移行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

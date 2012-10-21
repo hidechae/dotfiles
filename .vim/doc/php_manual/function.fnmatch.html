@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>ファイル名がパターンにマッチするか調べる</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.flock.html">flock</a></div>
+ <div class="next" style="float: right;"><a href="function.fopen.html">fopen</a></div>
+ <div class="up"><a href="ref.filesystem.html">ファイルシステム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.fnmatch" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">fnmatch</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.3.0, PHP 5)</p><p class="refpurpose">fnmatch ― ファイル名がパターンにマッチするか調べる</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>fnmatch</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$pattern</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$string</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$flags</tt></span>
+  ] )</div>
+
+  <p class="para">
+   <b>fnmatch()</b>は<i><tt class="parameter">string</tt></i>
+
+   で指定された文字列が
+   <i><tt class="parameter">pattern</tt></i>
+
+   で指定されたシェルワイルドカードにマッチするかどうかチェックします。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">pattern</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       シェルのワイルドカードパターン。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">string</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       調べたい文字列。この機能は特にファイル名のマッチに便利ですが、
+       通常の文字列に関しても使用できます。
+      </p>
+      <p class="para">
+       一般的なユーザにとって、シェルパターンやあるいは少なくとも
+       <i class="literal">&#039;?&#039;</i>と<i class="literal">&#039;*&#039;</i>によるワイルドカードのほうが
+       慣れていると思われます。そのため、
+       <a href="function.ereg.html" class="function">ereg()</a> または <a href="function.preg-match.html" class="function">preg_match()</a>
+       などの代わりに <b>fnmatch()</b>
+       をフロントエンドの検索表現として使うことは、
+       プログラマではないユーザにとってより便利でしょう。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">flags</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       フラグ名については
+       Unix のマニュアル <i class="literal">fnmatch(3)</i> も参照ください
+       (そのうちここにも説明が追加されるでしょう)。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   マッチした場合に <b><tt>TRUE</tt></b>、それ以外の場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 シェルのワイルドカードパターンによる色の名前のチェック</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">fnmatch</span><span style="color: #007700">(</span><span style="color: #DD0000">"*gr[ae]y"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$color</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"some&nbsp;form&nbsp;of&nbsp;gray&nbsp;..."</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <div class="warning"><b class="warning">警告</b>
+   <p class="para">
+    今のところ、この機能は Windows あるいは他の POSIX
+    に準拠していないシステムで利用できません。
+   </p>
+  </div>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.glob.html" class="function">glob()</a></li>
+    <li class="member"><a href="function.ereg.html" class="function">ereg()</a></li>
+    <li class="member"><a href="function.preg-match.html" class="function">preg_match()</a></li>
+    <li class="member"><a href="function.sscanf.html" class="function">sscanf()</a></li>
+    <li class="member"><a href="function.printf.html" class="function">printf()</a></li>
+    <li class="member"><a href="function.sprintf.html" class="function">sprintf()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.flock.html">flock</a></div>
+ <div class="next" style="float: right;"><a href="function.fopen.html">fopen</a></div>
+ <div class="up"><a href="ref.filesystem.html">ファイルシステム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

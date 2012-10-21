@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>オブジェクトのコンテンツを返す</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.hwapi-content-read.html">hw_api_content->read</a></div>
+ <div class="next" style="float: right;"><a href="function.hwapi-copy.html">hw_api->copy</a></div>
+ <div class="up"><a href="ref.hwapi.html">Hyperwave API</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.hwapi-content" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">hw_api-&gt;content</h1>
+  <p class="verinfo">(No version information available, might be only in CVS)</p><p class="refpurpose">hw_api->content ― オブジェクトのコンテンツを返す</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="classsynopsis">
+   <div class="ooclass"><b class="classname">hw_api</b></div>
+   <div class="methodsynopsis">
+    <span class="type">HW_API_Content</span> <span class="methodname"><b><b>content</b></b></span>
+     ( <span class="methodparam"><span class="type">array</span> <tt class="parameter">$parameter</tt></span>
+    )</div>
+
+  </div>
+  <p class="para">
+   この関数は、文書のコンテンツを <span class="classname">hw_api_content</span>
+   型のオブジェクトとして返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">parameter</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       パラメータの配列には、必須要素
+       &#039;objectidentifier&#039; およびオプションの要素 &#039;mode&#039; が含まれます。
+       mode は
+       <b><tt>HW_API_CONTENT_ALLLINKS</tt></b>、
+       <b><tt>HW_API_CONTENT_REACHABLELINKS</tt></b> あるいは
+       <b><tt>HW_API_CONTENT_PLAIN</tt></b> のうちのいずれかです。
+      </p>
+      <p class="para">
+       <b><tt>HW_API_CONTENT_ALLLINKS</tt></b> は、
+       たとえそれが指している先が存在しない場合でもすべての対象アンカーを挿入します。
+      </p>
+      <p class="para">
+       <b><tt>HW_API_CONTENT_REACHABLELINKS</tt></b> は、
+       到達可能なリンクのみを挿入するよう
+       <b>hw_api_content()</b> に指示し、
+       <b><tt>HW_API_CONTENT_PLAIN</tt></b>
+       は文書にリンクを一切含めません。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   <span class="classname">hw_api_content</span> のインスタンスを返します。
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.hwapi-content-read.html">hw_api_content->read</a></div>
+ <div class="next" style="float: right;"><a href="function.hwapi-copy.html">hw_api->copy</a></div>
+ <div class="up"><a href="ref.hwapi.html">Hyperwave API</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

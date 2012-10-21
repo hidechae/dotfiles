@@ -1,0 +1,263 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>特定のメッセージの構造を読み込む</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.imap-fetchheader.html">imap_fetchheader</a></div>
+ <div class="next" style="float: right;"><a href="function.imap-get-quota.html">imap_get_quota</a></div>
+ <div class="up"><a href="ref.imap.html">IMAP</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.imap-fetchstructure" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">imap_fetchstructure</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">imap_fetchstructure ― 特定のメッセージの構造を読み込む</p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">object</span> <span class="methodname"><b><b>imap_fetchstructure</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$imap_stream</tt></span>
+   , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$msg_number</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$options</tt></span>
+  ] )</div>
+
+  <p class="para">
+   この関数は、指定したメッセージに関するすべての構造化された情報を取り出します。
+  </p>
+ </div>
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+<span class="term"><i><tt class="parameter">
+imap_stream</tt></i>
+</span><dd>
+<p class="para"><a href="function.imap-open.html" class="function">imap_open()</a>
+が返す IMAP ストリーム。</p></dd>
+</dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">msg_number</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       メッセージ番号。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">options</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       オプションのパラメータで、<i><tt class="parameter">FT_UID</tt></i>
+ のみが指定可能です。
+       これは、<i><tt class="parameter">msg_number</tt></i>
+ を <i><tt class="parameter">UID</tt></i>
+
+       として処理することを関数に指定するためのものです。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   オブジェクトを返します。このオブジェクトには、
+   MIME の添付の各要素に類似のオブジェクトとしてエンベロープ、
+   内部の日付、サイズ、フラグそして本体が含まれます。
+   返されるオブジェクトの構造は次のようになります。
+  </p>
+  <p class="para">
+   <table border="5">
+    <caption><b>
+     <b>imap_fetchstructure()</b> が返すオブジェクト
+    </b></caption>
+    <colgroup>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">type</td>
+       <td colspan="1" rowspan="1" align="left">最初の body 部の型</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">encoding</td>
+       <td colspan="1" rowspan="1" align="left">body 部を転送する際のエンコード法</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">ifsubtype</td>
+       <td colspan="1" rowspan="1" align="left">subtype 文字列がある場合に <b><tt>TRUE</tt></b></td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">subtype</td>
+       <td colspan="1" rowspan="1" align="left"><acronym title="Multipurpose Internet Mail Extensions">MIME</acronym> の subtype</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">ifdescription</td>
+       <td colspan="1" rowspan="1" align="left">description 文字列がある場合に <b><tt>TRUE</tt></b></td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">description</td>
+       <td colspan="1" rowspan="1" align="left">内容を記述する文字列</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">ifid</td>
+       <td colspan="1" rowspan="1" align="left">identification 文字列がある場合に <b><tt>TRUE</tt></b></td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">id</td>
+       <td colspan="1" rowspan="1" align="left">Identification 文字列</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">lines</td>
+       <td colspan="1" rowspan="1" align="left">行数</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">bytes</td>
+       <td colspan="1" rowspan="1" align="left">バイト数</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">ifdisposition</td>
+       <td colspan="1" rowspan="1" align="left">disposition 文字列がある場合に <b><tt>TRUE</tt></b></td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">disposition</td>
+       <td colspan="1" rowspan="1" align="left">Disposition 文字列</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">ifdparameters</td>
+       <td colspan="1" rowspan="1" align="left">dparameters 配列が存在する場合に <b><tt>TRUE</tt></b></td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">dparameters</td>
+       <td colspan="1" rowspan="1" align="left">オブジェクトの配列。各オブジェクトは &quot;attribute&quot; および
+       &quot;value&quot; というプロパティを保持し、それぞれ
+       Content-disposition <acronym title="Multipurpose Internet Mail Extensions">MIME</acronym> ヘッダの
+       対応するパラメータを表す。</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">ifparameters</td>
+       <td colspan="1" rowspan="1" align="left">配列 parameters が存在する場合に <b><tt>TRUE</tt></b></td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">parameters</td>
+       <td colspan="1" rowspan="1" align="left">オブジェクトの配列。各オブジェクトは &quot;attribute&quot; および
+       &quot;value&quot; というプロパティを保持する。</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">parts</td>
+       <td colspan="1" rowspan="1" align="left">オブジェクトの配列であり、その構造はトップレベルオブジェクトと
+       同じです。それぞれが <acronym title="Multipurpose Internet Mail Extensions">MIME</acronym> body 部に対応しています。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+
+  </p>
+  <p class="para">
+   <table border="5">
+     <caption><b>最初の body 部の型</b></caption>
+     <colgroup>
+
+      <tbody valign="middle">
+      <tr valign="middle"><td colspan="1" rowspan="1" align="left">0</td><td colspan="1" rowspan="1" align="left">text</td></tr>
+
+      <tr valign="middle"><td colspan="1" rowspan="1" align="left">1</td><td colspan="1" rowspan="1" align="left">multipart</td></tr>
+
+      <tr valign="middle"><td colspan="1" rowspan="1" align="left">2</td><td colspan="1" rowspan="1" align="left">message</td></tr>
+
+      <tr valign="middle"><td colspan="1" rowspan="1" align="left">3</td><td colspan="1" rowspan="1" align="left">application</td></tr>
+
+      <tr valign="middle"><td colspan="1" rowspan="1" align="left">4</td><td colspan="1" rowspan="1" align="left">audio</td></tr>
+
+      <tr valign="middle"><td colspan="1" rowspan="1" align="left">5</td><td colspan="1" rowspan="1" align="left">image</td></tr>
+
+      <tr valign="middle"><td colspan="1" rowspan="1" align="left">6</td><td colspan="1" rowspan="1" align="left">video</td></tr>
+
+      <tr valign="middle"><td colspan="1" rowspan="1" align="left">7</td><td colspan="1" rowspan="1" align="left">other</td></tr>
+
+      </tbody>
+     </colgroup>
+
+   </table>
+
+  </p>
+  <p class="para">
+   <table border="5">
+     <caption><b>転送時のエンコーディング</b></caption>
+     <colgroup>
+
+      <tbody valign="middle">
+      <tr valign="middle"><td colspan="1" rowspan="1" align="left">0</td><td colspan="1" rowspan="1" align="left">7BIT</td></tr>
+
+      <tr valign="middle"><td colspan="1" rowspan="1" align="left">1</td><td colspan="1" rowspan="1" align="left">8BIT</td></tr>
+
+      <tr valign="middle"><td colspan="1" rowspan="1" align="left">2</td><td colspan="1" rowspan="1" align="left">BINARY</td></tr>
+
+      <tr valign="middle"><td colspan="1" rowspan="1" align="left">3</td><td colspan="1" rowspan="1" align="left">BASE64</td></tr>
+
+      <tr valign="middle"><td colspan="1" rowspan="1" align="left">4</td><td colspan="1" rowspan="1" align="left">QUOTED-PRINTABLE</td></tr>
+
+      <tr valign="middle"><td colspan="1" rowspan="1" align="left">5</td><td colspan="1" rowspan="1" align="left">OTHER</td></tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+
+  </p>
+ </div>
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.imap-fetchbody.html" class="function">imap_fetchbody()</a></li>
+    <li class="member"><a href="function.imap-bodystruct.html" class="function">imap_bodystruct()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.imap-fetchheader.html">imap_fetchheader</a></div>
+ <div class="next" style="float: right;"><a href="function.imap-get-quota.html">imap_get_quota</a></div>
+ <div class="up"><a href="ref.imap.html">IMAP</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

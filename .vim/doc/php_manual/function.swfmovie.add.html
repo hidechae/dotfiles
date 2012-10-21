@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>任意の型のデータをムービーに追加する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.swfmovie.construct.html">SWFMovie->__construct()</a></div>
+ <div class="next" style="float: right;"><a href="function.swfmovie.addexport.html">SWFMovie->addExport()</a></div>
+ <div class="up"><a href="ref.ming.html">Ming (flash)</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.swfmovie.add" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">SWFMovie-&gt;add()</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.3.3)</p><p class="refpurpose">SWFMovie->add() ― 任意の型のデータをムービーに追加する</p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="classsynopsis">
+   <div class="ooclass"><b class="classname">SWFMovie</b></div>
+   <div class="methodsynopsis">
+    <span class="type">mixed</span> <span class="methodname"><b><b>add</b></b></span>
+     ( <span class="methodparam"><span class="type">object</span> <tt class="parameter">$instance</tt></span>
+    )</div>
+
+  </div>
+  <div class="warning"><b class="warning">警告</b><p class="simpara">この関数は、
+<em class="emphasis">実験的</em> なものです。この関数の動作・
+名前・その他ドキュメントに書かれている事項は、予告なく、将来的な PHP
+のリリースにおいて変更される可能性があります。
+この関数は自己責任で使用してください。</p></div>
+  <p class="para">
+   SWF オブジェクトのインスタンス <i><tt class="parameter">instance</tt></i>
+
+   を現在のムービーに追加します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">instance</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <a href="ming.swfshape.html" class="xref">SWFShape</a> や
+       <a href="ming.swftext.html" class="xref">SWFText</a>、<a href="ming.swffont.html" class="xref">SWFFont</a>
+       などの任意の型のオブジェクトインスタンス。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   表示可能な型 (shape、text、button、sprite) の場合、このメソッドは、
+   表示リスト内のオブジェクトへのハンドル
+   <a href="ming.swfdisplayitem.html" class="xref">SWFDisplayItem</a> を返します。つまり、同じ図形を
+   をムービーに複数回追加することができ、各インスタンスについて
+   異なったハンドルを得ることが可能です。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.swfmovie.remove.html" class="xref">SWFMovie->remove()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.swfmovie.construct.html">SWFMovie->__construct()</a></div>
+ <div class="next" style="float: right;"><a href="function.swfmovie.addexport.html">SWFMovie->addExport()</a></div>
+ <div class="up"><a href="ref.ming.html">Ming (flash)</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,258 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>データをバイナリ文字列にパックする</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ignore-user-abort.html">ignore_user_abort</a></div>
+ <div class="next" style="float: right;"><a href="function.php-check-syntax.html">php_check_syntax</a></div>
+ <div class="up"><a href="ref.misc.html">その他</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.pack" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">pack</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">pack ― データをバイナリ文字列にパックする</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">string</span> <span class="methodname"><b><b>pack</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$format</tt></span>
+   [, <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$args</tt></span>
+   [, <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$...</tt></span>
+  ]] )</div>
+
+  <p class="para">
+   指定された引数を <i><tt class="parameter">format</tt></i>
+ に基づいて
+   バイナリ文字列にパックします。
+  </p>
+  <p class="para">
+   この関数のアイデアは Perl からのものであり、フォーマット指定用の
+   コードは Perl と同様に動作します。しかし、中には存在しない書式コードもあります。
+   たとえば Perl の &quot;u&quot; は存在しません。
+  </p>
+  <p class="para">
+   符号付及び符号無しの区別は関数 <a href="function.unpack.html" class="function">unpack()</a> にのみ
+   影響を与えます。関数 <b>pack()</b> は符号付及び符号無しの
+   フォーマットコードのどちらでも同じ結果となることに注意しましょう。
+  </p>
+  <p class="para">
+   PHP は内部的に値をマシン依存の大きさの符号付の
+   <a href="language.types.integer.html" class="type integer">integer</a> 値として保持することにも注意してください。
+   このように保持するには大きすぎる符号無しの値を与えた場合、
+   <a href="language.types.float.html" class="type float">float</a> に変換する際にしばしば期待外れの結果となります。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">format</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       フォーマット文字列は、
+       フォーマットコードの後にオプションの反復指定用引数が続く形式と
+       なっています。反復指定用引数として整数値、または入力データの最後まで
+       反復を意味する <i class="literal">*</i> のどちらかを指定することができます。
+       a, A, h, H の場合、
+       反復数はそのデータ引数が取得する文字の数を指定します。反復数が @ の場合、
+       次のデータを置く場所の絶対位置を表します。その他の場合、反復数は
+       データ引数が使われる数を指定し、結果のバイナリ文字列にパックされます。
+      </p>
+      <p class="para">
+       現在、実装されているものを以下に示します。
+       <table border="5">
+        <caption><b><b>pack()</b> の書式文字</b></caption>
+        <colgroup>
+
+         <thead valign="middle">
+          <tr valign="middle">
+           <th colspan="1">コード</th>
+           <th colspan="1">説明</th>
+          </tr>
+
+         </thead>
+
+         <tbody valign="middle">
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">a</td>
+           <td colspan="1" rowspan="1" align="left">NUL で埋めた文字列</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">A</td>
+           <td colspan="1" rowspan="1" align="left">空白で埋めた文字列</td></tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">h</td>
+           <td colspan="1" rowspan="1" align="left">十六進文字列、下位ニブルが先</td></tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">H</td>
+           <td colspan="1" rowspan="1" align="left">十六進文字列、上位ニブルが先</td></tr>
+
+          <tr valign="middle"><td colspan="1" rowspan="1" align="left">c</td><td colspan="1" rowspan="1" align="left">signed char</td></tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">C</td>
+           <td colspan="1" rowspan="1" align="left">unsigned char</td></tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">s</td>
+           <td colspan="1" rowspan="1" align="left">signed short (常に 16 ビット、マシンのバイトオーダー)</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">S</td>
+           <td colspan="1" rowspan="1" align="left">unsigned short (常に 16 ビット、マシンのバイトオーダー)</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">n</td>
+           <td colspan="1" rowspan="1" align="left">unsigned short (常に 16 ビット、ビッグエンディアンバイトオーダー)</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">v</td>
+           <td colspan="1" rowspan="1" align="left">unsigned short (常に 16 ビット、リトルエンディアンバイトオーダー)</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">i</td>
+           <td colspan="1" rowspan="1" align="left">signed integer (サイズおよびバイトオーダーはマシン依存)</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">I</td>
+           <td colspan="1" rowspan="1" align="left">unsigned integer (サイズおよびバイトオーダーはマシン依存)</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">l</td>
+           <td colspan="1" rowspan="1" align="left">signed long (常に 32 ビット、マシンのバイトオーダー)</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">L</td>
+           <td colspan="1" rowspan="1" align="left">unsigned long (常に 32 ビット、マシンのバイトオーダー)</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">N</td>
+           <td colspan="1" rowspan="1" align="left">unsigned long (常に 32 ビット、ビッグエンディアンバイトオーダー)</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">V</td>
+           <td colspan="1" rowspan="1" align="left">unsigned long (常に 32 ビット、リトルエンディアンバイトオーダー)</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">f</td>
+           <td colspan="1" rowspan="1" align="left">float (サイズおよび表現はマシン依存)</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">d</td>
+           <td colspan="1" rowspan="1" align="left">double (サイズおよび表現はマシン依存)</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">x</td>
+           <td colspan="1" rowspan="1" align="left">NUL バイト</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">X</td>
+           <td colspan="1" rowspan="1" align="left">1 バイト戻る</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">@</td>
+           <td colspan="1" rowspan="1" align="left">絶対位置まで NUL で埋める</td>
+          </tr>
+
+         </tbody>
+        </colgroup>
+
+       </table>
+
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">args</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   バイナリ文字列を含むデータを返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>pack()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$binarydata&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">pack</span><span style="color: #007700">(</span><span style="color: #DD0000">"nvc*"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0x1234</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0x5678</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">65</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">66</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>
+     この結果のバイナリ文字列の長さは 6 バイト長で、バイト列 0x12, 0x34,
+     0x78, 0x56, 0x41, 0x42となります。
+    </p></div>
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.unpack.html" class="function">unpack()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ignore-user-abort.html">ignore_user_abort</a></div>
+ <div class="next" style="float: right;"><a href="function.php-check-syntax.html">php_check_syntax</a></div>
+ <div class="up"><a href="ref.misc.html">その他</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

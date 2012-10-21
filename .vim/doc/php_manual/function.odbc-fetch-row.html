@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>行を取り込む</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.odbc-fetch-object.html">odbc_fetch_object</a></div>
+ <div class="next" style="float: right;"><a href="function.odbc-field-len.html">odbc_field_len</a></div>
+ <div class="up"><a href="ref.uodbc.html">ODBC</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.odbc-fetch-row" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">odbc_fetch_row</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">odbc_fetch_row ― 行を取り込む</p>
+
+ </div>
+ <div class="refsect1 u">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>odbc_fetch_row</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$result_id</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$row_number</tt></span>
+  ] )</div>
+
+  <p class="para">
+   <b>odbc_fetch_row()</b> が成功した場合 (行があった場合)、
+   <b><tt>TRUE</tt></b> が返されます。もう行がない場合、<b><tt>FALSE</tt></b> が返されます。
+  </p>
+  <p class="para">
+   <b>odbc_fetch_row()</b> は、<a href="function.odbc-do.html" class="function">odbc_do()</a> や 
+   <a href="function.odbc-exec.html" class="function">odbc_exec()</a> から返された行データを取得します。
+   <b>odbc_fetch_row()</b> がコールされた後、この行のフィールドは、
+   <a href="function.odbc-result.html" class="function">odbc_result()</a> でアクセス可能となります。
+  </p>
+  <p class="para">
+   <i><tt class="parameter">row_number</tt></i>
+ が指定されない場合、
+   <b>odbc_fetch_row()</b> は、
+   結果セットにおける次の行を取り込もうと試みます。
+   <i><tt class="parameter">row_number</tt></i>
+ を指定した
+   <b>odbc_fetch_row()</b>
+   のコールと指定しないコールを混用することができます。
+  </p>
+  <p class="para">
+   結果を複数回走査したい場合、<b>odbc_fetch_row()</b> を
+   <i><tt class="parameter">row_number</tt></i>
+ に 1 を指定してコールし、
+   続いて結果を再度見るために
+   <i><tt class="parameter">row_number</tt></i>
+ を指定せずに
+   <b>odbc_fetch_row()</b> を実行しつづけます。
+   行を番号で取り込むことをドライバがサポートしていない場合、
+   <i><tt class="parameter">row_number</tt></i>
+ パラメータは無視されます。
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.odbc-fetch-object.html">odbc_fetch_object</a></div>
+ <div class="next" style="float: right;"><a href="function.odbc-field-len.html">odbc_field_len</a></div>
+ <div class="up"><a href="ref.uodbc.html">ODBC</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

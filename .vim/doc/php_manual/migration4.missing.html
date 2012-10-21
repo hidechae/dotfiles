@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>廃止された関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="migration4.empty.html">empty("0")</a></div>
+ <div class="next" style="float: right;"><a href="migration4.extensions.html">PHP 3拡張機能</a></div>
+ <div class="up"><a href="migration4.html">PHP 3 から PHP 4 への移行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="migration4.missing" class="section">
+   <h2 class="title">廃止された関数</h2>
+   <p class="para">
+    PHP 4は多くの新しい機能と拡張を導入していますが、同時にいくつか
+    のバージョン3の関数は廃止されています。コア関数のいくつかは、
+    Zendエンジンを使用する4で導入されたパーサと実行モジュールの分割
+    という新たな形態では動作しないため、廃止されています。他の関数や拡
+    張機能全体もより新しい関数や拡張が同じタスクをより良くより一般的な
+    手法で行うため古くなっています。いくつかの関数は単にまだ移植されて
+    いないだけであり、いくつかの関数や拡張はライセンス上の問題により廃
+    止されています。
+   </p>
+
+   <div id="migration4.missing.concept" class="section">
+    <h2 class="title">コンセプトの変更により廃止された関数</h2>
+    <p class="para">
+     PHP 4ではパースと実行が分割されており、実行時に(現在、Zendエン
+     ジンに組み込まれている)パーサの動作を変更することは、パースが実行
+     前に既に行われているため、もうできません。
+     
+     <var class="filename">php.ini</var> ファイルで適当な値を設定することによ
+     りパーサの動作を変更することが可能です。
+    </p>
+    <p class="para">
+     PHP 3の機能でPHP 4でサポートされていない機能としては、
+     このマニュアルで記述されている実験的なデバッグインターフェースの
+     サポートがあります。独立した本格的なデバッガがZendの製品としてリ
+     リースされています。
+    </p>
+   </div>
+
+   <div id="migration4.deprecate" class="section">
+    <h2 class="title">推奨されない関数と拡張</h2>
+    <p class="para">
+     Adabas および Solid データベース拡張は、もはや推奨されません。
+     今後は、unified ODBC 拡張を代わりに使用してください。
+    </p>
+   </div>
+
+   <div id="migration4.unset" class="section">
+    <h2 class="title"><a href="function.unset.html" class="function">unset()</a>のステータスの変更</h2>
+    <p class="para">
+     <a href="function.unset.html" class="function">unset()</a>はまだ使用可能ですが、PHP 4ではリテラ
+     ルとして実装されるように変更されており、このため、&#039;真の&#039;関数とし
+     てはもはや数えられていません。
+    </p>
+    <p class="para">
+     これは、<a href="function.unset.html" class="function">unset()</a> の動作を変更するものではないの
+     で、直接的な変更点があるわけではありませんが、
+     <a href="function.function-exists.html" class="function">function_exists()</a> により &quot;unset&quot; を調べた場合、
+     <a href="function.echo.html" class="function">echo()</a>のような他の低レベル関数と同様に
+     <b><tt>FALSE</tt></b> が返されます。
+    </p>
+    <p class="para">
+     その他のより実際的な変更としては、<a href="function.unset.html" class="function">unset()</a> を間
+     接的にコールすることができなくなったというものがあります。このた
+     め、<i class="literal">$func=&quot;unset&quot;; $func($somevar)</i> はもう動作
+     しません。
+    </p>
+   </div>
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="migration4.empty.html">empty("0")</a></div>
+ <div class="next" style="float: right;"><a href="migration4.extensions.html">PHP 3拡張機能</a></div>
+ <div class="up"><a href="migration4.html">PHP 3 から PHP 4 への移行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

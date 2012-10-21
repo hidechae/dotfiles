@@ -1,0 +1,2002 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>MySQL 改良版拡張サポート（mysqli）</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.pdo-mysql.connection.html">PDO_MYSQL DSN</a></div>
+ <div class="next" style="float: right;"><a href="function.mysqli-affected-rows.html">mysqli_affected_rows</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">MySQL 改良版拡張サポート（mysqli）</h1>
+  
+  
+  <div class="partintro">
+   <div id="mysqli.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     mysqli 拡張サポートによって MySQL 4.1 以上で提供される機能を利用することが
+     できるようになります。MySQL データベースサーバに関する詳細は
+     <a href="http://www.mysql.com/" class="link external">&raquo; http://www.mysql.com/</a> をご覧ください。
+    </p>
+    <p class="para">
+     MySQL に関するドキュメントは
+     <a href="http://dev.mysql.com/doc/" class="link external">&raquo; http://dev.mysql.com/doc/</a>
+     にあります。
+    </p>
+    <p class="para">
+     このドキュメントの一部は、MySQL AB の許可を得て MySQL マニュアルから引用
+     したものです。
+    </p>    
+   </div>
+   
+   <div id="mysqli.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">
+     これらの関数を有効にするには、mysqli 拡張サポートを
+     有効にして PHP をコンパイルする必要があります。
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      mysqli 拡張サポートは MySQL 4.1.3 以上で動作するよう設計されています。
+      それ以前のバージョンについては <a href="ref.mysql.html" class="link">MySQL</a>
+      拡張サポートのドキュメントをご覧ください。
+     <br />
+    </p></blockquote>
+   </div>
+
+   
+
+
+
+<div id="mysqli.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  PHP に mysqli 拡張サポートを追加するには、
+  <span class="option">--with-mysqli=mysql_config_path/mysql_config</span>
+  オプションを指定して PHP をコンパイルする必要があります。
+  <i class="literal">mysql_config_path</i> には MySQL 4.1 以上に付属する
+  <i class="literal">mysql_config</i> プログラムが存在するパスを
+  指定してください。
+ </p>
+
+ <p class="para">
+  mysqli 拡張サポートと標準の mysql 拡張を共存させる形でインストールしたい
+  場合には、衝突を避けるために同じクライアントライブラリを利用する必要があります。
+ </p>
+
+ <div id="mysqli.installation.windows" class="section">
+  <h2 class="title">Windows へのインストール</h2>
+  <p class="para">
+   MySQLi はデフォルトでは有効となりません。したがって <var class="filename">php.ini</var>
+   で <var class="filename">php_mysqli.dll</var> DLL を有効にしておく必要があります。
+   また、PHP が MySQL クライアントライブラリにアクセスできなければなりません。
+   <var class="filename">libmysql.dll</var> というファイルが Windows 版の PHP
+   配布ファイルに含まれており、PHP が MySQL と話すためにはこのファイルが
+   Windows の <span class="envar">PATH</span> にある必要があります。そのための方法については、
+   &quot;<a href="faq.installation.html#faq.installation.addtopath" class="link">Windows で PHP
+   のディレクトリを PATH  に追加するにはどうすればいいのですか?</a>&quot;
+   という FAQ を参照してください。
+   <var class="filename">libmysql.dll</var> を Windows
+   のシステムディレクトリにコピーしても動作しますが
+   (システムディレクトリは、デフォルトでシステムの <span class="envar">PATH</span>
+   に含まれています)、お勧めしません。
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    MySQL 5 に接続する際は、
+    <a href="http://dev.mysql.com/downloads/connector/php/" class="link external">&raquo; http://dev.mysql.com/downloads/connector/php/</a>
+    からバイナリをダウンロードすることを推奨します。
+   <br />
+  </p></blockquote>
+  <p class="para">
+   (<var class="filename">php_mysqli.dll</var> も含めた) PHP
+   拡張モジュールを有効にするには、PHP ディレクティブ
+   <a href="ini.core.html#ini.extension-dir" class="link">extension_dir</a>
+   に拡張モジュールの存在する場所を設定するべきです。
+   <a href="install.windows.manual.html" class="link">Windows
+   へのマニュアルインストール方法</a> も参照してください。PHP 5 での
+   extension_dir の例は <i class="literal">c:\php\ext</i> です。
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    Web サーバの起動時に以下のようなエラーが発生する場合：
+    <i class="literal">&quot;Unable to load dynamic library &#039;./php_mysqli.dll&#039;&quot;</i>
+    これは <var class="filename">php_mysqli.dll</var> や
+    <var class="filename">libmysql.dll</var>
+    がシステムによって見つけられなかったことが原因です。
+   <br />
+  </p></blockquote>
+ </div>
+
+</div>
+
+
+
+
+   
+
+
+
+<div id="mysqli.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+  <table border="5">
+   <caption><b>MySQLi 設定オプション</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">名前</th>
+      <th colspan="1">デフォルト</th>
+      <th colspan="1">変更の可否</th>
+      <th colspan="1">変更履歴</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">mysqli.max_links</td>
+      <td colspan="1" rowspan="1" align="left">&quot;-1&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+      <td colspan="1" rowspan="1" align="left">PHP 5.0.0 以降で使用可能です。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">mysqli.default_port</td>
+      <td colspan="1" rowspan="1" align="left">&quot;3306&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td colspan="1" rowspan="1" align="left">PHP 5.0.0 以降で使用可能です。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">mysqli.default_socket</td>
+      <td colspan="1" rowspan="1" align="left">NULL</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td colspan="1" rowspan="1" align="left">PHP 5.0.0 以降で使用可能です。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">mysqli.default_host</td>
+      <td colspan="1" rowspan="1" align="left">NULL</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td colspan="1" rowspan="1" align="left">PHP 5.0.0 以降で使用可能です。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">mysqli.default_user</td>
+      <td colspan="1" rowspan="1" align="left">NULL</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td colspan="1" rowspan="1" align="left">PHP 5.0.0 以降で使用可能です。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">mysqli.default_pw</td>
+      <td colspan="1" rowspan="1" align="left">NULL</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td colspan="1" rowspan="1" align="left">PHP 5.0.0 以降で使用可能です。</td>
+     </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+ </p>
+ <p class="para">
+  PHP_INI_* 定数の詳細と定義については、
+  <a href="configuration.changes.html" class="link">設定の変更</a>
+  を参照してください。 
+ </p>
+
+ <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+
+ <p class="para">
+ <dl>
+
+  <dt id="ini.mysqli.max-links">
+   <span class="term">
+    <i><tt class="parameter">mysqli.max_links</tt></i>
+
+    <a href="language.types.integer.html" class="type integer">integer</a>
+   </span>
+   <dd>
+
+    <p class="para">
+     プロセス毎の MySQL 接続の最大数。
+    </p>
+   </dd>
+
+  </dt>
+
+   <dt id="ini.mysqli.default-port">
+   <span class="term">
+    <i><tt class="parameter">mysqli.default_port</tt></i>
+
+    <a href="language.types.string.html" class="type string">string</a>
+   </span>
+   <dd>
+
+    <p class="para">
+     他のポートが指定されない場合、データベースサーバ接続時に使用される
+     デフォルトの TCP ポート番号。デフォルトが指定されない場合は、
+     環境変数 <span class="envar">MYSQL_TCP_PORT</span>・
+     <var class="filename">/etc/services</var> の
+     <i class="literal">mysql-tcp</i>エントリ・コンパイル時の
+     <b><tt>MYSQL_PORT</tt></b> 定数の順番でポートが取得されます。
+     Win32 では、<b><tt>MYSQL_PORT</tt></b> 定数のみが使用されます。
+    </p>
+   </dd>
+
+  </dt>
+
+  
+  <dt id="ini.mysqli.default-socket">
+   <span class="term">
+    <i><tt class="parameter">mysqli.default_socket</tt></i>
+
+    <a href="language.types.string.html" class="type string">string</a>
+   </span>
+   <dd>
+
+    <p class="para">
+     他にソケット名が指定されない場合、ローカルな
+     データベースサーバに接続する時のデフォルトのソケット名。
+    </p>
+   </dd>
+
+  </dt>
+
+   <dt id="ini.mysqli.default-host">
+   <span class="term">
+    <i><tt class="parameter">mysqli.default_host</tt></i>
+
+    <a href="language.types.string.html" class="type string">string</a>
+   </span>
+   <dd>
+
+    <p class="para">
+     他のサーバ名が指定されない場合に、データベースサーバへの接続時に
+     使用されるデフォルトのサーバ名。 
+     <a href="features.safe-mode.html#ini.safe-mode" class="link">safe mode</a> では適用されません。 
+    </p>
+   </dd>
+
+  </dt>
+
+  
+  <dt id="ini.mysqli.default-user">
+   <span class="term">
+    <i><tt class="parameter">mysqli.default_user</tt></i>
+
+    <a href="language.types.string.html" class="type string">string</a>
+   </span>
+   <dd>
+
+    <p class="para">
+     他のユーザ名が指定されない場合に、データベースサーバへの接続時に
+     使用されるデフォルトのユーザ名。 
+     <a href="features.safe-mode.html#ini.safe-mode" class="link">safe mode</a> では適用されません。 
+    </p>
+   </dd>
+
+  </dt>
+
+  
+  <dt id="ini.mysqli.default-pw">
+   <span class="term">
+    <i><tt class="parameter">mysqli.default_password</tt></i>
+
+    <a href="language.types.string.html" class="type string">string</a>
+   </span>
+   <dd>
+
+    <p class="para">
+     他のパスワードが指定されない場合に、データベースサーバへの接続時に
+     使用されるデフォルトのパスワード。 
+     <a href="features.safe-mode.html#ini.safe-mode" class="link">safe mode</a> では適用されません。 
+    </p>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+ </p>
+</div>
+
+
+
+
+   
+   <div id="mysqli.classes" class="section">
+    <h2 class="title">定義済みクラス</h2>
+
+    <div id="mysqli.class.mysql" class="section">
+     <h2 class="title"><span class="classname">mysqli</span></h2>
+     <p class="para">
+      PHP と MySQL データベースの間の接続を表します。
+     </p>
+     <div id="mysqli.class.mysql.constructor" class="section">
+      <h2 class="title">コンストラクタ</h2>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-connect.html" class="link">mysqli</a> - 新たに mysqli オブジェクトを作成します</p>
+       </li>
+      </ul>
+     </div>
+     <div id="mysqli.class.mysql.methods" class="section">
+      <h2 class="title">メソッド</h2>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-autocommit.html" class="link">autocommit</a> - データベース変更時のオートコミットをオンまたはオフにします</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-change-user.html" class="link">change_user</a> - 指定したデータベース接続のユーザを変更します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-character-set-name.html" class="link">character_set_name</a> - データベース接続のデフォルトの文字セットを返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-close.html" class="link">close</a> - オープンされている接続をクローズします</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-commit.html" class="link">commit</a> - カレントのトランザクションをコミットします</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-connect.html" class="link">connect</a> - MySQL データベースサーバーへの新規接続をオープンします</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-debug.html" class="link">debug</a> - デバッグ処理を行います</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-dump-debug-info.html" class="link">dump_debug_info</a> - デバッグ情報をダンプします</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-get-client-info.html" class="link">get_client_info</a> - クライアントのバージョンを返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-get-host-info.html" class="link">get_host_info</a> - 使用されている接続の型を返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-get-server-info.html" class="link">get_server_info</a> - MySQL サーバーのバージョンを返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-get-server-version.html" class="link">get_server_version</a> - MySQL サーバーのバージョンを返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-init.html" class="link">init</a> - mysqli オブジェクトを初期化します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-info.html" class="link">info</a> - 直近に実行されたクエリに関する情報を取得します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-kill.html" class="link">kill</a> - 指定した MySQL スレッドをキルするようサーバーに指示します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-multi-query.html" class="link">multi_query</a> - 複数のクエリを実行します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-more-results.html" class="link">more_results</a> - 実行した複数のクエリについて結果がまだ残ってるかどうかを確認します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-next-result.html" class="link">next_result</a> - 実行した複数のクエリから次の結果を読み込みます</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-options.html" class="link">options</a> - オプションを設定します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-ping.html" class="link">ping</a> - 指定したサーバー接続に ping を行い、接続がない場合には再接続します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-prepare.html" class="link">prepare</a> - SQL クエリをパースします</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-query.html" class="link">query</a> - クエリを実行します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-real-connect.html" class="link">real_connect</a> - MySQL データベースサーバーへの接続をオープンします</p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.mysqli-real-escape-string.html" class="link">escape_string</a> - 接続に使用する文字セットを考慮して SQL 命令が含まれる文字列の中の特殊文字をエスケープします</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-rollback.html" class="link">rollback</a> - カレントのトランザクションをロールバックします</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-select-db.html" class="link">select_db</a> - デフォルトのデータベースを選択します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-set-charset.html" class="link">set_charset</a> - デフォルトのクライアント文字セットを設定します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-ssl-set.html" class="link">ssl_set</a> - SSL パラメータを設定します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-stat.html" class="link">stat</a> - カレントのシステムステータスを取得します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-stmt-init.html" class="link">stmt_init</a>- <a href="function.mysqli-stmt-prepare.html" class="link">mysqli_stmt_prepare</a> で利用するステートメントを初期化します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-store-result.html" class="link">store_result</a> - 直近のクエリから結果セットを伝送します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-thread-safe.html" class="link">thread_safe</a> - スレッドセーフかどうかを返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-use-result.html" class="link">use_result</a> - 直近のクエリからバッファリングされていない結果セットを伝送します</p>
+       </li>
+      </ul>
+     </div>
+
+     <div id="mysqli.class.mysql.properties" class="section">
+      <h2 class="title">プロパティ</h2>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-affected-rows.html" class="link">affected_rows</a> - 直近の MySQL 操作で変更された行の数を取得します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-get-client-info.html" class="link">client_info</a> - MySQL クライアントのバージョンを文字列で返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-get-client-version.html" class="link">client_version</a> - MySQL クライアントのバージョンを整数で返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-errno.html" class="link">errno</a> - 直近にコールされた関数のエラーコードを返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-error.html" class="link">error</a> - 直近にコールされた関数のエラー文字列を返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-field-count.html" class="link">field_count</a> - 直近のクエリのカラム数を返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-get-host-info.html" class="link">host_info</a> - 使用されている接続の型を返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-info.html" class="link">info</a> - 直近に実行されたクエリについての情報を取得します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-insert-id.html" class="link">insert_id</a> - 直近のクエリで使用された、自動生成 ID を返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-get-proto-info.html" class="link">protocol_version</a> - 使用されている MySQL プロトコルのバージョンを返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para">server_info - サーバのバージョン番号を表す文字列を返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para">server_version - サーバのバージョン番号を整数値で返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-sqlstate.html" class="link">sqlstate</a> - 直近のエラーについて、SQLSTATE エラーコードを含む文字列を返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-thread-id.html" class="link">thread_id</a> - カレントの接続のスレッド ID を返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-warning-count.html" class="link">warning_count</a> - 直近の SQL ステートメントの中で発生した警告の数を返します</p>
+       </li>
+
+      </ul>
+     </div>
+    </div>
+
+    <div id="mysqli.classes.stmt" class="section">
+     <h2 class="title"><span class="classname">mysqli_stmt</span></h2>
+     <p class="para">
+      プリペアドステートメントを表します。
+     </p>
+     <div id="mysqli.class.stmt.methods" class="section">
+      <h2 class="title">メソッド</h2>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-stmt-bind-param.html" class="link">bind_param</a> - 変数をプリペアドステートメントにバインドします</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-stmt-bind-result.html" class="link">bind_result</a> - 結果を保存するため、変数をプリペアドステートメントにバインドします</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-stmt-close.html" class="link">close</a> - プリペアドステートメントを閉じます</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-stmt-data-seek.html" class="link">data_seek</a> - ステートメント結果セットの任意の行に移動します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-stmt-execute.html" class="link">execute</a> - プリペアドステートメントを実行します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-stmt-fetch.html" class="link">fetch</a> - プリペアドステートメントから結果を取得し、バインドした変数に保存します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-stmt-free-result.html" class="link">free_result</a> - 指定したステートメントハンドルの結果を保存しているメモリを開放します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-stmt-prepare.html" class="link">prepare</a> - SQL クエリを準備します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-stmt-reset.html" class="link">reset</a> - プリペアドステートメントをリセットします</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-stmt-result-metadata.html" class="link">result_metadata</a> - プリペアドステートメントから、メタ情報の結果セットを取得します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-stmt-send-long-data.html" class="link">send_long_data</a> - データを分割して送信します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-stmt-store-result.html" class="link">store_result</a> - プリペアドステートメントの結果をすべてメモリに保存します</p>
+       </li>
+      </ul>
+     </div>
+
+     <div id="mysqli.class.stmt.properties" class="section">
+      <h2 class="title">プロパティ</h2>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-stmt-affected-rows.html" class="link">affected_rows</a> - 直近のステートメントの実行により更新された行数を返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-stmt-errno.html" class="link">errno</a> - 直近のステートメントのエラーコードを返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-stmt-error.html" class="link">error</a> - 直近のステートメントのエラー文字列を返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-field-count.html" class="link">field_count</a> - 結果セットのカラムの数を返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para">id - ステートメントの ID を返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-insert-id.html" class="link">insert_id</a> - プリペアドステートメントで AUTO_INCREMENT のカラムに設定された値を返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-num-rows.html" class="link">num_rows</a> - 結果セットの行の数を返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-stmt-param-count.html" class="link">param_count</a> - 指定したプリペアドステートメントのパラメータ数を返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-stmt-sqlstate.html" class="link">sqlstate</a> - 直近のステートメントについて SQLSTATE エラーコードを含む文字列を返します</p>
+       </li>
+      </ul>
+     </div>
+    </div>
+
+    <div id="mysqli.classes.result" class="section">
+     <h2 class="title"><span class="classname">mysqli_result</span></h2>
+     <p class="para">
+      データベースへのクエリにより得られた結果セットを表します。
+     </p>
+     <div id="mysqli.class.result.methods" class="section">
+      <h2 class="title">メソッド</h2>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-free-result.html" class="link">close</a> - 結果セットを閉じます</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-data-seek.html" class="link">data_seek</a> - 内部の結果ポインタを移動します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-fetch-array.html" class="link">fetch_array</a> - 結果の行を連想配列・数値添字配列あるいはその両方で取得します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-fetch-assoc.html" class="link">fetch_assoc</a> - 結果の行を連想配列で取得します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-fetch-field.html" class="link">fetch_field</a> - 結果セットからカラムの情報を取得します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-fetch-fields.html" class="link">fetch_fields</a> - 結果セットからすべてのカラムの情報を取得します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-fetch-field-direct.html" class="link">fetch_field_direct</a> - 指定したカラムの情報を取得します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-fetch-object.html" class="link">fetch_object</a> - 結果の行をオブジェクトで取得します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-fetch-row.html" class="link">fetch_row</a> - 結果の行を数値添字の配列で取得します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-field-seek.html" class="link">field_seek</a> - 結果ポインタを指定したフィールドオフセットに移動します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-free-result.html" class="link">free_result</a> - 結果のメモリを開放します</p>
+       </li>
+      </ul>
+     </div>
+
+     <div id="mysqli.class.result.properties" class="section">
+      <h2 class="title">プロパティ</h2>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-field-tell.html" class="link">current_field</a> - 現在のフィールドポインタのオフセットを返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-field-count.html" class="link">field_count</a> - 結果セットのフィールド数を返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-fetch-lengths.html" class="link">lengths</a> - カラムの長さの配列を返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.mysqli-num-rows.html" class="link">num_rows</a> - 結果の行数を返します</p>
+       </li>
+       <li class="listitem">
+        <p class="para">type - <b><tt>MYSQLI_STORE_RESULT</tt></b> あるいは <b><tt>MYSQLI_USE_RESULT</tt></b> を返します</p>
+       </li>
+      </ul>
+     </div>
+    </div>
+   </div>
+
+   
+
+
+
+<div id="mysqli.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ 
+ <table border="5">
+  <caption><b>MySQLi 定数</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">定数名</th>
+      <th colspan="1">説明</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_READ_DEFAULT_GROUP</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">
+       `my.cnf&#039; の指定した名前のグループか、あるいは <i class="literal">MYSQLI_READ_DEFAULT_FILE</i>
+       で指定したファイルからオプションを読み込みます。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_READ_DEFAULT_FILE</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">
+       <i class="literal">my.cnf</i> のかわりに、指定したファイルからオプションを
+       読み込みます。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_OPT_CONNECT_TIMEOUT</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">
+       接続のタイムアウトまでの秒数。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_OPT_LOCAL_INFILE</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">
+       <i class="literal">LOAD LOCAL INFILE</i> コマンドを有効にします。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_INIT_COMMAND</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">
+       MySQL サーバへの接続時に実行するコマンド。
+       再接続時にも自動的に再実行されます。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_CLIENT_SSL</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">
+       SSL（暗号化プロトコル）を使用します。このオプションは、アプリケーション
+       プログラムで指定することはできず、MySQL クライアントライブラリの内部で設定します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_CLIENT_COMPRESS</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">
+       圧縮プロトコルを使用します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_CLIENT_INTERACTIVE</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">
+       （wait_timeout のかわりに）interactive_timeout の秒数を使用できるように
+       します。クライアントセッションの wait_timeout 変数の値は、interactive_timeout
+       変数の値に設定されます。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_CLIENT_IGNORE_SPACE</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">
+       関数名に続く空白文字を許可します。すべての関数名を予約語とします。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_CLIENT_NO_SCHEMA</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">
+       db_name.tbl_name.col_name 形式の使用を禁止します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_CLIENT_MULTI_QUERIES</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_STORE_RESULT</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">
+       結果セットをバッファに格納します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_USE_RESULT</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">
+       結果セットをバッファに格納しません。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_ASSOC</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">
+       行データを、カラム名をインデックスとする配列に格納して返します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_NUM</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">
+       行データを、数値インデックスの配列に格納して返します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_BOTH</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">
+       行データを、数値インデックス・カラム名インデックスの両方を
+       保持する配列に格納して返します。
+      </td>
+     </tr>
+
+     <tr valign="middle">     
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_NOT_NULL_FLAG</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">
+      フィールドは、<i class="literal">NOT NULL</i> と定義されています。
+     </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_PRI_KEY_FLAG</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">
+       フィールドは、プライマリキーの一部です。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_UNIQUE_KEY_FLAG</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">
+       フィールドは、ユニークキーの一部です。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_MULTIPLE_KEY_FLAG</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">
+      フィールドは、インデックスの一部です。
+     </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_BLOB_FLAG</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">BLOB</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_UNSIGNED_FLAG</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">UNSIGNED</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_ZEROFILL_FLAG</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">ZEROFILL</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_AUTO_INCREMENT_FLAG</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">AUTO_INCREMENT</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_TIMESTAMP_FLAG</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">TIMESTAMP</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_SET_FLAG</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">SET</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_NUM_FLAG</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">NUMERIC</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_PART_KEY_FLAG</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは、マルチインデックスの一部です。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_GROUP_FLAG</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">GROUP BY</i> の一部です。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_TYPE_DECIMAL</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">DECIMAL</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_TYPE_NEWDECIMAL</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">精密な <i class="literal">DECIMAL</i> あるいは <i class="literal">NUMERIC</i> のフィールドです (MySQL 5.0.3 以降)。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_TYPE_BIT</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">BIT</i> と定義されています (MySQL 5.0.3 以降)。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_TYPE_TINY</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">TINYINT</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_TYPE_SHORT</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">INT</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_TYPE_LONG</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">INT</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_TYPE_FLOAT</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">FLOAT</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_TYPE_DOUBLE</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">DOUBLE</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_TYPE_NULL</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">DEFAULT NULL</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_TYPE_TIMESTAMP</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">TIMESTAMP</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_TYPE_LONGLONG</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">BIGINT</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_TYPE_INT24</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">MEDIUMINT</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_TYPE_DATE</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">DATE</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_TYPE_TIME</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">TIME</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_TYPE_DATETIME</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">DATETIME</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_TYPE_YEAR</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">YEAR</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_TYPE_NEWDATE</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">DATE</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_TYPE_ENUM</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">ENUM</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_TYPE_SET</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">SET</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_TYPE_TINY_BLOB</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">TINYBLOB</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_TYPE_MEDIUM_BLOB</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">MEDIUMBLOB</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_TYPE_LONG_BLOB</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">LONGBLOB</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_TYPE_BLOB</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">BLOB</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_TYPE_VAR_STRING</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">VARCHAR</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_TYPE_STRING</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">CHAR</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_TYPE_GEOMETRY</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">フィールドは <i class="literal">GEOMETRY</i> と定義されています。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_NEED_DATA</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">バインド変数に、さらにデータを使用可能です。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_NO_DATA</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+     <td colspan="1" rowspan="1" align="left">バインド変数に使用可能なデータがありません。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>MYSQLI_DATA_TRUNCATED</tt></b>
+       (<a href="language.types.integer.html" class="link">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">
+       データのトランケーションが発生しました。PHP 5.1.0 および MySQL 5.0.5 以降で使用可能です。
+      </td>
+     </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+</div>
+
+
+
+
+
+   
+   <div class="section">
+    <h2 class="title">例</h2>
+    <p class="para">
+     MySQLI ドキュメンテーションのすべての例では、MySQL AB の world
+     データベースを使用しています。これは
+     <a href="http://dev.mysql.com/get/Downloads/Manual/world.sql.gz/from/pick" class="link external">&raquo; http://dev.mysql.com/get/Downloads/Manual/world.sql.gz/from/pick</a> にあります。
+    </p>
+   </div>   
+  </div>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.mysqli-affected-rows.html">mysqli_affected_rows</a> ― 直前の MySQL の操作で変更された行の数を得る</li><li><a href="function.mysqli-autocommit.html">mysqli_autocommit</a> ― データベース更新の自動コミットをオンまたはオフにする</li><li><a href="function.mysqli-bind-param.html">mysqli_bind_param</a> ― mysqli_stmt_bind_param のエイリアス</li><li><a href="function.mysqli-bind-result.html">mysqli_bind_result</a> ― mysqli_stmt_bind_result のエイリアス</li><li><a href="function.mysqli-change-user.html">mysqli_change_user</a> ― 指定されたデータベース接続のユーザ名を変更する</li><li><a href="function.mysqli-character-set-name.html">mysqli_character_set_name</a> ― データベース接続のデフォルトの文字コードセットを返す</li><li><a href="function.mysqli-client-encoding.html">mysqli_client_encoding</a> ― mysqli_character_set_name のエイリアス</li><li><a href="function.mysqli-close.html">mysqli_close</a> ― 事前にオープンしているデータベース接続を閉じる</li><li><a href="function.mysqli-commit.html">mysqli_commit</a> ― 現在のトランザクションをコミットする</li><li><a href="function.mysqli-connect-errno.html">mysqli_connect_errno</a> ― 直近の接続コールに関するエラーコードを返す</li><li><a href="function.mysqli-connect-error.html">mysqli_connect_error</a> ― 直近の接続エラーの内容を文字列で返す</li><li><a href="function.mysqli-connect.html">mysqli_connect</a> ― 新規に MySQL サーバへの接続をオープンする</li><li><a href="function.mysqli-data-seek.html">mysqli_data_seek</a> ― 結果の任意の行にポインタを移動する</li><li><a href="function.mysqli-debug.html">mysqli_debug</a> ― デバッグ操作を行う</li><li><a href="function.mysqli-disable-reads-from-master.html">mysqli_disable_reads_from_master</a> ― マスタからの読み込みを無効にする</li><li><a href="function.mysqli-disable-rpl-parse.html">mysqli_disable_rpl_parse</a> ― RPL のパースを無効にする</li><li><a href="function.mysqli-dump-debug-info.html">mysqli_dump_debug_info</a> ― デバッグ情報をログに出力する</li><li><a href="function.mysqli-embedded-server-end.html">mysqli_embedded_server_end</a> ― 説明</li><li><a href="function.mysqli-embedded-server-start.html">mysqli_embedded_server_start</a> ― 説明</li><li><a href="function.mysqli-enable-reads-from-master.html">mysqli_enable_reads_from_master</a> ― マスタからの読み込みを有効にする</li><li><a href="function.mysqli-enable-rpl-parse.html">mysqli_enable_rpl_parse</a> ― RPL のパースを有効にする</li><li><a href="function.mysqli-errno.html">mysqli_errno</a> ― 直近の関数コールによるエラーコードを返す</li><li><a href="function.mysqli-error.html">mysqli_error</a> ― 直近のエラーの内容を文字列で返す</li><li><a href="function.mysqli-escape-string.html">mysqli_escape_string</a> ― mysqli_real_escape_string のエイリアス</li><li><a href="function.mysqli-execute.html">mysqli_execute</a> ― mysqli_stmt_execute のエイリアス</li><li><a href="function.mysqli-fetch-array.html">mysqli_fetch_array</a> ― 結果の行を連想配列・数値添字配列あるいはその両方の形式で取得する</li><li><a href="function.mysqli-fetch-assoc.html">mysqli_fetch_assoc</a> ― 結果の行を連想配列で取得する</li><li><a href="function.mysqli-fetch-field-direct.html">mysqli_fetch_field_direct</a> ― 単一のフィールドのメタデータを取得する</li><li><a href="function.mysqli-fetch-field.html">mysqli_fetch_field</a> ― 結果セットの次のフィールドを返す</li><li><a href="function.mysqli-fetch-fields.html">mysqli_fetch_fields</a> ― 結果セットのフィールド情報をオブジェクトの配列で返す</li><li><a href="function.mysqli-fetch-lengths.html">mysqli_fetch_lengths</a> ― 結果セットにおける現在の行のカラムの長さを返す</li><li><a href="function.mysqli-fetch-object.html">mysqli_fetch_object</a> ― 結果セットの現在の行をオブジェクトとして返す</li><li><a href="function.mysqli-fetch-row.html">mysqli_fetch_row</a> ― 結果の行を数値添字配列で取得する</li><li><a href="function.mysqli-fetch.html">mysqli_fetch</a> ― mysqli_stmt_fetch のエイリアス</li><li><a href="function.mysqli-field-count.html">mysqli_field_count</a> ― 直近のクエリのカラムの数を返す</li><li><a href="function.mysqli-field-seek.html">mysqli_field_seek</a> ― 結果ポインタを、指定したフィールドオフセットに設定する</li><li><a href="function.mysqli-field-tell.html">mysqli_field_tell</a> ― 結果ポインタにおける現在のフィールドオフセットを取得する</li><li><a href="function.mysqli-free-result.html">mysqli_free_result</a> ― 結果に関連付けられたメモリを開放する</li><li><a href="function.mysqli-get-charset.html">mysqli_get_charset</a> ― 文字セットオブジェクトを返す</li><li><a href="function.mysqli-get-client-info.html">mysqli_get_client_info</a> ― MySQL クライアントのバージョンを文字列で返す</li><li><a href="function.mysqli-get-client-version.html">mysqli_get_client_version</a> ― MySQL クライアント情報を取得する</li><li><a href="function.mysqli-get-host-info.html">mysqli_get_host_info</a> ― 使用している接続の型を文字列で返す</li><li><a href="function.mysqli-get-metadata.html">mysqli_get_metadata</a> ― mysqli_stmt_result_metadata のエイリアス</li><li><a href="function.mysqli-get-proto-info.html">mysqli_get_proto_info</a> ― 使用している MySQL プロトコルのバージョンを返す</li><li><a href="function.mysqli-get-server-info.html">mysqli_get_server_info</a> ― MySQL サーバのバージョンを返す</li><li><a href="function.mysqli-get-server-version.html">mysqli_get_server_version</a> ― MySQL サーバのバージョンを整数値で返す</li><li><a href="function.mysqli-get-warnings.html">mysqli_get_warnings</a> ― 説明</li><li><a href="function.mysqli-info.html">mysqli_info</a> ― 直近に実行されたクエリの情報を取得する</li><li><a href="function.mysqli-init.html">mysqli_init</a> ― MySQLi を初期化し、mysqli_real_connect() で使用するリソースを返す</li><li><a href="function.mysqli-insert-id.html">mysqli_insert_id</a> ― 直近のクエリで使用した自動生成の ID を返す</li><li><a href="function.mysqli-kill.html">mysqli_kill</a> ― サーバに MySQL スレッドの停止を問い合わせる</li><li><a href="function.mysqli-master-query.html">mysqli_master_query</a> ― マスタ/スレーブ設定で、マスタ側のクエリを実行する</li><li><a href="function.mysqli-more-results.html">mysqli_more_results</a> ― マルチクエリからの結果がまだ残っているかどうかを調べる</li><li><a href="function.mysqli-multi-query.html">mysqli_multi_query</a> ― データベース上でクエリを実行する</li><li><a href="function.mysqli-next-result.html">mysqli_next_result</a> ― multi_query の、次の結果を準備する</li><li><a href="function.mysqli-num-fields.html">mysqli_num_fields</a> ― 結果のフィールド数を取得する</li><li><a href="function.mysqli-num-rows.html">mysqli_num_rows</a> ― 結果の行数を取得する</li><li><a href="function.mysqli-options.html">mysqli_options</a> ― オプションを設定する</li><li><a href="function.mysqli-param-count.html">mysqli_param_count</a> ― mysqli_stmt_param_count のエイリアス</li><li><a href="function.mysqli-ping.html">mysqli_ping</a> ― サーバとの接続をチェックし、もし切断されている場合は再接続を試みる</li><li><a href="function.mysqli-prepare.html">mysqli_prepare</a> ― 実行するための SQL ステートメントを準備する</li><li><a href="function.mysqli-query.html">mysqli_query</a> ― データベース上でクエリを実行する</li><li><a href="function.mysqli-real-connect.html">mysqli_real_connect</a> ― mysql サーバとの接続をオープンする</li><li><a href="function.mysqli-real-escape-string.html">mysqli_real_escape_string</a> ― 接続の現在の文字セットを考慮して、SQL 文で使用する文字列の
+   特殊文字をエスケープする</li><li><a href="function.mysqli-real-query.html">mysqli_real_query</a> ― SQL クエリを実行する</li><li><a href="function.mysqli-report.html">mysqli_report</a> ― 内部のレポート関数を有効あるいは無効にする</li><li><a href="function.mysqli-rollback.html">mysqli_rollback</a> ― 現在のトランザクションをロールバックする</li><li><a href="function.mysqli-rpl-parse-enabled.html">mysqli_rpl_parse_enabled</a> ― RPL のパースが有効かどうかを確認する</li><li><a href="function.mysqli-rpl-probe.html">mysqli_rpl_probe</a> ― RPL の調査</li><li><a href="function.mysqli-rpl-query-type.html">mysqli_rpl_query_type</a> ― RPL クエリの型を返す</li><li><a href="function.mysqli-select-db.html">mysqli_select_db</a> ― クエリを実行するためのデフォルトのデータベースを選択する</li><li><a href="function.mysqli-send-long-data.html">mysqli_send_long_data</a> ― mysqli_stmt_send_long_data のエイリアス</li><li><a href="function.mysqli-send-query.html">mysqli_send_query</a> ― クエリを送信する</li><li><a href="function.mysqli-server-end.html">mysqli_server_end</a> ― 組み込みのサーバをシャットダウンする</li><li><a href="function.mysqli-server-init.html">mysqli_server_init</a> ― 組み込みのサーバを初期化する</li><li><a href="function.mysqli-set-charset.html">mysqli_set_charset</a> ― クライアントのデフォルト文字セットを設定する</li><li><a href="function.mysqli-set-local-infile-default.html">mysqli_set_local_infile_default</a> ― load local infile コマンド用のユーザ定義ハンドラを削除する</li><li><a href="function.mysqli-set-local-infile-handler.html">mysqli_set_local_infile_handler</a> ― LOAD DATA LOCAL INFILE コマンド用のコールバック関数を設定する</li><li><a href="function.mysqli-set-opt.html">mysqli_set_opt</a> ― mysqli_options のエイリアス</li><li><a href="function.mysqli-slave-query.html">mysqli_slave_query</a> ― マスタ/スレーブ設定で、スレーブ側のクエリを実行する</li><li><a href="function.mysqli-sqlstate.html">mysqli_sqlstate</a> ― 直前の MySQL の操作での SQLSTATE エラーを返す</li><li><a href="function.mysqli-ssl-set.html">mysqli_ssl_set</a> ― SSL を使用したセキュアな接続を確立する</li><li><a href="function.mysqli-stat.html">mysqli_stat</a> ― 現在のシステム状態を取得する</li><li><a href="function.mysqli-stmt-affected-rows.html">mysqli_stmt_affected_rows</a> ― 直近に実行されたステートメントで変更・削除・あるいは追加された行の総数を返す</li><li><a href="function.mysqli-stmt-attr-get.html">mysqli_stmt_attr_get</a> ― 説明</li><li><a href="function.mysqli-stmt-attr-set.html">mysqli_stmt_attr_set</a> ― 説明</li><li><a href="function.mysqli-stmt-bind-param.html">mysqli_stmt_bind_param</a> ― プリペアドステートメントのパラメータに変数をバインドする</li><li><a href="function.mysqli-stmt-bind-result.html">mysqli_stmt_bind_result</a> ― 結果を保存するため、プリペアドステートメントに変数をバインドする</li><li><a href="function.mysqli-stmt-close.html">mysqli_stmt_close</a> ― プリペアドステートメントを閉じる</li><li><a href="function.mysqli-stmt-data-seek.html">mysqli_stmt_data_seek</a> ― ステートメントの結果セットの任意の行に移動する</li><li><a href="function.mysqli-stmt-errno.html">mysqli_stmt_errno</a> ― 直近のステートメントのコールに関するエラーコードを返す</li><li><a href="function.mysqli-stmt-error.html">mysqli_stmt_error</a> ― 直近のステートメントのエラー内容を文字列で返す</li><li><a href="function.mysqli-stmt-execute.html">mysqli_stmt_execute</a> ― プリペアドクエリを実行する</li><li><a href="function.mysqli-stmt-fetch.html">mysqli_stmt_fetch</a> ― プリペアドステートメントから結果を取得し、バインド変数に格納する</li><li><a href="function.mysqli-stmt-field-count.html">mysqli_stmt_field_count</a> ― 指定したステートメントのフィールド数を返す</li><li><a href="function.mysqli-stmt-free-result.html">mysqli_stmt_free_result</a> ― 指定したステートメントハンドルの結果を格納したメモリを開放する</li><li><a href="function.mysqli-stmt-get-warnings.html">mysqli_stmt_get_warnings</a> ― 説明</li><li><a href="function.mysqli-stmt-init.html">mysqli_stmt_init</a> ― ステートメントを初期化し、mysqli_stmt_prepare で使用するオブジェクトを返す</li><li><a href="function.mysqli-stmt-insert-id.html">mysqli_stmt_insert_id</a> ― 直近の INSERT 操作で生成した ID を取得する</li><li><a href="function.mysqli-stmt-num-rows.html">mysqli_stmt_num_rows</a> ― ステートメントの結果セットの行数を返す</li><li><a href="function.mysqli-stmt-param-count.html">mysqli_stmt_param_count</a> ― 指定したステートメントのパラメータ数を返す</li><li><a href="function.mysqli-stmt-prepare.html">mysqli_stmt_prepare</a> ― SQL ステートメントを実行するために準備する</li><li><a href="function.mysqli-stmt-reset.html">mysqli_stmt_reset</a> ― プリペアドステートメントをリセットする</li><li><a href="function.mysqli-stmt-result-metadata.html">mysqli_stmt_result_metadata</a> ― プリペアドステートメントから結果セットのメタデータを返す</li><li><a href="function.mysqli-stmt-send-long-data.html">mysqli_stmt_send_long_data</a> ― データをブロックで送信する</li><li><a href="function.mysqli-stmt-sqlstate.html">mysqli_stmt_sqlstate</a> ― 直前のステートメントの操作での SQLSTATE エラーを返す</li><li><a href="function.mysqli-stmt-store-result.html">mysqli_stmt_store_result</a> ― プリペアドステートメントから結果を転送する</li><li><a href="function.mysqli-store-result.html">mysqli_store_result</a> ― 直近のクエリから結果セットを転送する</li><li><a href="function.mysqli-thread-id.html">mysqli_thread_id</a> ― 現在の接続のスレッド ID を返す</li><li><a href="function.mysqli-thread-safe.html">mysqli_thread_safe</a> ― スレッドセーフであるかどうかを返す</li><li><a href="function.mysqli-use-result.html">mysqli_use_result</a> ― 結果セットの取得を開始する</li><li><a href="function.mysqli-warning-count.html">mysqli_warning_count</a> ― 指定した接続の直近のクエリから発生した警告の数を返す</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.pdo-mysql.connection.html">PDO_MYSQL DSN</a></div>
+ <div class="next" style="float: right;"><a href="function.mysqli-affected-rows.html">mysqli_affected_rows</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

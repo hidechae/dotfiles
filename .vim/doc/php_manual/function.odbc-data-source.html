@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>現在の接続についての情報を返す</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.odbc-cursor.html">odbc_cursor</a></div>
+ <div class="next" style="float: right;"><a href="function.odbc-do.html">odbc_do</a></div>
+ <div class="up"><a href="ref.uodbc.html">ODBC</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.odbc-data-source" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">odbc_data_source</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.3.0, PHP 5)</p><p class="refpurpose">odbc_data_source ― 現在の接続についての情報を返す</p>
+
+ </div>
+ <div class="refsect1 u">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">array</span> <span class="methodname"><b><b>odbc_data_source</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$connection_id</tt></span>
+   , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$fetch_type</tt></span>
+   )</div>
+
+  <p class="para">
+   エラー時には <b><tt>FALSE</tt></b> 、成功時には配列を返します。
+  </p>
+  <p class="para">
+   この関数は、有効な DNS（複数回のコールの後）のリストを返します。
+   有効な ODBC 接続の <i><tt class="parameter">connection_id</tt></i>
+ が必要です。
+   <i><tt class="parameter">fetch_type</tt></i>
+ は次のふたつの定数
+   SQL_FETCH_FIRST、SQL_FETCH_NEXT のうちのどちらかです。
+   この関数を最初にコールする際には SQL_FETCH_FIRST を、それ以降は
+   SQL_FETCH_NEXT を使用します。
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.odbc-cursor.html">odbc_cursor</a></div>
+ <div class="next" style="float: right;"><a href="function.odbc-do.html">odbc_do</a></div>
+ <div class="up"><a href="ref.uodbc.html">ODBC</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

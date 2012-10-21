@@ -1,0 +1,1065 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>PHP オプションと情報(info)</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.pharfileinfo-setuncompressed.html">PharFileInfo->setUncompressed</a></div>
+ <div class="next" style="float: right;"><a href="function.assert-options.html">assert_options</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">PHP オプションと情報(info)</h1>
+  
+
+  <div class="partintro">
+   <div id="info.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     以下の関数によりPHP自体に関する多くの情報(例えば、実行時の設定、
+     ロードされている拡張モジュール、バージョン等)を
+     得ることができます。実行しているPHPのオプションを設定する関数もあ
+     ります。おそらく最も有名な関数である<a href="function.phpinfo.html" class="function">phpinfo()</a>
+     もここにあります。
+    </p>
+   </div>
+   
+   <div id="info.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">外部ライブラリを必要としません。</p>
+   </div>
+   
+   <div id="info.installation" class="section">
+    <h2 class="title">インストール手順</h2>
+     <p class="para">PHP コアに含まれるため、
+追加のインストール無しで使用できます。</p>
+   </div>
+
+   
+
+
+
+<div id="info.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+  <table border="5">
+   <caption><b>PHP オプション/情報設定オプション</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">名前</th>
+      <th colspan="1">デフォルト</th>
+      <th colspan="1">変更の可否</th>
+      <th colspan="1">変更の履歴</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">assert.active</td>
+     <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">assert.bail</td>
+     <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">assert.warning</td>
+     <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">assert.callback</td>
+     <td colspan="1" rowspan="1" align="left">NULL</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">assert.quiet_eval</td>
+     <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">enable_dl</td>
+     <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+     <td colspan="1" rowspan="1" align="left">PHP 6.0.0 で削除されました。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">max_execution_time</td>
+     <td colspan="1" rowspan="1" align="left">&quot;30&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">max_input_time</td>
+     <td colspan="1" rowspan="1" align="left">&quot;-1&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_PERDIR</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.3.0 以降で有効</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">max_input_nesting_level</td>
+     <td colspan="1" rowspan="1" align="left">&quot;64&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_PERDIR</td>
+     <td colspan="1" rowspan="1" align="left">4.4.8 以降で有効。PHP 5.0.0 で削除されました。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">magic_quotes_gpc</td>
+     <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_PERDIR</td>
+     <td colspan="1" rowspan="1" align="left">PHP &lt;= 4.2.3 では PHP_INI_ALL。PHP 6.0.0 で削除されました。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">magic_quotes_runtime</td>
+     <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 6.0.0 で削除されました。</td>
+    </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+  PHP_INI_* 定数の詳細および定義については
+<a href="ini.html" class="xref">php.ini ディレクティブ</a> を参照してください。
+ </p>
+ 
+ <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+ 
+ <p class="para">
+  <dl>
+
+   <dt id="ini.assert.active">
+    <span class="term">
+     <i><tt class="parameter">assert.active</tt></i>
+
+     <a href="language.types.boolean.html" class="type boolean">boolean</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      <a href="function.assert.html" class="function">assert()</a> の評価を有効にします。
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.assert.bail">
+    <span class="term">
+     <i><tt class="parameter">assert.bail</tt></i>
+
+     <a href="language.types.boolean.html" class="type boolean">boolean</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      assertion が失敗した時にスクリプトの実行を終了します。
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.assert.warning">
+    <span class="term">
+     <i><tt class="parameter">assert.warning</tt></i>
+
+     <a href="language.types.boolean.html" class="type boolean">boolean</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      assertion が失敗する度に PHP 警告を発行します。
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.assert.callback">
+    <span class="term">
+     <i><tt class="parameter">assert.callback</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      assertion が失敗した時にコールされるユーザ関数
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.assert.quiet-eval">
+    <span class="term">
+     <i><tt class="parameter">assert.quiet_eval</tt></i>
+
+     <a href="language.types.boolean.html" class="type boolean">boolean</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      assertion 式の評価時に <a href="function.error-reporting.html" class="function">error_reporting()</a> の現在の
+      設定を使用します。有効な場合、評価時にエラーは表示されません。
+      (暗黙のうちに error_reporting(0) とします)
+      無効な場合、エラーは、<a href="function.error-reporting.html" class="function">error_reporting()</a> の設定に
+      基づき設定されます。
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.enable-dl">
+    <span class="term">
+      <i><tt class="parameter">enable_dl</tt></i>
+
+      <a href="language.types.boolean.html" class="type boolean">boolean</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      このディレクティブは、Apacheモジュール版のPHPを使用した場合にのみ
+      有用です。PHPの動的ロード拡張機能を<a href="function.dl.html" class="function">dl()</a>で
+      仮想サーバー毎またはディレクトリ毎にオンまたはオフに変更することが
+      できます。
+     </p>
+     <p class="para">
+      動的ロード機能をオフにするのは主としてセキュリティ上の理由によります。
+      動的ロード機能により、
+      <a href="features.safe-mode.html#ini.open-basedir" class="link">open_basedir</a> の拘束を全て
+      無視することが可能になります。
+      デフォルトでは、<a href="features.safe-mode.html#ini.safe-mode" class="link">セーフモード</a>を
+      使用している場合以外、動的ロードが可能です。<a href="features.safe-mode.html#ini.safe-mode" class="link">セーフモード</a>においては、
+      <a href="function.dl.html" class="function">dl()</a> を使用することが常に不可能になります。      
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.max-execution-time">
+    <span class="term">
+     <i><tt class="parameter">max_execution_time</tt></i>
+
+      <a href="language.types.integer.html" class="type integer">integer</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      スクリプトがパーサにより強制終了されるまでに許容される最大の
+      時間を秒単位で指定します。この命令は、いい加減に書かれた
+      スクリプトがサーバーの負荷を上げることを防止するのに役立ちます。
+      デフォルトでは、<i class="literal">30</i> に設定されています。
+     </p>
+     <p class="para">
+      最大実行時間は、システムコール、ストリーム操作等の
+      影響を受けません。より詳細な情報については、
+      <a href="function.set-time-limit.html" class="function">set_time_limit()</a> 関数の説明を参照ください。
+     </p>
+     <p class="para">
+      <a href="features.safe-mode.html#ini.safe-mode" class="link">セーフモード</a>で実行している場合にはこの設定を <a href="function.ini-set.html" class="function">ini_set()</a>
+      で変更することはできません。次善策としては <a href="features.safe-mode.html#ini.safe-mode" class="link">セーフモード</a> をオフにするか
+      あるいは <var class="filename">php.ini</var> 上で制限時間を変えるしかありません。
+     </p>
+     <p class="para">
+      Web サーバによっては、別の設定項目があるかもしれません。たとえば、
+      Apache には <i class="literal">Timeout</i> ディレクティブ、IIS には
+      CGI タイムアウト関数があり、どちらもデフォルトで 300 秒に設定されています。
+      これらの意味については、Web サーバのドキュメントを参照ください。
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.max-input-time">
+    <span class="term">
+     <i><tt class="parameter">max_input_time</tt></i>
+
+      <a href="language.types.integer.html" class="type integer">integer</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      スクリプトが POST、GET そしてファイルアップロードなどの入力を
+      パースする最大の時間を、秒単位で指定します。
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.max-input-nesting-level">
+    <span class="term">
+     <i><tt class="parameter">max_input_nesting_level</tt></i>
+
+     <a href="language.types.integer.html" class="type integer">integer</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      <a href="language.variables.external.html" class="link">外部からの入力変数</a>
+      (<a href="reserved.variables.html#reserved.variables.get" class="link"><var class="varname">$_GET</var></a> や
+      <a href="reserved.variables.html#reserved.variables.post" class="link"><var class="varname">$_POST</var></a> など)
+      のネストの深さの最大値を設定します。
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.magic-quotes-gpc">
+    <span class="term">
+     <i><tt class="parameter">magic_quotes_gpc</tt></i>
+
+     <a href="language.types.boolean.html" class="type boolean">boolean</a>
+    </span>
+     <dd>
+
+     <div class="warning"><b class="warning">警告</b><p class="simpara">
+この機能は <em class="emphasis">非推奨</em> であり、PHP 6.0.0 で
+<em class="emphasis">削除</em> されます。この機能を使用しないことを強く推奨します。
+</p></div>
+     <p class="para">
+      GPC(Get/Post/Cookie) 処理に関する magic_quotes の設定を行います。
+      magic_quotes が on の場合、&#039;(シングルクオート)、&quot;
+      (ダブルクオート)、\(バックスラッシュ) 、NULL には全て自動的に
+      バックスラッシュでエスケープ処理が行われます。magic_quotes_sybase
+      も on の場合、シングルクオートは、バックスラッシュではなく
+      シングルクオートでエスケープされます。
+     </p>
+     <blockquote><p><b class="note">注意</b>: 
+      
+       PHP 4 では、<a href="reserved.variables.html#reserved.variables.environment" class="link"><var class="varname">$_ENV</var></a>
+       変数もエスケープの対象となります。
+      <br />
+     </p></blockquote>
+     <blockquote><p><b class="note">注意</b>: 
+      
+       <a href="ref.sybase.html#ini.magic-quotes-sybase" class="link">magic_quotes_sybase</a>
+       ディレクティブもONの場合、このオプションは、
+       magic_quotes_gpc を完全に上書きします。両方のオプションを有効に
+       することにより、シングルクオートのみが
+       <em class="emphasis">&#039;&#039;</em> のようにエスケープされます。
+       2重引用符、バックスラッシュ、NULは変更されず、エスケープされません。
+      <br />
+     </p></blockquote>
+     <p class="para">
+      <a href="function.get-magic-quotes-gpc.html" class="function">get_magic_quotes_gpc()</a> も参照してください。
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.magic-quotes-runtime">
+    <span class="term">
+     <i><tt class="parameter">magic_quotes_runtime</tt></i>
+
+     <a href="language.types.boolean.html" class="type boolean">boolean</a>
+    </span>
+    <dd>
+
+     <div class="warning"><b class="warning">警告</b><p class="simpara">
+この機能は <em class="emphasis">非推奨</em> であり、PHP 6.0.0 で
+<em class="emphasis">削除</em> されます。この機能を使用しないことを強く推奨します。
+</p></div>
+     <p class="para">
+      <i><tt class="parameter">magic_quotes_runtime</tt></i>
+ が有効の場合、
+      データベースおよびテクストファイルを含む外部ソースから
+      データを返す全ての関数のクオートは、バックスラッシュで
+      エスケープされます。<a href="ref.sybase.html#ini.magic-quotes-sybase" class="link">magic_quotes_sybase</a>
+      も on の場合、シングルクオートは、バックスラッシュの代わりに
+      シングルクオートでエスケープされます。
+     </p>
+    </dd>
+
+   </dt>
+
+
+  </dl>
+
+ </p>
+</div>
+
+
+
+
+   <div id="info.resources" class="section">
+    <h2 class="title">リソース型</h2>
+     <p class="para">リソース型は定義されていません。</p>
+   </div>
+
+   
+
+
+
+<div id="info.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数は、PHP コアに含まれており、常に利用可能です。
+</p>
+   <table border="5">
+    <caption><b>定義済の <a href="function.phpcredits.html" class="function">phpcredits()</a> 定数</b></caption>
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">定数</th>
+       <th colspan="1">値</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">CREDITS_GROUP</td>
+       <td colspan="1" rowspan="1" align="left">1</td>
+       <td colspan="1" rowspan="1" align="left">コア開発者のリスト</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">CREDITS_GENERAL</td>
+       <td colspan="1" rowspan="1" align="left">2</td>
+       <td colspan="1" rowspan="1" align="left">
+        一般的なクレジット: 言語設計とコンセプト、PHP と
+        PHP SAPIモジュールの作者。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">CREDITS_SAPI</td>
+       <td colspan="1" rowspan="1" align="left">4</td>
+       <td colspan="1" rowspan="1" align="left">
+        PHPのサーバAPIモジュールとその作者の一覧。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">CREDITS_MODULES</td>
+       <td colspan="1" rowspan="1" align="left">8</td>
+       <td colspan="1" rowspan="1" align="left">
+        PHPの拡張モジュールとその作者の一覧。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">CREDITS_DOCS</td>
+       <td colspan="1" rowspan="1" align="left">16</td>
+       <td colspan="1" rowspan="1" align="left">
+        ドキュメント作成チームのクレジット
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">CREDITS_FULLPAGE</td>
+       <td colspan="1" rowspan="1" align="left">32</td>
+       <td colspan="1" rowspan="1" align="left">
+        通常、他のフラグと組み合わせて使用されます。
+        他のフラグで示される情報を含む完全に独立したHTMLページを出力する
+        ことを指定します。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">CREDITS_QA</td>
+       <td colspan="1" rowspan="1" align="left">64</td>
+       <td colspan="1" rowspan="1" align="left">
+        品質管理チームのクレジット
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">CREDITS_ALL</td>
+       <td colspan="1" rowspan="1" align="left">-1</td>
+       <td colspan="1" rowspan="1" align="left">
+        全てのクレジット、CREDITS_DOCS +
+        CREDITS_GENERAL + CREDITS_GROUP + CREDITS_MODULES +
+        CREDITS_FULLPAGEを指定した場合と同じ。
+        この定数は、適当なタグを有する完全にスタンドアローンのHTMLページ
+        を生成します。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+
+
+   <table border="5">
+    <caption><b><a href="function.phpinfo.html" class="function">phpinfo()</a> の定数</b></caption>
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">定数</th>
+       <th colspan="1">値</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">INFO_GENERAL</td>
+       <td colspan="1" rowspan="1" align="left">1</td>
+       <td colspan="1" rowspan="1" align="left">
+        configureオプション、<var class="filename">php.ini</var> の場所、構築日、Webサーバ、システ
+        ム等。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">INFO_CREDITS</td>
+       <td colspan="1" rowspan="1" align="left">2</td>
+       <td colspan="1" rowspan="1" align="left">
+        PHP クレジット。<a href="function.phpcredits.html" class="function">phpcredits()</a>も参照して下さい。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">INFO_CONFIGURATION</td>
+       <td colspan="1" rowspan="1" align="left">4</td>
+       <td colspan="1" rowspan="1" align="left">
+        PHPディレクティブの現在のローカルおよびマスター値。
+        <a href="function.ini-get.html" class="function">ini_get()</a>も参照してください。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">INFO_MODULES</td>
+       <td colspan="1" rowspan="1" align="left">8</td>
+       <td colspan="1" rowspan="1" align="left">
+        ロードされているモジュールとそれぞれの設定。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">INFO_ENVIRONMENT</td>
+       <td colspan="1" rowspan="1" align="left">16</td>
+       <td colspan="1" rowspan="1" align="left">
+        環境変数に関する情報で、<var class="varname">$_ENV</var>でも入手可能です。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">INFO_VARIABLES</td>
+       <td colspan="1" rowspan="1" align="left">32</td>
+       <td colspan="1" rowspan="1" align="left">
+        EGPCS(Environment, GET, POST, Cookie, Server)から<a href="language.variables.predefined.html" class="link">定義済の変数</a>を表
+        示します。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">INFO_LICENSE</td>
+       <td colspan="1" rowspan="1" align="left">64</td>
+       <td colspan="1" rowspan="1" align="left">
+        PHPライセンス情報。<a href="http://www.php.net/license/" class="link external">&raquo; license
+        faq</a>も参照してください。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">INFO_ALL</td>
+       <td colspan="1" rowspan="1" align="left">-1</td>
+       <td colspan="1" rowspan="1" align="left">
+        上記を全て表示します。これがデフォルト値です。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+
+
+ <dl>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>ASSERT_ACTIVE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>ASSERT_CALLBACK</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>ASSERT_BAIL</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>ASSERT_WARNING</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>ASSERT_QUIET_EVAL</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+</div>
+
+
+
+
+  </div>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.assert-options.html">assert_options</a> ― 様々な assert フラグを設定/取得する</li><li><a href="function.assert.html">assert</a> ― assertion が FALSE であるかどうかを調べる</li><li><a href="function.dl.html">dl</a> ― 実行時に PHP 拡張モジュールをロードする</li><li><a href="function.extension-loaded.html">extension_loaded</a> ― ある拡張機能がロードされているかどうかを調べる</li><li><a href="function.get-cfg-var.html">get_cfg_var</a> ― PHP 設定オプションの値を取得する</li><li><a href="function.get-current-user.html">get_current_user</a> ― 現在の PHP スクリプトの所有者の名前を取得する</li><li><a href="function.get-defined-constants.html">get_defined_constants</a> ― すべての定数の名前とその値を連想配列として返す</li><li><a href="function.get-extension-funcs.html">get_extension_funcs</a> ― あるモジュールの関数名を配列として返す</li><li><a href="function.get-include-path.html">get_include_path</a> ― 現在の include_path 設定オプションを取得する</li><li><a href="function.get-included-files.html">get_included_files</a> ― include または require で読み込まれたファイルの名前を配列として返す</li><li><a href="function.get-loaded-extensions.html">get_loaded_extensions</a> ― コンパイル/ロードされている全てのモジュールの名前を配列として返す</li><li><a href="function.get-magic-quotes-gpc.html">get_magic_quotes_gpc</a> ― magic quotes gpc の現在の設定を得る</li><li><a href="function.get-magic-quotes-runtime.html">get_magic_quotes_runtime</a> ― magic_quotes_runtime の現在アクティブな設定値を取得する</li><li><a href="function.get-required-files.html">get_required_files</a> ― get_included_files のエイリアス</li><li><a href="function.getenv.html">getenv</a> ― 環境変数の値を取得する</li><li><a href="function.getlastmod.html">getlastmod</a> ― 最終更新時刻を取得する</li><li><a href="function.getmygid.html">getmygid</a> ― PHP スクリプトの所有者の GID を得る</li><li><a href="function.getmyinode.html">getmyinode</a> ― 現在のスクリプトの inode を取得する</li><li><a href="function.getmypid.html">getmypid</a> ― PHP のプロセス ID を取得する</li><li><a href="function.getmyuid.html">getmyuid</a> ― PHP スクリプト所有者のユーザ ID を取得する</li><li><a href="function.getopt.html">getopt</a> ― コマンドライン引数のリストからオプションを取得する</li><li><a href="function.getrusage.html">getrusage</a> ― カレントリソースの使用に関する情報を得る</li><li><a href="function.ini-alter.html">ini_alter</a> ― ini_set のエイリアス</li><li><a href="function.ini-get-all.html">ini_get_all</a> ― 全ての設定オプションを得る</li><li><a href="function.ini-get.html">ini_get</a> ― 設定オプションの値を得る</li><li><a href="function.ini-restore.html">ini_restore</a> ― 設定オプションの値を元に戻す</li><li><a href="function.ini-set.html">ini_set</a> ― 設定オプションの値を設定する</li><li><a href="function.main.html">main</a> ― main のダミー</li><li><a href="function.memory-get-peak-usage.html">memory_get_peak_usage</a> ― PHP によって割り当てられたメモリの最大値を返す</li><li><a href="function.memory-get-usage.html">memory_get_usage</a> ― PHP に割り当てられたメモリの量を返す</li><li><a href="function.php-ini-scanned-files.html">php_ini_scanned_files</a> ― 追加の ini ディレクトリにある .ini ファイルのリストを取得する</li><li><a href="function.php-logo-guid.html">php_logo_guid</a> ― ロゴの guid を取得する</li><li><a href="function.php-sapi-name.html">php_sapi_name</a> ― ウェブサーバと PHP の間のインターフェイスの型を返す</li><li><a href="function.php-uname.html">php_uname</a> ― PHP が稼動しているオペレーティングシステムに関する情報を返す</li><li><a href="function.phpcredits.html">phpcredits</a> ― PHP に関するクレジットを出力する</li><li><a href="function.phpinfo.html">phpinfo</a> ― いろいろな PHP 情報を出力する</li><li><a href="function.phpversion.html">phpversion</a> ― 現在の PHP バージョンを取得する</li><li><a href="function.putenv.html">putenv</a> ― 環境変数の値を設定する</li><li><a href="function.restore-include-path.html">restore_include_path</a> ― include_path 設定オプションの値を元に戻す</li><li><a href="function.set-include-path.html">set_include_path</a> ― include_path 設定オプションをセットする</li><li><a href="function.set-magic-quotes-runtime.html">set_magic_quotes_runtime</a> ― magic_quotes_runtime の現在アクティブな設定をセットする</li><li><a href="function.set-time-limit.html">set_time_limit</a> ― 実行時間の最大値を制限する</li><li><a href="function.sys-get-temp-dir.html">sys_get_temp_dir</a> ― 一時ファイル用に使用されるディレクトリのパスを返す</li><li><a href="function.version-compare.html">version_compare</a> ― ふたつの "PHP 標準" バージョン番号文字列を比較する</li><li><a href="function.zend-logo-guid.html">zend_logo_guid</a> ― Zend guid を取得する</li><li><a href="function.zend-thread-id.html">zend_thread_id</a> ― 現在のスレッドの一意な ID を返す</li><li><a href="function.zend-version.html">zend_version</a> ― 現在の Zend Engine のバージョンを取得する</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.pharfileinfo-setuncompressed.html">PharFileInfo->setUncompressed</a></div>
+ <div class="next" style="float: right;"><a href="function.assert-options.html">assert_options</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

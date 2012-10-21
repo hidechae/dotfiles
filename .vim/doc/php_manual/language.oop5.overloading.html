@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>オーバーロード</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="language.oop5.interfaces.html">オブジェクト インターフェイス</a></div>
+ <div class="next" style="float: right;"><a href="language.oop5.iterations.html">オブジェクトのイタレーション</a></div>
+ <div class="up"><a href="language.oop5.html">クラスとオブジェクト (PHP 5)</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="language.oop5.overloading" class="sect1">
+  <h2 class="title">オーバーロード</h2>
+
+  <p class="para">
+   メソッド呼び出しとメンバーへのアクセスのいずれについても、
+   __call, __get そして __set メソッドを通してオーバーロードすることができます。
+   オブジェクトや継承されたオブジェクトが
+   アクセスしようとしているメンバーもしくはメソッドを含んでいない場合でも、
+   これらのメソッドは実行されます。
+   オーバーロードしている全てのメソッドは、
+   <a href="language.oop5.static.html" class="link">static</a>
+   として定義されていてはいけません。
+   オーバーロードしている全てのメソッドは
+   <a href="language.oop5.visibility.html" class="link">public</a>
+   として定義されていなければなりません。
+  </p>
+  <p class="para">
+   PHP 5.1.0 以降、__isset や __unset メソッドを通じて
+   <a href="function.isset.html" class="function">isset()</a> 関数や <a href="function.unset.html" class="function">unset()</a>
+   関数を個々にオーバーロードする事も可能です。
+   メソッド __isset は、<a href="function.empty.html" class="function">empty()</a> でもコールされます。
+  </p>
+
+  <div id="language.oop5.overloading.members" class="sect2">
+   <h3 class="title">メンバーのオーバーロード</h3>
+
+   <div class="methodsynopsis">
+    <span class="type">void</span> <span class="methodname"><b><b>__set</b></b></span>
+     ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$name</tt></span>
+    , <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$value</tt></span>
+    )</div>
+
+   <div class="methodsynopsis">
+    <span class="type">mixed</span> <span class="methodname"><b><b>__get</b></b></span>
+     ( <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$name</tt></span>
+    )</div>
+
+   <div class="methodsynopsis">
+    <span class="type">bool</span> <span class="methodname"><b><a href="function.isset.html" class="function">__isset</a></b></span>
+     ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$name</tt></span>
+    )</div>
+
+   <div class="methodsynopsis">
+    <span class="type">void</span> <span class="methodname"><b><a href="function.unset.html" class="function">__unset</a></b></span>
+     ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$name</tt></span>
+    )</div>
+
+
+   <p class="para">
+    独自のクラスで定義されているカスタムコードを実行するために、
+    特別な名前を持つメソッドによってクラスメンバーをオーバーロード
+    することができます。
+    使用される <var class="varname">$name</var> パラメータは、
+    設定あるいは取得される変数名です。
+    __set() メソッドの <var class="varname">$value</var> パラメータにより
+    オブジェクトが <var class="varname">$name</var> に設定する値を指定します。
+   </p>
+
+   <blockquote><p><b class="note">注意</b>: 
+    
+     <i class="literal">__set()</i> メソッドでは、引数を参照渡しで受け取ることはできません。
+    <br />
+   </p></blockquote>
+
+   <div class="example">
+    <p><b>Example#1 __get, __set, __isset, __unset を使ったオーバーロードの例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">Setter<br /></span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;</span><span style="color: #0000BB">$n</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;</span><span style="color: #0000BB">$x&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #DD0000">"a"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"b"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"c"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">__get</span><span style="color: #007700">(</span><span style="color: #0000BB">$nm</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Getting&nbsp;[$nm]\n"</span><span style="color: #007700">;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(isset(</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">x</span><span style="color: #007700">[</span><span style="color: #0000BB">$nm</span><span style="color: #007700">]))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$r&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">x</span><span style="color: #007700">[</span><span style="color: #0000BB">$nm</span><span style="color: #007700">];<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;</span><span style="color: #DD0000">"Returning:&nbsp;$r\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$r</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Nothing!\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">__set</span><span style="color: #007700">(</span><span style="color: #0000BB">$nm</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$val</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Setting&nbsp;[$nm]&nbsp;to&nbsp;$val\n"</span><span style="color: #007700">;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(isset(</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">x</span><span style="color: #007700">[</span><span style="color: #0000BB">$nm</span><span style="color: #007700">]))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">x</span><span style="color: #007700">[</span><span style="color: #0000BB">$nm</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">$val</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"OK!\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Not&nbsp;OK!\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">__isset</span><span style="color: #007700">(</span><span style="color: #0000BB">$nm</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Checking&nbsp;if&nbsp;$nm&nbsp;is&nbsp;set\n"</span><span style="color: #007700">;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;isset(</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">x</span><span style="color: #007700">[</span><span style="color: #0000BB">$nm</span><span style="color: #007700">]);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">__unset</span><span style="color: #007700">(</span><span style="color: #0000BB">$nm</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Unsetting&nbsp;$nm\n"</span><span style="color: #007700">;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unset(</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">x</span><span style="color: #007700">[</span><span style="color: #0000BB">$nm</span><span style="color: #007700">]);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br /></span><span style="color: #0000BB">$foo&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Setter</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$foo</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">n&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$foo</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">100</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$foo</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">a</span><span style="color: #007700">++;<br /></span><span style="color: #0000BB">$foo</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">z</span><span style="color: #007700">++;<br /><br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(isset(</span><span style="color: #0000BB">$foo</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">a</span><span style="color: #007700">));&nbsp;</span><span style="color: #FF8000">//true<br /></span><span style="color: #007700">unset(</span><span style="color: #0000BB">$foo</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">a</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(isset(</span><span style="color: #0000BB">$foo</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">a</span><span style="color: #007700">));&nbsp;</span><span style="color: #FF8000">//false<br /><br />//&nbsp;this&nbsp;doesn't&nbsp;pass&nbsp;through&nbsp;the&nbsp;__isset()&nbsp;method<br />//&nbsp;because&nbsp;'n'&nbsp;is&nbsp;a&nbsp;public&nbsp;property<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(isset(</span><span style="color: #0000BB">$foo</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">n</span><span style="color: #007700">));<br /><br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$foo</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+Setting [a] to 100
+OK!
+Getting [a]
+Returning: 100
+Setting [a] to 101
+OK!
+Getting [z]
+Nothing!
+Setting [z] to 1
+Not OK!
+
+Checking if a is set
+bool(true)
+Unsetting a
+Checking if a is set
+bool(false)
+bool(true)
+
+object(Setter)#1 (2) {
+  [&quot;n&quot;]=&gt;
+  int(1)
+  [&quot;x&quot;:&quot;Setter&quot;:private]=&gt;
+  array(2) {
+    [&quot;b&quot;]=&gt;
+    int(2)
+    [&quot;c&quot;]=&gt;
+    int(3)
+  }
+}
+</pre></div>
+    </pre></div>
+
+   </div>
+  </div>
+
+  <div id="language.oop5.overloading.methods" class="sect2">
+   <h3 class="title">メソッドのオーバーロード</h3>
+
+   <div class="methodsynopsis">
+    <span class="type">mixed</span> <span class="methodname"><b><b>__call</b></b></span>
+     ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$name</tt></span>
+    , <span class="methodparam"><span class="type">array</span> <tt class="parameter">$arguments</tt></span>
+    )</div>
+
+
+   <p class="para">
+    特別なメソッド __call() を使用すると、存在しないメソッドの呼び出しを捕捉することができます。
+	つまり、__call() を使用すると、実際にコールされたメソッドの名前に応じた
+	ユーザ定義の処理を実装することができるということです。
+    これは、たとえばプロキシを実装する場合などに便利です。
+	関数に渡された引数はパラメータ
+    <var class="varname">$arguments</var> で受け取ることができ、
+    __call() メソッドの返り値が呼び出し元のメソッドの返り値となります。
+   </p>
+
+   <div class="example">
+    <p><b>Example#2 __call を使ったオーバーロードの例</b></p>
+    <div class="example-contents">
+  <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">Caller<br /></span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;</span><span style="color: #0000BB">$x&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">__call</span><span style="color: #007700">(</span><span style="color: #0000BB">$m</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$a</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;</span><span style="color: #DD0000">"Method&nbsp;$m&nbsp;called:\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$a</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">x</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br /></span><span style="color: #0000BB">$foo&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Caller</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$foo</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">test</span><span style="color: #007700">(</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"2"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">3.4</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$a</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+
+Method test called:
+array(4) {
+    [0]=&gt;
+    int(1)
+    [1]=&gt;
+    string(1) &quot;2&quot;
+    [2]=&gt;
+    float(3.4)
+    [3]=&gt;
+    bool(true)
+}
+array(3) {
+    [0]=&gt;
+    int(1)
+    [1]=&gt;
+    int(2)
+    [2]=&gt;
+    int(3)
+}
+</pre></div>
+    </pre></div>
+   </div>
+
+  </div>
+
+ </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="language.oop5.interfaces.html">オブジェクト インターフェイス</a></div>
+ <div class="next" style="float: right;"><a href="language.oop5.iterations.html">オブジェクトのイタレーション</a></div>
+ <div class="up"><a href="language.oop5.html">クラスとオブジェクト (PHP 5)</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

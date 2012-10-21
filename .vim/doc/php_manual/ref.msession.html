@@ -1,0 +1,239 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>Mohawk Software セッションハンドラ関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.pdo-dblib.connection.html">PDO_DBLIB DSN</a></div>
+ <div class="next" style="float: right;"><a href="function.msession-connect.html">msession_connect</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">Mohawk Software セッションハンドラ関数</h1>
+  
+
+  <div class="partintro">
+
+   <div id="msession.intro" class="section">
+   <h2 class="title">導入</h2>
+   <p class="para">
+    msession は、ローカルまたはリモートで実行される高速セッションデーモンへの
+    インターフェイスです。複数の PHP Web サーバにおいて集中的な
+    セッション管理を行うために設計されています。
+    msession とセッションサーバソフトウエアに関するより詳細な情報は、
+    <a href="http://www.mohawksoft.org/?q=node/8" class="link external">&raquo; http://www.mohawksoft.org/?q=node/8</a> にあります。
+   </p>
+   <blockquote><p><b class="note">注意</b>: <span class="simpara">この拡張モジュールは Windows
+環境では利用できません。</span></p></blockquote>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      
+この拡張モジュールは <a href="http://pecl.php.net/" class="link external">&raquo; PECL</a> レポジトリに移動
+されており、以下のバージョン以降 PHP にバンドルされなくなっています。 PHP 5.1.3.
+     <br />
+    </p></blockquote>
+   </div>
+
+   <div id="mssession.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">
+     
+    </p>
+   </div>
+
+
+
+
+<div id="msession.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  PHP で Msession サポートを有効にするには、
+  <span class="option">--with-msession[=DIR]</span> を configure に
+  指定してください。ただし、DIR は Msession のインストールディレクトリです。
+ </p>
+</div>
+
+
+
+
+   <div id="msession.configuration" class="section">
+    <h2 class="title">実行時設定</h2>
+    <p class="para">
+     
+    </p>
+   </div>
+
+   <div id="msession.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">
+     
+    </p>
+   </div>
+
+   <div id="msession.constants" class="section">
+    <h2 class="title">定義済み定数</h2>
+    <p class="para">
+     
+    </p>
+   </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.msession-connect.html">msession_connect</a> ― msession サーバに接続する</li><li><a href="function.msession-count.html">msession_count</a> ― セッション数を得る</li><li><a href="function.msession-create.html">msession_create</a> ― セッションを作成する</li><li><a href="function.msession-destroy.html">msession_destroy</a> ― セッションを破棄する</li><li><a href="function.msession-disconnect.html">msession_disconnect</a> ― msession サーバへの接続を閉じる</li><li><a href="function.msession-find.html">msession_find</a> ― 名前と値で、すべてのセッションを検索する</li><li><a href="function.msession-get-array.html">msession_get_array</a> ― msession 変数の配列を得る</li><li><a href="function.msession-get-data.html">msession_get_data</a> ― データセッションの、構造化されていないデータを取得する</li><li><a href="function.msession-get.html">msession_get</a> ― セッションから値を取得する</li><li><a href="function.msession-inc.html">msession_inc</a> ― セッションの値を増加させる</li><li><a href="function.msession-list.html">msession_list</a> ― すべてのセッションの一覧を取得する</li><li><a href="function.msession-listvar.html">msession_listvar</a> ― セッションの一覧を変数を使用して取得する</li><li><a href="function.msession-lock.html">msession_lock</a> ― セッションをロックする</li><li><a href="function.msession-plugin.html">msession_plugin</a> ― msession personality プラグイン内のエスケープ関数をコールする</li><li><a href="function.msession-randstr.html">msession_randstr</a> ― ランダムな文字列を取得する</li><li><a href="function.msession-set-array.html">msession_set_array</a> ― セッションに配列の値を設定する</li><li><a href="function.msession-set-data.html">msession_set_data</a> ― データセッションの、構造化されていないデータを設定する</li><li><a href="function.msession-set.html">msession_set</a> ― セッションに値を設定する</li><li><a href="function.msession-timeout.html">msession_timeout</a> ― セッションの有効期間を設定/取得する</li><li><a href="function.msession-uniq.html">msession_uniq</a> ― ユニークな ID を取得する</li><li><a href="function.msession-unlock.html">msession_unlock</a> ― セッションのロックを解除する</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.pdo-dblib.connection.html">PDO_DBLIB DSN</a></div>
+ <div class="next" style="float: right;"><a href="function.msession-connect.html">msession_connect</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

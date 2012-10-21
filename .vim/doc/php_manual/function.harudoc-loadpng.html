@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>PNG 画像を読み込み、HaruImage のインスタンスを返す</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.harudoc-loadjpeg.html">HaruDoc::loadJPEG</a></div>
+ <div class="next" style="float: right;"><a href="function.harudoc-loadraw.html">HaruDoc::loadRaw</a></div>
+ <div class="up"><a href="ref.haru.html">haru</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.harudoc-loadpng" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">HaruDoc::loadPNG</h1>
+  <p class="verinfo">(PECL haru:0.0.1)</p><p class="refpurpose">HaruDoc::loadPNG ― PNG 画像を読み込み、<span class="classname">HaruImage</span> のインスタンスを返す</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">object</span> <span class="methodname"><b><b>HaruDoc::loadPNG</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$filename</tt></span>
+   [, <span class="methodparam"><span class="type">bool</span> <tt class="parameter">$deferred</tt></span>
+  ] )</div>
+
+  <p class="para">
+   PNG 画像を読み込み、<span class="classname">HaruImage</span> のインスタンスを返します。
+   パラメータ <i><tt class="parameter">deferred</tt></i>
+ を <b><tt>TRUE</tt></b> にすると、
+   遅延データ読み込みを行います。この場合は、まず大きさと色のみが読み込まれます。
+   <i><tt class="parameter">deferred</tt></i>
+ のデフォルト値は <b><tt>FALSE</tt></b> です。
+  </p>
+  <p class="para">
+   libharu が libpng サポートを含めずにビルドされている場合は、
+   このメソッドをコールすると例外が発生します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">filename</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       PNG 画像ファイルのファイル名。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">deferred</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       データを即時に読み込まない。デフォルトは <b><tt>FALSE</tt></b> です。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 errors">
+  <h3 class="title">エラー / 例外</h3>
+  <p class="para">
+   エラー時に <span class="classname">HaruException</span> をスローします。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.harudoc-loadjpeg.html" class="link"><span class="classname">HaruDoc</span>::<b>loadJPEG()</b></a></li>
+    <li class="member"><a href="function.harudoc-loadraw.html" class="link"><span class="classname">HaruDoc</span>::<b>loadRAW()</b></a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.harudoc-loadjpeg.html">HaruDoc::loadJPEG</a></div>
+ <div class="next" style="float: right;"><a href="function.harudoc-loadraw.html">HaruDoc::loadRaw</a></div>
+ <div class="up"><a href="ref.haru.html">haru</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

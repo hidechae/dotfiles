@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>特殊な HTML エンティティを文字に戻す</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.htmlentities.html">htmlentities</a></div>
+ <div class="next" style="float: right;"><a href="function.htmlspecialchars.html">htmlspecialchars</a></div>
+ <div class="up"><a href="ref.strings.html">Strings</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.htmlspecialchars-decode" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">htmlspecialchars_decode</h1>
+  <p class="verinfo">(PHP 5 &gt;= 5.1.0)</p><p class="refpurpose">htmlspecialchars_decode ― 
+   特殊な HTML エンティティを文字に戻す
+  </p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">string</span> <span class="methodname"><b><b>htmlspecialchars_decode</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$string</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$quote_style</tt></span>
+  ] )</div>
+
+
+  <p class="para">
+   この関数は <a href="function.htmlspecialchars.html" class="function">htmlspecialchars()</a> の反対です。
+   特殊な HTML エンティティを文字に戻します。
+  </p>
+  <p class="para">
+   変換されるエンティティは次のものです。<i class="literal">&amp;amp;</i>、
+   <i class="literal">&amp;quot;</i> (ENT_NOQUOTES が設定されていない場合)、
+   <i class="literal">&amp;#039;</i> (ENT_QUOTES が設定されている場合)、
+   <i class="literal">&amp;lt;</i> および <i class="literal">&amp;gt;</i>。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">string</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       デコードする文字列。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">quote_style</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       クォートの形式。以下の定数のいずれかです。
+       <table border="5">
+        <caption><b>quote_style 定数</b></caption>
+        <colgroup>
+
+         <thead valign="middle">
+          <tr valign="middle">
+           <th colspan="1">定数名</th>
+           <th colspan="1">説明</th>
+          </tr>
+
+         </thead>
+
+         <tbody valign="middle">
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><b><tt>ENT_COMPAT</tt></b></td>
+           <td colspan="1" rowspan="1" align="left">ダブルクォートを変換し、シングルクォートはそのままに
+            します(デフォルト)。</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><b><tt>ENT_QUOTES</tt></b></td>
+           <td colspan="1" rowspan="1" align="left">ダブルクォート、シングルクォートの両方を変換します。</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><b><tt>ENT_NOQUOTES</tt></b></td>
+           <td colspan="1" rowspan="1" align="left">ダブルクォート、シングルクォートの両方をそのままにします。</td>
+          </tr>
+
+         </tbody>
+        </colgroup>
+
+       </table>
+
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   デコードされた文字列を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>htmlspecialchars_decode()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$str&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'&lt;p&gt;this&nbsp;-&amp;gt;&nbsp;&amp;quot;&lt;/p&gt;'</span><span style="color: #007700">;<br /><br />echo&nbsp;</span><span style="color: #0000BB">htmlspecialchars_decode</span><span style="color: #007700">(</span><span style="color: #0000BB">$str</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;クォートが変換されないことに注意しましょう<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">htmlspecialchars_decode</span><span style="color: #007700">(</span><span style="color: #0000BB">$str</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">ENT_NOQUOTES</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+&lt;p&gt;this -&gt; &quot;&lt;/p&gt;
+&lt;p&gt;this -&gt; &amp;quot;&lt;/p&gt;
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.htmlspecialchars.html" class="function">htmlspecialchars()</a></li>
+    <li class="member"><a href="function.html-entity-decode.html" class="function">html_entity_decode()</a></li>
+    <li class="member"><a href="function.get-html-translation-table.html" class="function">get_html_translation_table()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.htmlentities.html">htmlentities</a></div>
+ <div class="next" style="float: right;"><a href="function.htmlspecialchars.html">htmlspecialchars</a></div>
+ <div class="up"><a href="ref.strings.html">Strings</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

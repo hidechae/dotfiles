@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>GNU Recode 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.readline.html">readline</a></div>
+ <div class="next" style="float: right;"><a href="function.recode-file.html">recode_file</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">GNU Recode 関数</h1>
+  
+
+  <div class="partintro">
+   <div id="recode.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     このモジュールは、GNU recode ライブラリへのインターフェースを
+     有しています。GNU Recode ライブラリは、様々にコード化された
+     文字や表面的なエンコード法を相互に変換します。
+     正確に変換できない場合、問題のある文字を削除するか近似を行います。
+     このライブラリは、約 150 種類の文字セットを認識、生成することが可能で、
+     ほとんど全ての組み合わせで相互の変換を行うことができます。
+     <a href="http://www.faqs.org/rfcs/rfc1345" class="link external">&raquo; RFC 1345</a> 文字セットの
+     ほとんどがサポートされています。
+    </p>
+    <blockquote><p><b class="note">注意</b>: <span class="simpara">この拡張モジュールは Windows
+環境では利用できません。</span></p></blockquote>
+   </div>
+
+   <div id="recode.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">
+     GNU Recode 3.5 以降をシステムにインストールしておく必要があります。
+     このパッケージは、<a href="http://directory.fsf.org/All_GNU_Packages/recode.html" class="link external">&raquo; http://directory.fsf.org/All_GNU_Packages/recode.html</a> から
+     ダウンロードすることが可能です。
+    </p>
+    <div class="warning"><b class="warning">警告</b>
+     <p class="para">
+      Recode ライブラリのバージョン 3.6 は、ある状況下での文字列の変換時に
+      変な文字を付加してしまうことがあります。そのため、Recode v3.5
+      か、あるいは別の選択肢として
+      <a href="ref.iconv.html" class="link">iconv</a> あるいは
+      <a href="ref.mbstring.html" class="link">mbstring</a>
+      拡張モジュールを使用するほうが安全です。
+     </p>
+    </div>
+   </div>
+
+   
+
+
+<div id="recode.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  本モジュールで定義された関数を使用するには、<span class="option">--with-recode[=DIR]</span> オプションを指定して
+  PHP インタプリタをコンパイルする必要があります。
+ </p>
+ <div class="warning"><b class="warning">警告</b>
+  <p class="para">
+   拡張モジュール <a href="ref.mysql.html" class="link">mysql</a> または
+   <a href="ref.imap.html" class="link">imap</a> をロードした
+   <em class="emphasis">後に</em>
+   recode を拡張モジュールとしてロードした場合に、
+   PHP のクラッシュおよび起動に関する問題が
+   発生する可能性があります。これらの拡張モジュールの前に recode を
+   ロードすることにより、問題を解決することができます。
+   これは、imap で使用されている c-client ライブラリおよび recode の両方が
+   固有の <i class="literal">hash_lookup()</i> 関数を有しており、
+   mysql と recode が固有の <i class="literal">hash_insert</i> 関数を有している
+   ことによる技術的な問題です。
+  </p>
+ </div>
+ 
+ <div class="warning"><b class="warning">警告</b><p class="simpara"><a href="ref.imap.html" class="link">IMAP</a>、<a href="ref.recode.html" class="link">recode</a>、
+<a href="ref.yaz.html" class="link">YAZ</a> および <a href="ref.cyrus.html" class="link">Cyrus</a>
+拡張モジュールは、組み合わせて使用することはできません。
+これは、これらすべてが同一の内部シンボルを使用しているためです。</p></div>
+
+</div>
+
+
+
+
+
+   <div id="recode.configuration" class="section">
+    <h2 class="title">実行時設定</h2>
+    <p class="para">設定ディレクティブは定義されていません。</p>
+   </div>
+
+   <div id="recode.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">リソース型は定義されていません。</p>
+   </div>
+
+   <div id="recode.constants" class="section">
+    <h2 class="title">定義済み定数</h2>
+    <p class="para">定数は定義されていません。</p>
+   </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.recode-file.html">recode_file</a> ― コード変換指令に基づきファイルからファイルにコード変換する</li><li><a href="function.recode-string.html">recode_string</a> ― コード変換指令に基づき文字列のコードを変換する</li><li><a href="function.recode.html">recode</a> ― recode_string のエイリアス</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.readline.html">readline</a></div>
+ <div class="next" style="float: right;"><a href="function.recode-file.html">recode_file</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

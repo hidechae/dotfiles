@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>連想配列として結果の行を取得する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mysql-fetch-array.html">mysql_fetch_array</a></div>
+ <div class="next" style="float: right;"><a href="function.mysql-fetch-field.html">mysql_fetch_field</a></div>
+ <div class="up"><a href="ref.mysql.html">MySQL</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mysql-fetch-assoc" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mysql_fetch_assoc</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.0.3, PHP 5, PECL mysql:1.0)</p><p class="refpurpose">mysql_fetch_assoc ― 連想配列として結果の行を取得する</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">array</span> <span class="methodname"><b><b>mysql_fetch_assoc</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$result</tt></span>
+   )</div>
+
+  <p class="para">
+   取得した行に対応する連想配列を返し、内部のデータポインタを前に進めます。
+   <b>mysql_fetch_assoc()</b> は、
+   <a href="function.mysql-fetch-array.html" class="function">mysql_fetch_array()</a> の 2 番目のパラメータを
+   MYSQL_ASSOC に指定してコールするのと同じ働きをします。つまり、
+   連想配列のみを返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+<span class="term"><i><tt class="parameter">
+result</tt></i>
+</span><dd>
+<p class="para">評価された結果 <span class="type リソース">リソース</span>。
+この結果は、<a href="function.mysql-query.html" class="function">mysql_query()</a> のコールにより得られたものです。</p>
+</dd>
+</dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   取得した行に対応する文字列の連想配列を返します。行がもうない場合には
+   <b><tt>FALSE</tt></b> を返します。
+  </p>
+  <p class="para">
+   結果の複数のカラムが同じフィールド名を有している場合、最後のカラ
+   ムが優先されます。同じ名前を有する他のカラムにアクセスするには、
+   <a href="function.mysql-fetch-row.html" class="function">mysql_fetch_row()</a>を使用して数値添字を返すか、
+   エイリアス名を追加する必要があります。エイリアスの説明については、
+   <a href="function.mysql-fetch-array.html" class="function">mysql_fetch_array()</a>の例を参照ください。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>mysql_fetch_assoc()</b> のいろいろな例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$conn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysql_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">"localhost"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"mysql_user"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"mysql_password"</span><span style="color: #007700">);<br /><br />if&nbsp;(!</span><span style="color: #0000BB">$conn</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Unable&nbsp;to&nbsp;connect&nbsp;to&nbsp;DB:&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">mysql_error</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;exit;<br />}<br /><br />if&nbsp;(!</span><span style="color: #0000BB">mysql_select_db</span><span style="color: #007700">(</span><span style="color: #DD0000">"mydbname"</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Unable&nbsp;to&nbsp;select&nbsp;mydbname:&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">mysql_error</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;exit;<br />}<br /><br /></span><span style="color: #0000BB">$sql&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"SELECT&nbsp;id&nbsp;as&nbsp;userid,&nbsp;fullname,&nbsp;userstatus<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FROM&nbsp;&nbsp;&nbsp;sometable<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;&nbsp;userstatus&nbsp;=&nbsp;1"</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysql_query</span><span style="color: #007700">(</span><span style="color: #0000BB">$sql</span><span style="color: #007700">);<br /><br />if&nbsp;(!</span><span style="color: #0000BB">$result</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Could&nbsp;not&nbsp;successfully&nbsp;run&nbsp;query&nbsp;($sql)&nbsp;from&nbsp;DB:&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">mysql_error</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;exit;<br />}<br /><br />if&nbsp;(</span><span style="color: #0000BB">mysql_num_rows</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">)&nbsp;==&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"No&nbsp;rows&nbsp;found,&nbsp;nothing&nbsp;to&nbsp;print&nbsp;so&nbsp;am&nbsp;exiting"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;exit;<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;データ行が存在する間、それを&nbsp;$row&nbsp;に連想配列形式でセットする<br />//&nbsp;注:&nbsp;結果が&nbsp;1&nbsp;行であることがわかっているのなら、ループを利用しなくてもよい<br />//&nbsp;注:&nbsp;ループ内で&nbsp;extract($row);&nbsp;を実行すれば、<br />//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$userid,&nbsp;$fullname,&nbsp;そして&nbsp;$userstatus&nbsp;を利用できる<br /></span><span style="color: #007700">while&nbsp;(</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysql_fetch_assoc</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">"userid"</span><span style="color: #007700">];<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">"fullname"</span><span style="color: #007700">];<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">"userstatus"</span><span style="color: #007700">];<br />}<br /><br /></span><span style="color: #0000BB">mysql_free_result</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <blockquote><p><b class="note">注意</b>: 
+   <b>パフォーマンス</b>
+   
+    特筆すべき点として、<b>mysql_fetch_assoc()</b> が
+    著しい付加価値があるにもかかわらず、
+    <a href="function.mysql-fetch-row.html" class="function">mysql_fetch_row()</a>より
+    <em class="emphasis">それほど</em>遅くはないということが言えます。
+   <br />
+  </p></blockquote>
+  <blockquote><p><b class="note">注意</b>: <span class="simpara">この関数により返されるフィー
+ルド名は <em class="emphasis">大文字小文字を区別</em> します。</span></p></blockquote>
+  <blockquote><p><b class="note">注意</b>: <span class="simpara">この関数は、
+NULL フィールドに PHPの <b><tt>NULL</tt></b> 値を設定します。</span></p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.mysql-fetch-row.html" class="function">mysql_fetch_row()</a></li>
+    <li class="member"><a href="function.mysql-fetch-array.html" class="function">mysql_fetch_array()</a></li>
+    <li class="member"><a href="function.mysql-data-seek.html" class="function">mysql_data_seek()</a></li>
+    <li class="member"><a href="function.mysql-query.html" class="function">mysql_query()</a></li>
+    <li class="member"><a href="function.mysql-error.html" class="function">mysql_error()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mysql-fetch-array.html">mysql_fetch_array</a></div>
+ <div class="next" style="float: right;"><a href="function.mysql-fetch-field.html">mysql_fetch_field</a></div>
+ <div class="up"><a href="ref.mysql.html">MySQL</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

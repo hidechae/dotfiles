@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>foreach</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="control-structures.for.html">for</a></div>
+ <div class="next" style="float: right;"><a href="control-structures.break.html">break</a></div>
+ <div class="up"><a href="language.control-structures.html">制御構造</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="control-structures.foreach" class="sect1">
+  <h2 class="title"><i class="literal">foreach</i></h2>
+  <p class="para">
+   PHP 4には、Perlや他の言語とよく似た
+   <i class="literal">foreach</i>構文があります。これにより
+   配列要素に関する反復処理が容易になります。この構造には、
+   2種類の構文があります。2番目の構文はあまり知られていませんが、
+   最初の構文の便利な拡張になっています。
+   <div class="informalexample">
+    <div class="example-contents">
+<div class="cdata"><pre>
+foreach(array_expression as $value)
+ 文
+foreach(array_expression as $key =&gt; $value)
+ 文
+</pre></div>
+    </div>
+
+   </div>
+  </p>
+  <p class="simpara">
+   最初の形式は、<i class="literal">array_expression</i>で指定した配列に
+   関してループ処理を行います。各ループにおいて現在の要素の値が
+   <i class="literal">$value</i>に代入され、内部配列ポインタが一つ前に
+   進められます。(よって、次のループでは次の要素を見ることになります。)
+  </p>
+  <p class="simpara">
+   2番目の形式も同様ですが、各ループで現在の要素のキーが変数
+   <i class="literal">$key</i>に代入されるところが異なります。
+  </p>
+   <p class="simpara">
+    PHP 5 では、
+    <a href="language.oop5.iterations.html" class="link">オブジェクトのイタレーション</a>
+    を用いることもできます。
+   </p>
+  <p class="para">
+   <blockquote><p><b class="note">注意</b>: 
+    
+     <i class="literal">foreach</i>の実行開始時に内部配列ポインタは、
+     配列の先頭要素を指すように自動的にリセットされます。
+     このため、<i class="literal">foreach</i>ループの前に
+     <a href="function.reset.html" class="function">reset()</a>をコールする必要はありません。
+    <br />
+   </p></blockquote>
+  </p>
+  <p class="para">
+   <blockquote><p><b class="note">注意</b>: 
+    
+     配列が <a href="language.references.html" class="link">リファレンス</a>
+     でない限り、<i class="literal">foreach</i>は、指定した配列自体に対してではなく、
+     そのコピーに対して処理を行います。
+     <i class="literal">foreach</i> は配列のポインタに副作用を及ぼします。
+     foreach の最中やその後で配列のポインタを使用する際は、まずポインタをリセットしてください。
+    <br />
+    </p></blockquote>
+   </p>
+   <p class="para">
+    PHP 5 以降、<i class="literal">$value</i> の前に &amp; を付けることで、
+    容易に配列の要素の値を変更できるようになっています。
+    これにより、値をコピーするのではなく、
+    <a href="language.references.html" class="link">リファレンス</a>
+    が代入されます。
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$arr&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">4</span><span style="color: #007700">);<br />foreach&nbsp;(</span><span style="color: #0000BB">$arr&nbsp;</span><span style="color: #007700">as&nbsp;&amp;</span><span style="color: #0000BB">$value</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$value&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$value&nbsp;</span><span style="color: #007700">*&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">;<br />}<br /></span><span style="color: #FF8000">//&nbsp;$arr&nbsp;は&nbsp;array(2,&nbsp;4,&nbsp;6,&nbsp;8)&nbsp;となります<br /></span><span style="color: #007700">unset(</span><span style="color: #0000BB">$value</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;最後の要素への参照を解除します<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+    この機能は、ループ処理される配列が参照可能である場合 (すなわち、
+    変数である) のみ使用可能です。
+  </p>
+   <div class="warning"><b class="warning">警告</b>
+    <p class="para">
+     <i class="literal">foreach</i> ループを終えた後でも、
+     <i class="literal">$value</i> は配列の最後の要素を参照したままとなります。
+     <a href="function.unset.html" class="function">unset()</a> でその参照を解除しておくようにしましょう。
+    </p>
+   </div>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    <i class="literal">foreach</i> は、&#039;@&#039; によりエラーメッセージ出力を抑
+    制する機能をサポートしていません。
+    <br />
+   </p></blockquote>
+   <p class="para">
+    既にご存知かと思いますが、以下の文は機能的に等価です。
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$arr&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #DD0000">"one"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"two"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"three"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">reset</span><span style="color: #007700">(</span><span style="color: #0000BB">$arr</span><span style="color: #007700">);<br />while&nbsp;(list(,&nbsp;</span><span style="color: #0000BB">$value</span><span style="color: #007700">)&nbsp;=&nbsp;</span><span style="color: #0000BB">each</span><span style="color: #007700">(</span><span style="color: #0000BB">$arr</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Value:&nbsp;$value&lt;br&nbsp;/&gt;\n"</span><span style="color: #007700">;<br />}<br /><br />foreach&nbsp;(</span><span style="color: #0000BB">$arr&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$value</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Value:&nbsp;$value&lt;br&nbsp;/&gt;\n"</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+    以下の文も機能的に等価です。
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+reset&nbsp;($arr);<br />while&nbsp;(list($key,&nbsp;$value)&nbsp;=&nbsp;each&nbsp;($arr))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"Key:&nbsp;$key;&nbsp;Value:&nbsp;$value&lt;br&nbsp;/&gt;\n";<br />}<br /><br />foreach&nbsp;($arr&nbsp;as&nbsp;$key&nbsp;=&gt;&nbsp;$value)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"Key:&nbsp;$key;&nbsp;Value:&nbsp;$value&lt;br&nbsp;/&gt;\n";<br />}</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+   <p class="para">
+    使用法を示すためにその他の例を示します。
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+/*&nbsp;foreach&nbsp;の例&nbsp;1:&nbsp;値のみ&nbsp;*/<br /><br />$a&nbsp;=&nbsp;array&nbsp;(1,&nbsp;2,&nbsp;3,&nbsp;17);<br /><br />foreach&nbsp;($a&nbsp;as&nbsp;$v)&nbsp;{<br />&nbsp;&nbsp;&nbsp;echo&nbsp;"Current&nbsp;value&nbsp;of&nbsp;\$a:&nbsp;$v.\n";<br />}<br /><br />/*&nbsp;foreachの例2:&nbsp;値&nbsp;(説明用にキーを出力)&nbsp;*/<br /><br />$a&nbsp;=&nbsp;array&nbsp;(1,&nbsp;2,&nbsp;3,&nbsp;17);<br /><br />$i&nbsp;=&nbsp;0;&nbsp;/*&nbsp;説明用&nbsp;*/<br /><br />foreach($a&nbsp;as&nbsp;$v)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"\$a[$i]&nbsp;=&gt;&nbsp;$v.\n";<br />&nbsp;&nbsp;&nbsp;&nbsp;$i++;<br />}<br /><br />/*&nbsp;foreachの例3:&nbsp;キーと値&nbsp;*/<br /><br />$a&nbsp;=&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;"one"&nbsp;=&gt;&nbsp;1,<br />&nbsp;&nbsp;&nbsp;&nbsp;"two"&nbsp;=&gt;&nbsp;2,<br />&nbsp;&nbsp;&nbsp;&nbsp;"three"&nbsp;=&gt;&nbsp;3,<br />&nbsp;&nbsp;&nbsp;&nbsp;"seventeen"&nbsp;=&gt;&nbsp;17<br />);<br /><br />foreach($a&nbsp;as&nbsp;$k&nbsp;=&gt;&nbsp;$v)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"\$a[$k]&nbsp;=&gt;&nbsp;$v.\n";<br />}<br /><br />/*&nbsp;foreach&nbsp;の例4:&nbsp;多次元配列&nbsp;*/<br />$a&nbsp;=&nbsp;array();<br />$a[0][0]&nbsp;=&nbsp;"a";<br />$a[0][1]&nbsp;=&nbsp;"b";<br />$a[1][0]&nbsp;=&nbsp;"y";<br />$a[1][1]&nbsp;=&nbsp;"z";<br /><br />foreach($a&nbsp;as&nbsp;$v1)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;($v1&nbsp;as&nbsp;$v2)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"$v2\n";<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br />/*&nbsp;foreach&nbsp;の例5:&nbsp;動的配列&nbsp;*/<br /><br />foreach(array(1,&nbsp;2,&nbsp;3,&nbsp;4,&nbsp;5)&nbsp;as&nbsp;$v)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"$v\n";<br />}</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="control-structures.for.html">for</a></div>
+ <div class="next" style="float: right;"><a href="control-structures.break.html">break</a></div>
+ <div class="up"><a href="language.control-structures.html">制御構造</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

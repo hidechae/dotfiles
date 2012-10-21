@@ -1,0 +1,1712 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>コア php.ini ディレクティブに関する説明</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ini.html">php.ini ディレクティブ</a></div>
+ <div class="next" style="float: right;"><a href="timezones.html">サポートされるタイムゾーンのリスト</a></div>
+ <div class="up"><a href="ini.html">php.ini ディレクティブ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="ini.core" class="section">
+   <h2 class="title">コア <var class="filename">php.ini</var> ディレクティブに関する説明</h2>
+   <p class="para">
+    このリストには、PHPを設定する際に使用可能なコア <var class="filename">php.ini</var> ディレクティブが
+    含まれています。拡張モジュールにより処理されるディレクティブは、それぞれの
+    拡張モジュールのドキュメントページにリストと詳細が記述されています。
+    例えば、セッション用ディレクティブに関する情報は、
+    <a href="ref.session.html" class="link">セッションのページ</a>にあります。
+   </p>
+
+   <div id="ini.sect.httpd-options" class="section">
+    <h2 class="title">httpd オプション</h2>
+    <p class="para">
+     <table border="5">
+      <caption><b>httpd オプション</b></caption>
+      <colgroup>
+
+       <thead valign="middle">
+        <tr valign="middle">
+         <th colspan="1">名前</th>
+         <th colspan="1">デフォルト</th>
+         <th colspan="1">変更の可否</th>
+         <th colspan="1">変更履歴</th>
+        </tr>
+
+       </thead>
+
+       <tbody valign="middle">
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">async_send</td>
+         <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+         <td class="empty">&nbsp;</td>
+        </tr>
+
+       </tbody>
+      </colgroup>
+
+     </table>
+
+    </p>
+    <p class="para">
+    </p>
+   </div>
+
+  <div id="ini.sect.language-options" class="section">
+   <h2 class="title">言語オプション</h2>
+   <p class="para">
+   <table border="5">
+    <caption><b>言語およびその他の設定オプション</b></caption>
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">名前</th>
+        <th colspan="1">デフォルト</th>
+        <th colspan="1">変更の可否</th>
+        <th colspan="1">変更履歴</th>
+      </tr>
+
+     </thead>
+
+       <tbody valign="middle">
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">short_open_tag</td>
+         <td colspan="1" rowspan="1" align="left">On</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_PERDIR</td>
+         <td colspan="1" rowspan="1" align="left">PHP &lt;= 4.0.0 で PHP_INI_ALL</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">asp_tags</td>
+         <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_PERDIR</td>
+         <td colspan="1" rowspan="1" align="left">PHP &lt;= 4.0.0 で PHP_INI_ALL</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">precision</td>
+         <td colspan="1" rowspan="1" align="left">&quot;14&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+         <td class="empty">&nbsp;</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">y2k_compliance</td>
+         <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+         <td class="empty">&nbsp;</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">allow_call_time_pass_reference</td>
+         <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM|PHP_INI_PERDIR</td>
+         <td colspan="1" rowspan="1" align="left">PHP &lt;= 4.0.0 で PHP_INI_ALL</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">expose_php</td>
+         <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+         <td colspan="1" rowspan="1" align="left"><var class="filename">php.ini</var> のみ</td>
+         <td class="empty">&nbsp;</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">zend.ze1_compatibility_mode</td>
+         <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+         <td colspan="1" rowspan="1" align="left">PHP 5.0.0 以降で利用可能</td>
+        </tr>
+
+    </tbody>
+    </colgroup>
+
+   </table>
+
+   </p>
+
+   <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+
+    <p class="para">
+     <dl>
+
+      <dt id="ini.short-open-tag">
+       <span class="term">
+        <i><tt class="parameter">short_open_tag</tt></i>
+
+        <a href="language.types.boolean.html" class="type boolean">boolean</a>
+       </span>
+       <dd>
+
+        <p class="para">
+         PHP タグの短縮型 (<strong class="userinput"><code>&lt;? ?&gt;</code></strong>
+) を使用
+         可能にするかどうかを設定します。PHPをXMLと組み合わせて用いる
+         場合は、<strong class="userinput"><code>&lt;?xml ?&gt;</code></strong>
+をファイル中で用
+         いるためにこのオプションをオフにする必要があります。オンにし
+         た場合にPHPでXMLを出力するには、例えば、次のようにします。
+         <strong class="userinput"><code>&lt;?php echo &#039;&lt;?xml version=&quot;1.0&quot;&#039;;
+         ?&gt;</code></strong>
+ これをオフにした場合、長い方の形式のタグ
+         (<strong class="userinput"><code>&lt;?php ?&gt;</code></strong>
+)を使用する必要があります。
+        </p>
+        <blockquote><p><b class="note">注意</b>: 
+         
+          このディレクティブは、<strong class="userinput"><code>&lt;? echo</code></strong>
+と同じ形式の
+          ショートカット<strong class="userinput"><code>&lt;?=</code></strong>
+も影響を受けます。
+          このショートカットを使用するには、
+          <code class="systemitem systemitem">short_open_tag</code>
+をonとする
+          必要があります。
+         <br />
+        </p></blockquote>
+       </dd>
+
+      </dt>
+
+
+     <dt id="ini.asp-tags">
+      <span class="term">
+       <i><tt class="parameter">asp_tags</tt></i>
+
+       <a href="language.types.boolean.html" class="type boolean">boolean</a>
+      </span>
+      <dd>
+
+       <span class="simpara">
+        ASP 形式のタグ &lt;% %&gt; を通常のタグ &lt;?php ?&gt;
+        に加えて使用可能にします。
+        このスイッチにより、出力の短縮形 &lt;%= $value %&gt; も
+        使用できるようになります。
+        詳細な情報は、<a href="language.basic-syntax.html#language.basic-syntax.phpmode" class="link">
+         HTML からのエスケープ</a>を参照ください。
+       </span>
+       <blockquote><p><b class="note">注意</b>: 
+        
+         ASP形式のタグは3.0.4で追加されました。
+        <br />
+       </p></blockquote>
+      </dd>
+
+     </dt>
+
+
+      <dt id="ini.precision">
+       <span class="term">
+        <i><tt class="parameter">precision</tt></i>
+
+        <a href="language.types.integer.html" class="type integer">integer</a>
+       </span>
+       <dd>
+
+        <span class="simpara">
+        浮動小数点数に関して表示される最大桁数を指定します。
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt id="ini.y2k-compliance">
+       <span class="term">
+        <i><tt class="parameter">y2k_compliance</tt></i>
+
+        <a href="language.types.boolean.html" class="type boolean">boolean</a>
+       </span>
+       <dd>
+
+        <span class="simpara">
+        2000年問題対応を強制します (2000年問題非対応のブラウザにおいて、
+        問題が発生する可能性があります)。
+        </span>
+       </dd>
+
+      </dt>
+
+
+
+     <dt id="ini.allow-call-time-pass-reference">
+      <span class="term">
+       <i><tt class="parameter">allow_call_time_pass_reference</tt></i>
+
+       <a href="language.types.boolean.html" class="type boolean">boolean</a>
+      </span>
+      <dd>
+
+       <p class="para">
+        関数のコール時に引数が参照で渡された場合に、警告するかどうかを
+        設定します。この機能は過去のものであり、将来のバージョンの
+        PHP/Zend ではサポートされない可能性があります。
+        推奨される方法は、関数宣言時に参照渡しとするべき引数を指定する
+        ことです。将来のバージョンでの動作を保障するために、この
+        オプションを off とし、スクリプトがこの状態で正しく動作することを
+        確認することが推奨されます
+        (この機能を使用する度に警告が発生します)。
+       </p>
+       <p class="para">
+        関数コール時に参照で引数を渡すことは、コードの明解さを損なうために
+        廃止されています。関数は、引数が参照渡しであると宣言されて
+        いない場合でも、文書化されていない方法で、その引数を修正できます。
+        副作用を回避するためには、どの引数を参照渡しとするかを関数宣言でのみ
+        指定すると良いでしょう。
+       </p>
+       <p class="para">
+        <a href="language.references.html" class="link">参照に関する説明</a>も
+        参照ください。
+       </p>
+      </dd>
+
+     </dt>
+
+
+      <dt id="ini.expose-php">
+       <span class="term">
+        <i><tt class="parameter">expose_php</tt></i>
+
+        <a href="language.types.boolean.html" class="type boolean">boolean</a>
+       </span>
+       <dd>
+
+        <p class="para">
+        (例えば、Web サーバヘッダに PHP のサインを追加することにより、)
+        PHP がサーバにインストールされていることを表示するかどうかを
+        指定します。これは全くセキュリティ上の脅威ではなく、サーバ上
+        で PHP を使用しているかどうかを調べられるようにするものです。
+        </p>
+       </dd>
+
+      </dt>
+
+      <dt id="ini.zend.ze1-compatibility-mode">
+       <span class="term">
+        <i><tt class="parameter">zend.ze1_compatibility_mode</tt></i>
+
+        <a href="language.types.boolean.html" class="type boolean">boolean</a>
+       </span>
+      <dd>
+
+       <p class="para">
+        Zend Engine 1 (PHP 4) との互換モードを有効にします。
+        この設定は、オブジェクトのコピー、キャスト (プロパティを
+        保持しないオブジェクトが <b><tt>FALSE</tt></b> あるいは 0 のいずれになるか)、
+        そして
+        <a href="language.oop5.object-comparison.html" class="link">比較</a>
+        に影響を与えます。このモードの場合、オブジェクトを渡す際の
+        デフォルトの方法は、参照渡しではなく値渡しとなります。
+       </p>
+        <p class="para">
+         <a href="migration5.html" class="link">PHP 4 から PHP 5 への移行</a>というタイトルの
+         セクションも参照してください。
+        </p>
+      </dd>
+
+     </dt>
+
+    </dl>
+
+   </p>
+  </div>
+
+  <div id="ini.sect.resource-limits" class="section">
+   <h2 class="title">リソース制限</h2>
+   <p class="para">
+    <table border="5">
+     <caption><b>リソース制限</b></caption>
+     <colgroup>
+
+      <thead valign="middle">
+       <tr valign="middle">
+        <th colspan="1">名前</th>
+        <th colspan="1">デフォルト</th>
+        <th colspan="1">変更の可否</th>
+         <th colspan="1">変更履歴</th>
+       </tr>
+
+      </thead>
+
+      <tbody valign="middle">
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">memory_limit</td>
+        <td colspan="1" rowspan="1" align="left">&quot;128M&quot;</td>
+        <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+        <td colspan="1" rowspan="1" align="left">PHP 5.2.0 より前は &quot;8M&quot;、PHP 5.2.0 では &quot;16M&quot;</td>
+       </tr>
+
+      </tbody>
+     </colgroup>
+
+    </table>
+
+   </p>
+
+   <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+
+   <p class="para">
+    <dl>
+
+     <dt id="ini.memory-limit">
+      <span class="term">
+       <i><tt class="parameter">memory_limit</tt></i>
+
+       <a href="language.types.integer.html" class="type integer">integer</a>
+      </span>
+      <dd>
+
+       <p class="para">
+        スクリプトが確保できる最大メモリをバイト数で指定します。この命令は、
+        正しく書かれていないスクリプトがサーバーのメモリを食いつぶすことを防止するのに役立ちます。
+        もし、使用可能メモリに制限を設けたくない場合は、
+        ここに <i class="literal">-1</i> を指定してください。
+       </p>
+       <p class="para">
+        PHP 5.2.1 より前のバージョンでは、このディレクティブを使うためには、
+        コンパイル時に configure で
+        <i class="literal">--enable-memory-limit</i> を指定しなければなりません。
+        これは、関数 <a href="function.memory-get-usage.html" class="function">memory_get_usage()</a> および
+        <a href="function.memory-get-peak-usage.html" class="function">memory_get_peak_usage()</a>
+        を使用する際にも必要となります。
+       </p>
+
+       <span class="simpara"><a href="language.types.integer.html" class="type integer">integer</a>を使用する際、
+その値はバイト単位で測られます。
+<a href="faq.using.html#faq.using.shorthandbytes" class="link">この FAQ</a> に記載された
+短縮表記を使用することも可能です。</span>
+
+      </dd>
+
+     </dt>
+
+    </dl>
+
+   </p>
+   <p class="para">
+    <a href="ref.info.html#ini.max-execution-time" class="link">max_execution_time</a>
+    も参照ください。
+   </p>
+  </div>
+
+  <div id="ini.sect.performance" class="section">
+   <h2 class="title">パフォーマンスチューニング</h2>
+   <p class="para">
+    <table border="5">
+     <caption><b>パフォーマンスチューニング</b></caption>
+     <colgroup>
+
+      <thead valign="middle">
+       <tr valign="middle">
+        <th colspan="1">名前</th>
+        <th colspan="1">デフォルト</th>
+        <th colspan="1">変更の可否</th>
+        <th colspan="1">変更履歴</th>
+       </tr>
+
+      </thead>
+
+      <tbody valign="middle">
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">realpath_cache_size</td>
+        <td colspan="1" rowspan="1" align="left">&quot;16K&quot;</td>
+        <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+        <td colspan="1" rowspan="1" align="left">PHP 5.1.0 以降で使用可能。</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">realpath_cache_ttl</td>
+        <td colspan="1" rowspan="1" align="left">&quot;120&quot;</td>
+        <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+        <td colspan="1" rowspan="1" align="left">PHP 5.1.0 以降で使用可能。</td>
+       </tr>
+
+      </tbody>
+     </colgroup>
+
+    </table>
+
+   </p>
+   <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+   <p class="para">
+    <dl>
+
+     <dt id="ini.realpath-cache-size">
+      <span class="term">
+       <i><tt class="parameter">realpath_cache_size</tt></i>
+
+       <a href="language.types.integer.html" class="type integer">integer</a>
+      </span>
+      <dd>
+
+       <p class="para">
+        PHP が使用する realpath キャッシュの大きさを設定します。
+        PHP で大量にファイルをオープンする際に、
+        この値を大きくすることによってファイル操作のパフォーマンスを
+        向上させます。
+       </p>
+      </dd>
+
+     </dt>
+
+     <dt id="ini.realpath-cache-ttl">
+      <span class="term">
+       <i><tt class="parameter">realpath_cache_ttl</tt></i>
+
+       <a href="language.types.integer.html" class="type integer">integer</a>
+      </span>
+      <dd>
+
+       <p class="para">
+        与えられたファイルやディレクトリについての realpath
+        情報キャッシュの有効期限を (秒単位で) 設定します。
+        ファイルを変更することがほとんどない場合は、
+        この値を大きくすることを検討してください。
+       </p>
+      </dd>
+
+     </dt>
+
+    </dl>
+
+   </p>
+  </div>
+
+  <div id="ini.sect.data-handling" class="section">
+   <h2 class="title">データ処理</h2>
+    <p class="para">
+     <table border="5">
+      <caption><b>データ処理設定オプション</b></caption>
+      <colgroup>
+
+       <thead valign="middle">
+        <tr valign="middle">
+         <th colspan="1">名前</th>
+         <th colspan="1">デフォルト</th>
+         <th colspan="1">変更の可否</th>
+         <th colspan="1">変更履歴</th>
+       </tr>
+
+       </thead>
+
+       <tbody valign="middle">
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">track_vars</td>
+         <td colspan="1" rowspan="1" align="left">&quot;On&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_??</td>
+         <td class="empty">&nbsp;</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">arg_separator.output</td>
+         <td colspan="1" rowspan="1" align="left">&quot;&amp;&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+         <td colspan="1" rowspan="1" align="left">PHP 4.0.5 以降で利用可能</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">arg_separator.input</td>
+         <td colspan="1" rowspan="1" align="left">&quot;&amp;&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM|PHP_INI_PERDIR</td>
+        <td colspan="1" rowspan="1" align="left">PHP 4.0.5 以降で利用可能</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">variables_order</td>
+         <td colspan="1" rowspan="1" align="left">&quot;EGPCS&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_PERDIR</td>
+         <td colspan="1" rowspan="1" align="left">PHP &lt;= 5.0.5 では PHP_INI_ALL。</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">auto_globals_jit</td>
+         <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_PERDIR</td>
+         <td colspan="1" rowspan="1" align="left">PHP 5.0.0 以降で利用可能</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">register_globals</td>
+         <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_PERDIR</td>
+         <td colspan="1" rowspan="1" align="left">PHP &lt;= 4.2.3 では PHP_INI_ALL</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">register_argc_argv</td>
+         <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_PERDIR</td>
+         <td colspan="1" rowspan="1" align="left">PHP &lt;= 4.2.3 では PHP_INI_ALL</td>
+       </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">register_long_arrays</td>
+         <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_PERDIR</td>
+         <td colspan="1" rowspan="1" align="left">PHP &lt;= 4.2.3 では PHP_INI_ALL</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">post_max_size</td>
+         <td colspan="1" rowspan="1" align="left">&quot;8M&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_PERDIR</td>
+         <td colspan="1" rowspan="1" align="left">PHP &lt;= 4.2.3 では PHP_INI_SYS。PHP 4.0.3 以降で利用可能</td>
+       </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">gpc_order</td>
+         <td colspan="1" rowspan="1" align="left">&quot;GPC&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+         <td class="empty">&nbsp;</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">auto_prepend_file</td>
+         <td colspan="1" rowspan="1" align="left">&quot;&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_PERDIR</td>
+         <td colspan="1" rowspan="1" align="left">PHP &lt;= 4.2.3 では PHP_INI_ALL</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">auto_append_file</td>
+         <td colspan="1" rowspan="1" align="left">&quot;&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_PERDIR</td>
+         <td colspan="1" rowspan="1" align="left">PHP &lt;= 4.2.3 では PHP_INI_ALL</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">default_mimetype</td>
+         <td colspan="1" rowspan="1" align="left">&quot;text/html&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+         <td class="empty">&nbsp;</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">default_charset</td>
+         <td colspan="1" rowspan="1" align="left">&quot;iso-8859-1&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+         <td class="empty">&nbsp;</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">always_populate_raw_post_data</td>
+         <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_PERDIR</td>
+         <td colspan="1" rowspan="1" align="left">PHP &lt;= 4.2.3 では PHP_INI_ALL。PHP 4.1.0 以降で利用可能</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">allow_webdav_methods</td>
+         <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_PERDIR</td>
+         <td class="empty">&nbsp;</td>
+        </tr>
+
+       </tbody>
+      </colgroup>
+
+     </table>
+
+    </p>
+
+    <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+
+    <p class="para">
+     <dl>
+
+      <dt id="ini.track-vars">
+       <span class="term">
+        <i><tt class="parameter">track_vars</tt></i>
+
+        <a href="language.types.boolean.html" class="type boolean">boolean</a>
+       </span>
+       <dd>
+
+        <p class="para">
+         サーバ変数はそれぞれ、グローバル連想配列
+         <var class="varname">$_ENV</var>,
+         <var class="varname">$_GET</var>,
+         <var class="varname">$_POST</var>,
+         <var class="varname">$_COOKIE</var>,
+         <var class="varname">$_SERVER</var>で参照することができます。
+        </p>
+        <p class="para">
+        PHP 4.0.3 以降, <code class="systemitem systemitem">track_vars</code>
+ は常にonとなっている
+        ことに注意してください。
+        </p>
+       </dd>
+
+      </dt>
+
+
+      <dt id="ini.arg-separator.output">
+       <span class="term">
+        <i><tt class="parameter">arg_separator.output</tt></i>
+
+        <a href="language.types.string.html" class="type string">string</a>
+       </span>
+       <dd>
+
+        <p class="para">
+        PHPがURLを生成する際にURL引数を区分するために使用されるセパレータ。
+        </p>
+       </dd>
+
+      </dt>
+
+
+      <dt id="ini.arg-separator.input">
+       <span class="term">
+        <i><tt class="parameter">arg_separator.input</tt></i>
+
+        <a href="language.types.string.html" class="type string">string</a>
+       </span>
+       <dd>
+
+        <p class="para">
+        入力されたURLを変数にパースする際にPHPが使用するセパレータのリスト。
+        </p>
+        <blockquote><p><b class="note">注意</b>: 
+         
+         このディレクティブで指定した全ての文字は、
+         セパレータとして認識されます!
+         <br />
+        </p></blockquote>
+       </dd>
+
+      </dt>
+
+
+      <dt id="ini.variables-order">
+       <span class="term">
+        <i><tt class="parameter">variables_order</tt></i>
+
+        <a href="language.types.string.html" class="type string">string</a>
+       </span>
+       <dd>
+
+        <p class="para">
+         EGPCS (<i class="literal">E</i>nvironment (環境変数)、
+         <i class="literal">G</i>et、<i class="literal">P</i>ost、
+         <i class="literal">C</i>ookie (クッキー)、そして <i class="literal">S</i>erver)
+         変数のパースの順番を設定します。例えば
+         variables_order を <i class="literal">&quot;SP&quot;</i>
+         に設定すると、PHP は
+         <a href="language.variables.predefined.html" class="link">superglobals</a> <var class="varname">$_SERVER</var> および
+         <var class="varname">$_POST</var> を作成しますが、
+         <var class="varname">$_ENV</var>、<var class="varname">$_GET</var> および
+         <var class="varname">$_COOKIE</var> は作成しません。&quot;&quot;
+         に設定すると、一切 <a href="language.variables.predefined.html" class="link">superglobals</a> を設定しません。
+        </p>
+        <p class="para">
+         非推奨のディレクティブ
+         <a href="ini.core.html#ini.register-globals" class="link">register_globals</a>
+         が on になっていると (これは PHP 6.0.0 で廃止される予定です)、
+         variables_order の設定は、
+         <i class="literal">ENV</i>、
+         <i class="literal">GET</i>、<i class="literal">POST</i>、
+         <i class="literal">COOKIE</i> および <i class="literal">SERVER</i>
+         の各変数がグローバルスコープに取り込まれる順番も左右します。
+         つまり、たとえば variables_order が
+         <i class="literal">&quot;EGPCS&quot;</i> で register_globals が有効になっていたとすると、
+         <var class="varname">$_GET[&#039;action&#039;]</var> と
+         <var class="varname">$_POST[&#039;action&#039;]</var> が両方設定された場合の
+         <var class="varname">$action</var> の値は
+         <var class="varname">$_POST[&#039;action&#039;]</var> の内容になります。
+         これは、この例におけるディレクティブの設定で <i class="literal">P</i>
+         が <i class="literal">G</i> より後になっているからです。
+        </p>
+        <div class="warning"><b class="warning">警告</b>
+         <p class="para">
+          CGI および FastCGI SAPI の両方で、
+          <a href="reserved.variables.html#reserved.variables.server" class="link">$_SERVER</a>
+          にも環境変数の値が格納されます。
+          つまり、<i class="literal">S</i> を指定すると、
+          <i class="literal">ES</i> と指定したのと同じ意味になります。
+          これは、<i class="literal">E</i> が他のどこかで指定されていたとしても同じです。
+         </p>
+        </div>
+        <blockquote><p><b class="note">注意</b>: 
+         
+          <a href="reserved.variables.html#reserved.variables.request" class="link">$_REQUEST</a>
+          の内容や順序も、このディレクティブの影響を受けます。
+         <br />
+        </p></blockquote>
+       </dd>
+
+      </dt>
+
+
+      <dt id="ini.auto-globals-jit">
+       <span class="term">
+        <i><tt class="parameter">auto_globals_jit</tt></i>
+
+        <a href="language.types.boolean.html" class="type boolean">boolean</a>
+       </span>
+       <dd>
+
+        <p class="para">
+         有効にした場合、SERVER および ENV 変数はスクリプトの開始時ではなく、
+         最初に使用された時 (Just In Time) に作成されるようになります。
+         これらの変数がスクリプトの中で使用されない場合、
+         このディレクティブを使用することで性能が向上します。
+        </p>
+        <p class="para">
+         このディレクティブを有効にするには、PHP ディレクティブ
+         <a href="ini.core.html#ini.register-globals" class="link">register_globals</a>,
+         <a href="ini.core.html#ini.register-long-arrays" class="link">register_long_arrays</a>,
+         および <a href="ini.core.html#ini.register-argc-argv" class="link">register_argc_argv</a>
+         を無効にしておく必要があります。PHP 5.1.3 以降では、
+         <a href="ini.core.html#ini.register-argc-argv" class="link">register_argc_argv</a>
+         を無効にする必要はありません。
+        </p>
+       </dd>
+
+      </dt>
+
+
+     <dt id="ini.register-globals">
+      <span class="term">
+       <i><tt class="parameter">register_globals</tt></i>
+
+       <a href="language.types.boolean.html" class="type boolean">boolean</a>
+      </span>
+      <dd>
+
+       <p class="para">
+        EGPCS(Environment, GET, POST, Cookie, Server)変数を
+        グローバル変数として登録するかどうかを指定します。
+       </p>
+       <p class="para">
+        <a href="http://www.php.net/releases/4_2_0.php" class="link external">&raquo; PHP 4.2.0</a> 以降、
+        このディレクティブのデフォルトは、<em class="emphasis">off</em>です。
+       </p>
+       <p class="para">
+        関連する情報については、セキュリティの章の
+        <a href="security.globals.html" class="link">register_globalsの使用</a>
+        を参照してください。
+       </p>
+       <p class="para">
+        <code class="systemitem systemitem">register_globals</code>
+は、
+        (<a href="function.ini-set.html" class="function">ini_set()</a>で)実行時に設定することができないことに
+        注意してください。しかし、前記のようにホストが許可している場合には、
+        <var class="filename">.htaccess</var> を使用することができます。
+        <var class="filename">.htaccess</var> エントリの例を以下に示します。
+        <strong class="userinput"><code>php_flag register_globals off</code></strong>
+
+       </p>
+       <blockquote><p><b class="note">注意</b>: 
+        
+         <code class="systemitem systemitem">register_globals</code>
+ は、
+         <a href="ini.core.html#ini.variables-order" class="link">variables_order</a>
+         ディレクティブの影響を受けます。
+        <br />
+       </p></blockquote>
+        <div class="warning"><b class="warning">警告</b><p class="simpara">
+この機能は <em class="emphasis">非推奨</em> であり、PHP 6.0.0 で
+<em class="emphasis">削除</em> されます。この機能を使用しないことを強く推奨します。
+</p></div>
+      </dd>
+
+     </dt>
+
+
+      <dt id="ini.register-argc-argv">
+       <span class="term">
+        <i><tt class="parameter">register_argc_argv</tt></i>
+
+        <a href="language.types.boolean.html" class="type boolean">boolean</a>
+       </span>
+       <dd>
+
+        <span class="simpara">
+        PHPが変数argvとargcを宣言するかどうかを指定します
+        (これらにはGETの情報が格納されます)。
+        </span>
+        <span class="simpara">
+        <a href="features.commandline.html" class="link">コマンドライン</a>
+        も参照ください。このディレクティブはPHP 4.0.0で
+        追加されました。以前のバージョンでは常に&quot;on&quot;です。
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt id="ini.register-long-arrays">
+       <span class="term">
+        <i><tt class="parameter">register_long_arrays</tt></i>
+
+        <a href="language.types.boolean.html" class="type boolean">boolean</a>
+       </span>
+       <dd>
+
+        <span class="simpara">
+         PHP が、<var class="varname">$HTTP_*_VARS</var> のような古い長い
+         <a href="language.variables.predefined.html" class="link">定義済みの変数</a>
+         を登録するかどうかを指定します。
+         On (デフォルト) とした場合、<var class="varname">$HTTP_GET_VARS</var> のような
+         定義済みの長い PHP 変数が定義されます。
+         これらの変数を使用していない場合には、性能面からこのオプションを
+         off とすることが推奨されています。
+         かわりに <var class="varname">$_GET</var> のようなスーパーグローバル変数を使用してください。
+        </span>
+        <span class="simpara">
+        このディレクティブは PHP 5.0.0 で利用可能となりました。
+        その後 PHP 6.0.0 で削除されました。
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt id="ini.post-max-size">
+       <span class="term">
+        <i><tt class="parameter">post_max_size</tt></i>
+
+        <a href="language.types.integer.html" class="type integer">integer</a>
+       </span>
+       <dd>
+
+        <span class="simpara">
+        POSTデータに許可される最大サイズを設定します。この設定は、ファ
+        イルアップロードにも影響します。大きなファイルをアップロード
+        するには、この値を <a href="ini.core.html#ini.upload-max-filesize" class="link">upload_max_filesize</a>
+         より大きく設定する必要があります。
+        </span>
+       <span class="simpara">
+        configureスクリプトでメモリ制限を有効とした場合、<a href="ini.core.html#ini.memory-limit" class="link">memory_limit</a>も
+        ファイルアップロードに影響します。一般的に <a href="ini.core.html#ini.memory-limit" class="link">memory_limit</a> は、
+        <a href="ini.core.html#ini.post-max-size" class="link">post_max_size</a>よりも大きく
+        する必要があります。
+       </span>
+
+        <span class="simpara"><a href="language.types.integer.html" class="type integer">integer</a>を使用する際、
+その値はバイト単位で測られます。
+<a href="faq.using.html#faq.using.shorthandbytes" class="link">この FAQ</a> に記載された
+短縮表記を使用することも可能です。</span>
+
+        <span class="simpara">
+         POSTデータの大きさが、post_max_sizeより大きい場合、
+         <var class="varname">$_POST</var> と <var class="varname">$_FILES</var>
+         <a href="language.variables.predefined.html#language.variables.superglobals" class="link">superglobals</a>
+         は空になります。この事象は、いくつかの方法で検出することができます。
+         例えば、<var class="varname">$_GET</var> 変数をデータを
+          <i class="literal">&lt;form action=&quot;edit.php?processed=1&quot;&gt;</i>のように
+         処理するスクリプトに渡し、
+         <var class="varname">$_GET[&#039;processed&#039;]</var> が設定されているかどうかを
+         確認する方法があります。
+        </span>
+      </dd>
+
+     </dt>
+
+
+      <dt id="ini.gpc-order">
+       <span class="term">
+        <i><tt class="parameter">gpc_order</tt></i>
+
+        <a href="language.types.string.html" class="type string">string</a>
+       </span>
+       <dd>
+
+        <p class="para">
+        GET/POST/COOKIE 変数処理の順番を設定します。この命令の
+        デフォルトの設定は、&quot;GPC&quot;です。例えば、これを&quot;GP&quot;にPHPはクッキーを
+        完全に無視し、GETメソッド変数を同名のPOSTメソッド変数で上書き
+        します。
+        </p>
+        <blockquote><p><b class="note">注意</b>: 
+         
+         このオプションは、PHP 4では利用できません。
+         代わりに、<a href="ini.core.html#ini.variables-order" class="link">variables_order</a>
+         を使用してください。
+         <br />
+        </p></blockquote>
+       </dd>
+
+      </dt>
+
+
+      <dt id="ini.auto-prepend-file">
+       <span class="term">
+        <i><tt class="parameter">auto_prepend_file</tt></i>
+
+        <a href="language.types.string.html" class="type string">string</a>
+       </span>
+       <dd>
+
+        <p class="para">
+         メインファイルの前に自動的に付加されるファイルの名前を指定します。
+         このファイルは、<a href="function.require.html" class="function">require()</a> 関数のコール時と同様に読み込まれます。
+         このため、<a href="ini.core.html#ini.include-path" class="link">include_path</a>
+         が使用されます。
+        </p>
+        <p class="para">
+         特別な値 <b><tt>none</tt></b> を指
+         定すると、ファイルを前に追加する機能は無効となります。
+        </p>
+       </dd>
+
+      </dt>
+
+
+      <dt id="ini.auto-append-file">
+       <span class="term">
+        <i><tt class="parameter">auto_append_file</tt></i>
+
+        <a href="language.types.string.html" class="type string">string</a>
+       </span>
+       <dd>
+
+        <p class="para">
+         メインファイルの後に自動的に追加されるファイルの名前を指定します。
+         このファイルは、<a href="function.require.html" class="function">require()</a> 関数のコール時と同様に読み込まれます。
+         このため、<a href="ini.core.html#ini.include-path" class="link">include_path</a>
+         が使用されます。
+        </p>
+        <p class="para">
+         <b><tt>none</tt></b> を値として
+         指定するとこの自動付加機能はオフとなります。
+         <blockquote><p><b class="note">注意</b>: 
+          <span class="simpara">
+           スクリプトが <a href="function.exit.html" class="function">exit()</a> で終了する場合、
+           この自動付加機能は使用されません 。
+         </span>
+         </p></blockquote>
+        </p>
+       </dd>
+
+      </dt>
+
+
+      <dt id="ini.default-mimetype">
+       <span class="term">
+        <i><tt class="parameter">default_mimetype</tt></i>
+
+        <a href="language.types.string.html" class="type string">string</a>
+       </span>
+       <dd>
+
+        <p class="para">
+        </p>
+       </dd>
+
+      </dt>
+
+
+      <dt id="ini.default-charset">
+       <span class="term">
+        <i><tt class="parameter">default_charset</tt></i>
+
+        <a href="language.types.string.html" class="type string">string</a>
+       </span>
+       <dd>
+
+        <p class="para">
+        4.0.0 以降、PHP は、デフォルトで常にContent-type:ヘッダで
+        character encodingを出力するようになっています。charsetの送信
+        を無効にするには、これを空にしてください。
+        </p>
+       </dd>
+
+      </dt>
+
+
+      <dt id="ini.always-populate-raw-post-data">
+       <span class="term">
+        <i><tt class="parameter">always_populate_raw_post_data</tt></i>
+
+        <a href="language.types.boolean.html" class="type boolean">boolean</a>
+       </span>
+       <dd>
+
+        <p class="para">
+         常に <var class="varname">$HTTP_RAW_POST_DATA</var> にアクセス可能とします。
+         この変数には生の POST データが格納されています。指定しなかった場合は、
+         データの MIME 型が判別できない場合のみこの変数にアクセス可能となります。
+         しかし、生の POST データにアクセスする方法としては
+         <a href="wrappers.php.html" class="link">php://input</a> のほうが推奨されます。
+         <var class="varname">$HTTP_RAW_POST_DATA</var> は、
+         <i class="literal">enctype=&quot;multipart/form-data&quot;</i> の場合には無効です。
+        </p>
+       </dd>
+
+      </dt>
+
+
+     <dt id="ini.allow-webdav-methods">
+      <span class="term">
+       <i><tt class="parameter">allow_webdav_methods</tt></i>
+
+       <a href="language.types.boolean.html" class="type boolean">boolean</a>
+      </span>
+      <dd>
+
+       <p class="para">
+        PHPスクリプトの中で WebDAV http リクエスト
+        (例：PROPFIND, PROPPATCH, MOVE, COPY, 等..) の処理を可能にします。
+        このディレクティブは、PHP 4.3.2 以降存在しません。
+        これらのリクエストのPOSTデータを取得したい場合、
+        <a href="ini.core.html#ini.always-populate-raw-post-data" class="link">
+         always_populate_raw_post_data</a> も同時に設定する必要があ
+        ります。
+       </p>
+      </dd>
+
+     </dt>
+
+    </dl>
+
+   </p>
+   <p class="para">
+    <a href="ref.info.html#ini.magic-quotes-gpc" class="link">magic_quotes_gpc</a>,
+    <a href="ref.info.html#ini.magic-quotes-runtime" class="link">magic-quotes-runtime</a>,
+    および
+    <a href="ref.sybase.html#ini.magic-quotes-sybase" class="link">magic_quotes_sybase</a>
+    も参照ください。
+   </p>
+  </div>
+
+  <div id="ini.sect.path-directory" class="section">
+   <h2 class="title">パスおよびディレクトリ</h2>
+    <p class="para">
+     <table border="5">
+      <caption><b>パスおよびディレクトリ設定オプション</b></caption>
+      <colgroup>
+
+       <thead valign="middle">
+        <tr valign="middle">
+         <th colspan="1">名前</th>
+         <th colspan="1">デフォルト</th>
+         <th colspan="1">変更の可否</th>
+         <th colspan="1">変更履歴</th>
+        </tr>
+
+       </thead>
+
+       <tbody valign="middle">
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">include_path</td>
+         <td colspan="1" rowspan="1" align="left">&quot;.;/path/to/php/pear&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+         <td class="empty">&nbsp;</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">doc_root</td>
+         <td colspan="1" rowspan="1" align="left">NULL</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+         <td class="empty">&nbsp;</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">user_dir</td>
+         <td colspan="1" rowspan="1" align="left">NULL</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+         <td class="empty">&nbsp;</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">extension_dir</td>
+         <td colspan="1" rowspan="1" align="left">&quot;/path/to/php&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+         <td class="empty">&nbsp;</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">extension</td>
+         <td colspan="1" rowspan="1" align="left">NULL</td>
+         <td colspan="1" rowspan="1" align="left"><var class="filename">php.ini</var> のみ</td>
+         <td class="empty">&nbsp;</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">cgi.check_shebang_line</td>
+         <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+         <td colspan="1" rowspan="1" align="left">PHP 5.2.0 以降で利用可能。</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">cgi.fix_pathinfo</td>
+         <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+         <td colspan="1" rowspan="1" align="left">PHP 4.3.0 以降で利用可能。PHP 5.2.1 までは PHP_INI_ALL でした。</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">cgi.force_redirect</td>
+         <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+         <td colspan="1" rowspan="1" align="left">PHP 4.2.0 以降で利用可能。PHP 5.2.1 までは PHP_INI_ALL でした。</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">cgi.redirect_status_env</td>
+         <td colspan="1" rowspan="1" align="left">NULL</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+         <td colspan="1" rowspan="1" align="left">PHP 4.2.0 以降で利用可能。PHP 5.2.1 までは PHP_INI_ALL でした。</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">fastcgi.impersonate</td>
+         <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+         <td colspan="1" rowspan="1" align="left">PHP 4.3.0 以降で利用可能。PHP 5.2.1 までは PHP_INI_ALL でした。</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">cgi.rfc2616_headers</td>
+         <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+         <td colspan="1" rowspan="1" align="left">PHP 4.3.0 以降で利用可能。</td>
+        </tr>
+
+       </tbody>
+      </colgroup>
+
+     </table>
+
+    </p>
+
+    <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+
+    <p class="para">
+     <dl>
+
+      <dt id="ini.include-path">
+       <span class="term">
+        <i><tt class="parameter">include_path</tt></i>
+
+        <a href="language.types.string.html" class="type string">string</a>
+       </span>
+       <dd>
+
+        <p class="para">
+         <a href="function.require.html" class="function">require()</a>、<a href="function.include.html" class="function">include()</a>、
+         <a href="function.fopen.html" class="function">fopen()</a>、<a href="function.file.html" class="function">file()</a>、
+         <a href="function.readfile.html" class="function">readfile()</a> および <a href="function.file-get-contents.html" class="function">file_get_contents()</a>
+         関数がファイルを
+         探すディレクトリのリストを指定します。フォーマットは、システ
+         ムの環境変数 <span class="envar">PATH</span>と同じです。つまり、UNIXでは
+         コロンで、Windowsではセミコロンで区切ったディレクトリのリスト
+         で指定します。
+        </p>
+        <p class="para">
+         <div class="example">
+          <p><b>Example#1 Unix include_path</b></p>
+          <div class="example-contents">
+<div class="cdata"><pre>
+include_path=&quot;.:/php/includes&quot;
+</pre></div>
+          </div>
+
+         </div>
+        </p>
+        <p class="para">
+         <div class="example">
+          <p><b>Example#2 Windows include_path</b></p>
+          <div class="example-contents">
+<div class="cdata"><pre>
+include_path=&quot;.;c:\php\includes&quot;
+</pre></div>
+          </div>
+
+         </div>
+        </p>
+        <p class="para">
+        このディレクティブのデフォルト値は、<i class="literal">.</i>(カレ
+        ントディレクトリのみ)です。
+        </p>
+       </dd>
+
+      </dt>
+
+
+      <dt id="ini.doc-root">
+       <span class="term">
+        <i><tt class="parameter">doc_root</tt></i>
+
+        <a href="language.types.string.html" class="type string">string</a>
+       </span>
+       <dd>
+
+        <p class="para">
+         サーバーにおけるPHPの&quot;ルートディレクトリ&quot;です。この値は空で無
+         い場合のみ使用されます。PHPが <a href="features.safe-mode.html#ini.safe-mode" class="link">セーフモード</a> で設定されている場合には、
+         このディレクトリの外側にあるファイルは使用されません。
+         PHPがFORCE_REDIRECTを指定してコンパイルされていない場合、
+         (IIS以外の)WebサーバのもとでCGIとしてPHPを実行する際には、
+         doc_rootを指定するべきです。
+         他の方法としては、後述の <a href="ini.core.html#ini.cgi.force-redirect" class="link">
+         cgi.force_redirect</a> 設定の使用があります。
+        </p>
+       </dd>
+
+      </dt>
+
+
+      <dt id="ini.user-dir">
+       <span class="term">
+        <i><tt class="parameter">user_dir</tt></i>
+
+        <a href="language.types.string.html" class="type string">string</a>
+       </span>
+       <dd>
+
+        <p class="para">
+         PHPファイル用にユーザーのホームディレクトリ
+         として使用する基本ディレクトリの名前。例えば、
+         <i class="literal">public_html</i> となります。
+        </p>
+       </dd>
+
+      </dt>
+
+
+      <dt id="ini.extension-dir">
+       <span class="term">
+        <i><tt class="parameter">extension_dir</tt></i>
+
+        <a href="language.types.string.html" class="type string">string</a>
+       </span>
+       <dd>
+
+        <p class="para">
+         動的にロード可能な拡張モジュールを置くディレクトリを
+         指定します。
+         <a href="ref.info.html#ini.enable-dl" class="link">enable_dl</a> と
+         <a href="function.dl.html" class="function">dl()</a> も参照ください。
+        </p>
+       </dd>
+
+      </dt>
+
+
+      <dt id="ini.extension">
+       <span class="term">
+        <i><tt class="parameter">extension</tt></i>
+
+        <a href="language.types.string.html" class="type string">string</a>
+       </span>
+       <dd>
+
+        <p class="para">
+         PHP の開始時に、どの動的ロード可能な拡張モジュールをロードするかを指定します。
+        </p>
+       </dd>
+
+      </dt>
+
+
+      <dt id="ini.cgi.check-shebang-line">
+       <span class="term">
+        <i><tt class="parameter">cgi.check_shebang_line</tt></i>
+
+        <a href="language.types.boolean.html" class="type boolean">boolean</a>
+       </span>
+       <dd>
+
+        <p class="para">
+         CGI 版の PHP が、実行するスクリプトの先頭にある #! から始まる行
+         (shebang) をチェックするかどうかを指定します。
+         同じスクリプトをスタンドアロンと PHP CGI 経由の両方で使用したい場合などに、
+         この行が必要になるでしょう。このディレクティブを on にしておくと、
+         CGI 版の PHP はこの行の内容を読み飛ばすようになります。
+        </p>
+       </dd>
+
+      </dt>
+
+
+
+      <dt id="ini.cgi.fix-pathinfo">
+       <span class="term">
+        <i><tt class="parameter">cgi.fix_pathinfo</tt></i>
+
+        <a href="language.types.boolean.html" class="type boolean">boolean</a>
+       </span>
+       <dd>
+
+        <p class="para">
+         <em class="emphasis">本来の</em> PATH_INFO/PATH_TRANSLATED
+         サポートをCGIで提供します。 PHPの以前の動作は、
+         SCRIPT_FILENAMEにPATH_TRANSLATEDを設定するというもので、
+         PATH_INFOの定義を理解していませんんでした。
+         PATH_INFOに関する詳細については、cgiの仕様を参照してください。
+         このオプションを１にすることにより、
+         PHP CGIはこのパスを仕様にあうように修正します。
+         ゼロとすると、 PHPは以前と同様に動作します。デフォルトは、ゼロです。
+         PATH_TRANSLATEDではなく、SCRIPT_FILENAMEを使用するようにスクリプト
+         を修正する必要があります。
+        </p>
+       </dd>
+
+      </dt>
+
+
+      <dt id="ini.cgi.force-redirect">
+       <span class="term">
+        <i><tt class="parameter">cgi.force_redirect</tt></i>
+
+        <a href="language.types.boolean.html" class="type boolean">boolean</a>
+       </span>
+       <dd>
+
+        <p class="para">
+         cgi.force_redirect は、ほとんどのWebサーバのもとで CGI として
+         PHP を実行する際のセキュリティを確保するために必要です。
+         未定義のままの場合、PHPはデフォルトでこれを on にします。
+         これを off にする時は、<em class="emphasis">自己責任</em> の下に
+         行なってください。
+        </p>
+        <blockquote><p><b class="note">注意</b>: 
+         
+          Windowsユーザ: IISでは安全にこれをoffにすることができ、
+          実際には、off にすることが「必要」です。
+          OmniHTTPD または Xitami を動作させるには、これを off にする「必要」
+          があります。
+         <br />
+        </p></blockquote>
+       </dd>
+
+      </dt>
+
+
+      <dt id="ini.cgi.redirect-status-env">
+       <span class="term">
+        <i><tt class="parameter">cgi.redirect_status_env</tt></i>
+
+        <a href="language.types.string.html" class="type string">string</a>
+       </span>
+       <dd>
+
+        <p class="para">
+         cgi.force_redirect を on にし、Apache または Netscape
+         (iPlanet) Webサーバのもとで実行していない場合、
+         実行を継続して良いかどうかをPHPが判断するために
+         環境変数の名前を設定する必要があるかもしれません。
+        </p>
+        <blockquote><p><b class="note">注意</b>: 
+         
+          この変数を設定することにより、セキュリティ上の問題を発生する
+          場合があります。行うことのリスクをまず把握してください。
+         <br />
+        </p></blockquote>
+       </dd>
+
+      </dt>
+
+
+      <dt id="ini.fastcgi.impersonate">
+       <span class="term">
+        <i><tt class="parameter">fastcgi.impersonate</tt></i>
+
+        <a href="language.types.string.html" class="type string">string</a>
+       </span>
+       <dd>
+
+        <p class="para">
+         IIS (または WINNT ベースの OS) のもとでの FastCGI は、
+         クライアントをコールする際にセキュリティトークンを
+         匿名化する機能をサポートしています。
+         これにより、IIS がリクエストを処理するセキュリティコンテキストを
+         定義できるようになります。Apacheのもとで実行される
+         mod_fastcgi は現在 (2002/03/17) この機能をサポートしていません。
+         IIS のもとで実行するには、1 に設定してください。
+         デフォルトは 0 です。
+        </p>
+       </dd>
+
+      </dt>
+
+
+      <dt id="ini.cgi.rfc2616-headers">
+       <span class="term">
+        <i><tt class="parameter">cgi.rfc2616_headers</tt></i>
+
+        <a href="language.types.integer.html" class="type int">int</a>
+       </span>
+       <dd>
+
+        <p class="para">
+         PHP に、HTTP レスポンスを返す際に、どの形式のヘッダーを使うか
+         指示します。0 にセットした場合は、Apache やその他の web サーバで
+         サポートされている Status: ヘッダーを送信します。このオプションの値を
+         1 にセットした場合は、PHP は <a href="http://www.faqs.org/rfcs/rfc2616" class="link external">&raquo; RFC 2616</a>
+         の仕様に適合した形式のヘッダーを送信します。この意味がわからないときは、
+         0 のままにしておいてください。
+        </p>
+       </dd>
+
+      </dt>
+
+     </dl>
+
+    </p>
+   </div>
+
+  <div id="ini.sect.file-uploads" class="section">
+   <h2 class="title">ファイルアップロード</h2>
+    <p class="para">
+     <table border="5">
+      <caption><b>ファイルアップロード設定オプション</b></caption>
+      <colgroup>
+
+       <thead valign="middle">
+        <tr valign="middle">
+         <th colspan="1">名前</th>
+         <th colspan="1">デフォルト</th>
+         <th colspan="1">変更の可否</th>
+         <th colspan="1">変更履歴</th>
+        </tr>
+
+       </thead>
+
+       <tbody valign="middle">
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">file_uploads</td>
+         <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+         <td colspan="1" rowspan="1" align="left">PHP &lt;= 4.2.3 では PHP_INI_ALL、PHP 4.0.3 以降で利用可能</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">upload_tmp_dir</td>
+         <td colspan="1" rowspan="1" align="left">NULL</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+         <td class="empty">&nbsp;</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">upload_max_filesize</td>
+         <td colspan="1" rowspan="1" align="left">&quot;2M&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_PERDIR</td>
+         <td colspan="1" rowspan="1" align="left">PHP &lt;= 4.2.3 では PHP_INI_ALL</td>
+        </tr>
+
+       </tbody>
+      </colgroup>
+
+     </table>
+
+    </p>
+
+    <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+
+   <p class="para">
+    <dl>
+
+     <dt id="ini.file-uploads">
+      <span class="term">
+       <i><tt class="parameter">file_uploads</tt></i>
+
+       <a href="language.types.boolean.html" class="type boolean">boolean</a>
+      </span>
+      <dd>
+
+       <p class="para">
+        HTTP <a href="features.file-upload.html" class="link">ファイルアップロード</a>
+        を有効とするかどうか。
+        <a href="ini.core.html#ini.upload-max-filesize" class="link">upload_max_filesize</a>,
+        <a href="ini.core.html#ini.upload-tmp-dir" class="link">upload_tmp_dir</a>,
+        <a href="ini.core.html#ini.post-max-size" class="link">post_max_size</a>
+        ディレクティブも参照ください。
+       </p>
+
+       <span class="simpara"><a href="language.types.integer.html" class="type integer">integer</a>を使用する際、
+その値はバイト単位で測られます。
+<a href="faq.using.html#faq.using.shorthandbytes" class="link">この FAQ</a> に記載された
+短縮表記を使用することも可能です。</span>
+
+      </dd>
+
+     </dt>
+
+
+      <dt id="ini.upload-tmp-dir">
+       <span class="term">
+        <i><tt class="parameter">upload_tmp_dir</tt></i>
+
+        <a href="language.types.string.html" class="type string">string</a>
+       </span>
+       <dd>
+
+        <p class="para">
+        ファイルアップロード時にファイル保存に用いるテンポラリディレクトリ。
+        PHPの実行ユーザーが書きこみ可能である必要が
+        あります。指定されない場合、PHPはシステムのデフォルト設定を
+        使用します。
+        </p>
+       </dd>
+
+      </dt>
+
+
+     <dt id="ini.upload-max-filesize">
+      <span class="term">
+       <i><tt class="parameter">upload_max_filesize</tt></i>
+
+       <a href="language.types.integer.html" class="type integer">integer</a>
+      </span>
+      <dd>
+
+       <p class="para">
+        アップロードされるファイルの最大サイズ。
+       </p>
+
+       <span class="simpara"><a href="language.types.integer.html" class="type integer">integer</a>を使用する際、
+その値はバイト単位で測られます。
+<a href="faq.using.html#faq.using.shorthandbytes" class="link">この FAQ</a> に記載された
+短縮表記を使用することも可能です。</span>
+
+      </dd>
+
+     </dt>
+
+    </dl>
+
+   </p>
+  </div>
+
+  <div id="ini.sql-general" class="section">
+   <h2 class="title">SQL全般</h2>
+    <p class="para">
+     <table border="5">
+      <caption><b>SQL全般の設定オプション</b></caption>
+      <colgroup>
+
+       <thead valign="middle">
+        <tr valign="middle">
+         <th colspan="1">名前</th>
+         <th colspan="1">デフォルト</th>
+         <th colspan="1">変更の可否</th>
+         <th colspan="1">変更履歴</th>
+        </tr>
+
+       </thead>
+
+       <tbody valign="middle">
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">sql.safe_mode</td>
+         <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+         <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+         <td class="empty">&nbsp;</td>
+        </tr>
+
+       </tbody>
+      </colgroup>
+
+     </table>
+
+    </p>
+
+    <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+
+    <p class="para">
+     <dl>
+
+      <dt id="ini.sql.safe-mode">
+       <span class="term">
+        <i><tt class="parameter">sql.safe_mode</tt></i>
+
+        <a href="language.types.boolean.html" class="type boolean">boolean</a>
+       </span>
+       <dd>
+
+        <p class="para">
+         オンにすると、デフォルト値が指定されているデータベース接続関数は、
+         引数で指定された値よりもデフォルト値を優先して使用します。
+         デフォルト値については、関連するデータベースのドキュメントを参照ください。
+        </p>
+       </dd>
+
+      </dt>
+
+     </dl>
+
+    </p>
+   </div>
+
+  <div id="ini.sect.debugger" class="section">
+   <h2 class="title">デバッガ設定ディレクティブ</h2>
+   <div class="caution"><b class="caution">警告</b>
+    <p class="para">
+     PHP 3のみがデフォルトのデバッガを実装しています。
+     詳細については、<a href="debugger.html" class="xref">PHP のデバッグ</a>を参照してください。
+    </p>
+   </div>
+
+    <dl>
+
+     <dt id="ini.debugger.host">
+      <span class="term">
+       <i><tt class="parameter">debugger.host</tt></i>
+
+       <a href="language.types.string.html" class="type string">string</a>
+      </span>
+      <dd>
+
+       <p class="para">
+       デバッガにより使用されるホストのDNS名またはIPアドレス。
+       </p>
+      </dd>
+
+     </dt>
+
+
+     <dt id="ini.debugger.port">
+      <span class="term">
+       <i><tt class="parameter">debugger.port</tt></i>
+
+       <a href="language.types.string.html" class="type string">string</a>
+      </span>
+      <dd>
+
+       <p class="para">
+       デバッガにより使用されるポート番号。
+       </p>
+      </dd>
+
+     </dt>
+
+
+     <dt id="ini.debugger.enabled">
+      <span class="term">
+       <i><tt class="parameter">debugger.enabled</tt></i>
+
+       <a href="language.types.boolean.html" class="type boolean">boolean</a>
+      </span>
+      <dd>
+
+       <p class="para">
+       デバッガを有効にするかどうか。
+       </p>
+      </dd>
+
+     </dt>
+
+
+    </dl>
+
+   </div>
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ini.html">php.ini ディレクティブ</a></div>
+ <div class="next" style="float: right;"><a href="timezones.html">サポートされるタイムゾーンのリスト</a></div>
+ <div class="up"><a href="ini.html">php.ini ディレクティブ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

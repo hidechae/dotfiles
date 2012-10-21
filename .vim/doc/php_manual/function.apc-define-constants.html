@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>定数の組を定義し、それを取得あるいは一括定義する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.apc-compile-file.html">apc_compile_file</a></div>
+ <div class="next" style="float: right;"><a href="function.apc-delete.html">apc_delete</a></div>
+ <div class="up"><a href="ref.apc.html">APC</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.apc-define-constants" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">apc_define_constants</h1>
+  <p class="verinfo">(PECL apc:3.0.0-3.0.9)</p><p class="refpurpose">apc_define_constants ― 
+   定数の組を定義し、それを取得あるいは一括定義する
+  </p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>apc_define_constants</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$key</tt></span>
+   , <span class="methodparam"><span class="type">array</span> <tt class="parameter">$constants</tt></span>
+   [, <span class="methodparam"><span class="type">bool</span> <tt class="parameter">$case_sensitive</tt></span>
+  ] )</div>
+
+
+  <p class="para">
+   ご存知のとおり、<a href="function.define.html" class="function">define()</a> は非常に遅いです。
+   APC を使用する主な利点はスクリプト/アプリケーションのパフォーマンスの改善なので、
+   大量の定数を定義する手順を合理化するために、この仕組みが提供されています。
+   しかし、この関数は期待通りの動作をしません。
+  </p>
+
+  <p class="para">
+   よりよい解決策として、PECL の
+   <a href="http://pecl.php.net/package/hidef" class="link external">&raquo; hidef</a>
+   拡張モジュールを試してみましょう。
+  </p>
+
+  <blockquote><p><b class="note">注意</b>: 
+   <span class="simpara">
+    （キャッシュ全体をクリアすることなく）格納されている定数を削除するには、
+    <i><tt class="parameter">constants</tt></i>
+ に空の配列を渡します。そうすれば、
+    そこに格納されていた値は事実上削除されます。
+   </span>
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">key</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">key</tt></i>
+ は、格納される定数群の名前を表します。
+       この <i><tt class="parameter">key</tt></i>
+ は、格納されている定数を
+       <a href="function.apc-load-constants.html" class="function">apc_load_constants()</a> で取得するために使用されます。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">constants</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i class="literal">constant_name =&gt; value</i> 形式の連想配列。
+       <i class="literal">constant_name</i> は、一般の
+       <a href="language.constants.html" class="link">定数</a> の命名規則に従う
+       必要があります。 <i class="literal">value</i> は、スカラ値でなければ
+       なりません。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">case_sensitive</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       デフォルトでは、定数名の大文字・小文字は区別されます。すなわち、
+       <i class="literal">CONSTANT</i> と <i class="literal">Constant</i>
+       は別の値を表します。このパラメータを <b><tt>FALSE</tt></b> にすると、
+       定数名の大文字・小文字は区別されなくなります。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>apc_define_constants()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$constants&nbsp;</span><span style="color: #007700">=&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'ONE'&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'TWO'&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'THREE'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">,<br />);<br /></span><span style="color: #0000BB">apc_define_constants</span><span style="color: #007700">(</span><span style="color: #DD0000">'numbers'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$constants</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #0000BB">ONE</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">TWO</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">THREE</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+123
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+ </div>
+
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.apc-load-constants.html" class="function">apc_load_constants()</a></li>
+    <li class="member"><a href="function.define.html" class="function">define()</a></li>
+    <li class="member"><a href="function.constant.html" class="function">constant()</a></li>
+    <li class="member">
+     あるいは <a href="language.constants.html" class="link">PHP リファレンスの「定数」</a>
+    </li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.apc-compile-file.html">apc_compile_file</a></div>
+ <div class="next" style="float: right;"><a href="function.apc-delete.html">apc_delete</a></div>
+ <div class="up"><a href="ref.apc.html">APC</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>continue</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="control-structures.break.html">break</a></div>
+ <div class="next" style="float: right;"><a href="control-structures.switch.html">switch</a></div>
+ <div class="up"><a href="language.control-structures.html">制御構造</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="control-structures.continue" class="sect1">
+   <h2 class="title"><i class="literal">continue</i></h2>
+   <p class="simpara">
+    <i class="literal">continue</i>は、ループ構造において現在の繰り返しループ
+    の残りの処理をスキップし、条件式を評価した後に
+    次の繰り返しの最初から実行を続けるために使用されます、
+   </p>
+   <blockquote><p><b class="note">注意</b>: 
+    <span class="simpara">
+     <a href="control-structures.switch.html" class="link">switch</a>
+     命令はループ構造における<i class="literal">continue</i>の効果
+     を考慮してつくられていることに留意してください。
+    </span>
+   </p></blockquote>
+   <p class="simpara">
+    <i class="literal">continue</i>では、オプションの引数で
+    処理をスキップするループ構造のレベルの数を指定できます。
+   </p>
+   <p class="para">
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+while&nbsp;(list($key,$value)&nbsp;=&nbsp;each&nbsp;($arr))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(!($key&nbsp;%&nbsp;2))&nbsp;{&nbsp;//&nbsp;キーが偶数の組をスキップ<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;do_something_odd($value);<br />}<br /><br />$i&nbsp;=&nbsp;0;<br />while&nbsp;($i++&nbsp;&lt;&nbsp;5)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"Outer&lt;br&nbsp;/&gt;\n";<br />&nbsp;&nbsp;&nbsp;&nbsp;while&nbsp;(1)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"&amp;nbsp;&amp;nbsp;Middle&lt;br&nbsp;/&gt;\n";<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while&nbsp;(1)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"&amp;nbsp;&amp;nbsp;Inner&lt;br&nbsp;/&gt;\n";<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue&nbsp;3;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"This&nbsp;never&nbsp;gets&nbsp;output.&lt;br&nbsp;/&gt;\n";<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"Neither&nbsp;does&nbsp;this.&lt;br&nbsp;/&gt;\n";<br />}</span>
+</code></div>
+     </div>
+
+    </div>
+  </p>
+  <p class="para">
+   Omitting the semicolon after
+   <i class="literal">continue</i> の後のセミコロンを省略すると混乱を生じる
+   ことがあります。以下にすべきでないことの例を示します。
+  </p>
+  <p class="para">
+   <div class="informalexample">
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;</span><span style="color: #007700">for&nbsp;(</span><span style="color: #0000BB">$i&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">;&nbsp;</span><span style="color: #0000BB">$i&nbsp;</span><span style="color: #007700">&lt;&nbsp;</span><span style="color: #0000BB">5</span><span style="color: #007700">;&nbsp;++</span><span style="color: #0000BB">$i</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">$i&nbsp;</span><span style="color: #007700">==&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;</span><span style="color: #DD0000">"$i\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <p class="para">
+     これは、以下のような結果になることを期待していたのでしょう。
+    </p>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+0
+1
+3
+4
+</pre></div>
+    </pre></div>
+    <p class="para">
+     しかし、このスクリプトの出力は以下のようになります。
+    </p>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+2
+</pre></div>
+    </pre></div>
+    <p class="para">
+     これは、<a href="function.print.html" class="function">print()</a>コールの返り値が
+     <i class="literal">int(1)</i> であり、前記のオプションの数値引数のように
+     見えてしまうためです。
+    </p>
+   </div>
+  </p>
+ </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="control-structures.break.html">break</a></div>
+ <div class="next" style="float: right;"><a href="control-structures.switch.html">switch</a></div>
+ <div class="up"><a href="language.control-structures.html">制御構造</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

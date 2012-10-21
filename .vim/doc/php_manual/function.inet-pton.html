@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>人間が読める形式の IP アドレスを、パックされた in_addr 形式に変換する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.inet-ntop.html">inet_ntop</a></div>
+ <div class="next" style="float: right;"><a href="function.ip2long.html">ip2long</a></div>
+ <div class="up"><a href="ref.network.html">ネットワーク</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.inet-pton" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">inet_pton</h1>
+  <p class="verinfo">(PHP 5 &gt;= 5.1.0)</p><p class="refpurpose">inet_pton ― 人間が読める形式の IP アドレスを、パックされた in_addr 形式に変換する</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">string</span> <span class="methodname"><b><b>inet_pton</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$address</tt></span>
+   )</div>
+
+  <p class="para">
+   この関数は、人間が読める形式の IPv4 あるいは IPv6
+   (PHP が IPv6 サポートを有効にしてビルドされている場合) のアドレスを
+   32 ビットあるいは 128 ビットのバイナリ形式に変換します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">address</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       可読形式の IPv4 アドレスあるいは IPv6 アドレス。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   指定した <i><tt class="parameter">address</tt></i>
+ を
+   <i class="literal">in_addr</i> 形式で表したものを返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>inet_pton()</b> の例</b></p>
+    <div class="example-contents">
+ <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;$in_addr&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">inet_pton</span><span style="color: #007700">(</span><span style="color: #DD0000">'127.0.0.1'</span><span style="color: #007700">);<br />&nbsp;<br />&nbsp;</span><span style="color: #0000BB">$in6_addr&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">inet_pton</span><span style="color: #007700">(</span><span style="color: #DD0000">'::1'</span><span style="color: #007700">);<br />&nbsp;<br />&nbsp;</span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>   
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <blockquote><p><b class="note">注意</b>: <span class="simpara">この関数は Windows 環境にはまだ実装されていません。
+</span></p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.ip2long.html" class="function">ip2long()</a></li>
+    <li class="member"><a href="function.long2ip.html" class="function">long2ip()</a></li>
+    <li class="member"><a href="function.inet-ntop.html" class="function">inet_ntop()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.inet-ntop.html">inet_ntop</a></div>
+ <div class="next" style="float: right;"><a href="function.ip2long.html">ip2long</a></div>
+ <div class="up"><a href="ref.network.html">ネットワーク</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

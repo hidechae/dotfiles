@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>Ê¸»úÎó¤ò¾®Ê¸»ú¤Ë¤¹¤ë</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.strtok.html">strtok</a></div>
+ <div class="next" style="float: right;"><a href="function.strtoupper.html">strtoupper</a></div>
+ <div class="up"><a href="ref.strings.html">Strings</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.strtolower" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">strtolower</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">strtolower ¡½ Ê¸»úÎó¤ò¾®Ê¸»ú¤Ë¤¹¤ë</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">ÀâÌÀ</h3>
+  <div class="methodsynopsis">
+   <span class="type">string</span> <span class="methodname"><b><b>strtolower</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$str</tt></span>
+   )</div>
+
+  <p class="para">
+   <i><tt class="parameter">string</tt></i>
+
+   ¤Î¥¢¥ë¥Õ¥¡¥Ù¥Ã¥ÈÉôÊ¬¤ò¤¹¤Ù¤Æ¾®Ê¸»ú¤Ë¤·¤ÆÊÖ¤·¤Þ¤¹¡£
+  </p>
+  <p class="para">
+   ¡Ö¥¢¥ë¥Õ¥¡¥Ù¥Ã¥ÈÉôÊ¬¡×¤Ï¸½ºß¤Î¥í¥±¡¼¥ë¤Ë¤è¤ê·èÄê¤µ¤ì¤Þ¤¹¡£
+   ¤Ä¤Þ¤ê¡¢¤¿¤È¤¨¤Ð¥Ç¥Õ¥©¥ë¥È¤Î¡ÖC¡×¥í¥±¡¼¥ë¤Ç¤¢¤ë¾ì¹ç¤Ï¡¢
+   A ¥¦¥à¥é¥¦¥È (À) ¤Î¤è¤¦¤ÊÊ¸»ú¤ÏÊÑ´¹¤µ¤ì¤Þ¤»¤ó¡£
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">¥Ñ¥é¥á¡¼¥¿</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">str</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       ÆþÎÏÊ¸»úÎó¡£
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">ÊÖ¤êÃÍ</h3>
+  <p class="para">
+   ¾®Ê¸»ú¤ËÊÑ´¹¤·¤¿Ê¸»úÎó¤òÊÖ¤·¤Þ¤¹¡£
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">Îã</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>strtolower()</b> ¤ÎÎã</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$str&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"Mary&nbsp;Had&nbsp;A&nbsp;Little&nbsp;Lamb&nbsp;and&nbsp;She&nbsp;LOVED&nbsp;It&nbsp;So"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$str&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">strtolower</span><span style="color: #007700">(</span><span style="color: #0000BB">$str</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #0000BB">$str</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;mary&nbsp;had&nbsp;a&nbsp;little&nbsp;lamb&nbsp;and&nbsp;she&nbsp;loved&nbsp;it&nbsp;so&nbsp;¤òÊÖ¤·¤Þ¤¹<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>   
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">Ãí°Õ</h3>
+  <blockquote><p><b class="note">Ãí°Õ</b>: <span class="simpara">¤³¤Î´Ø¿ô¤Ï¥Ð¥¤¥Ê¥ê¥Ç¡¼¥¿¤ËÂÐ±þ¤·¤Æ¤¤¤Þ¤¹¡£
+</span></p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">»²¹Í</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.strtoupper.html" class="function">strtoupper()</a></li>
+    <li class="member"><a href="function.ucfirst.html" class="function">ucfirst()</a></li>
+    <li class="member"><a href="function.ucwords.html" class="function">ucwords()</a></li>
+    <li class="member"><a href="function.mb-strtolower.html" class="function">mb_strtolower()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.strtok.html">strtok</a></div>
+ <div class="next" style="float: right;"><a href="function.strtoupper.html">strtoupper</a></div>
+ <div class="up"><a href="ref.strings.html">Strings</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

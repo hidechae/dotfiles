@@ -1,0 +1,268 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>ファイル改変監視関数（FAM)</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.expect-popen.html">expect_popen</a></div>
+ <div class="next" style="float: right;"><a href="function.fam-cancel-monitor.html">fam_cancel_monitor</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">ファイル改変監視関数（FAM)</h1>
+  
+
+  <div class="partintro">
+   <div id="fam.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     FAM はファイルやディレクトリを監視し、変更点を調査を行うアプリケーションに
+     通知します。FAM についての詳細な情報は
+     <a href="http://oss.sgi.com/projects/fam/" class="link external">&raquo; http://oss.sgi.com/projects/fam/</a> で得られます。
+    </p>
+    <p class="para">
+     PHP スクリプトは、この拡張モジュールにより提供される関数を用いて FAM に一連の
+     ファイルを指定することができます。
+    </p>
+    <p class="para">
+     FAM プロセスは、最初にアプリケーションから接続された時に開始され、
+     全ての接続がクローズされた時に終了します。
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      
+この拡張モジュールは <a href="http://pecl.php.net/" class="link external">&raquo; PECL</a> レポジトリに移動
+されており、以下のバージョン以降 PHP にバンドルされなくなっています。 PHP 5.1.0.
+     <br />
+    </p></blockquote>
+    <blockquote><p><b class="note">注意</b>: <span class="simpara">この拡張モジュールは Windows
+環境では利用できません。</span></p></blockquote>
+   </div>
+   
+   <div id="fam.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">
+     この拡張モジュールは、SGI が開発した <a href="http://oss.sgi.com/projects/fam/download.html" class="link external">&raquo; 
+     FAM</a> ライブラリの関数を使用しています。そのため、FAM ライブラリを
+     ダウンロードしてインストールする必要があります。
+    </p>
+   </div>
+
+   
+
+
+<div id="fam.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  PHP の FAM サポートを使用するには、<span class="option">--with-fam[=DIR]</span> を指定して PHP をコンパイルする
+  必要があります。DIR は lib および include ディレクトリを含む
+  ディレクトリの場所です。
+ </p>
+</div>
+
+
+
+
+   <div id="fam.configuration" class="section">
+    <h2 class="title">実行時設定</h2>
+    <p class="para">設定ディレクティブは定義されていません。</p>
+   </div>
+
+   <div id="fam.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">
+     FAM モジュールでは二種類のリソース型を使用します。まず最初が
+     FAM サービスとの接続を表すリソースで、これは
+     <a href="function.fam-open.html" class="function">fam_open()</a> が返します。二番目はモニタリングリソースで、これは
+     <i class="literal">fam_monitor_XXX</i> 関数が返します。
+    </p>
+   </div>
+
+   
+
+
+<div id="fam.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <table border="5">
+  <caption><b>FAM イベント定数</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">定数</th>
+      <th colspan="1">説明</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>FAMChanged</tt></b> (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">
+       ファイルあるいはディレクトリの、fstat(1) で取得できる値のうちの
+       何かが変更されました。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>FAMDeleted</tt></b> (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">ファイルあるいはディレクトリが削除あるいはリネームされました。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>FAMStartExecuting</tt></b> (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">実行可能ファイルが実行されました。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>FAMStopExecuting</tt></b> (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">実行可能ファイルの実行が終了しました。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>FAMCreated</tt></b> (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">ディレクトリ内にファイルが作成されました。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>FAMMoved</tt></b> (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">このイベントは決して発生しません。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>FAMAcknowledge</tt></b> (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">
+       <a href="function.fam-cancel-monitor.html" class="function">fam_cancel_monitor()</a> に対する応答イベントです。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>FAMExists</tt></b> (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">
+       ファイルやディレクトリの監視を要求するイベントです。
+       ディレクトリが監視されている場合、ディレクトリおよびその中に
+       含まれるすべてのファイルについてのイベントが発生します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>FAMEndExist</tt></b> (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">最後の FAMEExists イベントの後に発生します。</td>
+     </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+ </div>
+
+
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.fam-cancel-monitor.html">fam_cancel_monitor</a> ― 監視を終了する</li><li><a href="function.fam-close.html">fam_close</a> ― FAM 接続を閉じる</li><li><a href="function.fam-monitor-collection.html">fam_monitor_collection</a> ― 指定したディレクトリにあるファイルの変更を監視する</li><li><a href="function.fam-monitor-directory.html">fam_monitor_directory</a> ― ディレクトリの変更を監視する</li><li><a href="function.fam-monitor-file.html">fam_monitor_file</a> ― 通常のファイルの変更を監視する</li><li><a href="function.fam-next-event.html">fam_next_event</a> ― 次の待機中の FAM イベントを返す</li><li><a href="function.fam-open.html">fam_open</a> ― FAM デーモンへの接続をオープンする</li><li><a href="function.fam-pending.html">fam_pending</a> ― 待機中の FAM イベントの有無を調べる</li><li><a href="function.fam-resume-monitor.html">fam_resume_monitor</a> ― 中断された監視処理を再開する</li><li><a href="function.fam-suspend-monitor.html">fam_suspend_monitor</a> ― 監視を一時的に中断する</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.expect-popen.html">expect_popen</a></div>
+ <div class="next" style="float: right;"><a href="function.fam-cancel-monitor.html">fam_cancel_monitor</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

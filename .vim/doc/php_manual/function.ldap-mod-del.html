@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>現在の属性から属性を削除する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ldap-mod-add.html">ldap_mod_add</a></div>
+ <div class="next" style="float: right;"><a href="function.ldap-mod-replace.html">ldap_mod_replace</a></div>
+ <div class="up"><a href="ref.ldap.html">LDAP</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.ldap-mod-del" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ldap_mod_del</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">ldap_mod_del ― 現在の属性から属性を削除する</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>ldap_mod_del</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$link_identifier</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$dn</tt></span>
+   , <span class="methodparam"><span class="type">array</span> <tt class="parameter">$entry</tt></span>
+   )</div>
+
+  <p class="para">
+   ひとつあるいは複数の属性を、指定した <i><tt class="parameter">dn</tt></i>
+ から削除します。
+   この関数は、オブジェクトレベルではなく属性レベルで修正を行います。
+   オブジェクトレベルの削除は、<a href="function.ldap-delete.html" class="function">ldap_delete()</a>
+   関数により行います。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">link_identifier</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <a href="function.ldap-connect.html" class="function">ldap_connect()</a> が返す LDAP リンク ID。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">dn</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       LDAP エンティティの識別名。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">entry</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.ldap-mod-add.html" class="function">ldap_mod_add()</a></li>
+    <li class="member"><a href="function.ldap-mod-replace.html" class="function">ldap_mod_replace()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ldap-mod-add.html">ldap_mod_add</a></div>
+ <div class="next" style="float: right;"><a href="function.ldap-mod-replace.html">ldap_mod_replace</a></div>
+ <div class="up"><a href="ref.ldap.html">LDAP</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

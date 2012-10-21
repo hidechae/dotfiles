@@ -1,0 +1,906 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>ソケット関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.use-soap-error-handler.html">use_soap_error_handler</a></div>
+ <div class="next" style="float: right;"><a href="function.socket-accept.html">socket_accept</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">ソケット関数</h1>
+  
+
+  <div class="partintro">
+
+   <div id="sockets.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     ソケット拡張モジュールは、一般的な
+     BSD ソケットに基づくソケット通信に関する低レベルインターフェースを実装し、
+     クライアントだけでなく、
+     ソケットサーバとして動作させることが可能となります。
+    </p>
+    <p class="para">
+     より一般的なクライアントサイドのソケットインターフェースについては、
+     <a href="function.stream-socket-client.html" class="function">stream_socket_client()</a>、
+     <a href="function.stream-socket-server.html" class="function">stream_socket_server()</a>、
+     <a href="function.fsockopen.html" class="function">fsockopen()</a> および
+     <a href="function.pfsockopen.html" class="function">pfsockopen()</a> を参照ください。
+    </p>
+    <p class="para">
+     ここで説明するソケット関数を使用する場合、多くの関数は
+     C 言語に同じ名前の関数が存在しますが、
+     しばしば定義が異なっていることに注意してください。
+     混乱を避けるには、説明をよく読んでください。
+    </p>
+    <p class="para">
+     このようにソケットプログラミングと異なっている点はありますが、
+     それでも有用な多くの Unix man ページを参照することができます。
+     Web 上に C 言語のソケットプログラミングのチュートリアル情報が存在し、
+     その多くは、若干の修正により、
+     PHP におけるソケットプログラミングに適用することが可能です。
+     <a href="http://www.developerweb.net/sock-faq/" class="link external">&raquo; Unix Socket FAQ</a> が、
+     手始めとして適しているでしょう。
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      
+この拡張モジュールは <a href="http://pecl.php.net/" class="link external">&raquo; PECL</a> レポジトリに移動
+されており、以下のバージョン以降 PHP にバンドルされなくなっています。 PHP 5.3.0.
+     <br />
+    </p></blockquote>
+   </div>
+
+   <div id="sockets.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">外部ライブラリを必要としません。</p>
+   </div>
+
+   
+
+
+
+<div id="sockets.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  ここに既述されたソケット関数は PHP 拡張モジュールの一部であり、
+  コンパイル時に <strong class="command">configure</strong> にオプション <span class="option">--enable-sockets</span> を指定することにより
+  使用可能となります。
+ </p>
+ <blockquote><p><b class="note">注意</b>: <span class="simpara">IPv6 サポートは <i class="literal">PHP 5.0.0
+</i> で追加されました。</span></p></blockquote>
+</div>
+
+
+
+
+
+   <div id="sockets.configuration" class="section">
+    <h2 class="title">実行時設定</h2>
+    <p class="para">設定ディレクティブは定義されていません。</p>
+   </div>
+
+   <div id="sockets.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">
+     <a href="function.socket-accept.html" class="function">socket_accept()</a>、
+     <a href="function.socket-create-listen.html" class="function">socket_create_listen()</a> および
+     <a href="function.socket-create.html" class="function">socket_create()</a> はソケットリソースを返します。
+    </p>
+   </div>
+
+   
+
+
+<div id="sockets.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <dl>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>AF_UNIX</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>AF_INET</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>AF_INET6</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SOCK_STREAM</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SOCK_DGRAM</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SOCK_RAW</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SOCK_SEQPACKET</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SOCK_RDM</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MSG_OOB</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MSG_WAITALL</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MSG_PEEK</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MSG_DONTROUTE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MSG_EOR</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MSG_EOF</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SO_DEBUG</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SO_REUSEADDR</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SO_KEEPALIVE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SO_DONTROUTE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SO_LINGER</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SO_BROADCAST</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SO_OOBINLINE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SO_SNDBUF</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SO_RCVBUF</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SO_SNDLOWAT</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SO_RCVLOWAT</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SO_SNDTIMEO</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SO_RCVTIMEO</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SO_TYPE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SO_ERROR</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SOL_SOCKET</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PHP_NORMAL_READ</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PHP_BINARY_READ</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SOL_TCP</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SOL_UDP</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+</div>
+
+
+
+
+
+   <div id="sockets.errors" class="section">
+    <h2 class="title">ソケットのエラー</h2>
+    <p class="para">
+     ソケット拡張モジュールは、
+     強力な BSD ソケットへの有用なインターフェースを提供するために作成されました。
+     関数は、Win32 および Unix の実装において等しく動作するように注意が払われています。
+     ソケット関数の多くは特定の条件で失敗し、エラーを記述する
+     <b><tt>E_WARNING</tt></b> メッセージを出力します。
+     これは、時々開発者が望まない時に発生することがあります。例えば、
+     関数 <a href="function.socket-read.html" class="function">socket_read()</a> は突然
+     <b><tt>E_WARNING</tt></b> メッセージを出力する可能性があります。
+     これは、予測しない接続断が発生したためです。
+     <i class="literal">@</i> 演算子により警告出力を抑制し、
+     <a href="function.socket-last-error.html" class="function">socket_last_error()</a>
+     関数によりアプリケーション内でエラーコードを取得することが一般に行われています。
+     エラーを記述する文字列を取得するためにこのエラーコードを指定して
+     <a href="function.socket-strerror.html" class="function">socket_strerror()</a> 関数をコールすることが可能です。
+     詳細は、この関数の説明を参照してください。
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      <b><tt>E_WARNING</tt></b> メッセージは、
+      ソケット拡張モジュールにより英語で生成されますが、取得されるエラーメッセージは、
+      現在のロケール (<b><tt>LC_MESSAGES</tt></b>) に依存します。
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+Warning&nbsp;-&nbsp;socket_bind()&nbsp;unable&nbsp;to&nbsp;bind&nbsp;address&nbsp;[98]:&nbsp;Die&nbsp;Adresse&nbsp;wird&nbsp;bereits&nbsp;verwendet</span>
+</code></div>
+      </div>
+
+     <br />
+    </p></blockquote>
+   </div>
+
+   <div id="sockets.examples" class="section">
+    <h2 class="title">例</h2>
+    <p class="para">
+     <div class="example">
+      <p><b>Example#1 ソケットの例: 簡易 TCP/IP サーバ</b></p>
+      <div class="example-contents"><p>
+       この例は、簡単な応答サーバです。変数 <var class="varname">address</var>
+       と <var class="varname">port</var> を設定と実行環境に合うように変更してください。
+       このサーバに次のようなコマンドで接続することが可能です。
+       : <strong class="command">telnet 192.168.1.53 10000</strong> (ただし、
+       アドレスとポートは設定に合わせます)入力したものは、サーバ側の出力となり、
+       エコーバックされます。接続を閉じるには、&#039;quit&#039; を入力します。
+      </p></div>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+#!/usr/local/bin/php&nbsp;-q<br /><span style="color: #0000BB">&lt;?php<br />error_reporting</span><span style="color: #007700">(</span><span style="color: #0000BB">E_ALL</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;Allow&nbsp;the&nbsp;script&nbsp;to&nbsp;hang&nbsp;around&nbsp;waiting&nbsp;for&nbsp;connections.&nbsp;*/<br /></span><span style="color: #0000BB">set_time_limit</span><span style="color: #007700">(</span><span style="color: #0000BB">0</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;Turn&nbsp;on&nbsp;implicit&nbsp;output&nbsp;flushing&nbsp;so&nbsp;we&nbsp;see&nbsp;what&nbsp;we're&nbsp;getting<br />&nbsp;*&nbsp;as&nbsp;it&nbsp;comes&nbsp;in.&nbsp;*/<br /></span><span style="color: #0000BB">ob_implicit_flush</span><span style="color: #007700">();<br /><br /></span><span style="color: #0000BB">$address&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'192.168.1.53'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$port&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">10000</span><span style="color: #007700">;<br /><br />if&nbsp;((</span><span style="color: #0000BB">$sock&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">socket_create</span><span style="color: #007700">(</span><span style="color: #0000BB">AF_INET</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">SOCK_STREAM</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">SOL_TCP</span><span style="color: #007700">))&nbsp;===&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"socket_create()&nbsp;failed:&nbsp;reason:&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">socket_strerror</span><span style="color: #007700">(</span><span style="color: #0000BB">socket_last_error</span><span style="color: #007700">())&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br />}<br /><br />if&nbsp;(</span><span style="color: #0000BB">socket_bind</span><span style="color: #007700">(</span><span style="color: #0000BB">$sock</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$address</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$port</span><span style="color: #007700">)&nbsp;===&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"socket_bind()&nbsp;failed:&nbsp;reason:&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">socket_strerror</span><span style="color: #007700">(</span><span style="color: #0000BB">socket_last_error</span><span style="color: #007700">(</span><span style="color: #0000BB">$sock</span><span style="color: #007700">))&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br />}<br /><br />if&nbsp;(</span><span style="color: #0000BB">socket_listen</span><span style="color: #007700">(</span><span style="color: #0000BB">$sock</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">5</span><span style="color: #007700">)&nbsp;===&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"socket_listen()&nbsp;failed:&nbsp;reason:&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">socket_strerror</span><span style="color: #007700">(</span><span style="color: #0000BB">socket_last_error</span><span style="color: #007700">(</span><span style="color: #0000BB">$sock</span><span style="color: #007700">))&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br />}<br /><br />do&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;((</span><span style="color: #0000BB">$msgsock&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">socket_accept</span><span style="color: #007700">(</span><span style="color: #0000BB">$sock</span><span style="color: #007700">))&nbsp;===&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"socket_accept()&nbsp;failed:&nbsp;reason:&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">socket_strerror</span><span style="color: #007700">(</span><span style="color: #0000BB">socket_last_error</span><span style="color: #007700">(</span><span style="color: #0000BB">$sock</span><span style="color: #007700">))&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;Send&nbsp;instructions.&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$msg&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"\nWelcome&nbsp;to&nbsp;the&nbsp;PHP&nbsp;Test&nbsp;Server.&nbsp;\n"&nbsp;</span><span style="color: #007700">.<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"To&nbsp;quit,&nbsp;type&nbsp;'quit'.&nbsp;To&nbsp;shut&nbsp;down&nbsp;the&nbsp;server&nbsp;type&nbsp;'shutdown'.\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">socket_write</span><span style="color: #007700">(</span><span style="color: #0000BB">$msgsock</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$msg</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">strlen</span><span style="color: #007700">(</span><span style="color: #0000BB">$msg</span><span style="color: #007700">));<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;do&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">false&nbsp;</span><span style="color: #007700">===&nbsp;(</span><span style="color: #0000BB">$buf&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">socket_read</span><span style="color: #007700">(</span><span style="color: #0000BB">$msgsock</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">2048</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">PHP_NORMAL_READ</span><span style="color: #007700">)))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"socket_read()&nbsp;failed:&nbsp;reason:&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">socket_strerror</span><span style="color: #007700">(</span><span style="color: #0000BB">socket_last_error</span><span style="color: #007700">(</span><span style="color: #0000BB">$msgsock</span><span style="color: #007700">))&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(!</span><span style="color: #0000BB">$buf&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">trim</span><span style="color: #007700">(</span><span style="color: #0000BB">$buf</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">$buf&nbsp;</span><span style="color: #007700">==&nbsp;</span><span style="color: #DD0000">'quit'</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">$buf&nbsp;</span><span style="color: #007700">==&nbsp;</span><span style="color: #DD0000">'shutdown'</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">socket_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$msgsock</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$talkback&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"PHP:&nbsp;You&nbsp;said&nbsp;'$buf'.\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">socket_write</span><span style="color: #007700">(</span><span style="color: #0000BB">$msgsock</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$talkback</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">strlen</span><span style="color: #007700">(</span><span style="color: #0000BB">$talkback</span><span style="color: #007700">));<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"$buf\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;while&nbsp;(</span><span style="color: #0000BB">true</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">socket_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$msgsock</span><span style="color: #007700">);<br />}&nbsp;while&nbsp;(</span><span style="color: #0000BB">true</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">socket_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$sock</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+    <p class="para">
+     <div class="example">
+      <p><b>Example#2 ソケットの例: 簡易 TCP/IP クライアント</b></p>
+      <div class="example-contents"><p>
+       この例は、簡単な一回限りの HTTP クライアントです。ここでは、
+       あるページに接続して HEAD リクエストを送信し、応答を出力た後で終了します。
+      </p></div>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />error_reporting</span><span style="color: #007700">(</span><span style="color: #0000BB">E_ALL</span><span style="color: #007700">);<br /><br />echo&nbsp;</span><span style="color: #DD0000">"&lt;h2&gt;TCP/IP&nbsp;Connection&lt;/h2&gt;\n"</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">/*&nbsp;Get&nbsp;the&nbsp;port&nbsp;for&nbsp;the&nbsp;WWW&nbsp;service.&nbsp;*/<br /></span><span style="color: #0000BB">$service_port&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">getservbyname</span><span style="color: #007700">(</span><span style="color: #DD0000">'www'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'tcp'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;Get&nbsp;the&nbsp;IP&nbsp;address&nbsp;for&nbsp;the&nbsp;target&nbsp;host.&nbsp;*/<br /></span><span style="color: #0000BB">$address&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">gethostbyname</span><span style="color: #007700">(</span><span style="color: #DD0000">'www.example.com'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;Create&nbsp;a&nbsp;TCP/IP&nbsp;socket.&nbsp;*/<br /></span><span style="color: #0000BB">$socket&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">socket_create</span><span style="color: #007700">(</span><span style="color: #0000BB">AF_INET</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">SOCK_STREAM</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">SOL_TCP</span><span style="color: #007700">);<br />if&nbsp;(</span><span style="color: #0000BB">$socket&nbsp;</span><span style="color: #007700">===&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"socket_create()&nbsp;failed:&nbsp;reason:&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">socket_strerror</span><span style="color: #007700">(</span><span style="color: #0000BB">socket_last_error</span><span style="color: #007700">())&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br />}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"OK.\n"</span><span style="color: #007700">;<br />}<br /><br />echo&nbsp;</span><span style="color: #DD0000">"Attempting&nbsp;to&nbsp;connect&nbsp;to&nbsp;'$address'&nbsp;on&nbsp;port&nbsp;'$service_port'..."</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">socket_connect</span><span style="color: #007700">(</span><span style="color: #0000BB">$socket</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$address</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$service_port</span><span style="color: #007700">);<br />if&nbsp;(</span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">===&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"socket_connect()&nbsp;failed.\nReason:&nbsp;($result)&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">socket_strerror</span><span style="color: #007700">(</span><span style="color: #0000BB">socket_last_error</span><span style="color: #007700">(</span><span style="color: #0000BB">$socket</span><span style="color: #007700">))&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br />}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"OK.\n"</span><span style="color: #007700">;<br />}<br /><br /></span><span style="color: #0000BB">$in&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"HEAD&nbsp;/&nbsp;HTTP/1.1\r\n"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$in&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #DD0000">"Host:&nbsp;www.example.com\r\n"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$in&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #DD0000">"Connection:&nbsp;Close\r\n\r\n"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$out&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">''</span><span style="color: #007700">;<br /><br />echo&nbsp;</span><span style="color: #DD0000">"Sending&nbsp;HTTP&nbsp;HEAD&nbsp;request..."</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">socket_write</span><span style="color: #007700">(</span><span style="color: #0000BB">$socket</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$in</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">strlen</span><span style="color: #007700">(</span><span style="color: #0000BB">$in</span><span style="color: #007700">));<br />echo&nbsp;</span><span style="color: #DD0000">"OK.\n"</span><span style="color: #007700">;<br /><br />echo&nbsp;</span><span style="color: #DD0000">"Reading&nbsp;response:\n\n"</span><span style="color: #007700">;<br />while&nbsp;(</span><span style="color: #0000BB">$out&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">socket_read</span><span style="color: #007700">(</span><span style="color: #0000BB">$socket</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">2048</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$out</span><span style="color: #007700">;<br />}<br /><br />echo&nbsp;</span><span style="color: #DD0000">"Closing&nbsp;socket..."</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">socket_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$socket</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #DD0000">"OK.\n\n"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+   </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.socket-accept.html">socket_accept</a> ― ソケットへの接続を許可する</li><li><a href="function.socket-bind.html">socket_bind</a> ― ソケットに名前をバインドする</li><li><a href="function.socket-clear-error.html">socket_clear_error</a> ― ソケットのエラーまたは直近のエラーコードをクリアする</li><li><a href="function.socket-close.html">socket_close</a> ― ソケットリソースを閉じる</li><li><a href="function.socket-connect.html">socket_connect</a> ― ソケット上の接続を初期化する</li><li><a href="function.socket-create-listen.html">socket_create_listen</a> ― 接続を受けつけるためにポートにソケットをオープンする</li><li><a href="function.socket-create-pair.html">socket_create_pair</a> ― 区別できないソケットの組を作成し、配列に保存する</li><li><a href="function.socket-create.html">socket_create</a> ― ソケット（通信時の終端）を作成する</li><li><a href="function.socket-get-option.html">socket_get_option</a> ― ソケットのオプションを取得する</li><li><a href="function.socket-getpeername.html">socket_getpeername</a> ― 指定したソケットのリモート側に問い合わせ、その型に応じてホスト/ポート、あるいは Unix ファイルシステムのパスを返す</li><li><a href="function.socket-getsockname.html">socket_getsockname</a> ― 指定したソケットのローカル側に問い合わせ、その型に応じてホスト/ポート、あるいは Unix ファイルシステムのパスを返す</li><li><a href="function.socket-last-error.html">socket_last_error</a> ― ソケットの直近のエラーを返す</li><li><a href="function.socket-listen.html">socket_listen</a> ― ソケット上で接続待ち(listen)する</li><li><a href="function.socket-read.html">socket_read</a> ― ソケットから最大バイト長まで読みこむ</li><li><a href="function.socket-recv.html">socket_recv</a> ― 接続したソケットからデータを受信する</li><li><a href="function.socket-recvfrom.html">socket_recvfrom</a> ― 接続しているかどうかによらず、ソケットからデータを受信する</li><li><a href="function.socket-select.html">socket_select</a> ― 与えられたソケットの配列に対し、指定した有効時間で select() システムコールを実行する</li><li><a href="function.socket-send.html">socket_send</a> ― 接続したソケットにデータを送信する</li><li><a href="function.socket-sendto.html">socket_sendto</a> ― 接続しているかどうかによらずソケットにメッセージを送信する</li><li><a href="function.socket-set-block.html">socket_set_block</a> ― ソケットリソースをブロックモードに設定する</li><li><a href="function.socket-set-nonblock.html">socket_set_nonblock</a> ― ソケットリソースを非ブロックモードに設定する</li><li><a href="function.socket-set-option.html">socket_set_option</a> ― ソケットのオプションを設定する</li><li><a href="function.socket-shutdown.html">socket_shutdown</a> ― 受信、送信、または送受信用のソケットをシャットダウンする</li><li><a href="function.socket-strerror.html">socket_strerror</a> ― ソケットエラーの内容を文字列として返す</li><li><a href="function.socket-write.html">socket_write</a> ― ソケットに書き込む</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.use-soap-error-handler.html">use_soap_error_handler</a></div>
+ <div class="next" style="float: right;"><a href="function.socket-accept.html">socket_accept</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

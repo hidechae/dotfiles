@@ -1,0 +1,385 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>マニュアルインストール</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="install.windows.installer.html">Windows インストーラ (PHP 5.1.0 以前)</a></div>
+ <div class="next" style="float: right;"><a href="install.windows.activescript.html">ActiveScript</a></div>
+ <div class="up"><a href="install.windows.html">Windows システムへのインストール</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="install.windows.manual" class="sect1">
+    <h2 class="title">マニュアルインストール</h2>
+    
+    <p class="para">
+     ここからは、Microsoft Windows に手動で PHP をインストールし、Web サーバを
+     設定する手順について説明します。
+    </p>
+    <p class="para">
+     始めに、<a href="http://www.php.net/downloads.php" class="link external">&raquo; http://www.php.net/downloads.php</a>
+     のダウンロードページから zip バイナリアーカイブをダウンロードしてください。 
+    </p>
+    
+    <p class="para">
+     公式に配布されている Microsoft Window 向けの PHP インストーラを含め
+     多数のオールインワンのインストールキットが存在しますが、
+     まずは、幾ばくかの時間を割いて独力で PHP をセットアップしてみることをお勧めします。
+     そうすることで、システムをより理解することができ、PHP 拡張モジュールの
+     インストールも必要に応じて容易にできるようになるでしょう。
+    </p>
+    
+    <blockquote><p><b class="note">注意</b>: 
+     <b>前バージョンから PHP をアップグレードする場合</b>
+     
+      古いバージョンのマニュアルでは、ini ファイルおよび <acronym title="Dynamic Link Library">DLL</acronym>
+      ファイルをシステムフォルダ (<var class="filename">C:\WINDOWS</var> など)
+      へ移動させることを推奨していました。この移動により、インストール手順は簡単になりますが、
+      アップグレードは面倒になっていました。
+      新しいバージョンのインストールにあたっては、これら移動させたファイル（システムフォルダ内の
+      <var class="filename">php.ini</var> や PHP 関連の DLLなど）をすべて削除することを推奨します。
+      この時システムを壊さないようにするために、バックアップを確実に行ってください。
+      古い  <var class="filename">php.ini</var> は新しい PHP を設定するのに有用です。
+      本解説で推奨する PHP のインストール方法は、以下の解説に示すとおり、すべての PHP 関連の
+      ファイルをひとつのフォルダにまとめ、システムパスにそのフォルダを登録する方法です。
+     <br />
+    </p></blockquote>
+    
+    <blockquote><p><b class="note">注意</b>: 
+     <b>MDAC 要件</b>
+     
+      <em class="emphasis">Windows 98/NT4</em> を使用している場合には、
+      プラットフォームに合う Microsoft Data Access Components (MDAC) の最新版を
+      入手してください。<a href="http://msdn.microsoft.com/data/" class="link external">&raquo; http://msdn.microsoft.com/data/</a>
+      からダウンロードできます。MDAC が必要な理由は、<a href="ref.uodbc.html" class="link">ODBC</a>
+      が Windows バイナリにビルトインされているためです。
+     <br />
+    </p></blockquote>
+    
+    <p class="para">
+     各サーバ特有の設定を行う前に、以下に示すステップを完了させてください。
+    </p>
+    <p class="para">
+     まず、配布ファイルを適当なフォルダに展開します。PHP 4 の場合は、<var class="filename">C:\</var> がよいでしょう。zip パッケージは
+     <var class="filename">php-4.3.7-Win32</var> のようなフォルダ名で展開されます。
+     PHP 5 の場合は、PHP 4 のようにフォルダ内に展開されないので、<var class="filename">C:\php</var> 内で展開してください。
+     他の位置に展開することもできますが、空白を含むパス (例:c:\program files\php)
+     にすることはお勧めできません。Web サーバによってはクラッシュを引き起こします。
+    </p>
+    <p class="para">
+     展開されたフォルダの構造は、PHP 4 と PHP 5 とで異なり、以下のようになります。
+    </p>
+    <div class="example">
+     <p><b>Example#1 PHP 4 パッケージ構造</b></p>
+     <div class="example-contents">
+<div class="cdata"><pre>
+
+c:\php
+   |
+   +--cli
+   |  |
+   |  |-php.exe           -- CLI 実行ファイル - コマンドラインでのスクリプト実行専用
+   |
+   +--dlls                -- 拡張モジュールの利用に必要な DLL
+   |  |
+   |  |-expat.dll
+   |  |
+   |  |-fdftk.dll
+   |  |
+   |  |-...
+   |
+   +--extensions          -- PHP 拡張モジュールの DLL
+   |  |
+   |  |-php_bz2.dll
+   |  |
+   |  |-php_cpdf.dll
+   |  |
+   |  |-..
+   |
+   +--mibs                -- SNMP 用サポートファイル
+   |
+   +--openssl             -- Openssl 用サポートファイル
+   |
+   +--pdf-related         -- PDF 用サポートファイル
+   |
+   +--sapi                -- SAPI (server module support) DLL
+   |  |
+   |  |-php4apache.dll
+   |  |
+   |  |-php4apache2.dll
+   |  |
+   |  |-..
+   |
+   +--PEAR                -- PEAR の初期コピー
+   |
+   |
+   |-go-pear.bat          -- PEAR セットアップ用スクリプト
+   |
+   |-..
+   |
+   |-php.exe              -- CGI 実行ファイル
+   |
+   |-..
+   |
+   |-php.ini-dist         -- デフォルトの php.ini 設定
+   |
+   |-php.ini-recommended  -- 推奨される php.ini 設定
+   | 
+   |-php4ts.dll           -- コア PHP DLL
+   | 
+   |-...
+
+</pre></div>
+     </div>
+
+    </div> 
+    <p class="para">
+    </p>
+    <div class="example">
+     <p><b>Example#2 PHP 5 パッケージ構造</b></p>
+     <div class="example-contents">
+<div class="cdata"><pre>
+
+c:\php
+   |
+   +--dev
+   |  |
+   |  |-php5ts.lib
+   |
+   +--ext                 -- PHP 拡張モジュールの DLL
+   |  |
+   |  |-php_bz2.dll
+   |  |
+   |  |-php_cpdf.dll
+   |  |
+   |  |-..
+   |
+   +--extras
+   |  |
+   |  +--mibs             -- SNMP 用サポートファイル
+   |  |
+   |  +--openssl          -- Openssl 用サポートファイル
+   |  |
+   |  +--pdf-related      -- PDF 用サポートファイル
+   |  |
+   |  |-mime.magic
+   |
+   +--pear                -- PEAR の初期コピー
+   |
+   |
+   |-go-pear.bat          -- PEAR セットアップ用スクリプト
+   |
+   |-fdftk.dll
+   |
+   |-..
+   |
+   |-php-cgi.exe          -- CGI 実行ファイル
+   |
+   |-php-win.exe          -- コマンドプロンプトを開かずにスクリプトを実行する
+   |
+   |-php.exe              -- CLI 実行ファイル - コマンドラインでのスクリプト実行専用
+   |
+   |-..
+   |
+   |-php.ini-dist         -- デフォルトの php.ini 設定
+   |
+   |-php.ini-recommended  -- 推奨される php.ini 設定
+   | 
+   |-php5activescript.dll
+   |
+   |-php5apache.dll
+   |
+   |-php5apache2.dll
+   |
+   |-..
+   |
+   |-php5ts.dll           -- コア PHP DLL
+   | 
+   |-...
+
+</pre></div>
+     </div>
+
+    </div> 
+    <p class="para">
+     PHP 4 と PHP 5 とで、相違点もあり、共通点もあります。
+     双方とも、<acronym title="Common Gateway Interface">CGI</acronym> 実行ファイル、<acronym title="Command Line Interpreter/Interface">CLI</acronym>
+     実行ファイル、およびサーバモジュールがあります。しかし、フォルダや
+     ファイル名が異なります。PHP 4 では、サーバモジュールは、
+     <var class="filename">sapi</var> フォルダ内にありますが、
+     PHP 5 ではそういったフォルダは無く、PHP を展開したフォルダのルートにあります。
+     PHP 5 の拡張モジュールが必要とする DLL も、別フォルダ内には納められていません。
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      PHP 4 では、<var class="filename">dll</var> フォルダおよび
+      <var class="filename">sapi</var> フォルダ内のすべてのファイルを
+      メインのフォルダ（<var class="filename">C:\php</var> など）に
+      移動してください。
+     <br />
+    </p></blockquote>
+    <p class="para">
+     PHP 4 および PHP 5 で提供されているサーバモジュールは以下の通りです。
+     <ul class="itemizedlist">
+      <li class="listitem"><p class="para">
+       <var class="filename">sapi/php4activescript.dll (php5activescript.dll)</var>
+       - <a href="install.windows.activescript.html" class="link">ActiveScript
+       エンジン</a>。Windows アプリケーションに PHP を埋め込むことが可能
+      </p></li>
+      <li class="listitem"><p class="para">
+       <var class="filename">sapi/php4apache.dll (php5apache.dll)</var> - Apache 1.3.x モジュール
+      </p></li>
+      <li class="listitem"><p class="para">
+       <var class="filename">sapi/php4apache2.dll (php5apache2.dll)</var> - Apache 2.0.x モジュール
+      </p></li>
+      <li class="listitem"><p class="para">
+       <var class="filename">sapi/php5apache2_2.dll</var> - Apache 2.2.x モジュール
+      </p></li>
+      <li class="listitem"><p class="para">
+       <var class="filename">sapi/php4isapi.dll (php5isapi.dll)</var> - ISAPI モジュール。
+       IIS 4.0/PWS 4.0 以降を始とした ISAPI 互換サーバ用
+      </p></li>
+      <li class="listitem"><p class="para">
+       <var class="filename">sapi/php4nsapi.dll (php5nsapi.dll)</var> - Sun/iPlanet/Netscape
+       用サーバモジュール
+      </p></li>
+      <li class="listitem"><p class="para">
+       <var class="filename">sapi/php4pi3web.dll (PHP 5 では提供なし)</var> - Pi3Web 用サーバモジュール
+      </p></li>
+       
+     </ul>
+    </p>
+    <p class="para">
+     サーバモジュールは、CGI バイナリと比べ、パフォーマンスが非常に高く、
+     機能も追加されています。CLI 版は、PHP をコマンドライン用のスクリプトとして
+     使うためのものです。CLI 版について詳しくは <a href="features.commandline.html" class="link">PHP
+     をコマンドラインから使用する</a>の章を参照してください。
+    </p>
+    <div class="warning"><b class="warning">警告</b>
+     <p class="simpara">
+      SAPI モジュールは、バージョン 4.1 以降、顕著な改善が行われています。
+      一方、古いシステムにおいては、サーバエラーが発生したり、ASP 等のサーバモジュールが
+      落ちたりする可能性があります。
+     </p>
+    </div>
+    <p class="para">
+     <acronym title="Common Gateway Interface">CGI</acronym> バイナリ、<acronym title="Command Line Interpreter/Interface">CLI</acronym>
+     バイナリ、およびサーバモジュールのいずれも <var class="filename">php4ts.dll</var> 
+     (<var class="filename">php5ts.dll</var>) を必要とします。
+     PHP がこのファイルを見つけられるようにする必要があります。
+     探索順は、以下の通りです。
+     <ul class="itemizedlist">
+      <li class="listitem">
+       <p class="para">
+        <var class="filename">php.exe</var> のコール元のフォルダ。SAPI モジュールを
+        使用している場合、WEB サーバのフォルダ (例、
+        <var class="filename">C:\Program Files\Apache Group\Apache2\bin</var>)
+       </p>
+      </li>
+      <li class="listitem">
+       <p class="para">
+        Windows の <var class="varname">PATH</var> 環境変数に登録されたフォルダ
+       </p>
+      </li>
+     </ul>
+    </p>
+    <p class="para">
+     <var class="filename">php4ts.dll</var> / <var class="filename">php5ts.dll</var> を有効に
+     するには、[1] Windows のシステムフォルダにコピーする方法、
+     [2] WEB サーバのフォルダにコピーする方法、[3] PHP フォルダ
+     (<var class="filename">C:\php</var>) を <var class="varname">PATH</var>
+     環境変数に登録する方法の３つの選択肢があります。メンテナンスを考慮すると、
+     ３番目の環境変数に登録する方法をとるべきでしょう。こうすれば、将来の PHP の
+     アップグレードが容易になります。PHP フォルダを環境変数に登録する方法に
+     ついては、<a href="faq.installation.html#faq.installation.addtopath" class="link">FAQ</a> を参照して
+     ください (また、コンピュータを再起動することを忘れないでください。
+     ログオフするだけでは不十分です)。
+    </p>
+    <p class="para">
+     次のステップは、PHP の設定ファイル <var class="filename">php.ini</var> を正しく記述することです。 
+     配布される zip ファイルには <var class="filename">php.ini-dist</var> と 
+     <var class="filename">php.ini-recommended</var> の二つの ini ファイルが含まれています。
+     パフォーマンスとセキュリティの観点から最適化された初期設定がなされているので、
+     <var class="filename">php.ini-recommended</var> の使用を推奨します。 
+     <var class="filename">php.ini-dist</var> から多くの点で変更が行われています。
+     ini ファイルには詳しくコメントが書かれているので、注意深く読んでみると良いでしょう。
+     たとえば、<a href="ref.errorfunc.html#ini.display-errors" class="link">display_errors</a> や
+     <a href="ref.info.html#ini.magic-quotes-gpc" class="link">magic_quotes_gpc</a> が 
+     <i class="literal">off</i> となっていたりします。
+     さらに、<a href="configuration.html#configuration.file" class="link">設定ファイル</a>のセクションもよく読んで 
+     各要素を自ら設定してみてください。 
+     PHP は、デフォルトの ini ファイルの設定できちんと動作するとはいえ、
+     最高のセキュリティを達成したいならば、自ら手を動かして設定することが最善の方法です。
+     選んだ ini ファイルを、PHP がアクセスできるフォルダにコピーし、<var class="filename">php.ini</var> 
+     にリネームしてください。PHP は、<a href="configuration.html" class="xref">実行時設定</a>
+     の節で述べられている場所から <var class="filename">php.ini</var> を探します。
+    </p>
+    <p class="para">
+     Apache 2 を使用する場合、PHPIniDir ディレクティブを使うのが最も簡単でしょう
+     (<a href="install.windows.apache2.html" class="link">Apache 2 へのインストール</a> ページ参照。)
+     他の場合、<var class="varname">PHPRC</var> 環境変数を設定するのが良いでしょう。
+     詳しい方法については、こちらの <a href="faq.installation.html#faq.installation.phprc" class="link">FAQ エントリ</a> で解説されています。
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     <span class="simpara">
+      Windows NT, 2000, XP または 2003 で NTFS を使用している場合、WEB サーバを
+      実行するユーザが、<var class="filename">php.ini</var> を読める権限があることを確認してください。
+     </span>
+    </p></blockquote>
+    <p class="para">
+      以下のステップは、必要に応じて行ってください。
+     <ul class="itemizedlist">
+      <li class="listitem">
+       <p class="para">
+        <var class="filename">php.ini</var> ファイルを編集し、 
+        <a href="ini.core.html#ini.doc-root" class="link">doc_root</a> に Web サーバーの
+        ドキュメントルートを設定します（ただし、OmniHTTPd を使用する場合は編集しないこと。）
+        例えば、以下のように設定します。
+        <div class="informalexample">
+          <div class="example-contents">
+<div class="cdata"><pre>
+doc_root = c:\inetpub       // IIS/PWS の場合
+
+doc_root = c:\apache\htdocs // Apache の場合 
+</pre></div>
+         </div>
+
+        </div>
+       </p>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        PHP の起動時に、必要な拡張モジュールがロードされるように設定します。セットアップの方法や、
+        ビルトイン済みのモジュールについては
+        <a href="install.windows.extensions.html" class="link">Windows 用拡張モジュール</a> のセクションを
+        参照してください。PHP の新規インストールの場合は、まず PHP が拡張モジュールなしで正しく動作することを
+        確認してから、php.ini を変更して拡張モジュールを有効にするほうが賢明です。
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        PWS と IIS においては、<a href="ref.misc.html#ini.browscap" class="link">browscap</a>
+        を 次のように指定することができます。
+        <var class="filename">c:\windows\system\inetsrv\browscap.ini</var> 
+        (Windows 9x/Me の場合)、
+        <var class="filename">c:\winnt\system32\inetsrv\browscap.ini</var> 
+        (NT/2000 の場合)、
+        <var class="filename">c:\windows\system32\inetsrv\browscap.ini</var>
+        (XP の場合)。  
+        <var class="filename">browscap.ini</var> の編集については、
+        <a href="faq.obtaining.html#faq.obtaining.browscap" class="link">FAQ</a> を参照してください。
+       </span>
+      </li>
+     </ul>
+    </p> 
+    <p class="para">
+     以上で、Windows への PHP のインストールが完了しました。ついで、
+     使用する WEB サーバ にあわせて、PHP を利用可能とするための設定を行います。
+     目次から使用する WEB サーバを選択し、該当するセクションを参照してください。
+    </p>
+   </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="install.windows.installer.html">Windows インストーラ (PHP 5.1.0 以前)</a></div>
+ <div class="next" style="float: right;"><a href="install.windows.activescript.html">ActiveScript</a></div>
+ <div class="up"><a href="install.windows.html">Windows システムへのインストール</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

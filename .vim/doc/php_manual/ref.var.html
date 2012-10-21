@@ -1,0 +1,425 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>変数操作関数(Variable Handling)</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.urlencode.html">urlencode</a></div>
+ <div class="next" style="float: right;"><a href="function.debug-zval-dump.html">debug_zval_dump</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">変数操作関数(Variable Handling)</h1>
+  
+
+  <div class="partintro">
+   <div id="var.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     変数の動作に関する情報については、このマニュアルの
+     <a href="langref.html" class="link">言語リファレンス</a>セクションにある
+     <a href="language.variables.html" class="link">変数</a>のエントリを参照下さ
+     い。
+   </p>
+   </div>
+
+   <div id="var.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">外部ライブラリを必要としません。</p>
+   </div>
+
+   <div id="var.installation" class="section">
+    <h2 class="title">インストール手順</h2>
+    <p class="para">PHP コアに含まれるため、
+追加のインストール無しで使用できます。</p>
+   </div>
+
+   
+
+
+
+<div id="var.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+  <table border="5">
+   <caption><b>変数設定オプション</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">名前</th>
+      <th colspan="1">デフォルト</th>
+      <th colspan="1">変更の可否</th>
+      <th colspan="1">変更履歴</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">unserialize_callback_func</td>
+     <td colspan="1" rowspan="1" align="left">NULL</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.2.0 から利用可能</td>
+    </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+  PHP_INI_* 定数の詳細および定義については
+<a href="ini.html" class="xref">php.ini ディレクティブ</a> を参照してください。
+ </p>
+
+ <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+
+ <p class="para">
+  <dl>
+
+   <dt id="unserialize-callback-func">
+    <span class="term">
+     <i><tt class="parameter">unserialize_callback_func</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      アンシリアライザがインスタンスを作成する必要がある未定義のクラス
+      を見付けた場合に(未定義のクラス名をパラメータとして)
+      <a href="function.unserialize.html" class="function">unserialize()</a>コールバック関数がコールされます。
+      指定した関数が定義されていない場合やその関数が足りないクラスを読
+      み込み/実装しない場合に警告が発生します。
+      コールバック関数のようなものが本当に必要な場合は、このエントリを
+      設定してください。
+     </p>
+     <p class="para">
+      <a href="function.unserialize.html" class="function">unserialize()</a>も参照してください。
+     </p>
+    </dd>
+
+   </dt>
+
+
+  </dl>
+
+ </p>
+</div>
+
+
+
+
+   <div id="var.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">リソース型は定義されていません。</p>
+   </div>
+
+   <div id="var.constants" class="section">
+    <h2 class="title">定義済み定数</h2>
+    <p class="para">定数は定義されていません。</p>
+   </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.debug-zval-dump.html">debug_zval_dump</a> ― 内部的な Zend の値を表す文字列をダンプする</li><li><a href="function.doubleval.html">doubleval</a> ― floatval のエイリアス</li><li><a href="function.empty.html">empty</a> ― 変数が空であるかどうかを検査する</li><li><a href="function.floatval.html">floatval</a> ― 変数の float 値を取得する</li><li><a href="function.get-defined-vars.html">get_defined_vars</a> ― 全ての定義済の変数を配列で返す</li><li><a href="function.get-resource-type.html">get_resource_type</a> ― リソース型を返す</li><li><a href="function.gettype.html">gettype</a> ― 変数の型を取得する</li><li><a href="function.import-request-variables.html">import_request_variables</a> ― GET/POST/Cookie 変数をグローバルスコープにインポートする</li><li><a href="function.intval.html">intval</a> ― 変数の整数としての値を取得する</li><li><a href="function.is-array.html">is_array</a> ― 変数が配列かどうかを検査する</li><li><a href="function.is-binary.html">is_binary</a> ― 変数がネイティブバイナリ文字列かどうかを調べる</li><li><a href="function.is-bool.html">is_bool</a> ― 変数が boolean であるかを調べる</li><li><a href="function.is-buffer.html">is_buffer</a> ― 変数がネイティブ unicode あるいはバイナリ文字列かどうかを調べる</li><li><a href="function.is-callable.html">is_callable</a> ― 引数が、関数としてコール可能な構造であるかどうかを調べる</li><li><a href="function.is-double.html">is_double</a> ― is_float のエイリアス</li><li><a href="function.is-float.html">is_float</a> ― 変数の型が float かどうか調べる</li><li><a href="function.is-int.html">is_int</a> ― 変数が整数型かどうかを検査する</li><li><a href="function.is-integer.html">is_integer</a> ― is_int のエイリアス</li><li><a href="function.is-long.html">is_long</a> ― is_int のエイリアス</li><li><a href="function.is-null.html">is_null</a> ― 変数が NULL かどうか調べる</li><li><a href="function.is-numeric.html">is_numeric</a> ― 変数が数字または数値文字列であるかを調べる</li><li><a href="function.is-object.html">is_object</a> ― 変数がオブジェクトかどうかを検査する</li><li><a href="function.is-real.html">is_real</a> ― is_float のエイリアス</li><li><a href="function.is-resource.html">is_resource</a> ― 変数がリソースかどうかを調べる</li><li><a href="function.is-scalar.html">is_scalar</a> ― 変数がスカラかどうかを調べる</li><li><a href="function.is-string.html">is_string</a> ― 変数の型が文字列かどうかを調べる</li><li><a href="function.is-unicode.html">is_unicode</a> ― 変数が unicode 文字列かどうかを調べる</li><li><a href="function.isset.html">isset</a> ― 変数がセットされているかどうかを検査する</li><li><a href="function.print-r.html">print_r</a> ― 指定した変数に関する情報を解りやすく出力する</li><li><a href="function.serialize.html">serialize</a> ― 値の保存可能な表現を生成する</li><li><a href="function.settype.html">settype</a> ― 変数の型をセットする</li><li><a href="function.strval.html">strval</a> ― 変数の文字列としての値を得ます</li><li><a href="function.unserialize.html">unserialize</a> ― 保存用表現から PHP の値を生成する</li><li><a href="function.unset.html">unset</a> ― 指定した変数の割当を解除する</li><li><a href="function.var-dump.html">var_dump</a> ― 変数に関する情報をダンプする</li><li><a href="function.var-export.html">var_export</a> ― 変数の文字列表現を出力または返す</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.urlencode.html">urlencode</a></div>
+ <div class="next" style="float: right;"><a href="function.debug-zval-dump.html">debug_zval_dump</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

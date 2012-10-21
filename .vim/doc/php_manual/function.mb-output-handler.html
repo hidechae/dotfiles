@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>出力バッファ内で文字エンコーディングを変換するコールバック関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mb-language.html">mb_language</a></div>
+ <div class="next" style="float: right;"><a href="function.mb-parse-str.html">mb_parse_str</a></div>
+ <div class="up"><a href="ref.mbstring.html">マルチバイト文字列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mb-output-handler" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mb_output_handler</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.0.6, PHP 5)</p><p class="refpurpose">mb_output_handler ― 出力バッファ内で文字エンコーディングを変換するコールバック関数</p>
+ 
+ </div>
+   
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">string</span> <span class="methodname"><b><b>mb_output_handler</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$contents</tt></span>
+   , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$status</tt></span>
+   )</div>
+
+  <p class="para">
+   <b>mb_output_handler()</b> は、
+   <a href="function.ob-start.html" class="function">ob_start()</a> のコールバック関数です。
+   <b>mb_output_handler()</b> は、出力バッファの文字を
+   内部文字エンコーディングから HTTP 出力文字エンコーディングに変換します。
+  </p>
+  <p class="para">
+   4.1.0 以降のバージョンでは、以下の条件が満たされた場合にこのハンドラは
+   charset HTTP ヘッダを設定します。
+  </p>
+  <p class="para">
+   <ul class="itemizedlist">
+    <li class="listitem">
+     <span class="simpara">
+      <a href="function.header.html" class="function">header()</a> で <i class="literal">Content-Type</i> が
+      設定されていない場合
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      デフォルトの MIME 型が <i class="literal">text/</i> で始まる
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <i class="literal">http_output</i> の設定が pass 以外
+     </span>
+    </li>
+   </ul>
+  </p>
+  <p class="para">
+   <i><tt class="parameter">contents</tt></i>
+ : 出力バッファの内容
+  </p>
+  <p class="para">
+   <i><tt class="parameter">status</tt></i>
+ : 出力バッファのステータス
+  </p>
+  <p class="para">
+   返り値: 変換後の文字列
+  </p>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>mb_output_handler()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />mb_http_output</span><span style="color: #007700">(</span><span style="color: #DD0000">"UTF-8"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">ob_start</span><span style="color: #007700">(</span><span style="color: #DD0000">"mb_output_handler"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    PHP 4.3.0 以降において、
+    イメージのようなバイナリデータを PHP スクリプトから出力したい場合、
+    バイナリデータを送信する前に <a href="function.header.html" class="function">header()</a> により
+    Content-Type: ヘッダ(例：header(&quot;Content-Type: image/png&quot;))を
+    送信する必要があります。Content-Type: ヘッダが送信されると出力文字
+    コード変換は無効となります。
+   <br />
+   
+    ただし、<a href="function.header.html" class="function">header()</a> により&quot;Content-Type: text/*&quot;
+    を送信した場合には、テキストが送信されるとみなし、文字コード設定に
+    基づいて出力文字コード変換を行います。
+   <br />
+   
+    なお、PHP 4.2.x あるいはそれ以前のバージョンで画像のようなバイナリデータを
+    出力する場合には、<a href="function.mb-http-output.html" class="function">mb_http_output()</a> を用いて
+    出力エンコーディングを &quot;pass&quot; に設定する必要があります。
+   <br />
+  </p></blockquote>
+  <p class="para">
+   <a href="function.ob-start.html" class="function">ob_start()</a> も参照ください。
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mb-language.html">mb_language</a></div>
+ <div class="next" style="float: right;"><a href="function.mb-parse-str.html">mb_parse_str</a></div>
+ <div class="up"><a href="ref.mbstring.html">マルチバイト文字列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

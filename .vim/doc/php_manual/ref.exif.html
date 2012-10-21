@@ -1,0 +1,356 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>Exif 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.user-error.html">user_error</a></div>
+ <div class="next" style="float: right;"><a href="function.exif-imagetype.html">exif_imagetype</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+ <h1 class="title">Exif 関数</h1>
+ 
+
+ <div class="partintro">
+   <div id="exif.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     exif 拡張モジュールを使用すると、画像のメタデータを扱うことが可能と
+     なります。例えば、デジタルカメラで撮影した画像ファイルから
+     <acronym title="Joint Photographic Experts Group">JPEG</acronym> や <acronym title="Tagged Image File Format">TIFF</acronym> 画像のヘッダ情報を
+     読み込むために exif 関数を使用することができます。
+    </p>
+   </div>
+
+   <div id="exif.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">
+     <i class="literal">--enable-exif</i> オプションを含めて PHP がコンパイル
+     されている必要があります。exif モジュールを作成するために、追加の
+     ライブラリは一切必要ありません。Windows ユーザは、
+     <a href="ref.mbstring.html" class="link"> mbstring</a> 拡張モジュールを有効に
+     する必要があります。
+    </p>
+   </div>
+
+   
+
+
+<div id="exif.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  exif サポートを有効にするには、PHP の configure 時に
+  <span class="option">--enable-exif</span> を指定します。
+ </p>
+ <p class="para">
+  Windows ユーザは、<var class="filename">php.ini</var> で <var class="filename">php_mbstring.dll</var>
+  および <var class="filename">php_exif.dll</var> の両方の DLL を有効にする
+  必要があります。<var class="filename">php_mbstring.dll</var> DLL は、必ず
+  <var class="filename">php_exif.dll</var> DLL より <em class="emphasis">先に</em>
+  読み込まれていなければなりません。そうなるように <var class="filename">php.ini</var> で設定
+  してください。
+ </p>
+</div>
+
+
+
+
+
+   
+
+
+<div id="exif.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+  <a href="ref.mbstring.html" class="link">mbstring</a> が有効になっている場合、
+  Exif 拡張モジュールはユーザコメントの文字エンコーディングの変換
+  （Unicode と JIS）を自動的に行います。この処理が行われるのは、
+  指定した文字セットを使用して最初にコメントをデコードする際です。
+  その結果は、<i class="literal">HTTP</i> 出力用の文字コードにエンコード
+  されます。
+ <table border="5">
+  <caption><b>Exif 設定オプション</b></caption>
+  <colgroup>
+
+   <thead valign="middle">
+    <tr valign="middle">
+     <th colspan="1">名前</th>
+     <th colspan="1">デフォルト</th>
+     <th colspan="1">変更の可否</th>
+     <th colspan="1">変更履歴</th>
+    </tr>
+
+   </thead>
+
+   <tbody valign="middle">
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">exif.encode_unicode</td>
+     <td colspan="1" rowspan="1" align="left">&quot;ISO-8859-15&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.3.0 以降で有効です。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">exif.decode_unicode_motorola</td>
+     <td colspan="1" rowspan="1" align="left">&quot;UCS-2BE&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.3.0 以降で有効です。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">exif.decode_unicode_intel</td>
+     <td colspan="1" rowspan="1" align="left">&quot;UCS-2LE&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.3.0 以降で有効です。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">exif.encode_jis</td>
+     <td colspan="1" rowspan="1" align="left">&quot;&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.3.0 以降で有効です。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">exif.decode_jis_motorola</td>
+     <td colspan="1" rowspan="1" align="left">&quot;JIS&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.3.0 以降で有効です。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">exif.decode_jis_intel</td>
+     <td colspan="1" rowspan="1" align="left">&quot;JIS&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.3.0 以降で有効です。</td>
+    </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+  PHP_INI_* 定数の詳細および定義については
+<a href="ini.html" class="xref">php.ini ディレクティブ</a> を参照してください。
+ </p>
+ 
+ <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+ 
+ <p class="para">
+  <dl>
+
+   <dt id="ini.exif.encode-unicode">
+    <span class="term">
+     <i><tt class="parameter">exif.encode_unicode</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+    <p class="para">
+     <i class="literal">exif.encode_unicode</i> は、UNICODE ユーザコメント
+     を処理する文字セットを定義します。デフォルトは ISO-8859-15 で、
+     アジア以外のほとんどの国で動作します。この設定は、空白
+     あるいは mbstring のサポートするエンコーディングである必要があります。
+     空白の場合は mbstring の内部エンコーディング設定が使用されます。
+    </p>
+    </dd>
+
+   </dt>
+
+    <dt id="ini.exif.decode-unicode-motorola">
+    <span class="term">
+     <i><tt class="parameter">exif.decode_unicode_motorola</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      <i class="literal">exif.decode_unicode_motorola</i> は、画像の
+      バイトオーダーがモトローラ形式（ビッグエンディアン）であった場合に
+      Unicode のユーザコメントを扱うための内部文字セットを定義します。
+      この設定は空白にすることはできず、mbstring がサポートしている
+      エンコーディングの中から指定します。デフォルトは UCS-2BE です。
+     </p>
+    </dd>
+
+   </dt>
+
+    <dt id="ini.exif.decode-unicode-intel">
+    <span class="term">
+     <i><tt class="parameter">exif.decode_unicode_intel</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      <i class="literal">exif.decode_unicode_intel</i> は、画像の
+      バイトオーダーがインテル形式（リトルエンディアン）であった場合に
+      Unicode のユーザコメントを扱うための内部文字セットを定義します。
+      この設定は空白にすることはできず、mbstring がサポートしている
+      エンコーディングの中から指定します。デフォルトは UCS-2LE です。
+     </p>
+    </dd>
+
+   </dt>
+
+    <dt id="ini.exif.encode-jis">
+    <span class="term">
+     <i><tt class="parameter">exif.encode_jis</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      <i class="literal">exif.encode_jis</i> は、JIS ユーザコメントを
+      処理する文字セットを定義します。デフォルトは空白で、これは
+      mbstring の内部設定を使用させることを意味します。
+     </p>
+    </dd>
+
+   </dt>
+
+    <dt id="ini.exif.decode-jis-motorola">
+    <span class="term">
+     <i><tt class="parameter">exif.decode_jis_motorola</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      <i class="literal">exif.decode_jis_motorola</i> は、画像の
+      バイトオーダーがモトローラ形式（ビッグエンディアン）であった場合に
+      JIS のユーザコメントを扱うための内部文字セットを定義します。
+      この設定は空白にすることはできず、mbstring がサポートしている
+      エンコーディングの中から指定します。デフォルトは JIS です。
+     </p>
+    </dd>
+
+   </dt>
+
+    <dt id="ini.exif.decode-jis-intel">
+    <span class="term">
+     <i><tt class="parameter">exif.decode_jis_intel</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      <i class="literal">exif.decode_jis_intel</i> は、画像の
+      バイトオーダーがインテル形式（リトルエンディアン）であった場合に
+      JIS のユーザコメントを扱うための内部文字セットを定義します。
+      この設定は空白にすることはできず、mbstring がサポートしている
+      エンコーディングの中から指定します。デフォルトは JIS です。
+     </p>
+    </dd>
+
+   </dt>
+
+  </dl>
+
+ </p>
+</div>
+
+
+
+   <div id="exif.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">リソース型は定義されていません。</p>
+   </div>
+
+   
+
+
+<div id="exif.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <p class="para">
+  <dl>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>EXIF_USE_MBSTRING</tt></b> 
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+     
+     </span>
+    </dd>
+
+   </dt>
+
+  </dl>
+
+ </p>
+ <p class="para">
+  <a href="function.exif-imagetype.html" class="function">exif_imagetype()</a> は、関連するいくつかの組み込み定数を
+  一覧表示します。
+ </p>
+</div>
+
+
+
+ </div>
+
+ 
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.exif-imagetype.html">exif_imagetype</a> ― イメージの型を定義する</li><li><a href="function.exif-read-data.html">exif_read_data</a> ― JPEG あるいは TIFF から
+   EXIF ヘッダを読み込む</li><li><a href="function.exif-tagname.html">exif_tagname</a> ― インデックスに対応するヘッダ名を取得する</li><li><a href="function.exif-thumbnail.html">exif_thumbnail</a> ― TIFF あるいは JPEG 形式の画像に埋め込まれたサムネイルを取得する</li><li><a href="function.read-exif-data.html">read_exif_data</a> ― exif_read_data のエイリアス</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.user-error.html">user_error</a></div>
+ <div class="next" style="float: right;"><a href="function.exif-imagetype.html">exif_imagetype</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>現在の言語を設定あるいは取得する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mb-internal-encoding.html">mb_internal_encoding</a></div>
+ <div class="next" style="float: right;"><a href="function.mb-output-handler.html">mb_output_handler</a></div>
+ <div class="up"><a href="ref.mbstring.html">マルチバイト文字列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mb-language" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mb_language</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.0.6, PHP 5)</p><p class="refpurpose">mb_language ― 現在の言語を設定あるいは取得する</p>
+
+ </div>
+   
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">mixed</span> <span class="methodname"><b><b>mb_language</b></b></span>
+    ([ <span class="methodparam"><span class="type">string</span> <tt class="parameter">$language</tt></span>
+  ] )</div>
+
+  <p class="para">
+   <b>mb_language()</b> は言語を設定します。
+   <i><tt class="parameter">language</tt></i>
+ が省略された場合、カレントの言語
+   を文字列で返します。
+  </p>
+  <p class="para">
+   この<i><tt class="parameter">language</tt></i>
+が、e-mail
+   メッセージのエンコーディングとして使用されます。有効な言語は、&quot;Japanese&quot;,
+   &quot;ja&quot;,&quot;English&quot;,&quot;en&quot;, &quot;uni&quot; (UTF-8) です。
+   <a href="function.mb-send-mail.html" class="function">mb_send_mail()</a> は、e-mailをエンコードする際に
+   この設定を使用します。
+  </p>
+  <p class="para"> 
+   言語とその設定は、Japaneseの場合はISO-2022-JP/Base64、uniの場合は
+   UTF-8/Base64、Englishの場合はISO-8859-1/quoted printableです。
+  </p>
+  <p class="para">
+   返り値: <i><tt class="parameter">language</tt></i>
+ が設定され、
+   <i><tt class="parameter">language</tt></i>
+ が有効な場合、<b><tt>TRUE</tt></b>が返されます。
+   そうでない場合、<b><tt>FALSE</tt></b>が返されます。
+   <i><tt class="parameter">language</tt></i>
+ が省略された場合、
+   言語の名前が文字列として返されます。事前に言語が設定されていない場合、
+   <b><tt>FALSE</tt></b> が返されます。
+  </p>
+  <p class="para">
+   <a href="function.mb-send-mail.html" class="function">mb_send_mail()</a>も参照ください。
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mb-internal-encoding.html">mb_internal_encoding</a></div>
+ <div class="next" style="float: right;"><a href="function.mb-output-handler.html">mb_output_handler</a></div>
+ <div class="up"><a href="ref.mbstring.html">マルチバイト文字列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

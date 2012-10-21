@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>新規に MySQL サーバへの接続をオープンする</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mysqli-connect-error.html">mysqli_connect_error</a></div>
+ <div class="next" style="float: right;"><a href="function.mysqli-data-seek.html">mysqli_data_seek</a></div>
+ <div class="up"><a href="ref.mysqli.html">mysqli</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mysqli-connect" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mysqli_connect</h1>
+  <h1 class="refname">mysqli-&gt;__construct()</h1>
+  <p class="verinfo">(No version information available, might be only in CVS)</p><p class="refpurpose">mysqli->__construct() ― 新規に MySQL サーバへの接続をオープンする</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <p class="para">手続き型</p>
+  <div class="methodsynopsis">
+   <span class="type">mysqli</span> <span class="methodname"><b><b>mysqli_connect</b></b></span>
+    ([ <span class="methodparam"><span class="type">string</span> <tt class="parameter">$host</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$username</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$passwd</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$dbname</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$port</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$socket</tt></span>
+  ]]]]]] )</div>
+
+  <p class="para">オブジェクト指向型（コンストラクタ）:</p>
+  <div class="classsynopsis">
+  <div class="ooclass"><b class="classname">mysqli</b></div>
+   <div class="constructorsynopsis">
+     <span class="methodname"><b><b>__construct</b></b></span>
+     ([ <span class="methodparam"><span class="type">string</span> <tt class="parameter">$host</tt></span>
+    [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$username</tt></span>
+    [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$passwd</tt></span>
+    [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$dbname</tt></span>
+    [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$port</tt></span>
+    [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$socket</tt></span>
+   ]]]]]] )</div>
+
+  </div>
+  <p class="para">
+   実行中の MySQL サーバへの接続をオープンします。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">host</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       ホスト名または IP アドレスです。この引数に <b><tt>NULL</tt></b> または &quot;localhost&quot; を渡すと
+       ローカルホストとみなされます。もし可能な場合、TCP/IP プロトコルの代わりに
+       パイプが使用されます。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">username</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       MySQL のユーザ名。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">passwd</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       省略したり <b><tt>NULL</tt></b> を渡したりした場合、MySQL サーバは
+       パスワードを持たないユーザレコードについてのみ認証を試みます。
+       これによってひとつのユーザ名において(パスワードが指定されたか
+       否かによって)違うパーミッションを与えることができます。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">dbname</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       指定した場合は、
+       クエリが行われるデフォルトのデータベースとなります。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">port</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       MySQL サーバに接続する際のポート番号を指定します。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">socket</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       使用するソケットあるいは名前つきパイプを指定します。
+      </p>
+      <blockquote><p><b class="note">注意</b>: 
+       
+        <i><tt class="parameter">socket</tt></i>
+ 引数を指定しても、MySQL サーバへの
+        接続時の型を明示的に定義することにはなりません。MySQL サーバへの
+        接続方法については <i><tt class="parameter">host</tt></i>
+ 引数で定義されます。
+       <br />
+      </p></blockquote>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   MySQL サーバへの接続を表すオブジェクトを返します。接続に失敗した場合には
+   <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <div class="example">
+   <p><b>Example#1 オブジェクト指向型</b></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$mysqli&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">mysqli</span><span style="color: #007700">(</span><span style="color: #DD0000">"localhost"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"my_user"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"my_password"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"world"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;接続の状況をチェックします&nbsp;*/&nbsp;<br /></span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">mysqli_connect_errno</span><span style="color: #007700">())&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"Connect&nbsp;failed:&nbsp;%s\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">mysqli_connect_error</span><span style="color: #007700">());<br />&nbsp;&nbsp;&nbsp;&nbsp;exit();<br />}<br /><br /></span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"Host&nbsp;information:&nbsp;%s\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">host_info</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;接続を閉じます&nbsp;*/<br /></span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">close</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+  </div>
+
+  </div>
+  <div class="example">
+   <p><b>Example#2 手続き型</b></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$link&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysqli_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">"localhost"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"my_user"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"my_password"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"world"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;接続の状況をチェックします&nbsp;*/&nbsp;<br /></span><span style="color: #007700">if&nbsp;(!</span><span style="color: #0000BB">$link</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"Connect&nbsp;failed:&nbsp;%s\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">mysqli_connect_error</span><span style="color: #007700">());<br />&nbsp;&nbsp;&nbsp;&nbsp;exit();<br />}<br /><br /></span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"Host&nbsp;information:&nbsp;%s\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">mysqli_get_host_info</span><span style="color: #007700">(</span><span style="color: #0000BB">$link</span><span style="color: #007700">));<br /><br /></span><span style="color: #FF8000">/*&nbsp;接続を閉じます&nbsp;*/<br /></span><span style="color: #0000BB">mysqli_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$link</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+  <p class="para">上の例の出力は以下となります。</p>
+  <div class="example-contents"><pre>
+<div class="cdata"><pre>
+Host information: Localhost via UNIX socket
+</pre></div>
+  </pre></div>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    エラー &quot;Can&#039;t create TCP/IP socket (10106)&quot; が発生するのは、たいていは <a href="ini.core.html#ini.variables-order" class="link">variables_order</a> 設定ディレクティブに
+    <i class="literal">E</i> が含まれていない場合です。
+    Windows では、これが含まれていなければ <i class="literal">SYSTEMROOT</i>
+    環境変数が使用できず、PHP が Winsock の読み込みに失敗します。
+   <br />
+  </p></blockquote>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mysqli-connect-error.html">mysqli_connect_error</a></div>
+ <div class="next" style="float: right;"><a href="function.mysqli-data-seek.html">mysqli_data_seek</a></div>
+ <div class="up"><a href="ref.mysqli.html">mysqli</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>クライアントの接続が切断された際にスクリプトの実行を終了するかどうかを設定する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.highlight-string.html">highlight_string</a></div>
+ <div class="next" style="float: right;"><a href="function.pack.html">pack</a></div>
+ <div class="up"><a href="ref.misc.html">その他</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.ignore-user-abort" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ignore_user_abort</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">ignore_user_abort ― クライアントの接続が切断された際にスクリプトの実行を終了するかどうかを設定する</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">int</span> <span class="methodname"><b><b>ignore_user_abort</b></b></span>
+    ([ <span class="methodparam"><span class="type">bool</span> <tt class="parameter">$setting</tt></span>
+  ] )</div>
+
+  <p class="para">
+   クライアントの接続が切断された際にスクリプトの実行を終了するかどうかを設定します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">setting</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       省略した場合は、この関数は単に現在の設定を返します。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   以前の設定を表す boolean 値を返します。
+  </p>
+ </div>
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <p class="para">
+   PHP は、クライアントに情報が返ってくるまでは
+   ユーザが切断しようとしたかどうかを検出できません。
+   単に echo 文を使っただけでは、情報が送信されたかどうかを保証できません。
+   <a href="function.flush.html" class="function">flush()</a> を参照ください。
+  </p>
+ </div>
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.connection-aborted.html" class="function">connection_aborted()</a></li>
+    <li class="member"><a href="function.connection-status.html" class="function">connection_status()</a></li>
+    <li class="member">
+     PHP における接続処理についての説明は
+     <a href="features.connection-handling.html" class="link">接続処理</a>
+    </li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.highlight-string.html">highlight_string</a></div>
+ <div class="next" style="float: right;"><a href="function.pack.html">pack</a></div>
+ <div class="up"><a href="ref.misc.html">その他</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

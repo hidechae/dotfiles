@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>持続的接続を使用してOracle データベースに接続する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.oci-password-change.html">oci_password_change</a></div>
+ <div class="next" style="float: right;"><a href="function.oci-result.html">oci_result</a></div>
+ <div class="up"><a href="ref.oci8.html">OCI8</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.oci-pconnect" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">oci_pconnect</h1>
+  <p class="verinfo">(PHP 5, PECL oci8:1.1-1.2.4)</p><p class="refpurpose">oci_pconnect ― 持続的接続を使用してOracle データベースに接続する</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">resource</span> <span class="methodname"><b><b>oci_pconnect</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$username</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$password</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$db</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$charset</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$session_mode</tt></span>
+  ]]] )</div>
+
+  <p class="para">
+   Oracle サーバへの持続的接続を生成し、ログオンします。
+  </p>
+  <p class="para">
+   持続的接続はキャッシュされ、リクエスト間で再利用されることで、
+   各ページロードのオーバーヘッドを軽減します。
+   典型的な PHP アプリケーションでは、Apache の子プロセス
+   (もしくは PHP FastCGI/CGI プロセス) ごとに
+   Oracle サーバに対してオープンされた単一の持続的接続を有します。
+   より詳細な情報については、<a href="features.persistent-connections.html" class="link">持続的データベース接続</a>
+   のセクションを参照してください。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">username</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       Oracle のユーザ名。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">password</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">username</tt></i>
+ のパスワード。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">db</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       このオプションのパラメータには、ローカル Oracle インスタンスの名前か
+       <var class="filename">tnsnames.ora</var>
+       における接続先のエントリ名を指定することができます。
+      </p>
+      <p class="para">
+       指定しない場合は、PHP は環境変数
+       <i class="literal">ORACLE_SID</i> および <i class="literal">TWO_TASK</i>
+       を用いてローカルの Oracle インスタンス名および
+       <var class="filename">tnsnames.ora</var> の場所を見つけます。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">charset</tt></i>
+</span>
+     <dd>
+
+      <p class="para">Oracle サーバのバージョン 9.2
+以降を使用している場合、新規接続を確立する際に
+<i><tt class="parameter">charset</tt></i>
+ パラメータを指定することができます。
+Oracleサーバ &lt; 9.2 を使用している場合、このパラメータは無視され、
+かわりに環境変数 NLS_LANG が使用されます。</p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">session_mode</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       パラメータ <i><tt class="parameter">session_mode</tt></i>
+ はバージョン
+       1.1 からり用可能で、次の値を受け付けます:
+       <b><tt>OCI_DEFAULT</tt></b>,
+       <b><tt>OCI_SYSOPER</tt></b>, <b><tt>OCI_SYSDBA</tt></b> 。
+       <b><tt>OCI_SYSOPER</tt></b> もしくは
+       <b><tt>OCI_SYSDBA</tt></b> のいずれかが指定された場合、
+       <a href="function.oci-connect.html" class="function">oci_connect()</a> は外部の信用を利用して
+       権限付きの接続を確立しようとします。
+       デフォルトでは権限付きの接続は無効です。有効にするためには、<a href="ref.oci8.html#ini.oci8.privileged_connect" class="link">oci8.privileged_connect</a>
+       をオンにしてください。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   接続 ID、あるいはエラー時に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <blockquote><p><b class="note">注意</b>: 
+   <span class="simpara">
+    oci8 拡張モジュールのバージョン 1.1 から、持続的 Oracle
+    接続の生存時間と最大数が次の設定値を設定することで調整可能になりました:
+    <a href="ref.oci8.html#ini.oci8.persistent_timeout" class="link">oci8.persistent_timeout</a>,
+    <a href="ref.oci8.html#ini.oci8.ping_interval" class="link">oci8.ping_interval</a>,
+    <a href="ref.oci8.html#ini.oci8.max_persistent" class="link">oci8.max_persistent</a> 。
+   </span>
+  </p></blockquote>
+  <blockquote><p><b class="note">注意</b>: 
+   <span class="simpara">
+    もし PHP を Oracle Instant Client と併用している場合、
+    次に解説されている簡単な接続ネーミングメソッドを使用することができます:
+    <a href="http://download-west.oracle.com/docs/cd/B12037_01/network.101/b10775/naming.htm#i498306" class="link external">&raquo; http://download-west.oracle.com/docs/cd/B12037_01/network.101/b10775/naming.htm#i498306</a> 。
+    基本的にデータベース名として &quot;//db_host[:port]/database_name&quot;
+    を指定できることを意味します。しかし、
+    古いネーミングメソッドを使用したい場合、<b><tt>ORACLE_HOME</tt></b>
+    もしくは <b><tt>TNS_ADMIN</tt></b> のいずれかを設定
+    <em class="emphasis">しなければなりません</em>。
+   </span>
+  </p></blockquote>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    PHP バージョン 5.0.0 以前では、代わりに
+    <a href="function.ociplogon.html" class="function">ociplogon()</a>
+    を使用しなければなりません。
+    まだこの名前を使用することができ、下位互換性のため
+    <b>oci_pconnect()</b> への別名として残されていますが、
+    推奨されません。
+   <br />
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.oci-connect.html" class="function">oci_connect()</a></li>
+    <li class="member"><a href="function.oci-new-connect.html" class="function">oci_new_connect()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.oci-password-change.html">oci_password_change</a></div>
+ <div class="next" style="float: right;"><a href="function.oci-result.html">oci_result</a></div>
+ <div class="up"><a href="ref.oci8.html">OCI8</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>
