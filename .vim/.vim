@@ -1,1 +1,0 @@
-/home/hidechae/rc/.vim
