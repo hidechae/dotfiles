@@ -1,12 +1,13 @@
 #!/bin/sh
 
-echo 'if filereadable(expand('~/.vimrc.local'))
-  source ~/.vimrc.local
-endif' > $HOME/.vimrc
+if [ ! -e "$HOME/.oh-my-zsh" ]; then
+    wget --no-check-certificate https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh
+fi
 
-wget --no-check-certificate https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh
-
-echo 'source $HOME/rc/.zshrc
-source $HOME/rc/.screenrc' > $HOME/.zshrc
-
-source $HOME/.zshrc
+parent=`pwd`"/$0"
+parent="${parent%/*}"
+sudo ln -s -i "$parent/.vimrc" "$HOME/.vimrc"
+sudo ln -s -i "$parent/.vim" "$HOME/.vim"
+sudo ln -s -i "$parent/.zshrc" "$HOME/.zshrc"
+sudo ln -s -i "$parent/.screenrc" "$HOME/.screenrc"
+sudo ln -s -i "$parent/.gitconfig" "$HOME/.gitconfig"
