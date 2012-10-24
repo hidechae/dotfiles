@@ -7,7 +7,7 @@ fi
 parent=`pwd`"/$0"
 parent="${parent%/*}"
 
-if [ ! -L "$HOME/.vim" -a -d "$HOME/.vim" ]; then
+if [ -d "$HOME/.vim" ]; then
     echo -n "rm: descend into directory '$HOME/.vim'? "
     read ANS
     if [ "$ANS" = "y" -o "$ANS" = "yes" ]; then
