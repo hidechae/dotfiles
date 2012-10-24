@@ -53,13 +53,3 @@ export PATH=$PATH:/home/hideyuki-utsunomiya/bin/
 
 export HISTSIZE=100000;
 
-alias gacha="cd /home/gree/xgree/bootcamp/services/pcgacha/"
-alias phpunit="/home/gree/common/php/bin/phpunit"
-alias cdunittest="cd /home/gree/xgree/bootcamp/services/pcgacha/Service/Pcgacha/Module/"
-alias unittest="sudo -u www-data /home/gree/common/pub/bin/phpunit --colors --bootstrap ../TestBootstrap.php test/"
-alias utest="sudo -u www-data /home/gree/common/pub/bin/phpunit --colors --bootstrap /home/gree/xgree/bootcamp/services/pcgacha/Service/Pcgacha/TestBootstrap.php /home/gree/xgree/bootcamp/services/pcgacha/Service/Pcgacha/Module/test/"
-alias phplog="tail -f /var/log/php.log"
-LATEST_ACCESS_LOG="ls -lt /home/gree/xgree/bootcamp/services/pcgacha/log/access/access/*.dat | head -n 1 | awk '{print $8}')"
-alias accesslog="tail -f LATEST_ACCESS_LOG"
-alias db="mysql -h 116.93.145.228 --port=13806 -u root -p gree_bootcamp_pcgacha"
-
