@@ -6,8 +6,16 @@ fi
 
 parent=`pwd`"/$0"
 parent="${parent%/*}"
-sudo ln -s -i "$parent/.vimrc" "$HOME/.vimrc"
+
+if [ ! -L "$HOME/.vim" -a -d "$HOME/.vim" ]; then
+    echo -n "rm: descend into directory '$HOME/.vim'? "
+    read ANS
+    if [ "$ANS" = "y" -o "$ANS" = "yes" ]; then
+        rm -rf "$HOME/.vim"
+    fi
+fi
 sudo ln -s -i "$parent/.vim" "$HOME/.vim"
+sudo ln -s -i "$parent/.vimrc" "$HOME/.vimrc"
 sudo ln -s -i "$parent/.zshrc" "$HOME/.zshrc"
 sudo ln -s -i "$parent/.screenrc" "$HOME/.screenrc"
 sudo ln -s -i "$parent/.gitconfig" "$HOME/.gitconfig"

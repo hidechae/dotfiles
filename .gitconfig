@@ -1,4 +1,9 @@
+[user]
+name = Hideyuki Utsunomiya
+email = hideyuki.utsunomiya@gree.net
+
 [color]
+ui =auto
 status = auto
 diff = auto
 branch = auto
@@ -10,7 +15,7 @@ default = tracking
 
 [core]
 editor = vim
-
+pager = less
 
 [alias]
 st = status
