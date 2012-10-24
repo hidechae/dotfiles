@@ -39,8 +39,6 @@ source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
 
-export PATH=$PATH:/home/hideyuki-utsunomiya/bin/
-
 # cd .. like dired of Emacs
  function cdup() {
     echo
@@ -51,5 +49,12 @@ export PATH=$PATH:/home/hideyuki-utsunomiya/bin/
 # bindkey '\^' cdup
 # bindkey '`' cdup
 
+export PATH=$PATH:$HOME/bin/
+export EDITOR=vim
 export HISTSIZE=100000;
 
+RPROMPT="%n@%M"
+
+alias rm="rm -i"
+alias cp="cp -i"
+alias mv="mv -i"
