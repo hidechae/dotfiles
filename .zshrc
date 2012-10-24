@@ -27,12 +27,18 @@ ZSH_THEME="cloud"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 plugins=(git github node osx perl)
 
+# If you set specific setting, write in $HOME/.zshrc_origin. (e.g. ZSH_THEME)
+if [ -e $HOME/.zshrc_origin ]; then
+    source $HOME/.zshrc_origin
+fi
+
 source $ZSH/oh-my-zsh.sh
 # source /home/hideyuki-utsunomiya/.zsh/zaw/zaw.zsh
 # bindkey '^Xh' zaw-history
 # bindkey '^X;' zaw
 
 # Customize to your needs...
+
 export PATH=$PATH:/home/hideyuki-utsunomiya/bin/
 
 # cd .. like dired of Emacs
@@ -56,3 +62,4 @@ alias phplog="tail -f /var/log/php.log"
 LATEST_ACCESS_LOG="ls -lt /home/gree/xgree/bootcamp/services/pcgacha/log/access/access/*.dat | head -n 1 | awk '{print $8}')"
 alias accesslog="tail -f LATEST_ACCESS_LOG"
 alias db="mysql -h 116.93.145.228 --port=13806 -u root -p gree_bootcamp_pcgacha"
+
