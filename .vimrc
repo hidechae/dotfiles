@@ -107,3 +107,11 @@ imap <C-h> <Left>
 imap <C-l> <Right>
 imap <C-j> <Down>
 imap <C-k> <UP>
+
+
+"for java
+set sm
+set ai
+let java_highlight_all=1
+let java_highlight_function="style"
+let java_allow_cpp_keywords=1
