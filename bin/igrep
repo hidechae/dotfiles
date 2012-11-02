@@ -1,0 +1,12 @@
+#!/bin/sh
+frontend='/home/gree/frontend/'
+xgree='/home/gree/xgree/'
+
+i18n_frontend=`find $frontend -maxdepth 2 -type d -name i18n`
+i18n_xgree=`find $xgree -maxdepth 4 -type d -name i18n`
+i18n="$i18n_frontend $i18n_xgree"
+
+for dir in $i18n
+do
+    grep -rsiI "$1" "$2" $dir
+done

@@ -15,6 +15,14 @@ if [ -d "$HOME/.vim" ]; then
     fi
 fi
 sudo ln -s -i "$parent/.vim" "$HOME/.vim"
+if [ -d "$HOME/bin" ]; then
+    echo -n "rm: descend into directory '$HOME/bin'? "
+    read ANS
+    if [ "$ANS" = "y" -o "$ANS" = "yes" ]; then
+        rm -rf "$HOME/bin"
+    fi
+fi
+sudo ln -s -i "$parent/bin" "$HOME/bin"
 sudo ln -s -i "$parent/.vimrc" "$HOME/.vimrc"
 sudo ln -s -i "$parent/.zshrc" "$HOME/.zshrc"
 sudo ln -s -i "$parent/.screenrc" "$HOME/.screenrc"

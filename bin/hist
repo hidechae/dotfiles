@@ -1,0 +1,2 @@
+#!/bin/sh
+awk '{print strftime("%Y-%m-%d %H:%M:%S", substr($2,1,10)) " : " substr($0,16)}' ~/.zsh_history
