@@ -56,5 +56,6 @@ export HISTSIZE=100000;
 RPROMPT="%n@%M"
 
 alias rm="rm -i"
+alias rf="rm -f"
 alias cp="cp -i"
 alias mv="mv -i"

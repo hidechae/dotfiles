@@ -28,3 +28,5 @@ sudo ln -s -i "$parent/.zshrc" "$HOME/.zshrc"
 sudo ln -s -i "$parent/.screenrc" "$HOME/.screenrc"
 sudo ln -s -i "$parent/.gitconfig" "$HOME/.gitconfig"
 sudo ln -s -i "$parent/.my.cnf" "$HOME/.my.cnf"
+
+source $HOME/.zshrc
