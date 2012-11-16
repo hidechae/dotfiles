@@ -112,3 +112,10 @@ endif
 
 "map
 map <silent> <ESC><ESC> :noh<CR>
+
+"for java
+set sm
+set ai
+let java_highlight_all=1
+let java_highlight_function="style"
+let java_allow_cpp_keywords=1
