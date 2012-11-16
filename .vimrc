@@ -13,6 +13,8 @@ set number
 set statusline=%F%m%r%h%w\ [ENC=%{&enc}]\ [FENC=%{&fenc}]\ %=\ %3l/%3L,%3v\ %10P\ %4m
 helptags $HOME/.vim/doc
 
+"set incsearch
+
 syntax on
 
 "visualize tab, space, etc
@@ -103,7 +105,10 @@ if has('iconv')
 endif
 
 "imap
-imap <C-h> <Left>
-imap <C-l> <Right>
-imap <C-j> <Down>
-imap <C-k> <UP>
+"imap <C-h> <Left>
+"imap <C-l> <Right>
+"imap <C-j> <Down>
+"imap <C-k> <UP>
+
+"map
+map <silent> <ESC><ESC> :noh<CR>
