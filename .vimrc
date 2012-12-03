@@ -17,6 +17,11 @@ helptags $HOME/.vim/doc
 
 syntax on
 
+"wildmenu
+"set wildmenu
+"set wildmode=list,longest,full
+set wildmode=list:longest
+
 "visualize tab, space, etc
 set list
 set listchars=tab:>-,trail:-,extends:>,precedes:<,nbsp:%
