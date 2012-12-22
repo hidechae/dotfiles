@@ -49,6 +49,23 @@ setlocal omnifunc=syntaxcomplete#Complete
 ":let g:miniBufExplMapWindowNavArrows = 1
 ":let g:miniBufExplMapCTabSwitchBuffs = 1
 
+" NeoBundle
+if v:version>=702
+  set nocompatible
+  filetype off
+
+  if has('vim_starting')
+    set runtimepath+=~/.vim/neobundle.vim.git
+    call neobundle#rc(expand('~/.bundle'))
+  endif
+
+  NeoBundle 'git://github.com/Shougo/vimshell.git'
+"  NeoBundle 'git://github.com/Shougo/unite.vim.git'
+
+  filetype plugin on
+  filetype indent on
+endif
+
 " FuzzyFinder.vim
 nnoremap <Space>f f
 nnoremap <Space>F F
@@ -69,7 +86,6 @@ set fileencodings=utf-8
 set encoding=utf-8
 "set fileencodings=euc-jp
 "set encoding=euc-jp
-
 
 " Char Code
 if has('iconv')
@@ -117,6 +133,12 @@ endif
 
 "map
 map <silent> <ESC><ESC> :noh<CR>
+
+"vimtab
+map TC :tabnew<CR>
+map TN gt
+map TP gT
+map P <NOP>
 
 "for java
 set sm
