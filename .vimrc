@@ -10,7 +10,7 @@ set visualbell
 "set foldmethod=marker
 set number
 "set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
-set statusline=%F%m%r%h%w\ [ENC=%{&enc}]\ [FENC=%{&fenc}]\ %=\ %3l/%3L,%3v\ %10P\ %4m
+set statusline=%F%m%r%h%w\ [ENC=%{&enc}]\ [FENC=%{&fenc}]\ %{fugitive#statusline()}\ %=\ %3l/%3L,%3v\ %10P\ %4m
 helptags $HOME/.vim/doc
 
 "set incsearch
@@ -61,9 +61,10 @@ if v:version>=702
 
   NeoBundle 'git://github.com/Shougo/vimshell.git'
 "  NeoBundle 'git://github.com/Shougo/unite.vim.git'
+  NeoBundle 'git://github.com/tpope/vim-fugitive.git'
 
   filetype plugin on
-  filetype indent on
+"  filetype indent on
 endif
 
 " FuzzyFinder.vim
