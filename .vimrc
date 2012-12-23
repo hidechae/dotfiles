@@ -50,7 +50,7 @@ setlocal omnifunc=syntaxcomplete#Complete
 :map <silent> <F3> :setlocal omnifunc=syntaxcomplete#Complete<CR>
 
 "dictionary
-"autocmd FileType php set dictionary=~/.vim/dict/PHP.dict
+autocmd FileType php set dictionary=~/.vim/dict/PHP.dict
 
 "delete space
 :map <silent> <F1> :%s /\s\+$//gc<CR>
@@ -66,46 +66,46 @@ if v:version>=702
   endif
 
   NeoBundle 'git://github.com/Shougo/vimshell.git'
-"  NeoBundle 'git://github.com/Shougo/unite.vim.git'
   NeoBundle 'git://github.com/tpope/vim-fugitive.git'
-  NeoBundle 'git://github.com/mattn/zencoding-vim.git'
-  NeoBundle 'git://github.com/Shougo/neocomplcache.git'
-  NeoBundle 'git://github.com/vim-scripts/FuzzyFinder.git'
-  NeoBundle 'git://github.com/vim-scripts/L9.git'
+"  NeoBundle 'git://github.com/Shougo/unite.vim.git'
+"  NeoBundle 'git://github.com/mattn/zencoding-vim.git'
+"  NeoBundle 'git://github.com/Shougo/neocomplcache.git'
+"  NeoBundle 'git://github.com/vim-scripts/FuzzyFinder.git'
+"  NeoBundle 'git://github.com/vim-scripts/L9.git'
 
   filetype plugin on
 "  filetype indent on
 endif
 
 
-" neocomplcache
-" 起動時に有効化
-let g:neocomplcache_enable_at_startup = 1
-
-" 大文字が入力されるまで大文字小文字の区別を無視する
-let g:neocomplcache_enable_smart_case = 1
-
-" _(アンダースコア)区切りの補完を有効化
-let g:neocomplcache_enable_underbar_completion = 1
-
-let g:neocomplcache_enable_camel_case_completion  =  1
-
-" ポップアップメニューで表示される候補の数
-let g:neocomplcache_max_list = 20
-
-" シンタックスをキャッシュするときの最小文字長
-let g:neocomplcache_min_syntax_length = 3
-
-" ディクショナリ定義
-let g:neocomplcache_dictionary_filetype_lists = {
-    \ 'default' : '',
-    \ 'php' : $HOME . '/.vim/dict/PHP.dict',
-    \ }
-
-if !exists('g:neocomplcache_keyword_patterns')
-    let g:neocomplcache_keyword_patterns = {}
-endif
-let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
+" " neocomplcache
+" " 起動時に有効化
+" let g:neocomplcache_enable_at_startup = 1
+" 
+" " 大文字が入力されるまで大文字小文字の区別を無視する
+" let g:neocomplcache_enable_smart_case = 1
+" 
+" " _(アンダースコア)区切りの補完を有効化
+" let g:neocomplcache_enable_underbar_completion = 1
+" 
+" let g:neocomplcache_enable_camel_case_completion  =  1
+" 
+" " ポップアップメニューで表示される候補の数
+" let g:neocomplcache_max_list = 20
+" 
+" " シンタックスをキャッシュするときの最小文字長
+" let g:neocomplcache_min_syntax_length = 3
+" 
+" " ディクショナリ定義
+" let g:neocomplcache_dictionary_filetype_lists = {
+"     \ 'default' : '',
+"     \ 'php' : $HOME . '/.vim/dict/PHP.dict',
+"     \ }
+" 
+" if !exists('g:neocomplcache_keyword_patterns')
+"     let g:neocomplcache_keyword_patterns = {}
+" endif
+" let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
 
 
 " vimtab
@@ -117,28 +117,28 @@ nnoremap <silent> tk :<C-u>tabclose<CR>
 nnoremap <silent> tn :<C-u>tabnext<CR>
 nnoremap <silent> tp :<C-u>tabprevious<CR>
 
-" " FuzzyFinder.vim
-" nnoremap <Space>f f
-" nnoremap <Space>F F
-" nnoremap f <Nop>
-" nnoremap <silent> fb :<C-u>FuzzyFinderBuffer!<CR>
-" nnoremap <silent> ff :<C-u>FuzzyFinderFile! <C-r>=expand('%:~:.')[:-2-len(expand('%:~:.:t'))]<CR><CR>
-" nnoremap <silent> fm :<C-u>FuzzyFinderMruFile!<CR>
-" nnoremap <silent> tb :<C-u>tabnew<CR>:tabmove<CR>:FuzzyFinderBuffer!<CR>
-" nnoremap <silent> tf :<C-u>tabnew<CR>:tabmove<CR>:FuzzyFinderFile! <C-r>=expand('#:~:.')[:-2-len(expand('#:~:.:t'))]<CR><CR>
-" nnoremap <silent> tm :<C-u>tabnew<CR>:tabmove<CR>:FuzzyFinderMruFile!<CR>
-
 " FuzzyFinder.vim
 nnoremap <Space>f f
 nnoremap <Space>F F
 nnoremap f <Nop>
-nnoremap <unique> <silent> fb :<C-u>FufBuffer!<CR>
-nnoremap <unique> <silent> ff :<C-u>FufFile! <C-r>=expand('%:~:.')[:-1-len(expand('%:~:.:t'))]<CR><CR>
-nnoremap <unique> <silent> <C-t> :<C-u>FufFile! <C-r>=expand('%:~:.')[:-1-len(expand('%:~:.:t'))]<CR><CR>
-nnoremap <unique> <silent> fm :<C-u>FufMruFile!<CR>
-nnoremap <unique> <silent> tb :<C-u>tabnew<CR>:tabmove<CR>:FufBuffer!<CR>
-nnoremap <unique> <silent> tf :<C-u>tabnew<CR>:tabmove<CR>:FufFile! <C-r>=expand('#:~:.')[:-1-len(expand('#:~:.:t'))]<CR><CR>
-nnoremap <unique> <silent> tm :<C-u>tabnew<CR>:tabmove<CR>:FufMruFile!<CR>
+nnoremap <silent> fb :<C-u>FuzzyFinderBuffer!<CR>
+nnoremap <silent> ff :<C-u>FuzzyFinderFile! <C-r>=expand('%:~:.')[:-2-len(expand('%:~:.:t'))]<CR><CR>
+nnoremap <silent> fm :<C-u>FuzzyFinderMruFile!<CR>
+nnoremap <silent> tb :<C-u>tabnew<CR>:tabmove<CR>:FuzzyFinderBuffer!<CR>
+nnoremap <silent> tf :<C-u>tabnew<CR>:tabmove<CR>:FuzzyFinderFile! <C-r>=expand('#:~:.')[:-2-len(expand('#:~:.:t'))]<CR><CR>
+nnoremap <silent> tm :<C-u>tabnew<CR>:tabmove<CR>:FuzzyFinderMruFile!<CR>
+
+" " FuzzyFinder.vim
+" nnoremap <Space>f f
+" nnoremap <Space>F F
+" nnoremap f <Nop>
+" nnoremap <unique> <silent> fb :<C-u>FufBuffer!<CR>
+" nnoremap <unique> <silent> ff :<C-u>FufFile! <C-r>=expand('%:~:.')[:-1-len(expand('%:~:.:t'))]<CR><CR>
+" nnoremap <unique> <silent> <C-t> :<C-u>FufFile! <C-r>=expand('%:~:.')[:-1-len(expand('%:~:.:t'))]<CR><CR>
+" nnoremap <unique> <silent> fm :<C-u>FufMruFile!<CR>
+" nnoremap <unique> <silent> tb :<C-u>tabnew<CR>:tabmove<CR>:FufBuffer!<CR>
+" nnoremap <unique> <silent> tf :<C-u>tabnew<CR>:tabmove<CR>:FufFile! <C-r>=expand('#:~:.')[:-1-len(expand('#:~:.:t'))]<CR><CR>
+" nnoremap <unique> <silent> tm :<C-u>tabnew<CR>:tabmove<CR>:FufMruFile!<CR>
 
 " Char Code
 if has('iconv')
