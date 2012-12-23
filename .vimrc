@@ -67,6 +67,8 @@ if v:version>=702
 
   NeoBundle 'git://github.com/Shougo/vimshell.git'
   NeoBundle 'git://github.com/tpope/vim-fugitive.git'
+  NeoBundle 'git://github.com/thinca/vim-quickrun.git'
+  NeoBundle 'git://github.com/vim-scripts/YankRing.vim.git'
 "  NeoBundle 'git://github.com/Shougo/unite.vim.git'
 "  NeoBundle 'git://github.com/mattn/zencoding-vim.git'
 "  NeoBundle 'git://github.com/Shougo/neocomplcache.git'
