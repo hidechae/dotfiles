@@ -134,6 +134,8 @@ endif
 
 "map
 map <silent> <ESC><ESC> :noh<CR>
+"map <C-U> <C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y>
+"map <C-D> <C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E>
 
 "vimtab
 map TC :tabnew<CR>
