@@ -11,7 +11,7 @@ set visualbell
 set number
 
 " split new file down or right
-"set splitbelow
+set splitbelow
 set splitright
 
 " statusline
@@ -149,14 +149,17 @@ nnoremap <silent> tm :<C-u>tabnew<CR>:tabmove<CR>:FuzzyFinderMruFile!<CR>
 
 
 " VimShell
-let g:vimshell_prompt = ' ~ '
+" let g:vimshell_prompt = ' ~ '
+let g:vimshell_prompt = 'getcwd()'
 nnoremap <unique> <silent> vs :<C-u>vs<CR>:<C-u>VimShell<CR><ESC>:<C-u>set nonu<CR>a
-nnoremap <unique> <silent> ss :<C-u>sp<CR>:<C-u>VimShell<CR><ESC>:<C-u>set nonu<CR>a
+nnoremap <unique> <silent> ss :<C-u>VimShellPop<CR><ESC>:<C-u>set nonu<CR>a
+nnoremap v <Nop>
+nnoremap s <Nop>
 
 
 " VimFiler
 " let g:vimfiler_as_default_explorer = 1
-nnoremap <unique> <silent> vf :cd %:p:h<CR>:<C-u>VimFiler -buffer-name=explorer -split -simple -winwidth=35 -toggle -no-quit<CR>
+nnoremap <unique> <silent> vf :cd %:p:h<CR>:<C-u>VimFiler -buffer-name=explorer -split -simple -winwidth=25 -toggle -no-quit<CR>
 
 
 " Move to Current Directory
