@@ -1,6 +1,7 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_cnt =5
 let g:netrw_dirhist_1='/var/www/html/test/canvas/tpl'
 let g:netrw_dirhist_2='/etc/mysql/conf.d'
 let g:netrw_dirhist_3='/var/www/html/gree/php'
 let g:netrw_dirhist_4='/root/rc'
+let g:netrw_dirhist_5='/home/hidechae/rc/bin'

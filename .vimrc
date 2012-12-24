@@ -10,6 +10,10 @@ set visualbell
 "set incsearch
 set number
 
+" split new file down or right
+"set splitbelow
+set splitright
+
 " statusline
 "set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
 set statusline=%F%m%r%h%w\ [ENC=%{&enc}]\ [FENC=%{&fenc}]\ %{fugitive#statusline()}\ %=\ %3l/%3L,%3v\ %10P\ %4m
@@ -69,7 +73,8 @@ if v:version>=702
   NeoBundle 'git://github.com/tpope/vim-fugitive.git'
   NeoBundle 'git://github.com/thinca/vim-quickrun.git'
   NeoBundle 'git://github.com/vim-scripts/YankRing.vim.git'
-"  NeoBundle 'git://github.com/Shougo/unite.vim.git'
+  NeoBundle 'git://github.com/Shougo/vimfiler.git'
+  NeoBundle 'git://github.com/Shougo/unite.vim.git'
 "  NeoBundle 'git://github.com/mattn/zencoding-vim.git'
 "  NeoBundle 'git://github.com/Shougo/neocomplcache.git'
 "  NeoBundle 'git://github.com/vim-scripts/FuzzyFinder.git'
@@ -141,6 +146,26 @@ nnoremap <silent> tm :<C-u>tabnew<CR>:tabmove<CR>:FuzzyFinderMruFile!<CR>
 " nnoremap <unique> <silent> tb :<C-u>tabnew<CR>:tabmove<CR>:FufBuffer!<CR>
 " nnoremap <unique> <silent> tf :<C-u>tabnew<CR>:tabmove<CR>:FufFile! <C-r>=expand('#:~:.')[:-1-len(expand('#:~:.:t'))]<CR><CR>
 " nnoremap <unique> <silent> tm :<C-u>tabnew<CR>:tabmove<CR>:FufMruFile!<CR>
+
+
+" VimShell
+let g:vimshell_prompt = ' ~ '
+nnoremap <unique> <silent> vs :<C-u>vs<CR>:<C-u>VimShell<CR><ESC>:<C-u>set nonu<CR>a
+nnoremap <unique> <silent> ss :<C-u>sp<CR>:<C-u>VimShell<CR><ESC>:<C-u>set nonu<CR>a
+
+
+" VimFiler
+" let g:vimfiler_as_default_explorer = 1
+nnoremap <unique> <silent> vf :cd %:p:h<CR>:<C-u>VimFiler -buffer-name=explorer -split -simple -winwidth=35 -toggle -no-quit<CR>
+
+
+" Move to Current Directory
+nnoremap <unique> <silent> cd :cd %:p:h<CR>
+" augroup group_vimrc_cd
+"     autocmd!
+"     autocmd BufEnter * execute ":lcd " . (isdirectory(expand("%:p:h")) ? expand("%:p:h") : "")
+" augroup END
+
 
 " Char Code
 if has('iconv')
