@@ -59,3 +59,8 @@ alias rm="rm -i"
 alias rf="rm -f"
 alias cp="cp -i"
 alias mv="mv -i"
+alias notabdiff="diff -BbwE"
+
+# General Setting
+setopt no_beep
+setopt auto_cd
