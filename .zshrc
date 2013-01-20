@@ -64,3 +64,6 @@ alias notabdiff="diff -BbwE"
 # General Setting
 setopt no_beep
 setopt auto_cd
+
+# for Mac
+alias cache="sudo watch -n 1 \"du -a /private/var/folders | sort -nr\""
