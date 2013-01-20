@@ -3,8 +3,6 @@ set background=dark
 set hlsearch
 "set showcmd
 set ignorecase
-set tabstop=4
-set shiftwidth=4
 set visualbell
 "set foldmethod=marker
 "set incsearch
@@ -18,7 +16,11 @@ set splitright
 
 " statusline
 "set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
-set statusline=%F%m%r%h%w\ [ENC=%{&enc}]\ [FENC=%{&fenc}]\ %{fugitive#statusline()}\ %=\ %3l/%3L,%3v\ %10P\ %4m
+if v:version>=702
+  set statusline=%F%m%r%h%w\ [ENC=%{&enc}]\ [FENC=%{&fenc}]\ %{fugitive#statusline()}\ %=\ %3l/%3L,%3v\ %10P\ %4m
+else
+  set statusline=%F%m%r%h%w\ [ENC=%{&enc}]\ [FENC=%{&fenc}]\ %=\ %3l/%3L,%3v\ %10P\ %4m
+endif
 set laststatus=2
 
 "helptags $HOME/.vim/doc
@@ -41,15 +43,23 @@ set list
 set listchars=tab:>-,trail:-,extends:>,precedes:<,nbsp:%
 "set listchars=tab:?-,trail:-,eol:?,extends:?,precedes:?,nbsp:%
 
-" I HATE IT....
+" tab
+set tabstop=4
+set shiftwidth=4
 set expandtab
 set softtabstop=4
+"autocmd FileType smarty set shiftwidth=2
+"autocmd FileType html set shiftwidth=2
+"autocmd FileType smarty set softtabstop=2
+"autocmd FileType html set softtabstop=2
 
 "omnifunc
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
 
 "omnifunc error support
 setlocal omnifunc=syntaxcomplete#Complete
@@ -211,8 +221,13 @@ if has('iconv')
    unlet s:enc_jis
 endif
 
-"map
+" map
 map <silent> <ESC><ESC> :noh<CR>
+
+" like shell
+imap <silent> <C-a> <ESC>0i
+imap <silent> <C-e> <ESC>$a
+imap <silent> <C-k> <ESC>Di
 
 "for java
 set sm
