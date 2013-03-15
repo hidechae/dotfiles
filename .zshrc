@@ -55,14 +55,18 @@ export HISTSIZE=100000;
 
 RPROMPT="%n@%M"
 
+# General Setting
+setopt no_beep
+setopt auto_cd
+
+# alias
 alias rm="rm -i"
 alias rf="rm -f"
 alias cp="cp -i"
 alias mv="mv -i"
 
-# General Setting
-setopt no_beep
-setopt auto_cd
+alias l="ls -la"
+alias diffnotab="diff -BbwE"
 
 # for Mac
 alias cache="sudo watch -n 1 \"du -a /private/var/folders | sort -nr\""
