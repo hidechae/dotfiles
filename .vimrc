@@ -87,6 +87,7 @@ if v:version>=702
   NeoBundle 'git://github.com/vim-scripts/YankRing.vim.git'
   NeoBundle 'git://github.com/Shougo/vimfiler.git'
   NeoBundle 'git://github.com/Shougo/unite.vim.git'
+  NeoBundle 'git://github.com/vim-scripts/sudo.vim.git'
 "  NeoBundle 'git://github.com/mattn/zencoding-vim.git'
 "  NeoBundle 'git://github.com/Shougo/neocomplcache.git'
 "  NeoBundle 'git://github.com/vim-scripts/FuzzyFinder.git'
