@@ -229,8 +229,13 @@ imap <silent> <C-a> <ESC>0i
 imap <silent> <C-e> <ESC>$a
 imap <silent> <C-k> <ESC>Di
 
-"for java
+" for java
 set sm
 let java_highlight_all=1
 let java_highlight_function="style"
 let java_allow_cpp_keywords=1
+
+" for MacVim
+if has('gui_macvim')
+    colorscheme peachpuff
+endif

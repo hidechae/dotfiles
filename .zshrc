@@ -49,7 +49,7 @@ source $ZSH/oh-my-zsh.sh
 # bindkey '\^' cdup
 # bindkey '`' cdup
 
-export PATH=$PATH:$HOME/bin/
+export PATH=$PATH:$HOME/bin
 export EDITOR=vim
 export HISTSIZE=100000;
 
@@ -59,6 +59,7 @@ alias rm="rm -i"
 alias rf="rm -f"
 alias cp="cp -i"
 alias mv="mv -i"
+alias l="ls -la"
 
 # General Setting
 setopt no_beep
