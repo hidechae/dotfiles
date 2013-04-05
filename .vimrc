@@ -84,7 +84,7 @@ if v:version>=702
   NeoBundle 'git://github.com/Shougo/vimshell.git'
   NeoBundle 'git://github.com/tpope/vim-fugitive.git'
   NeoBundle 'git://github.com/thinca/vim-quickrun.git'
-  NeoBundle 'git://github.com/vim-scripts/YankRing.vim.git'
+"  NeoBundle 'git://github.com/vim-scripts/YankRing.vim.git'
   NeoBundle 'git://github.com/Shougo/vimfiler.git'
   NeoBundle 'git://github.com/Shougo/unite.vim.git'
   NeoBundle 'git://github.com/vim-scripts/sudo.vim.git'
@@ -182,7 +182,7 @@ nnoremap <silent> cd :cd %:p:h<CR>
 " augroup END
 
 " YankRing
-nnoremap <silent> yr :<C-u>YRShow<CR>
+" nnoremap <silent> yr :<C-u>YRShow<CR>
 
 " Char Code
 if has('iconv')
