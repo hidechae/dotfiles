@@ -53,7 +53,7 @@ export PATH=$PATH:$HOME/bin
 export EDITOR=vim
 export HISTSIZE=100000;
 
-RPROMPT="%n@%M"
+# RPROMPT="%n@%M"
 
 # General Setting
 setopt no_beep
