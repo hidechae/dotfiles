@@ -86,13 +86,14 @@ if v:version>=702
   NeoBundle 'git://github.com/tpope/vim-fugitive.git'
   NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 "  NeoBundle 'git://github.com/vim-scripts/YankRing.vim.git'
-  NeoBundle 'git://github.com/Shougo/vimfiler.git'
-  NeoBundle 'git://github.com/Shougo/unite.vim.git'
-  NeoBundle 'git://github.com/vim-scripts/sudo.vim.git'
+"  NeoBundle 'git://github.com/Shougo/vimfiler.git'
+"  NeoBundle 'git://github.com/Shougo/unite.vim.git'
+"  NeoBundle 'git://github.com/vim-scripts/sudo.vim.git'
 "  NeoBundle 'git://github.com/mattn/zencoding-vim.git'
 "  NeoBundle 'git://github.com/Shougo/neocomplcache.git'
 "  NeoBundle 'git://github.com/vim-scripts/FuzzyFinder.git'
 "  NeoBundle 'git://github.com/vim-scripts/L9.git'
+  NeoBundle 'git://github.com/mattn/benchvimrc-vim.git'
 
   filetype plugin on
 "  filetype indent on
