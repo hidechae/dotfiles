@@ -53,6 +53,7 @@ export PATH=$PATH:$HOME/bin
 export EDITOR=vim
 export HISTSIZE=100000;
 
+# PROMPT=$PROMPT"[%D{%m/%d %T}] "
 # RPROMPT="%n@%M"
 
 # General Setting
