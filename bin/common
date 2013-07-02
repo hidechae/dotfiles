@@ -1,0 +1,51 @@
+#! /usr/local/bin/php
+<?php
+array_shift($argv);
+$files = array();
+foreach ($argv as $a) {
+    if (!file_exists($a)) {
+        echo "No such file '$a'.\n";
+        die();
+    }
+    $files[] = $a;
+}
+if (empty($file)) {
+    usage();
+}
+
+foreach ($files as $file) {
+    $value_list[] = file($file);
+}
+
+$base = 0;
+if (count($files) > 2) {
+    foreach ($value_list as $key => $list) {
+        if (count($value_list[$base]) > count($list)) {
+            $base = $key;
+        }
+    }
+}
+
+$common_value_list = $value_list[$base];
+foreach ($value_list as $key => $list) {
+    if ($key == $base) continue;
+    $new_common_value_list = array();
+    foreach ($common_value_list as $k => $v) {
+        if (in_array($v, $list)) {
+            $new_common_value_list[] = $v;
+        }
+    }
+    $common_value_list = $new_common_value_list;
+}
+
+foreach ($common_value_list as $v) {
+    echo $v;
+}
+
+function usage() {
+echo<<<EOF
+Usage: common [FILE] [FILE]...
+
+EOF;
+die;
+}
