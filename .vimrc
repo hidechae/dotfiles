@@ -62,6 +62,9 @@ autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
 
+au BufRead,BufNewFile *.scala set filetype=scala
+au BufNewFile,BufRead *.go set filetype=go
+
 "omnifunc error support
 setlocal omnifunc=syntaxcomplete#Complete
 :map <silent> <F3> :setlocal omnifunc=syntaxcomplete#Complete<CR>
@@ -82,7 +85,7 @@ if v:version>=702
     call neobundle#rc(expand('~/.bundle'))
   endif
 
-  NeoBundle 'git://github.com/Shougo/vimshell.git'
+"  NeoBundle 'git://github.com/Shougo/vimshell.git'
   NeoBundle 'git://github.com/tpope/vim-fugitive.git'
   NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 "  NeoBundle 'git://github.com/vim-scripts/YankRing.vim.git'
@@ -93,7 +96,7 @@ if v:version>=702
 "  NeoBundle 'git://github.com/Shougo/neocomplcache.git'
 "  NeoBundle 'git://github.com/vim-scripts/FuzzyFinder.git'
 "  NeoBundle 'git://github.com/vim-scripts/L9.git'
-  NeoBundle 'git://github.com/mattn/benchvimrc-vim.git'
+"  NeoBundle 'git://github.com/mattn/benchvimrc-vim.git'
 
   filetype plugin on
 "  filetype indent on
