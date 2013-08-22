@@ -245,3 +245,9 @@ let java_allow_cpp_keywords=1
 if has('gui_macvim')
     colorscheme peachpuff
 endif
+
+map <silent> ts i{t}<ESC>
+map <silent> te i{/t}<ESC>
+map <silent> ta a{/t}<ESC>
+
+map <silent> tt i{t}<ESC>ea{/t}<ESC>
