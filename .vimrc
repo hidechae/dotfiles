@@ -71,6 +71,11 @@ setlocal omnifunc=syntaxcomplete#Complete
 
 "dictionary
 autocmd FileType php set dictionary=~/.vim/dict/PHP.dict
+autocmd FileType js set dictionary=~/.vim/dict/javascript.dict
+autocmd FileType scala set dictionary=~/.vim/dict/scala.dict
+autocmd FileType java set dictionary=~/.vim/dict/java.dict
+autocmd FileType c set dictionary=~/.vim/dict/c.dict
+autocmd FileType cpp set dictionary=~/.vim/dict/cpp.dict
 
 "delete space
 :map <silent> <F1> :%s /\s\+$//gc<CR>
