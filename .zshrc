@@ -25,7 +25,8 @@ ZSH_THEME="cloud"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git github node osx perl)
+# plugins=(git github node osx perl)
+plugins=(git)
 
 # If you set specific setting, write in $HOME/.zshrc_origin. (e.g. ZSH_THEME)
 if [ -e $HOME/.zshrc_origin ]; then
@@ -68,6 +69,7 @@ alias mv="mv -i"
 alias l="ls -la"
 
 alias l="ls -la"
+alias d="cd"
 alias diffnotab="diff -BbwE"
 
 # for Mac
