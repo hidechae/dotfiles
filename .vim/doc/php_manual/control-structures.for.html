@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>for</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="control-structures.do.while.html">do-while</a></div>
+ <div class="next" style="float: right;"><a href="control-structures.foreach.html">foreach</a></div>
+ <div class="up"><a href="language.control-structures.html">制御構造</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="control-structures.for" class="sect1">
+   <h2 class="title"><i class="literal">for</i></h2>
+   <p class="para">
+    <i class="literal">for</i> ループは、PHPで最も複雑なループです。
+    <i class="literal">for</i> は、Cのforループと同様に動作します。
+    <i class="literal">for</i>ループの構文は、次のようになります。
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="cdata"><pre>
+for (式1; 式2; 式3)
+ 文
+</pre></div>
+     </div>
+
+    </div>
+   </p>
+   <p class="simpara">
+    最初の式(<var class="varname">式1</var>)は、ループ開始時に無条件に
+    評価(実行)されます。
+   </p>
+   <p class="simpara">
+    各繰り返しの開始時に、<var class="varname">式2</var>が評価されます。
+    その式の値が<b><tt>TRUE</tt></b>が場合、ループは継続され、括弧
+    内の文が実行されます。値が<b><tt>FALSE</tt></b>の場合、ループの
+    実行は終了します。
+   </p>
+   <p class="simpara">
+    各繰り返しの後、<var class="varname">式3</var>が評価(実行)されます。
+   </p>
+   <p class="simpara">
+    各式は空にすることもできますし、複数の式をカンマで区切って指定することもできます。
+    <var class="varname">式2</var> でカンマ区切りの式を使用すると、
+    すべての式を評価します。しかし、結果として取得するのは最後の式の結果となります。
+    <var class="varname">式2</var> を空にすると、無限実行ループになります
+    (PHP は、この状態を C 言語のように暗黙の内に <b><tt>TRUE</tt></b> とみなします)。
+    <i class="literal">for</i>論理式を使用するよりも条件付
+    <a href="control-structures.break.html" class="link"><i class="literal">break</i></a>
+    文によりループを終了させる方が好ましい場合には、この機能は思った
+    ほど便利ではないかもしれません。
+   </p>
+   <p class="para">
+    次の例について考えてみましょう。以下の例はすべて 1 から 10 までの数を表示します。
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+/*&nbsp;例&nbsp;1&nbsp;*/<br /><br />for&nbsp;($i&nbsp;=&nbsp;1;&nbsp;$i&nbsp;&lt;=&nbsp;10;&nbsp;$i++)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;$i;<br />}<br /><br />/*&nbsp;例&nbsp;2&nbsp;*/<br /><br />for&nbsp;($i&nbsp;=&nbsp;1;;$i++)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;($i&nbsp;&gt;&nbsp;10)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;$i;<br />}<br /><br />/*&nbsp;例&nbsp;3&nbsp;*/<br /><br />$i&nbsp;=&nbsp;1;<br />for&nbsp;(;;)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;($i&nbsp;&gt;&nbsp;10)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;$i;<br />&nbsp;&nbsp;&nbsp;&nbsp;$i++;<br />}<br /><br />/*&nbsp;例&nbsp;4&nbsp;*/<br /><br />for&nbsp;($i&nbsp;=&nbsp;1,&nbsp;$j&nbsp;=&nbsp;0;&nbsp;$i&nbsp;&lt;=&nbsp;10;&nbsp;$j&nbsp;+=&nbsp;$i,&nbsp;print&nbsp;$i,&nbsp;$i++);</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+   <p class="simpara">
+    もちろん、最初の例(もしくは 4番目の例)が最善であると考えられます。
+    しかし、<i class="literal">for</i>ループにおいて空の式を使用できると、
+    多くの場合、便利だということに気づかれるかと思います。
+   </p>
+   <p class="para">
+    PHPは、<i class="literal">for</i>ループ用に&quot;コロン構文&quot;もサポートします。
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="cdata"><pre>
+for (式1; 式2; 式3):
+ 文;
+ ...;
+endfor;
+</pre></div>
+    </div>
+
+   </div>
+  </p>
+ </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="control-structures.do.while.html">do-while</a></div>
+ <div class="next" style="float: right;"><a href="control-structures.foreach.html">foreach</a></div>
+ <div class="up"><a href="language.control-structures.html">制御構造</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>フィールド長を得る</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ingres-fetch-row.html">ingres_fetch_row</a></div>
+ <div class="next" style="float: right;"><a href="function.ingres-field-name.html">ingres_field_name</a></div>
+ <div class="up"><a href="ref.ingres.html">Ingres II</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.ingres-field-length" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ingres_field_length</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.0.2, PHP 5 &lt;= 5.0.5, PECL ingres:1.0-1.4.3)</p><p class="refpurpose">ingres_field_length ― フィールド長を得る</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">int</span> <span class="methodname"><b><b>ingres_field_length</b></b></span>
+    ( <span class="methodparam"><span class="type">int</span> <tt class="parameter">$index</tt></span>
+   [, <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$link</tt></span>
+  ] )</div>
+
+  <p class="para">
+   <b>ingres_field_length()</b> はフィールド長を返します。
+   フィールド長は、フィールドをサーバに保存する際に使用されるバイト数です。
+   詳細な情報については、Ingres/OpenAPI User Guide の
+   Appendix C を参照ください。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">index</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">index</tt></i>
+ はフィールド番号であり、1 と 
+       <a href="function.ingres-num-fields.html" class="function">ingres_num_fields()</a> で指定した値の間である必要があります。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">link</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       接続リンク ID。省略した場合は、最後にオープンしたリンクを使用します。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   フィールドの長さを返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.ingres-query.html" class="function">ingres_query()</a></li>
+    <li class="member"><a href="function.ingres-fetch-array.html" class="function">ingres_fetch_array()</a></li>
+    <li class="member"><a href="function.ingres-fetch-object.html" class="function">ingres_fetch_object()</a></li>
+    <li class="member"><a href="function.ingres-fetch-row.html" class="function">ingres_fetch_row()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ingres-fetch-row.html">ingres_fetch_row</a></div>
+ <div class="next" style="float: right;"><a href="function.ingres-field-name.html">ingres_field_name</a></div>
+ <div class="up"><a href="ref.ingres.html">Ingres II</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

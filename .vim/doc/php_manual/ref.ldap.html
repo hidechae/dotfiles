@@ -1,0 +1,944 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>LDAP 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.kadm5-modify-principal.html">kadm5_modify_principal</a></div>
+ <div class="next" style="float: right;"><a href="function.ldap-8859-to-t61.html">ldap_8859_to_t61</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">LDAP 関数</h1>
+  
+
+  <div class="partintro">
+   <div id="ldap.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     LDAP とは Lightweight Directory Access Protocol を意味し、
+     &quot;ディレクトリサーバ&quot; にアクセスするために使用されるプロトコルです。
+     ディレクトリとは、
+     ツリー構造に情報を保持している特殊なデータベースのことです。
+    </p>
+    <p class="para"> 
+     この概念は、ハードディスクのディレクトリ構造に似ています。
+     ただし、その内容は異なっており、ルートディレクトリは &quot;世界&quot; であり、
+     最初のレベルのサブディレクトリは &quot;国&quot; となります。ディレクトリ構造の
+     下位には会社や機関、場所のエントリがあります。さらに下位には、
+     人やおそらく道具や文書に関するディレクトリエントリもあります。
+    </p>
+    <p class="para">
+     ハードディスク内のサブディレクトリにあるファイルを参照するには、
+     次のようにすることでしょう。
+    </p>
+    <pre class="literallayout">
+     /usr/local/myapp/docs
+    </pre>
+    <p class="para">
+     スラッシュが参照の各部分を区分し、左から右に解釈されます。
+    </p>
+    <p class="para"> 
+     LDAP においてこの完全に正しいファイル参照に等価なものは
+    &quot;区分された名前(distinguished name)&quot; であり、単に &quot;dn&quot; と表されます。
+     例として dn が次のようになっているとしましょう。
+    </p>
+    <pre class="literallayout">
+     cn=John Smith,ou=Accounts,o=My Company,c=US
+    </pre>
+    <p class="para">
+     カンマは各部分を区分し、右から左に解釈されます。この dn は
+     次のように解釈されます。
+    </p>
+    <pre class="literallayout">
+     country = US
+     organization = My Company
+     organizationalUnit = Accounts
+     commonName = John Smith
+    </pre>
+    <p class="para">
+     ハードディスクのディレクトリ構造を管理する手法について明確な規約が
+     ないのと同様に、ディレクトリサーバーマネージャーは、目的に適した
+     あらゆる構造を設定することが可能です。しかし、実用的にはいくつかの
+     慣習があります。
+     利用可能なものに関する情報を持たずにデータベースを使用することが
+     できないのと同様、ディレクトリの構造に関する情報なくして
+     ディレクトリサーバーにアクセスするコードを書くことはできない
+     ということが言えます。
+    </p>
+    <p class="para">
+     LDAP に関する多くの情報が以下の場所にあります。
+    </p>
+
+    <ul class="itemizedlist">
+     <li class="listitem">
+      <p class="para">
+       <a href="http://www.mozilla.org/directory/" class="link external">&raquo; Mozilla</a>
+      </p>
+     </li>
+     <li class="listitem">
+      <p class="para">
+       <a href="http://www.openldap.org/" class="link external">&raquo; OpenLDAP Project</a>
+      </p>
+     </li>
+    </ul>
+
+    <p class="para">    
+     Netscape SDK では、有用な <a href="http://www.mozilla.org/directory/csdk-docs/" class="link external">&raquo; プログラマーズガイド</a> 
+     が HTML 形式で公開されています。
+    </p>
+   </div>
+
+   <div id="ldap.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">
+     LDAP サポートを有効にして PHP をコンパイルするには、
+     <a href="ftp://ftp.openldap.org/pub/OpenLDAP/openldap-stable/" class="link external">&raquo; OpenLDAP</a> あるいは <a href="http://www.bind9.net/download-openldap/" class="link external">&raquo; Bind9.net</a> から LDAP クライアント
+     ライブラリを入手し、コンパイルしておく必要があります。
+
+    </p>
+   </div>
+
+  
+
+
+
+<div id="ldap.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  PHP の LDAP サポートはデフォルトで有効になっていません。
+  LDAP サポートを有効にして PHP をコンパイルするには、設定オプション
+  <span class="option">--with-ldap[=DIR]</span>
+  を指定して PHP をコンパイルする必要があります。
+  DIR は LDAP をインストールしたディレクトリです。
+  SASL サポートを有効にするためには、システム上に
+  <em class="emphasis">sasl.h</em> を用意し、
+  <span class="option">--with-ldap-sasl[=DIR]</span>
+  を指定する必要があります。
+ </p>
+ <blockquote><p><b class="note">注意</b>: 
+  <b>Win32 ユーザへの注意</b>
+  
+   この拡張モジュールを動作させるには、
+Windows システムの <i class="literal">PATH</i> が通った場所に
+<acronym title="Dynamic Link Library">DLL</acronym> ファイルが存在する必要があります。
+<acronym>FAQ</acronym> の &quot;<a href="faq.installation.html#faq.installation.addtopath" class="link">Windows で PHP のディレクトリを
+PATH に追加するにはどうすればいいのですか?</a>&quot; で、その方法を説明しています。
+DLL ファイルを PHP のフォルダから Windows のシステムディレクトリにコピーしても動作します
+(システムディレクトリは、デフォルトで <i class="literal">PATH</i>
+に含まれるからです) が、これは推奨しません。
+<em class="emphasis">この拡張モジュールを使用するには、以下のファイルが
+<i class="literal">PATH</i> の通った場所にある必要があります。</em> 
+   <var class="filename">libeay32.dll</var> および
+   <var class="filename">ssleay32.dll</var>
+  <br />
+  <span class="simpara">
+   PHP 4.3.0 より前のバージョンでは、さらに <var class="filename">libsasl.dll</var>
+   も必要です。
+  </span>
+ </p></blockquote>
+ <p class="para">
+  Oracle LDAP ライブラリを使用するには、<a href="ref.oci8.html#oci8.requirements" class="link">Oracle 環境</a> が適切に設定されている
+  必要があります。
+ </p>
+</div>
+
+
+
+
+   
+
+
+
+<div id="ldap.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+ <table border="5">
+  <caption><b>LDAP 設定オプション</b></caption>
+  <colgroup>
+
+   <thead valign="middle">
+    <tr valign="middle">
+     <th colspan="1">名前</th>
+     <th colspan="1">デフォルト</th>
+     <th colspan="1">変更の可否</th>
+     <th colspan="1">変更履歴</th>
+    </tr>
+
+   </thead>
+
+   <tbody valign="middle">
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">ldap.max_links</td>
+     <td colspan="1" rowspan="1" align="left">&quot;-1&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+   </tbody>
+  </colgroup>
+
+ </table>
+
+ PHP_INI_* 定数の詳細および定義については
+<a href="ini.html" class="xref">php.ini ディレクティブ</a> を参照してください。
+ </p>
+</div>
+
+
+
+
+
+   <div id="ldap.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">
+     ほとんどの LDAP 関数は、リソースを操作するか、あるいはリソースを返します
+     (たとえば <a href="function.ldap-connect.html" class="function">ldap_connect()</a> は正の LDAP リンク ID
+     を返し、ほとんどの LDAP 関数はそれを使用します)。
+    </p>
+   </div>
+
+   
+
+
+<div id="ldap.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <dl>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>LDAP_DEREF_NEVER</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>LDAP_DEREF_SEARCHING</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>LDAP_DEREF_FINDING</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>LDAP_DEREF_ALWAYS</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>LDAP_OPT_DEREF</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>LDAP_OPT_SIZELIMIT</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>LDAP_OPT_TIMELIMIT</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt>
+
+   <span class="term">
+    <b><tt>LDAP_OPT_NETWORK_TIMEOUT</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     ldap_set_option() 用のオプションで、ネットワークのタイムアウトを設定します
+     (PHP 5.3.0 以降で利用可能です)。
+    </span>
+   </dd>
+
+  </dt>
+
+
+  <dt>
+
+   <span class="term">
+    <b><tt>LDAP_OPT_PROTOCOL_VERSION</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>LDAP_OPT_ERROR_NUMBER</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>LDAP_OPT_REFERRALS</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>LDAP_OPT_RESTART</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>LDAP_OPT_HOST_NAME</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>LDAP_OPT_ERROR_STRING</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>LDAP_OPT_MATCHED_DN</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>LDAP_OPT_SERVER_CONTROLS</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>LDAP_OPT_CLIENT_CONTROLS</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>LDAP_OPT_DEBUG_LEVEL</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GSLC_SSL_NO_AUTH</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GSLC_SSL_ONEWAY_AUTH</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GSLC_SSL_TWOWAY_AUTH</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+</div>
+
+
+
+
+   <div id="ldap.examples" class="section">
+    <h2 class="title">例</h2>
+    <p class="para">
+     あるディレクトリサーバーから姓が &quot;S&quot; から始まる全てのエントリに
+     関する情報を検索し、名前と電子メールアドレスで検索結果を表示します。
+    </p>
+
+    <div class="example">
+     <p><b>Example#1 LDAP 検索の例</b></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;LDAP&nbsp;の基本シーケンスは、接続、バインド、検索、検索結果の解釈、<br />//&nbsp;接続のクローズです。<br /><br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"&lt;h3&gt;LDAP&nbsp;query&nbsp;test&lt;/h3&gt;"</span><span style="color: #007700">;<br />echo&nbsp;</span><span style="color: #DD0000">"Connecting&nbsp;..."</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$ds</span><span style="color: #007700">=</span><span style="color: #0000BB">ldap_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">"localhost"</span><span style="color: #007700">);&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;有効な&nbsp;LDAP&nbsp;サーバーに違いない!<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"connect&nbsp;result&nbsp;is&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$ds&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"&lt;br&nbsp;/&gt;"</span><span style="color: #007700">;<br /><br />if&nbsp;(</span><span style="color: #0000BB">$ds</span><span style="color: #007700">)&nbsp;{&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Binding&nbsp;..."</span><span style="color: #007700">;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$r</span><span style="color: #007700">=</span><span style="color: #0000BB">ldap_bind</span><span style="color: #007700">(</span><span style="color: #0000BB">$ds</span><span style="color: #007700">);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;これは&nbsp;"匿名"&nbsp;バインドで、通常は<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;読みこみのみのアクセスとなります。<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"Bind&nbsp;result&nbsp;is&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$r&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"&lt;br&nbsp;/&gt;"</span><span style="color: #007700">;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Searching&nbsp;for&nbsp;(sn=S*)&nbsp;..."</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;名前(surname)エントリを検索<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$sr</span><span style="color: #007700">=</span><span style="color: #0000BB">ldap_search</span><span style="color: #007700">(</span><span style="color: #0000BB">$ds</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"o=My&nbsp;Company,&nbsp;c=US"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"sn=S*"</span><span style="color: #007700">);&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Search&nbsp;result&nbsp;is&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$sr&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"&lt;br&nbsp;/&gt;"</span><span style="color: #007700">;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Number&nbsp;of&nbsp;entires&nbsp;returned&nbsp;is&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">ldap_count_entries</span><span style="color: #007700">(</span><span style="color: #0000BB">$ds</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$sr</span><span style="color: #007700">)&nbsp;.&nbsp;</span><span style="color: #DD0000">"&lt;br&nbsp;/&gt;"</span><span style="color: #007700">;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Getting&nbsp;entries&nbsp;...&lt;p&gt;"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$info&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">ldap_get_entries</span><span style="color: #007700">(</span><span style="color: #0000BB">$ds</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$sr</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Data&nbsp;for&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$info</span><span style="color: #007700">[</span><span style="color: #DD0000">"count"</span><span style="color: #007700">]&nbsp;.&nbsp;</span><span style="color: #DD0000">"&nbsp;items&nbsp;returned:&lt;p&gt;"</span><span style="color: #007700">;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(</span><span style="color: #0000BB">$i</span><span style="color: #007700">=</span><span style="color: #0000BB">0</span><span style="color: #007700">;&nbsp;</span><span style="color: #0000BB">$i</span><span style="color: #007700">&lt;</span><span style="color: #0000BB">$info</span><span style="color: #007700">[</span><span style="color: #DD0000">"count"</span><span style="color: #007700">];&nbsp;</span><span style="color: #0000BB">$i</span><span style="color: #007700">++)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"dn&nbsp;is:&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$info</span><span style="color: #007700">[</span><span style="color: #0000BB">$i</span><span style="color: #007700">][</span><span style="color: #DD0000">"dn"</span><span style="color: #007700">]&nbsp;.&nbsp;</span><span style="color: #DD0000">"&lt;br&nbsp;/&gt;"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"first&nbsp;cn&nbsp;entry&nbsp;is:&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$info</span><span style="color: #007700">[</span><span style="color: #0000BB">$i</span><span style="color: #007700">][</span><span style="color: #DD0000">"cn"</span><span style="color: #007700">][</span><span style="color: #0000BB">0</span><span style="color: #007700">]&nbsp;.&nbsp;</span><span style="color: #DD0000">"&lt;br&nbsp;/&gt;"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"first&nbsp;email&nbsp;entry&nbsp;is:&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$info</span><span style="color: #007700">[</span><span style="color: #0000BB">$i</span><span style="color: #007700">][</span><span style="color: #DD0000">"mail"</span><span style="color: #007700">][</span><span style="color: #0000BB">0</span><span style="color: #007700">]&nbsp;.&nbsp;</span><span style="color: #DD0000">"&lt;br&nbsp;/&gt;&lt;hr&nbsp;/&gt;"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Closing&nbsp;connection"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">ldap_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$ds</span><span style="color: #007700">);<br /><br />}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"&lt;h4&gt;Unable&nbsp;to&nbsp;connect&nbsp;to&nbsp;LDAP&nbsp;server&lt;/h4&gt;"</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </div>
+
+   <div id="ldap.using" class="section">
+    <h2 class="title">PHP LDAP コールの使用法</h2>
+    <p class="para">
+     LDAP コールを使用する前に、以下のことを知っておいてください。
+
+    <ul class="itemizedlist">
+     <li class="listitem">
+      <p class="para">
+       使用するディレクトリサーバの名前またはアドレス
+      </p>
+     </li>
+     <li class="listitem">
+      <p class="para">
+       サーバの &quot;base dn&quot; (このサーバーがあるワールドディレクトリ
+       の部分で、&quot;o=My Company,c=US&quot; のようにすることができます)
+      </p>
+     </li>
+     <li class="listitem">
+      <p class="para">
+       サーバーへのアクセスにパスワードを必要とするかどうか
+       (多くのサーバーは &quot;匿名バインド&quot; に関して読みこみを
+       許可するが、他の処理についてはパスワードを要求します)。
+      </p>
+     </li>
+    </ul></p>
+
+     <p class="para">
+      アプリケーションとして作成する LDAP コールのシーケンスは、
+      通常、次のようなパターンに沿っています。
+<pre class="literallayout">
+  ldap_connect()    // サーバへの接続を確立
+     |
+  ldap_bind()       // 匿名または認証された &quot;ログイン&quot;
+     |
+  ディレクトリの検索または更新等を行い、結果を表示する
+     |
+  ldap_close()      // &quot;ログアウト&quot;
+</pre></p>
+   </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.ldap-8859-to-t61.html">ldap_8859_to_t61</a> ― 8859 文字を t61 文字に変換する</li><li><a href="function.ldap-add.html">ldap_add</a> ― LDAP ディレクトリにエントリを付加する</li><li><a href="function.ldap-bind.html">ldap_bind</a> ― LDAP ディレクトリにバインドする</li><li><a href="function.ldap-close.html">ldap_close</a> ― のエイリアス ldap_unbind</li><li><a href="function.ldap-compare.html">ldap_compare</a> ― 指定した DN のエントリで見付かった属性の値を比較する</li><li><a href="function.ldap-connect.html">ldap_connect</a> ― LDAP サーバへ接続する</li><li><a href="function.ldap-count-entries.html">ldap_count_entries</a> ― 検索結果のエントリ数を数える</li><li><a href="function.ldap-delete.html">ldap_delete</a> ― ディレクトリからエントリを削除する</li><li><a href="function.ldap-dn2ufn.html">ldap_dn2ufn</a> ― DN をユーザに分かりやすい名前のフォーマットに変換する</li><li><a href="function.ldap-err2str.html">ldap_err2str</a> ― LDAP のエラー番号をエラーメッセージ文字列に変換する</li><li><a href="function.ldap-errno.html">ldap_errno</a> ― 直近の LDAP コマンドの LDAP エラー番号を返す</li><li><a href="function.ldap-error.html">ldap_error</a> ― 直近の LDAP コマンドの LDAP エラーメッセージを返す</li><li><a href="function.ldap-explode-dn.html">ldap_explode_dn</a> ― DN を構成要素ごとに分割する</li><li><a href="function.ldap-first-attribute.html">ldap_first_attribute</a> ― 最初の属性を返す</li><li><a href="function.ldap-first-entry.html">ldap_first_entry</a> ― 最初の結果 ID を返す</li><li><a href="function.ldap-first-reference.html">ldap_first_reference</a> ― 最初のリファレンスを返す</li><li><a href="function.ldap-free-result.html">ldap_free_result</a> ― 結果メモリを開放する</li><li><a href="function.ldap-get-attributes.html">ldap_get_attributes</a> ― 検索結果エントリから属性を得る</li><li><a href="function.ldap-get-dn.html">ldap_get_dn</a> ― 結果エントリから DN を得る</li><li><a href="function.ldap-get-entries.html">ldap_get_entries</a> ― 全ての結果エントリを得る</li><li><a href="function.ldap-get-option.html">ldap_get_option</a> ― 指定したオプションの現在の値を得る</li><li><a href="function.ldap-get-values-len.html">ldap_get_values_len</a> ― 結果エントリから全てのバイナリ値を得る</li><li><a href="function.ldap-get-values.html">ldap_get_values</a> ― 結果エントリから全ての値を得る</li><li><a href="function.ldap-list.html">ldap_list</a> ― 単一階層の検索を行う</li><li><a href="function.ldap-mod-add.html">ldap_mod_add</a> ― 現在の属性に属性を追加する</li><li><a href="function.ldap-mod-del.html">ldap_mod_del</a> ― 現在の属性から属性を削除する</li><li><a href="function.ldap-mod-replace.html">ldap_mod_replace</a> ― 属性を新規の値に置換する</li><li><a href="function.ldap-modify.html">ldap_modify</a> ― LDAP エントリを修正する</li><li><a href="function.ldap-next-attribute.html">ldap_next_attribute</a> ― 結果における次の属性を得る</li><li><a href="function.ldap-next-entry.html">ldap_next_entry</a> ― 次の結果エントリを得る</li><li><a href="function.ldap-next-reference.html">ldap_next_reference</a> ― 次のリファレンスを得る</li><li><a href="function.ldap-parse-reference.html">ldap_parse_reference</a> ― 参照エントリから情報を展開する</li><li><a href="function.ldap-parse-result.html">ldap_parse_result</a> ― 結果から情報を展開する</li><li><a href="function.ldap-read.html">ldap_read</a> ― エントリを読み込む</li><li><a href="function.ldap-rename.html">ldap_rename</a> ― エントリ名を修正する</li><li><a href="function.ldap-sasl-bind.html">ldap_sasl_bind</a> ― SASL を使用して LDAP ディレクトリにバインドする</li><li><a href="function.ldap-search.html">ldap_search</a> ― LDAP ツリーを探索する</li><li><a href="function.ldap-set-option.html">ldap_set_option</a> ― 指定したオプションの値を設定する</li><li><a href="function.ldap-set-rebind-proc.html">ldap_set_rebind_proc</a> ― 参照先を再バインドするためのコールバック関数を設定する</li><li><a href="function.ldap-sort.html">ldap_sort</a> ― LDAP 結果エントリをソートする</li><li><a href="function.ldap-start-tls.html">ldap_start_tls</a> ― TLS を開始する</li><li><a href="function.ldap-t61-to-8859.html">ldap_t61_to_8859</a> ― t61 文字を 8859 文字に変換する</li><li><a href="function.ldap-unbind.html">ldap_unbind</a> ― LDAP ディレクトリへのバインドを解除する</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.kadm5-modify-principal.html">kadm5_modify_principal</a></div>
+ <div class="next" style="float: right;"><a href="function.ldap-8859-to-t61.html">ldap_8859_to_t61</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

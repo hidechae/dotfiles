@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>ストリームコンテキストを作成する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.stream-bucket-prepend.html">stream_bucket_prepend</a></div>
+ <div class="next" style="float: right;"><a href="function.stream-context-get-default.html">stream_context_get_default</a></div>
+ <div class="up"><a href="ref.stream.html">ストリーム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.stream-context-create" class="refentry">
+   <div class="refnamediv">
+    <h1 class="refname">stream_context_create</h1>
+    <p class="verinfo">(PHP 4 &gt;= 4.3.0, PHP 5)</p><p class="refpurpose">stream_context_create ― ストリームコンテキストを作成する</p>
+ 
+   </div>
+   <div class="refsect1 u">
+    <h3 class="title">説明</h3>
+     <div class="methodsynopsis">
+      <span class="type">resource</span> <span class="methodname"><b><b>stream_context_create</b></b></span>
+       ([ <span class="methodparam"><span class="type">array</span> <tt class="parameter">$options</tt></span>
+      [, <span class="methodparam"><span class="type">array</span> <tt class="parameter">$params</tt></span>
+     ]] )</div>
+
+    <p class="simpara">
+     <i><tt class="parameter">options</tt></i>
+ に、
+     指定されたオプションが予め設定されたストリームコンテキストを作成し、
+     それを返します。 
+    </p>
+    <p class="simpara">
+     <i><tt class="parameter">options</tt></i>
+ は、
+     次のような形式の連想配列からなる連想配列でなくてはなりません。
+     <i class="literal">$arr[&#039;wrapper&#039;][&#039;option&#039;] = $value</i>.
+     デフォルトは空の配列です。
+    </p>
+    <p class="simpara">
+     <i><tt class="parameter">params</tt></i>
+ は、
+     <i class="literal">$arr[&#039;parameter&#039;] = $value</i>
+     形式の連想配列でなくてばなりません。
+     標準のストリームパラメータについては
+     <a href="function.stream-context-set-params.html" class="function">stream_context_set_params()</a> を参照ください。
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     <span class="simpara">
+      引数 <i><tt class="parameter">params</tt></i>
+
+      は <i class="literal">PHP 6.0.0</i> で追加されました。
+     </span>
+    </p></blockquote>
+    <div class="example">
+     <p><b>Example#1 <b>stream_context_create()</b> を利用する</b></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$opts&nbsp;</span><span style="color: #007700">=&nbsp;array(<br />&nbsp;&nbsp;</span><span style="color: #DD0000">'http'</span><span style="color: #007700">=&gt;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'method'</span><span style="color: #007700">=&gt;</span><span style="color: #DD0000">"GET"</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'header'</span><span style="color: #007700">=&gt;</span><span style="color: #DD0000">"Accept-language:&nbsp;en\r\n"&nbsp;</span><span style="color: #007700">.&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"Cookie:&nbsp;foo=bar\r\n"<br />&nbsp;&nbsp;</span><span style="color: #007700">)<br />);<br /><br /></span><span style="color: #0000BB">$context&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">stream_context_create</span><span style="color: #007700">(</span><span style="color: #0000BB">$opts</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;上のヘッダと共に&nbsp;http&nbsp;リクエストを&nbsp;www.example.com&nbsp;に対して<br />&nbsp;&nbsp;&nbsp;送出します&nbsp;*/<br /></span><span style="color: #0000BB">$fp&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">'http://www.example.com'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'r'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$context</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">fpassthru</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">fclose</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+    <p class="simpara">
+     <a href="function.stream-context-set-option.html" class="function">stream_context_set_option()</a> と
+     コンテキストオプションをサポートするラッパのリスト
+     (<a href="wrappers.html" class="xref">サポートされるプロトコル/ラッパー</a>) も参照ください。
+    </p>
+   </div>
+
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.stream-bucket-prepend.html">stream_bucket_prepend</a></div>
+ <div class="next" style="float: right;"><a href="function.stream-context-get-default.html">stream_context_get_default</a></div>
+ <div class="up"><a href="ref.stream.html">ストリーム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

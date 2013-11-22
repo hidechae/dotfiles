@@ -1,0 +1,290 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>指定した伝送に関する情報を得る</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.curl-exec.html">curl_exec</a></div>
+ <div class="next" style="float: right;"><a href="function.curl-init.html">curl_init</a></div>
+ <div class="up"><a href="ref.curl.html">CURL</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.curl-getinfo" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">curl_getinfo</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.0.4, PHP 5)</p><p class="refpurpose">curl_getinfo ― 指定した伝送に関する情報を得る</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">mixed</span> <span class="methodname"><b><b>curl_getinfo</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$ch</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$opt</tt></span>
+  ] )</div>
+
+  <p class="para">
+   直近の転送に関する情報を取得します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+<span class="term"><i><tt class="parameter">ch</tt></i>
+
+</span><dd>
+<p class="para"><a href="function.curl-init.html" class="function">curl_init()</a>
+が返す cURL ハンドル。</p></dd>
+</dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">opt</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       これは、以下のいずれかの定数となります。
+       <ul class="itemizedlist">
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>CURLINFO_EFFECTIVE_URL</tt></b> - 直近の有効な URL
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>CURLINFO_HTTP_CODE</tt></b> - 最後に受け取った HTTP コード
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>CURLINFO_FILETIME</tt></b> - ドキュメントを取得するのにかかった時間。
+          取得できなかった場合は -1
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>CURLINFO_TOTAL_TIME</tt></b> - 直近の伝送にかかった秒数
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>CURLINFO_NAMELOOKUP_TIME</tt></b> - 名前解決が完了するまでにかかった秒数
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>CURLINFO_CONNECT_TIME</tt></b> - 接続を確立するまでにかかった秒数
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>CURLINFO_PRETRANSFER_TIME</tt></b> - 開始からファイル伝送がはじまるまでにかかった秒数
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>CURLINFO_STARTTRANSFER_TIME</tt></b> - 最初のバイトの伝送がはじまるまでの秒数
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>CURLINFO_REDIRECT_TIME</tt></b> - 伝送が始まるまでのリダイレクト処理の秒数
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>CURLINFO_SIZE_UPLOAD</tt></b> - アップロードされたバイト数
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>CURLINFO_SIZE_DOWNLOAD</tt></b> - ダウンロードされたバイト数
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>CURLINFO_SPEED_DOWNLOAD</tt></b> - 平均のダウンロード速度
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>CURLINFO_SPEED_UPLOAD</tt></b> - 平均のアップロード速度
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>CURLINFO_HEADER_SIZE</tt></b> - 受信したヘッダのサイズ
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>CURLINFO_HEADER_OUT</tt></b> - 送信したリクエスト文字列。PHP 5.1.3 以降で使用可能
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>CURLINFO_REQUEST_SIZE</tt></b> - 発行されたリクエストのサイズ。現在は
+          HTTP リクエストの場合のみ
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>CURLINFO_SSL_VERIFYRESULT</tt></b> - CURLOPT_SSL_VERIFYPEER を設定した際に
+          要求される SSL 証明書の認証結果
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>CURLINFO_CONTENT_LENGTH_DOWNLOAD</tt></b> - ダウンロードされるサイズ。
+          Content-Length: フィールドの内容を取得する
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>CURLINFO_CONTENT_LENGTH_UPLOAD</tt></b> - アップロードされるサイズ。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>CURLINFO_CONTENT_TYPE</tt></b> - ダウンロードされたオブジェクトの Content-type 。
+          NULL は、サーバが適切な Content-Type: ヘッダを返さなかったことを示す
+         </span>
+        </li>
+       </ul>
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   <i><tt class="parameter">opt</tt></i>
+ を指定した場合は、その値を文字列で返します。
+   それ以外の場合は、以下の要素をもつ連想配列を返します
+   (それぞれの要素が <i><tt class="parameter">opt</tt></i>
+ に対応します)。
+   <ul class="itemizedlist">
+    <li class="listitem">
+     <span class="simpara">
+      &quot;url&quot;
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      &quot;content_type&quot;
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      &quot;http_code&quot;
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      &quot;header_size&quot;
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      &quot;request_size&quot;
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      &quot;filetime&quot;
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      &quot;ssl_verify_result&quot;
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      &quot;redirect_count&quot;
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      &quot;total_time&quot;
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      &quot;namelookup_time&quot;
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      &quot;connect_time&quot;
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      &quot;pretransfer_time&quot;
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      &quot;size_upload&quot;
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      &quot;size_download&quot;
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      &quot;speed_download&quot;
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      &quot;speed_upload&quot;
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      &quot;download_content_length&quot;
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      &quot;upload_content_length&quot;
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      &quot;starttransfer_time&quot;
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      &quot;redirect_time&quot;
+     </span>
+    </li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.curl-exec.html">curl_exec</a></div>
+ <div class="next" style="float: right;"><a href="function.curl-init.html">curl_init</a></div>
+ <div class="up"><a href="ref.curl.html">CURL</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

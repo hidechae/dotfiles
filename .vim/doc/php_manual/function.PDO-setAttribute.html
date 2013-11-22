@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>属性を設定する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.PDO-rollBack.html">PDO->rollBack()</a></div>
+ <div class="next" style="float: right;"><a href="function.PDOStatement-bindColumn.html">PDOStatement->bindColumn()</a></div>
+ <div class="up"><a href="ref.pdo.html">PDO</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.PDO-setAttribute" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">PDO-&gt;setAttribute()</h1>
+  <p class="verinfo">(PHP 5 &gt;= 5.1.0, PECL pdo:0.1-1.0.3)</p><p class="refpurpose">PDO->setAttribute() ― 
+   属性を設定する
+  </p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="classsynopsis">
+   <div class="ooclass"><b class="classname">PDO</b></div>
+   <div class="methodsynopsis">
+    <span class="type">bool</span> <span class="methodname"><b><b>setAttribute</b></b></span>
+     ( <span class="methodparam"><span class="type">int</span> <tt class="parameter">$attribute</tt></span>
+    , <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$value</tt></span>
+    )</div>
+
+  </div>
+
+  <p class="para">
+   データベースハンドルの属性を設定します。
+   利用可能な通常の属性は以下の一覧の通りです。いくつかのドライバでは、
+   ドライバ固有の属性を使用することが可能です。
+   <ul class="itemizedlist">
+    <li class="listitem"><p class="para">
+     <i class="literal">PDO::ATTR_CASE</i>: 強制的にカラム名を指定したケースにする
+     <ul class="itemizedlist">
+      <li class="listitem"><p class="para">
+       <i class="literal">PDO::CASE_LOWER</i>: 強制的にカラム名を小文字にする
+      </p></li>
+      <li class="listitem"><p class="para">
+       <i class="literal">PDO::CASE_NATURAL</i>:
+       データベースドライバによって返されるカラム名をそのままにする
+      </p></li>
+      <li class="listitem"><p class="para">
+       <i class="literal">PDO::CASE_UPPER</i>: 強制的にカラム名を大文字にする
+      </p></li>
+     </ul>
+    </p></li>
+    <li class="listitem"><p class="para"><i class="literal">PDO::ATTR_ERRMODE</i>: エラーレポート
+     <ul class="itemizedlist">
+      <li class="listitem"><p class="para"><i class="literal">PDO::ERRMODE_SILENT</i>:
+       エラーコードのみ設定する</p></li>
+      <li class="listitem"><p class="para"><i class="literal">PDO::ERRMODE_WARNING</i>:
+       <a href="ref.errorfunc.html#errorfunc.constants.errorlevels.e-warning" class="link">E_WARNING</a>
+       を発生させる</p></li>
+      <li class="listitem"><p class="para"><i class="literal">PDO::ERRMODE_EXCEPTION</i>:
+       <a href="language.exceptions.html" class="link">exceptions</a>
+       を投げる</p></li>
+     </ul>
+    </p></li>
+    <li class="listitem"><p class="para"><i class="literal">PDO::ATTR_ORACLE_NULLS</i>
+     (Oracle だけでなく、全てのドライバで利用可能):
+     NULL とから文字列の変換
+     <ul class="itemizedlist">
+      <li class="listitem"><p class="para"><i class="literal">PDO::NULL_NATURAL</i>:
+       変換しない</p></li>
+      <li class="listitem"><p class="para"><i class="literal">PDO::NULL_EMPTY_STRING</i>:
+       空文字は <b><tt>NULL</tt></b> に変換される</p></li>
+      <li class="listitem"><p class="para"><i class="literal">PDO::NULL_TO_STRING</i>:
+       NULL は空文字に変換される</p></li>
+     </ul>
+    </p></li>
+    <li class="listitem"><p class="para"><i class="literal">PDO::ATTR_STRINGIFY_FETCHES</i>:
+     フェッチする際、数値を文字列に変換する。<a href="language.types.boolean.html" class="type bool">bool</a>
+     を必要とする
+    </p></li>
+    <li class="listitem"><p class="para"><i class="literal">PDO::ATTR_STATEMENT_CLASS</i>:
+     PDOStatement
+     に由来するユーザーが提供するステートメントクラスを設定する。
+     永続的な PDO インスタンスは使用できない。
+     <i class="literal">array(string classname, array(mixed constructor_args))</i>
+     を必要とする。
+    </p></li>
+    <li class="listitem"><p class="para"><i class="literal">PDO::ATTR_AUTOCOMMIT</i>
+     (OCI, Firebird そして MySQL で利用可能):
+     それぞれの単一文で自動コミットするかどうか。
+    </p></li>
+    <li class="listitem"><p class="para"><i class="literal">PDO::MYSQL_ATTR_USE_BUFFERED_QUERY</i>
+    (MySQL で利用可能):
+    バッファされたクエリを使用する。
+    </p></li>
+   </ul>
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.PDO-rollBack.html">PDO->rollBack()</a></div>
+ <div class="next" style="float: right;"><a href="function.PDOStatement-bindColumn.html">PDOStatement->bindColumn()</a></div>
+ <div class="up"><a href="ref.pdo.html">PDO</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

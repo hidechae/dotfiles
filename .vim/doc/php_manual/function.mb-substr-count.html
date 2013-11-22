@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>部分文字列の出現回数を数える</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mb-substitute-character.html">mb_substitute_character</a></div>
+ <div class="next" style="float: right;"><a href="function.mb-substr.html">mb_substr</a></div>
+ <div class="up"><a href="ref.mbstring.html">マルチバイト文字列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mb-substr-count" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mb_substr_count</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.3.0, PHP 5)</p><p class="refpurpose">mb_substr_count ― 部分文字列の出現回数を数える</p>
+
+ </div>
+   
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">int</span> <span class="methodname"><b><b>mb_substr_count</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$haystack</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$needle</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$encoding</tt></span>
+  ] )</div>
+
+  <p class="para">
+   <a href="function.substr-count.html" class="function">substr_count()</a> は、文字列
+   <i><tt class="parameter">haystack</tt></i>
+ の中での部分文字列
+   <i><tt class="parameter">needle</tt></i>
+ の出現回数を返します。
+  </p>
+  <p class="para">
+   <i><tt class="parameter">encoding</tt></i>
+ は、
+   <i><tt class="parameter">needle</tt></i>
+ や <i><tt class="parameter">haystack</tt></i>
+ に対する
+   文字エンコーディングを指定します。省略された場合は、
+   内部文字エンコーディングが使用されます。
+  </p>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>mb_substr_count()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">mb_substr_count</span><span style="color: #007700">(</span><span style="color: #DD0000">"これはてすとです。"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"す"</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;2&nbsp;を出力する<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+  <p class="simpara">
+   <a href="function.substr-count.html" class="function">substr_count()</a>、
+   <a href="function.mb-strpos.html" class="function">mb_strpos()</a>、<a href="function.mb-substr.html" class="function">mb_substr()</a>
+   も参照ください。
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mb-substitute-character.html">mb_substitute_character</a></div>
+ <div class="next" style="float: right;"><a href="function.mb-substr.html">mb_substr</a></div>
+ <div class="up"><a href="ref.mbstring.html">マルチバイト文字列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

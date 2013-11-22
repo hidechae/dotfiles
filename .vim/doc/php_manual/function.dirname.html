@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>パス中のディレクトリ名の部分を返す</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.delete.html">delete</a></div>
+ <div class="next" style="float: right;"><a href="function.disk-free-space.html">disk_free_space</a></div>
+ <div class="up"><a href="ref.filesystem.html">ファイルシステム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.dirname" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">dirname</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">dirname ― パス中のディレクトリ名の部分を返す</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">string</span> <span class="methodname"><b><b>dirname</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$path</tt></span>
+   )</div>
+
+  <p class="para">
+   この関数は、ファイルへのパス名を有する文字列を引数とし、
+   ディレクトリの名前を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">path</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       パス。
+      </p>
+      <p class="para">
+       Windows では、スラッシュ(<i class="literal">/</i>)とバックスラッシュ
+       (<i class="literal">\</i>)の両方がディレクトリ区切り文字として使われます。
+       その他の環境ではスラッシュ(<i class="literal">/</i>)になります。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   ディレクトリの名前を返します。
+   <i><tt class="parameter">path</tt></i>
+ にスラッシュが無い場合は、
+   カレントディレクトリを示すドット (&#039;<i class="literal">.</i>&#039;)
+   を返します。それ以外の場合は、スラッシュ以降の
+   <i class="literal">/component</i> 部分を取り除いた
+   <i><tt class="parameter">path</tt></i>
+ を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">5.0.0</td>
+       <td colspan="1" rowspan="1" align="left">
+        <b>dirname()</b> がバイナリセーフとなりました。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">4.0.3</td>
+       <td colspan="1" rowspan="1" align="left">
+        <b>dirname()</b> が POSIX 準拠となりました。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>dirname()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$path&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"/etc/passwd"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$file&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">dirname</span><span style="color: #007700">(</span><span style="color: #0000BB">$path</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;$file&nbsp;は&nbsp;"/etc"&nbsp;となります<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    PHP 4.3.0 以降では、これまでは
+    <b>dirname()</b> が空文字列を返していたような状況で
+    スラッシュやドットを返すことが多くなりました。
+   <br />
+  </p></blockquote>
+  <p class="para">
+   以下の例で変更点をご確認ください。
+   <div class="informalexample">
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">//&nbsp;PHP&nbsp;4.3.0&nbsp;より前のバージョン<br /></span><span style="color: #0000BB">dirname</span><span style="color: #007700">(</span><span style="color: #DD0000">'c:/'</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;'.'&nbsp;を返します<br /><br />//&nbsp;PHP&nbsp;4.3.0&nbsp;以降のバージョン<br /></span><span style="color: #0000BB">dirname</span><span style="color: #007700">(</span><span style="color: #DD0000">'c:/x'</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;'c:\'&nbsp;を返します<br /></span><span style="color: #0000BB">dirname</span><span style="color: #007700">(</span><span style="color: #DD0000">'c:/Temp/x'</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;'c:/Temp'&nbsp;を返します<br /></span><span style="color: #0000BB">dirname</span><span style="color: #007700">(</span><span style="color: #DD0000">'/x'</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;'\'&nbsp;を返します<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.basename.html" class="function">basename()</a></li>
+    <li class="member"><a href="function.pathinfo.html" class="function">pathinfo()</a></li>
+    <li class="member"><a href="function.realpath.html" class="function">realpath()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.delete.html">delete</a></div>
+ <div class="next" style="float: right;"><a href="function.disk-free-space.html">disk_free_space</a></div>
+ <div class="up"><a href="ref.filesystem.html">ファイルシステム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

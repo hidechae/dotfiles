@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>以降の出力で用いるシェーディングを作成する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ps-shading-pattern.html">ps_shading_pattern</a></div>
+ <div class="next" style="float: right;"><a href="function.ps-shfill.html">ps_shfill</a></div>
+ <div class="up"><a href="ref.ps.html">PS</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.ps-shading" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ps_shading</h1>
+  <p class="verinfo">(PECL ps:1.3.0-1.3.5)</p><p class="refpurpose">ps_shading ― 以降の出力で用いるシェーディングを作成する</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">int</span> <span class="methodname"><b><b>ps_shading</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$psdoc</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$type</tt></span>
+   , <span class="methodparam"><span class="type">float</span> <tt class="parameter">$x0</tt></span>
+   , <span class="methodparam"><span class="type">float</span> <tt class="parameter">$y0</tt></span>
+   , <span class="methodparam"><span class="type">float</span> <tt class="parameter">$x1</tt></span>
+   , <span class="methodparam"><span class="type">float</span> <tt class="parameter">$y1</tt></span>
+   , <span class="methodparam"><span class="type">float</span> <tt class="parameter">$c1</tt></span>
+   , <span class="methodparam"><span class="type">float</span> <tt class="parameter">$c2</tt></span>
+   , <span class="methodparam"><span class="type">float</span> <tt class="parameter">$c3</tt></span>
+   , <span class="methodparam"><span class="type">float</span> <tt class="parameter">$c4</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$optlist</tt></span>
+   )</div>
+
+  <p class="para">
+   シェーディングを作成します。これは <a href="function.ps-shfill.html" class="function">ps_shfill()</a>
+   や <a href="function.ps-shading-pattern.html" class="function">ps_shading_pattern()</a> で用いられます。
+  </p>
+  <p class="para">
+   シェーディングの色には、<i class="literal">pattern</i>
+   以外の任意の色空間が利用できます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">psdoc</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <a href="function.ps-new.html" class="function">ps_new()</a> が返す、postscript
+       ファイルのリソース ID。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">type</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       シェーディングの種類で、<i class="literal">radial</i> (放射状)
+       または <i class="literal">axial</i> (直線状) のいずれかです。
+       シェーディングは現在の塗りつぶし色で始まり、
+       <i><tt class="parameter">c1</tt></i>
+ から <i><tt class="parameter">c4</tt></i>
+
+       までのパラメータで指定される色で終わります (パラメータの意味は
+       <a href="function.ps-setcolor.html" class="function">ps_setcolor()</a> を参照ください)。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">x0, x1, y0, y1</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">x0</tt></i>
+, <i><tt class="parameter">y0</tt></i>
+,
+       <i><tt class="parameter">x1</tt></i>
+, <i><tt class="parameter">y1</tt></i>
+ は、
+       シェーディングの開始位置・終了位置の座標です。
+       シェーディングの形式が <i class="literal">radial</i> の場合は、
+       それぞれ開始円・終了円の中心となります。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">c1, c2, c3, c4</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       このパラメータの意味は <a href="function.ps-setcolor.html" class="function">ps_setcolor()</a> を参照してください。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">optlist</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+        type が <i class="literal">radial</i> の場合、<i><tt class="parameter">optlist</tt></i>
+
+        にはパラメータ <i class="literal">r0</i> と <i class="literal">r1</i>
+        が含まれる必要があります。これらはそれぞれ開始位置と終了位置を表す
+        円の半径です。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+    成功した場合にパターンの ID を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.ps-shading-pattern.html" class="function">ps_shading_pattern()</a></li>
+    <li class="member"><a href="function.ps-shfill.html" class="function">ps_shfill()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ps-shading-pattern.html">ps_shading_pattern</a></div>
+ <div class="next" style="float: right;"><a href="function.ps-shfill.html">ps_shfill</a></div>
+ <div class="up"><a href="ref.ps.html">PS</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

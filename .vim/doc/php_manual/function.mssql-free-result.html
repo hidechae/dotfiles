@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>結果保持用メモリを解放する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mssql-field-type.html">mssql_field_type</a></div>
+ <div class="next" style="float: right;"><a href="function.mssql-free-statement.html">mssql_free_statement</a></div>
+ <div class="up"><a href="ref.mssql.html">MS SQL Server</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mssql-free-result" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mssql_free_result</h1>
+  <p class="verinfo">(PHP 4, PHP 5, PECL odbtp:1.1.1-1.1.4)</p><p class="refpurpose">mssql_free_result ― 結果保持用メモリを解放する</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>mssql_free_result</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$result</tt></span>
+   )</div>
+
+  <p class="para">
+   スクリプト実行時のメモリ使用量が過大であると懸念される場合のみ
+   <b>mssql_free_result()</b> はコールするべきです。
+   全ての結果保持用メモリはスクリプト実行終了時に自動的に解放されます。
+   引数に結果 ID を指定して <b>mssql_free_result()</b> を
+   コールすることが可能です。
+   この場合、関連する結果保持用メモリが解放されます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">result</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       処理対象となる結果リソース。これは
+       <a href="function.mssql-query.html" class="function">mssql_query()</a> のコールによって取得します。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mssql-field-type.html">mssql_field_type</a></div>
+ <div class="next" style="float: right;"><a href="function.mssql-free-statement.html">mssql_free_statement</a></div>
+ <div class="up"><a href="ref.mssql.html">MS SQL Server</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

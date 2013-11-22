@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>配列をソートする</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.sizeof.html">sizeof</a></div>
+ <div class="next" style="float: right;"><a href="function.uasort.html">uasort</a></div>
+ <div class="up"><a href="ref.array.html">配列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.sort" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">sort</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">sort ― 配列をソートする</p>
+
+ </div>
+ <div class="refsect1 u">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>sort</b></b></span>
+    ( <span class="methodparam"><span class="type">array</span> <tt class="parameter reference">&$array</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$sort_flags</tt></span>
+  ] )</div>
+
+  <p class="para">
+   この関数は配列をソートします。この関数が正常に終了すると、
+   各要素は低位から高位へ並べ替えられます。
+  </p>
+  <blockquote><p><b class="note">注意</b>: <span class="simpara">この関数は、
+<i><tt class="parameter">array</tt></i>
+ パラメータの要素に対して新しいキーを割り当てます。
+その際、単純にキーを並べ替える代わりに、
+すでに割り当てられている既存のキーを削除してしまいます。</span></p></blockquote>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>sort()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$fruits&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #DD0000">"lemon"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"orange"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"banana"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"apple"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">sort</span><span style="color: #007700">(</span><span style="color: #0000BB">$fruits</span><span style="color: #007700">);<br />foreach&nbsp;(</span><span style="color: #0000BB">$fruits&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$key&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$val</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"fruits["&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$key&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"]&nbsp;=&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$val&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br />}<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+fruits[0] = apple
+fruits[1] = banana
+fruits[2] = lemon
+fruits[3] = orange
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+  <p class="para">
+   fruits はアルファベットの昇順にソートされました。
+  </p>
+  <p class="para">
+   オプションの 2 番目のパラメータ <i><tt class="parameter">sort_flags</tt></i>
+
+   は、以下の値によりソートの動作を修正するために使用することが可能です。
+  </p>
+  <p class="para">
+   ソート型のフラグ:
+   <ul class="itemizedlist">
+    <li class="listitem">
+     <span class="simpara"><b><tt>SORT_REGULAR</tt></b> - 通常通りに項目を比較
+     (型は変更しません)</span>
+    </li>
+    <li class="listitem">
+     <span class="simpara"><b><tt>SORT_NUMERIC</tt></b> - 数値的に項目を比較</span>
+    </li>
+    <li class="listitem">
+     <span class="simpara"><b><tt>SORT_STRING</tt></b> - 文字列として項目を比較</span>
+    </li>
+    <li class="listitem">
+     <span class="simpara"><b><tt>SORT_LOCALE_STRING</tt></b> - は、カレントのロケールに
+      に基づき比較を行います。PHP 4.4.0 と PHP 5.0.2で追加されました。
+      PHP 6 より前のバージョンではシステムロケールを使用します。これは
+      <a href="function.setlocale.html" class="function">setlocale()</a> を使用して変更可能です。
+      PHP 6 以降では、<b>i18n_loc_set_default()</b> 関数を
+      使用する必要があります。
+     </span>
+    </li>
+   </ul>
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    2 番目の引数は PHP 4 で追加されました。
+   <br />
+  </p></blockquote>
+  <div class="warning"><b class="warning">警告</b>
+   <p class="simpara">
+    複数の型が混在する配列をソートする場合には、注意してください。
+    <b>sort()</b> が予測不可能な結果を出力することがあります。
+   </p>
+  </div>
+  <p class="para">
+   <a href="function.arsort.html" class="function">arsort()</a>、
+   <a href="function.asort.html" class="function">asort()</a>、<a href="function.ksort.html" class="function">ksort()</a>、
+   <a href="function.krsort.html" class="function">krsort()</a>、
+   <a href="function.natsort.html" class="function">natsort()</a>、<a href="function.natcasesort.html" class="function">natcasesort()</a>、
+   <a href="function.rsort.html" class="function">rsort()</a>、<a href="function.usort.html" class="function">usort()</a>、
+   <a href="function.array-multisort.html" class="function">array_multisort()</a> および
+   <a href="function.uksort.html" class="function">uksort()</a> も参照ください。
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.sizeof.html">sizeof</a></div>
+ <div class="next" style="float: right;"><a href="function.uasort.html">uasort</a></div>
+ <div class="up"><a href="ref.array.html">配列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

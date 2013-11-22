@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>デバッガの使用法</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="debugger.html">PHP のデバッグ</a></div>
+ <div class="next" style="float: right;"><a href="debugger-protocol.html">デバッガのプロトコル</a></div>
+ <div class="up"><a href="debugger.html">PHP のデバッグ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="debugger-using" class="sect1">
+   <h2 class="title">デバッガの使用法</h2>
+
+   <p class="para">
+    PHP 3 の内部デバッガはバグを追跡し、回避するのに役立ちます。
+    このデバッガは、PHP 3 が開始されるたびに <acronym title="Transmission Control Protocol">TCP</acronym> ポートに
+    接続することにより動作します。
+    そのリクエストからのすべてのエラーメッセージは、
+    この TCP コネクションに送られます。
+    この情報は <acronym title="Integrated Development Environment">IDE</acronym> や(Emacs のような)
+    プログラマブル・エディタの中で動作する
+    「デバッグ用サーバ」のために使われます。
+   </p>
+   <p class="para">
+    デバッガの設定方法:
+    <ol class="orderedlist">
+     <li class="listitem">
+      <span class="simpara">
+       <a href="configuration.html#configuration.file" class="link">設定ファイル</a>
+       (<a href="ini.core.html#ini.debugger.port" class="link">debugger.port</a>)
+       でデバッガ用の TCP ポートを設定し、それを
+       (<a href="ini.core.html#ini.debugger.enabled" class="link">debugger.enabled</a>)
+       で有効にします。
+      </span>
+     </li>
+     <li class="listitem">
+      <span class="simpara">
+       どこかでそのポートに対して TCP リスナを設定します。
+       (たとえば、Unix systems では<strong class="command">socket -l -s 1400</strong>)
+      </span>
+     </li>
+     <li class="listitem">
+      <span class="simpara"> 
+       コードの中で「debugger_on(<span class="replaceable">host</span>)」
+       を実行します。ここで <span class="replaceable">host</span> は
+       <acronym title="Transmission Control Protocol">TCP</acronym> リスナが動作しているホストの
+       IP アドレス又はホスト名です。
+      </span>
+     </li>
+    </ol>
+    これで、すべての警告や通知などがそのリスナのソケット上に表示されます。
+    <em class="emphasis">
+     この表示は、この後 <a href="function.error-reporting.html" class="function">error_reporting()</a>
+     でエラー出力を抑制しても、有効のままです。
+    </em>
+   </p>
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="debugger.html">PHP のデバッグ</a></div>
+ <div class="next" style="float: right;"><a href="debugger-protocol.html">デバッガのプロトコル</a></div>
+ <div class="up"><a href="debugger.html">PHP のデバッグ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>本ドキュメントにおける疑似的な型および変数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="language.types.null.html">NULL</a></div>
+ <div class="next" style="float: right;"><a href="language.types.type-juggling.html">型の相互変換</a></div>
+ <div class="up"><a href="language.types.html">型</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="language.pseudo-types" class="sect1">
+   <h2 class="title">本ドキュメントにおける疑似的な型および変数</h2>
+
+   <div id="language.types.mixed" class="sect2">
+    <h3 class="title">mixed</h3>
+    <p class="para">
+     <i class="literal">mixed</i> は、引数に多様な型 (全てである必要はない)
+     を使うことができることを示します。
+    </p>
+    <p class="para">
+     例えば <a href="function.gettype.html" class="function">gettype()</a> 関数は全ての PHP の型を受け入れるのに対し、
+     <a href="function.str-replace.html" class="function">str_replace()</a> は文字列と配列のみを受け入れます。
+    </p>
+   </div>
+
+   <div id="language.types.number" class="sect2">
+    <h3 class="title">number</h3>
+    <p class="para">
+     <i class="literal">number</i> は引数が <a href="language.types.integer.html" class="type integer">integer</a> または <a href="language.types.float.html" class="type float">float</a>
+     のどちらでもよいことを示します。
+    </p>
+   </div>
+
+   <div id="language.types.callback" class="sect2">
+    <h3 class="title">callback</h3>
+    <p class="para">
+     <a href="function.call-user-func.html" class="function">call_user_func()</a> や <a href="function.usort.html" class="function">usort()</a>
+     等の関数は、ユーザが定義するコールバック関数を引数として受け入れます。
+     コールバック関数は、単純な関数だけでなく、オブジェクトのメソッド
+     あるいはクラスの静的メソッドであってもかまいません。
+    </p>
+    <p class="para">
+     PHP 関数はその名前を単に文字列として渡されます。
+     どのようなビルトインまたはユーザ定義の関数も渡すことができます。
+     ただし下記を除きます。
+     <a href="function.array.html" class="function">array()</a>,
+     <a href="function.echo.html" class="function">echo()</a>,
+     <a href="function.empty.html" class="function">empty()</a>,
+     <a href="function.eval.html" class="function">eval()</a>,
+     <a href="function.exit.html" class="function">exit()</a>,
+     <a href="function.isset.html" class="function">isset()</a>,
+     <a href="function.list.html" class="function">list()</a>,
+     <a href="function.print.html" class="function">print()</a>
+     <a href="function.unset.html" class="function">unset()</a>.
+    </p>
+    <p class="para">
+     オブジェクトのインスタンスを作成するための方法の 1 つは、
+     オブジェクトを 0 番目の要素、
+     メソッド名を 1 番目の要素として含む配列を渡す方法です。
+    </p>
+    <p class="para">
+     静的なクラスメソッドの場合、
+     0 番目の要素としてオブジェクトを渡す代わりにクラス名を渡すことにより、
+     オブジェクトのインスタンスを作成せずに渡すことができます。
+    </p>
+    <p class="para">
+     一般的なユーザ定義関数とは異なり、<a href="function.create-function.html" class="function">create_function()</a>
+     では無名コールバック関数を作成することができます。
+    </p>
+
+    <p class="para">
+     <div class="example">
+      <p><b>Example#1 
+       コールバック関数の例
+      </b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;コールバック関数の例<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">my_callback_function</span><span style="color: #007700">()&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">'hello&nbsp;world!'</span><span style="color: #007700">;<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;コールバックメソッドの例<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">MyClass&nbsp;</span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;</span><span style="color: #0000BB">myCallbackMethod</span><span style="color: #007700">()&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">'Hello&nbsp;World!'</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;タイプ&nbsp;1:&nbsp;単純なコールバック<br /></span><span style="color: #0000BB">call_user_func</span><span style="color: #007700">(</span><span style="color: #DD0000">'my_callback_function'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;タイプ&nbsp;2:&nbsp;スタティッククラスメソッドのコール<br /></span><span style="color: #0000BB">call_user_func</span><span style="color: #007700">(array(</span><span style="color: #DD0000">'MyClass'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'myCallbackMethod'</span><span style="color: #007700">));<br /><br /></span><span style="color: #FF8000">//&nbsp;タイプ&nbsp;3:&nbsp;オブジェクトメソッドのコール<br /></span><span style="color: #0000BB">$obj&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MyClass</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">call_user_func</span><span style="color: #007700">(array(</span><span style="color: #0000BB">$obj</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'myCallbackMethod'</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     <span class="simpara">
+      PHP4 では、実際のオブジェクトを指すコールバックを作成するには
+      参照を使用する必要があります。そのコピーを使用してはいけません。
+      詳細は <a href="language.references.html" class="link">参照についての説明</a>
+      を参照ください。
+     </span>
+    </p></blockquote>
+
+   </div>
+
+   <div id="language.types.void" class="sect2">
+    <h3 class="title">void</h3>
+    <p class="para">
+     返り値の型が <i class="literal">void</i> である場合は、
+     返り値に意味がないことを表します。パラメータ一覧で
+     <i class="literal">void</i> が使用されている場合は、
+     その関数がパラメータを受け付けないことを表します。
+    </p>
+   </div>
+
+   <div id="language.types.dotdotdot" class="sect2">
+    <h3 class="title">...</h3>
+    <p class="para">
+     関数のプロトタイプ宣言における <i><tt class="parameter">$...</tt></i>
+ は、
+     <i class="literal">…など</i> を表します。
+     この変数名を用いるのは、たとえば任意の数の引数を取りうる関数などです。
+    </p>
+   </div>
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="language.types.null.html">NULL</a></div>
+ <div class="next" style="float: right;"><a href="language.types.type-juggling.html">型の相互変換</a></div>
+ <div class="up"><a href="language.types.html">型</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

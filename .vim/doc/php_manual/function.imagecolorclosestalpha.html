@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>指定した色+アルファ値に最も近い色のインデックスを取得する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.imagecolorclosest.html">imagecolorclosest</a></div>
+ <div class="next" style="float: right;"><a href="function.imagecolorclosesthwb.html">imagecolorclosesthwb</a></div>
+ <div class="up"><a href="ref.image.html">イメージ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.imagecolorclosestalpha" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">imagecolorclosestalpha</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.0.6, PHP 5)</p><p class="refpurpose">imagecolorclosestalpha ― 指定した色+アルファ値に最も近い色のインデックスを取得する</p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">int</span> <span class="methodname"><b><b>imagecolorclosestalpha</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$image</tt></span>
+   , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$red</tt></span>
+   , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$green</tt></span>
+   , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$blue</tt></span>
+   , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$alpha</tt></span>
+   )</div>
+
+  <p class="para">
+   指定した <acronym title="Red-Green-Blue">RGB</acronym> 値と <i><tt class="parameter">alpha</tt></i>
+ レベルに
+   「近い」画像パレット中の色のインデックスを返します。
+  </p>
+ </div>
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+<span class="term"><i><tt class="parameter">
+image</tt></i>
+</span><dd>
+<p class="para"><a href="function.imagecreatetruecolor.html" class="function">imagecreatetruecolor()</a>
+のような画像作成関数が返す画像リソース。</p></dd>
+</dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">red</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       赤コンポーネントの値。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">green</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       緑コンポーネントの値。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">blue</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       青コンポーネントの値。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">alpha</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i class="literal">0</i> から <i class="literal">127</i> までの値。
+       <i class="literal">0</i> は完全に不透明な状態。
+       <i class="literal">127</i> は完全に透明な状態を表します。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+   色のパラメータは、0 から 255 までの整数値か
+   0x00 から 0xFF までの十六進値を指定します。
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   画像パレット内で、指定した色にいちばん近い色のインデックスを返します。
+  </p>
+ </div>
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <blockquote><p><b class="note">注意</b>: <span class="simpara">この関数は、GD 2.0.1 以降を必要とします (2.0.28 以降を推奨します)。</span></p></blockquote>
+ </div>
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.imagecolorexactalpha.html" class="function">imagecolorexactalpha()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.imagecolorclosest.html">imagecolorclosest</a></div>
+ <div class="next" style="float: right;"><a href="function.imagecolorclosesthwb.html">imagecolorclosesthwb</a></div>
+ <div class="up"><a href="ref.image.html">イメージ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

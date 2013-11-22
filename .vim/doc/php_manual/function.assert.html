@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>assertion が FALSE であるかどうかを調べる</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.assert-options.html">assert_options</a></div>
+ <div class="next" style="float: right;"><a href="function.dl.html">dl</a></div>
+ <div class="up"><a href="ref.info.html">PHP オプション/情報</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.assert" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">assert</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">assert ― assertion が <b><tt>FALSE</tt></b> であるかどうかを調べる</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>assert</b></b></span>
+    ( <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$assertion</tt></span>
+   )</div>
+
+  <p class="para">
+   <b>assert()</b> は、指定した
+   <i><tt class="parameter">assertion</tt></i>
+ を調べて、結果が
+   <b><tt>FALSE</tt></b> の場合に適切な動作をします。
+  </p>
+  <p class="para">
+   <i><tt class="parameter">assertion</tt></i>
+ が文字列として指定された場合、
+   <b>assert()</b>によりPHPコードとして評価されます。
+   文字列 <i><tt class="parameter">assertion</tt></i>
+が優れているところは、
+   assertion のチェックがオフになった場合のオーバーヘッドがより少な
+   いことであり、assertionが失敗した場合のメッセージを式
+   <i><tt class="parameter">assertion</tt></i>
+に有しています。
+   つまり、もし論理型の条件を <i><tt class="parameter">assertion</tt></i>
+ 
+   として渡した場合、この条件が <a href="function.assert-options.html" class="function">assert_options()</a>
+   関数で指定したハンドラ関数への引数とはならないということです。
+   条件はハンドラ関数をコールする前に文字列に変換され、論理型の
+   <b><tt>FALSE</tt></b> は空文字列に変換されます。
+  </p>
+  <p class="para">
+   assertion は、デバッグ目的にのみ使用するべきです。
+   assertion を常に<b><tt>TRUE</tt></b>となる条件を調べる不具合診断に使用し、<b><tt>TRUE</tt></b>
+   でない場合に何らかのプログラミングエラーを示したり、extension
+   関数または特定のシステム制限や機能といった、
+   特定の機能の存在をチェックするために使用することが可能です。
+  </p>
+  <p class="para">
+   assersion は、入力パラメータのチェックのような通常の実行動作に
+   使用するべきではありません。一般的には、assertion のチェックを無効にしても
+   そのコードが正常に動作しなければなりません。
+  </p>
+  <p class="para">
+   <b>assert()</b> の動作は、
+   <a href="function.assert-options.html" class="function">assert_options()</a> またはマニュアルの関数の部分
+   に記述された .ini の設定により設定することが可能です。
+  </p>
+  <p class="para">
+   関数 <a href="function.assert-options.html" class="function">assert_options()</a> や
+   ASSERT_CALLBACK 設定ディレクティブにより失敗した assertion
+   を処理するコールバック関数を設定することが可能です。
+  </p>
+  <p class="para">
+   <b>assert()</b> のコールバックは、assertion
+   が発生した場所に関する情報と共に assertion
+   に渡されたコードを容易にキャプチャーできるため、
+   特に自動テストセットを構築する際に便利です。
+   この情報は他の手法でもキャプチャー可能ですが、assertion
+   を使用することにより、より簡単かつ容易に行なうことが可能です!
+  </p>
+  <p class="para">
+   コールバック関数は、3つの引数を受ける必要があります。最初の引数は、
+   assertionが失敗したファイルが含まれます。2番目の引数には、
+   assertionが失敗した行が含まれ、3番目の引数には失敗した式が含まれます
+   (もしある場合のみ。1 または &quot;two&quot; のようなリテラルの値は、
+   この引数に渡されません)。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">assertion</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       assertion。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   アサーションが false となった場合に <b><tt>FALSE</tt></b>、それ以外の場合に <b><tt>TRUE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 失敗した assertion をカスタムハンドラで処理する</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;assertを有効にし、出力を抑制する<br /></span><span style="color: #0000BB">assert_options</span><span style="color: #007700">(</span><span style="color: #0000BB">ASSERT_ACTIVE</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">assert_options</span><span style="color: #007700">(</span><span style="color: #0000BB">ASSERT_WARNING</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">assert_options</span><span style="color: #007700">(</span><span style="color: #0000BB">ASSERT_QUIET_EVAL</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;ハンドラ関数を作成する<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">my_assert_handler</span><span style="color: #007700">(</span><span style="color: #0000BB">$file</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$line</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$code</span><span style="color: #007700">)<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"&lt;hr&gt;Assertion&nbsp;Failed:<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File&nbsp;'$file'&lt;br&nbsp;/&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Line&nbsp;'$line'&lt;br&nbsp;/&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Code&nbsp;'$code'&lt;br&nbsp;/&gt;&lt;hr&nbsp;/&gt;"</span><span style="color: #007700">;<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;コールバックを設定する<br /></span><span style="color: #0000BB">assert_options</span><span style="color: #007700">(</span><span style="color: #0000BB">ASSERT_CALLBACK</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'my_assert_handler'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;失敗するassertionを作成<br /></span><span style="color: #0000BB">assert</span><span style="color: #007700">(</span><span style="color: #DD0000">'mysql_query("")'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.assert-options.html">assert_options</a></div>
+ <div class="next" style="float: right;"><a href="function.dl.html">dl</a></div>
+ <div class="up"><a href="ref.info.html">PHP オプション/情報</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

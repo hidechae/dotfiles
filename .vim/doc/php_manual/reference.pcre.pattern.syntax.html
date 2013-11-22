@@ -1,0 +1,2389 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>PCRE 正規表現の説明</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="reference.pcre.pattern.modifiers.html">パターン修飾子</a></div>
+ <div class="next" style="float: right;"><a href="function.preg-grep.html">preg_grep</a></div>
+ <div class="up"><a href="ref.pcre.html">PCRE</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="reference.pcre.pattern.syntax" class="refentry">
+   <div class="refnamediv">
+    <h1 class="refname">パターン構文</h1>
+    <p class="verinfo">(No version information available, might be only in CVS)</p><p class="refpurpose">パターン構文 ― PCRE 正規表現の説明</p>
+
+   </div>
+
+   <div class="refsect1 u">
+    <h3 class="title">概要</h3>
+    <p class="simpara">
+     PCRE ライブラリは、Perl 5 と同じ構文と意味体系を持つ正規表現の
+     パターンマッチを実装した関数群です。ただし、若干の差異もあります
+     （別記参照）。現在の実装は、 Perl 5.005 に対応しています。
+    </p>
+   </div>
+
+
+   <div class="refsect1 u">
+    <h3 class="title">Perl との差異</h3>
+    <p class="para">
+     Perl 5.005 との違いについて以下に説明します。
+     <ol class="orderedlist">
+      <li class="listitem">
+       <span class="simpara">
+        デフォルトでは、空白文字は C ライブラリ関数 isspace() 
+        が認識する文字となります。PCRE を別の文字型テーブルを用いて 
+        コンパイルすることも可能です。通常、isspace() はスペース、改ページ、
+        改行、復帰、水平タブ、垂直タブにマッチします。 Perl 5 では、現在、
+        垂直タブが空白文字として扱われていません。 Perl ドキュメントには \v
+        というエスケープが記載されていましたが、実際は認識されていませんでした。
+        ただし、垂直タブ文字は少なくとも 5.002 までは空白文字として
+        処理されていました。 5.004 および 5.005 では、\s 
+        にマッチしなくなっています。
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        PCRE では、先読み言明に量指定子を指定できません。Perl 
+        では可能ですが、思ったような動作を意味しないかもしれません。
+        例えば、(?!a){3} は、続く 3 文字が &quot;a&quot; でないことの言明ではありません。
+        この指定は、次の 1 文字が &quot;a&quot; ではないことを 3 回言明するだけです。
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        否定の先読み言明の中に記述したキャプチャ用サブパターンは
+        カウントされますが、対応するオフセットにそのエントリは
+        セットされません。 Perlでは、言明のマッチングに失敗する前に
+        マッチしたパターンからその変数を設定しますが、それが行われるのは、
+        否定の先読み言明中の選択肢が 1 つだけの場合のみです。
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        ヌル文字は、検索対象文字列においては使用できますが、
+        パターン文字列内では使用できません。これは、パターン文字列が 0 
+        を終端とする通常の C 文字列として渡されるためです。パターン中では、
+        エスケープシーケンス &quot;\x00&quot; を使ってヌル文字を表すことができます。
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        次の Perl エスケープシーケンスはサポートされせん。
+        \l, \u, \L, \U, \E, \Q 。
+        これらのエスケープシーケンスは、Perl のパターンマッチエンジン内
+        ではなく、文字列処理の部分で実装されているためです。
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        Perl の \G 言明は、単一のパターンマッチに対しては意味がなく、
+        サポートされません。
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+       当然ながら、PCRE により、(?{code}) 構文はサポートされません。
+       </span>
+     </li>
+      <li class="listitem">
+       <span class="simpara">
+        Perl 5.005_02 では、パターンの一部を繰り返すと、キャプチャ文字列の
+        セットに関して奇妙な動作をすることがあるようです。例えば、&quot;aba&quot; 
+        を パターン /^(a(b)?)+$/ に対してマッチングを行うと、 $2 には値 
+        &quot;b&quot; が設定されますが、&quot;aabbaa&quot; を /^(aa(bb)?)+$/ に対して
+        マッチングを行うと、$2 はセットされません。
+        しかし、パターンを /^(aa(b(b))?)+$/ に変えると、
+        $2 (および $3) はセットされます。
+
+        Perl 5.004 では、どちらの場合も $2 はセットされます。 PCRE の場合も、
+        どちらの場合でもセットされます。将来的に Perl が矛盾のない状態に
+        変更された場合は、PCRE も追従する可能性があります。 
+       </span>
+       </li>
+       <li class="listitem">
+       <span class="simpara">
+        他の未解決の食い違いとして、パターン /^(a)?(?(1)a|b)+$/ は、
+        Perl 5.005_02 では文字列 &quot;a&quot; にマッチしますが、PCRE ではマッチしない
+        ということがあります。しかし、Perl と PCRE のいずれでも、/^(a)?a/
+        で &quot;a&quot; をマッチした場合は $1 が未定義のままとなります。
+       </span>
+      </li>
+      <li class="listitem">
+       <p class="para">
+        Perl の正規表現の機能よりさらに拡張された機能を使うことができます。
+       <ol class="orderedlist">
+        <li class="listitem">
+         <span class="simpara">
+          戻り読み言明は、固定長の文字列にマッチする必要がありますが、
+          このとき、戻り読み言明内の選択肢は、それぞれ異なる長さの文字列に
+          マッチするパターンとしても問題ありません。Perl 5.005 では
+          すべての選択肢が同じ長さである必要があります。
+        </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_DOLLAR_ENDONLY</a>
+          が設定され 
+          <a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_MULTILINE</a>
+          が設定されていない場合、メタ文字 $ は文字列の終端にのみ
+          マッチします。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_EXTRA</a> 
+          を設定すると、バックスラッシュの後に意味がない文字が続くと
+          エラーとなります。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_UNGREEDY</a>
+          を設定すると、量指定子の貪欲さが反転します。つまり、量指定子は、
+          デフォルトで貪欲でなく、疑問符を後ろに付けてはじめて
+          貪欲になるようになります。
+         </span>
+        </li>
+       </ol>
+      </p>
+     </li>
+    </ol>
+   </p> 
+   </div>
+
+
+   <div class="refsect1 u">
+    <h3 class="title">正規表現の詳細</h3>
+    <div class="refsect2 u">
+     <h4 class="title">導入</h4>
+     <p class="para">
+      PCRE がサポートする正規表現の構文と意味体系を以下に示します。
+      正規表現については、Perl のドキュメントや他の多くの書籍においても
+      解説されており、実例が豊富に記載されているものもあります。特に、
+      O&#039;Reilly 発刊 Jeffrey Friedl 著 &quot;Mastering Regular Expressions&quot; 
+      (ISBN 1-56592-257) 〔日本語版：「詳説 正規表現」〕には、
+      たいへん詳細に解説されています。
+     </p>
+     <p class="para">
+      以降の説明は、参考文書 (reference documentation) として
+      扱われることを想定しています。
+     </p>
+     <p class="para">
+      正規表現は、ある種のパターンであり、検索対象文字列 (subject string) 
+      に対して左から右〔文字列の初めから終わり〕の順にマッチングが行われます。
+      一部の例外を除き、パターン中の文字はその文字自体を表し、
+      検索対象文字列内の同じ文字にマッチします。簡単な例をあげると、パターン
+      <pre class="literallayout">
+      The quick brown fox
+      </pre>
+      は、検索対象文字列内にある、このパターンと同一の部分にマッチします。
+     </p>
+    </div>
+
+
+    <div class="refsect2 u">
+     <h4 class="title">メタ文字</h4>
+     <p class="para">    
+      正規表現の強力さは、パターン中に選択肢や繰り返しを記述できることに
+      あります。選択肢や繰り返しは、<em class="emphasis">メタ文字</em>
+       (meta-character) を使ってパターン中に記述します。メタ文字は、
+       その文字自体を表わさず、代わって特別な解釈が行われます。
+     </p>
+     <p class="para">
+      メタ文字には、2 種類あります。ひとつは、角カッコ内を除き、
+      パターン中のどこででも使用できる文字です。もうひとつは、
+      角カッコで括られた中でだけ使用できる文字です。
+     </p>
+     <p class="para">
+      前者の角カッコ外で使用できるメタ文字には、次のものがあります。
+      <dl>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\</em></span>
+        <dd>
+
+         <span class="simpara">
+          多目的に使う一般的なエスケープ文字 
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">^</em></span>
+        <dd>
+
+         <span class="simpara">
+          検索対象（複数行モードでは行）の始まりを言明
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">$</em></span>
+        <dd>
+
+         <span class="simpara">          
+          検索対象（複数行モードでは行）の終わりを言明 
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">.</em></span>
+        <dd>
+
+         <span class="simpara">
+           改行を除くすべての文字にマッチ（デフォルト時）
+        </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">[</em></span>
+        <dd>
+
+         <span class="simpara">
+          文字クラス定義の開始
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">]</em></span>
+        <dd>
+
+         <span class="simpara">
+          文字クラス定義の終了
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">|</em></span>
+        <dd>
+
+         <span class="simpara">
+          選択枝の開始
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">(</em></span>
+        <dd>
+
+         <span class="simpara">
+          サブパターンの開始
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">)</em></span>
+        <dd>
+
+         <span class="simpara">
+          サブパターンの終了
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">?</em></span>
+        <dd>
+
+         <span class="simpara">
+           ( の意味を拡張／0 または 1 回マッチ／なるべく少ない回数だけマッチ 
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">*</em></span>
+        <dd>
+
+         <span class="simpara">
+          0 回以上の繰り返し
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">+</em></span>
+        <dd>
+
+         <span class="simpara">
+          1 回以上の繰り返し
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">{</em></span>
+        <dd>
+
+         <span class="simpara">
+          最小／最大を指定する量指定子の開始
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">}</em></span>
+        <dd>
+
+         <span class="simpara">
+          量指定子の終了
+         </span>
+        </dd>
+
+       </dt>
+
+      </dl>
+
+
+     パターン中の角カッコで括まれた部分を「文字クラス」と言います。
+     文字クラスで使えるメタ文字は、次のものだけです。
+
+      <dl>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\</em></span>
+           <dd>
+
+         <span class="simpara">
+          一般的なエスケープ文字
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">^</em></span>
+           <dd>
+
+         <span class="simpara">
+          クラスの否定。ただし、文字クラスの最初の文字に用いた場合のみ
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">-</em></span>
+        <dd>
+
+         <span class="simpara">
+          文字の範囲の指定
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">]</em></span>
+        <dd>
+
+         <span class="simpara">
+          文字クラスの終了
+         </span>
+        </dd>
+
+       </dt>
+
+      </dl>
+
+      以降のセクションで、各メタ文字の使用法の説明を行います。
+     </p>
+    </div>
+
+
+    <div class="refsect2 u">
+     <h4 class="title">バックスラッシュ</h4>
+     <p class="para">
+      バックスラッシュ〔日本語環境では円記号となる場合もある〕には、
+      いくつかの使用法があります。ひとつめの使用法は、
+      非英数字の前に記述する場合で、続く文字が表す特別な意味を取り去ります。
+      このエスケープ文字としての使用法は、
+      文字クラスの内外部いずれでも可能です。
+     </p>
+     <p class="para">
+      たとえば、&quot;*&quot; 文字とマッチさせたい場合は、パターンを &quot;\*&quot; と記述します。
+      続く文字がメタ文字として解釈されるものであるかには関係ありませんので、
+      いかなる非英数字に対しても、&quot;\&quot; を付けると、その文字自体が
+      表わされることになります。特に、
+      バックスラッシュとマッチさせたい場合は、&quot;\\&quot; と記述します。
+     </p>
+     <blockquote><p><b class="note">注意</b>: 
+      
+       シングルクォートあるいはダブルクォートで囲まれた PHP の
+       <a href="language.types.string.html#language.types.string.syntax" class="link">文字列</a>
+       の中では、バックスラッシュは特別な意味を表します。
+       そのため、正規表現 \\ を使用して \ とマッチさせたい場合は
+       PHP のコード内では &quot;\\\\&quot; あるいは &#039;\\\\&#039; と記述する必要があります。
+      <br />
+     </p></blockquote>
+     <p class="para">
+     パターンを、
+     <a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_EXTENDED</a>
+     オプションを付けてコンパイルすると、（文字クラス内部を除き）
+     パターン中の空白文字、および &quot;#&quot; とその次の改行文字との間の文字は
+     無視されます。空白文字や &quot;#&quot; をパターン中に含めるには、
+     バックスラッシュを用いてエスケープします。
+     </p>
+     <p class="para">
+      バックスラッシュの 2 番目の使用法は、非表示文字〔制御コードなど〕を
+      パターン中に目に見える形で記述するための方法です。ヌル文字は
+      パターンを終了させてしまうため使えませんが、その他の非表示文字は、
+      パターンにそのまま含めても問題はありません。しかし、パターンの編集には、
+      バイナリ文字をそのまま用いるよりも、以下に示すエスケープシーケンスを
+      用いる方が便利でしょう。
+     </p>
+     <p class="para">
+      <dl>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\a</em></span>
+        <dd>
+
+         <span class="simpara">
+          アラーム、ベル文字 (16進 07) 
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\cx</em></span>
+        <dd>
+
+         <span class="simpara">
+          &quot;control-x&quot;, ここで x は任意の文字 
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\e</em></span>
+        <dd>
+
+         <span class="simpara">
+          エスケープ文字 (16進 1B) 
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\f</em></span>
+        <dd>
+
+         <span class="simpara">
+          改ページ (formfeed) (16進 0C)
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\n</em></span>
+        <dd>
+
+         <span class="simpara">
+          改行 (newline) (16進 0A) 
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\r</em></span>
+        <dd>
+
+         <span class="simpara">
+          復帰 (carriage return) (16進 0D) 
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\t</em></span>
+        <dd>
+
+         <span class="simpara">
+          タブ (16進 09) 
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\xhh</em></span>
+        <dd>
+
+         <span class="simpara">
+          16 進コードで hh の文字 
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\ddd</em></span>
+        <dd>
+
+         <span class="simpara">
+          8 進コードで ddd の文字、もしくは、後方参照
+         </span>
+        </dd>
+
+       </dt>
+
+      </dl>
+
+     </p>
+     <p class="para">
+      &quot;\cx&quot; の正確な働きは、次の通りです。&quot;x&quot; が小文字の場合、
+      大文字に変換されます。続いて、文字の 6 ビット目 (16進数 40) が
+      反転されます。つまり、&quot;z&quot; は 16 進数の 1A になり、&quot;{&quot; は 3B になり、
+      &quot;;&quot; は 7B になります。
+     </p>
+     <p class="para">      
+      &quot;\x&quot; の後では、2 桁までの 16 進数が読まれます
+      （大小文字どちらも可能です）。 &quot;\0&quot; の後では、さらに 2 桁の 8 進数が
+      読みこまれます。いずれの場合も、2 桁より少ない場合、桁があるだけ
+      読みこまれます。つまり、&quot;\0\x\07&quot; は ヌル文字 2 つの後にベル文字が
+      続いたものを表します。8 進数を指定する場合は、必ず最初のゼロに続いて
+      残りの 2 桁の数字を指定するように注意してください。
+     </p>
+     <p class="para">
+      バックスラッシュの後に 0 以外の数字が続く場合の処理は複雑です。
+      文字クラスの外部では、 PCRE は、続く数字全体を 10 進数として読みます。
+      数字が 10 よりも小さい場合、または、正規表現の中に含まれる
+      キャプチャ用左カッコの数以下の場合、 後方参照 として解釈されます。
+      この動作に関する詳しい説明は、後ほど、カッコによるサブパターンの説明を
+      行ってから示します
+     </p>
+     <p class="para">
+      文字クラスの中、または、指定された 10 進数が 9 より大きく、
+      キャプチャ用サブパターンの数がこの数に満たない場合は、PCRE は
+      バックスラッシュの後から最大 3 文字の 8 進数を再度読みこみ、
+      その値の最下位 8 ビットから 1 バイトを生成します。
+      その後に続く数字は、それ自体を表します。以下に例を示します。
+     </p>
+     <p class="para">
+      <dl>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\040</em></span>
+        <dd>
+
+         <span class="simpara">
+          スペースの別の表記法
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\40</em></span>
+        <dd>
+
+         <span class="simpara">
+          上と同じ。ただし、キャプチャ用サブパターンが 40 個未満の場合
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\7</em></span>
+           <dd>
+
+         <span class="simpara">
+          常に後方参照
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\11</em></span>
+        <dd>
+
+         <span class="simpara">
+          後方参照、または、タブの別記法
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\011</em></span>
+        <dd>
+
+         <span class="simpara">
+          常にタブ
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\0113</em></span>
+        <dd>
+
+         <span class="simpara">
+          タブの後に文字 &quot;3&quot; が続いたもの
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\113</em></span>
+        <dd>
+
+         <span class="simpara">
+          8進コードで 113 の文字
+          (99 を超える後方参照は存在しないため)
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\377</em></span>
+        <dd>
+
+         <span class="simpara">
+          全ビットが 1 である 1 バイト
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\81</em></span>
+           <dd>
+
+         <span class="simpara">
+          後方参照、または、ヌル文字の後に 2つの文字 
+            &quot;8&quot; および &quot;1&quot; が続いたもの
+         </span>
+        </dd>
+
+       </dt>
+
+     </dl>
+
+    </p>
+    <p class="para">
+     3 桁を超えて 8 進数は読みこまれないため、100 以上の 8 進数には
+     ゼロを前につけてはいけないことに注意してください。
+    </p>
+    <p class="para">
+     これらの 1 バイト値を定義するエスケープシーケンスは、
+     文字クラスの内外部のいずれでも使用できます。加えて、文字クラス内では
+     エスケープシーケンス &quot;<i class="literal">\b</i>&quot; はバックスペース (16進 0x) として解釈されます。
+     文字クラス外では、別の意味を有します（別記参照）。
+    </p>
+    <p class="para">
+     バックスラッシュの第 3 の使用法は、包括的な文字型を指定する用途です。
+    </p>
+    <p class="para">
+      <dl>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\d</em></span>
+        <dd>
+
+         <span class="simpara">
+          10 進数字 
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\D</em></span>
+        <dd>
+
+         <span class="simpara">
+           10 進数字でない文字
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+       <span class="term"><em class="emphasis">\h</em></span>
+       <dd>
+<span class="simpara">水平方向の空白文字 (PHP 5.2.4 以降)</span></dd>
+
+      </dt>
+
+      <dt>
+
+       <span class="term"><em class="emphasis">\H</em></span>
+       <dd>
+<span class="simpara">水平方向の空白文字でない文字 (PHP 5.2.4 以降)</span></dd>
+
+      </dt>
+
+      <dt>
+
+        <span class="term"><em class="emphasis">\s</em></span>
+        <dd>
+
+         <span class="simpara">
+          空白文字
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\S</em></span>
+        <dd>
+
+         <span class="simpara">
+          空白文字でない文字
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+       <span class="term"><em class="emphasis">\v</em></span>
+       <dd>
+<span class="simpara">垂直方向の空白文字 (PHP 5.2.4 以降)</span></dd>
+
+      </dt>
+
+      <dt>
+
+       <span class="term"><em class="emphasis">\V</em></span>
+       <dd>
+<span class="simpara">垂直方向の空白文字でない文字 (PHP 5.2.4 以降)</span></dd>
+
+      </dt>
+
+      <dt>
+
+        <span class="term"><em class="emphasis">\w</em></span>
+        <dd>
+
+         <span class="simpara">
+          単語構成文字 (word character) 
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\W</em></span>
+        <dd>
+
+         <span class="simpara">
+          非単語構成文字 (non-word character)
+         </span>
+        </dd>
+
+       </dt>
+
+      </dl>
+
+     </p>
+     <p class="para">
+      これらエスケープシーケンスの各組により、文字集合が 2 つに分割されます。
+      文字は、各組のどちらか片方だけにマッチします。
+     </p>
+     <p class="para">
+      単語構成文字とは、英字または数字またはアンダースコア文字であり、Perl
+      が定義するところの「単語」と成り得る文字のことです。文字および数字の
+      定義は、PCRE の文字テーブルにより制御され、ロケールを指定して
+      マッチングを行うと変わる可能性があります。
+      例えば、&quot;fr&quot; （フランス語）ロケールの場合、128 を超える
+      文字コードのいくつかは、アクセント付きの文字に使われており、
+      これらは <i class="literal">\w</i> とマッチします。
+     </p>
+     <p class="para">
+     これらの文字型表記は、文字クラスの内外によらず使用可能で、
+     対応する型のたかだか 1 文字とマッチします。カレントのマッチング位置が
+     検索対象文字列の終端である場合、マッチできる文字が無いので、
+     マッチは失敗します。
+     </p>
+     <p class="para">
+     バックスラッシュの第 4 の使用法は、簡単な言明 (assertion) です。
+     言明とは、マッチがある特定の位置でだけ可能だという条件を指定するもので、
+     検索対象文字列から文字を消費 (consume)〔つまり文字自体にマッチ〕
+     しません。サブパターンを使ったより複雑な言明の方法もありますが、
+     それについての解説は後ほど行います。バックスラッシュを使った言明は、
+     次のものがあります
+     </p>
+     <p class="para">
+      <dl>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\b</em></span>
+        <dd>
+
+         <span class="simpara">
+          単語境界 
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\B</em></span>
+        <dd>
+
+         <span class="simpara">
+          非単語境界
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\A</em></span>
+        <dd>
+
+         <span class="simpara">
+          検索対象文字列の始端（複数行モードとは独立）
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\Z</em></span>
+        <dd>
+
+         <span class="simpara">
+         検索対象文字列の終端、または終端の改行（複数行モードとは独立） 
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+        <span class="term"><em class="emphasis">\z</em></span>
+        <dd>
+
+         <span class="simpara">
+          検索対象文字列の終端（複数行モードとは独立）
+         </span>
+        </dd>
+
+       </dt>
+
+       <dt>
+
+         <span class="term"><em class="emphasis">\G</em></span>
+         <dd>
+<span class="simpara">マッチングの開始位置</span></dd>
+
+      </dt>
+
+      </dl>
+
+     </p>
+     <p class="para">
+      これらの言明は、文字クラス内では使用できません（また、文字クラス内では、
+       &quot;<i class="literal">\b</i>&quot; はバックスペース文字という別の意味を持つので
+       注意してください）。
+     </p>
+     <p class="para">
+      単語境界 (word boundary) とは、検索対象文字列において、
+      カレントの文字およびその前の文字が同時に <i class="literal">\w</i> 
+      もしくは <i class="literal">\W</i> にマッチしない（すなわち、片方が 
+      <i class="literal">\w</i> にマッチし、もう片方が <i class="literal">\W</i>
+      にマッチする）位置、もしくは、文字列の始めか終わりで、
+      その始めか終わりの文字が <i class="literal">\w</i> にマッチする位置の
+      ことです。
+     </p>
+     <p class="para">      
+      言明 <i class="literal">\A</i>, <i class="literal">\Z</i>, 
+      <i class="literal">\z</i> は、（以降で説明する）ハット記号やドル記号とは
+      異なり、オプション設定によらず、文字列の始端または終端だけに
+      マッチします。これらの言明は、<a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_MULTILINE</a> および <a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_DOLLAR_ENDONLY</a> 
+      オプションの影響を受けません。
+      <i class="literal">\Z</i> と <i class="literal">\z</i> との違いは、
+      <i class="literal">\Z</i> は文字列の末尾の改行の前の位置および文字列の
+      終端にマッチするのに対し、<i class="literal">\z</i> は文字列の終端にのみ
+      マッチすることです。
+     </p>
+     
+     <p class="para">
+      言明 <i class="literal">\G</i> は、カレントのマッチング位置が、
+      <a href="function.preg-match.html" class="function">preg_match()</a> 関数の <i><tt class="parameter">offset</tt></i>
+
+      引数に指定されたマッチングの開始位置である場合に真になります。
+      <i><tt class="parameter">offset</tt></i>
+ が非ゼロの場合は、<i class="literal">\A</i>
+      と等価ではありません。PHP 4.3.3 以降で使用可能です。
+     </p>
+     
+     <p class="para">
+      PHP 4.3.3 以降では、
+      <i class="literal">\Q</i> と <i class="literal">\E</i> とを使って、
+      パターン中のメタ文字を無視させることができます。
+      たとえば、
+      <pre class="literallayout">
+      \w+\Q.$.\E$
+      </pre>
+      は、文字列の終端において1つ以上の単語構成文字のあとに <i class="literal">.$.</i> 
+      というリテラルが続いたものにマッチします。
+     </p>
+
+     <p class="para">
+      <i class="literal">\K</i> を使用すると、マッチの開始位置をリセットできます。
+      これは PHP 5.2.4 以降で使用可能です。たとえば、パターン
+      <i class="literal">foo\Kbar</i> は &quot;foobar&quot; にマッチしますが、
+      結果は &quot;bar&quot; にマッチしたと報告されます。
+      <i class="literal">\K</i> を使用しても、キャプチャした部分文字列には影響を及ぼしません。
+      たとえば、パターン <i class="literal">(foo)\Kbar</i> が
+      &quot;foobar&quot; にマッチしたときの最初の部分文字列は &quot;foo&quot; です。
+     </p>
+     
+    </div>
+
+
+    <div class="refsect2 u">
+     <h4 class="title">Unicode 文字プロパティ</h4>
+     <p class="para">
+      PHP 4.4.0 および 5.1.0 以降、<em class="emphasis">UTF-8 モード</em> を設定した場合に、
+      一般的な文字タイプにマッチする新たなエスケープシーケンスが 3 つ追加されました。
+     </p>
+     <dl>
+
+      <dt>
+
+       <span class="term"><em class="emphasis">\p{xx}</em></span>
+       <dd>
+<span class="simpara">xx プロパティを持つ文字</span></dd>
+
+      </dt>
+
+      <dt>
+
+       <span class="term"><em class="emphasis">\P{xx}</em></span>
+       <dd>
+<span class="simpara">xx プロパティを持たない文字</span></dd>
+
+      </dt>
+
+      <dt>
+
+       <span class="term"><em class="emphasis">\X</em></span>
+       <dd>
+<span class="simpara">拡張 Unicode シーケンス</span></dd>
+
+      </dt>
+
+     </dl>
+
+     <p class="para">
+      ここで <i class="literal">xx</i> で表されているプロパティ名は、Unicode で
+      一般カテゴリプロパティ (general category properties) として規定されているものに
+      なります。すべての文字は、いずれかひとつのプロパティを持ちます。
+      プロパティは、2 文字の略語で表されます。Perl と同じく、
+      開き波カッコとプロパティ名との間にハット文字を記述することで否定を指定できます。
+      たとえば、<i class="literal">\p{^Lu}</i> は <i class="literal">\P{Lu}</i> と同じです。
+     </p>
+     <p class="para">
+      <i class="literal">\p</i> もしくは <i class="literal">\P</i> の後に、一文字だけを記述すると
+      その文字で始まるすべてのプロパティが指定されたことになります。
+      この場合、否定の指定をしていない場合、波カッコを使用しなくても構いません。
+      以下の 2 つの例は等価になります。
+     </p>
+     <pre class="literallayout">
+      \p{L}
+      \pL
+     </pre>
+     <table border="5">
+      <caption><b>使用可能なプロパティコード</b></caption>
+      <colgroup>
+
+       <tbody valign="middle">
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">C</i></td><td colspan="1" rowspan="1" align="left">その他 (Other)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Cc</i></td><td colspan="1" rowspan="1" align="left">コントロール文字 (Control)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Cf</i></td><td colspan="1" rowspan="1" align="left">非可視整形用文字 (Format)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Cn</i></td><td colspan="1" rowspan="1" align="left">未定義コードポイント (Unassigned)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Co</i></td><td colspan="1" rowspan="1" align="left">私的利用領域 (Private use)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Cs</i></td><td colspan="1" rowspan="1" align="left">サロゲート (Surrogate)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">L</i></td><td colspan="1" rowspan="1" align="left">アルファベット (Letter)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Ll</i></td><td colspan="1" rowspan="1" align="left">小文字アルファベット (Lower case letter)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Lm</i></td><td colspan="1" rowspan="1" align="left">擬似文字 (Modifier letter)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Lo</i></td><td colspan="1" rowspan="1" align="left">その他の文字 (Other letter)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Lt</i></td><td colspan="1" rowspan="1" align="left">タイトル文字 (Title case letter)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Lu</i></td><td colspan="1" rowspan="1" align="left">大文字アルファベット (Upper case letter)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">M</i></td><td colspan="1" rowspan="1" align="left">記号 (Mark)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Mc</i></td><td colspan="1" rowspan="1" align="left">修飾文字 (Spacing mark)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Me</i></td><td colspan="1" rowspan="1" align="left">他の文字を囲むための文字 (Enclosing mark)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Mn</i></td><td colspan="1" rowspan="1" align="left">他の文字を修飾するための文字 (Non-spacing mark)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">N</i></td><td colspan="1" rowspan="1" align="left">数字 (Number)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Nd</i></td><td colspan="1" rowspan="1" align="left">10 進数字 (Decimal number)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Nl</i></td><td colspan="1" rowspan="1" align="left">数値を表す文字 (Letter number)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">No</i></td><td colspan="1" rowspan="1" align="left">その他の数字 (Other number)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">P</i></td><td colspan="1" rowspan="1" align="left">句読記号 (Punctuation)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Pc</i></td><td colspan="1" rowspan="1" align="left">連結用句読記号 (Connector punctuation)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Pd</i></td><td colspan="1" rowspan="1" align="left">ダッシュ (Dash punctuation)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Pe</i></td><td colspan="1" rowspan="1" align="left">閉じ句読記号 (Close punctuation)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Pf</i></td><td colspan="1" rowspan="1" align="left">末尾句読記号 (Final punctuation)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Pi</i></td><td colspan="1" rowspan="1" align="left">先頭句読記号 (Initial punctuation)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Po</i></td><td colspan="1" rowspan="1" align="left">その他の句読記号 (Other punctuation)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Ps</i></td><td colspan="1" rowspan="1" align="left">開き句読記号 (Open punctuation)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">S</i></td><td colspan="1" rowspan="1" align="left">記号 (Symbol)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Sc</i></td><td colspan="1" rowspan="1" align="left">通貨記号 (Currency symbol)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Sk</i></td><td colspan="1" rowspan="1" align="left">合わせ文字 (Modifier symbol)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Sm</i></td><td colspan="1" rowspan="1" align="left">数学記号 (Mathematical symbol)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">So</i></td><td colspan="1" rowspan="1" align="left">その他の記号 (Other symbol)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Z</i></td><td colspan="1" rowspan="1" align="left">区切り文字 (Separator)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Zl</i></td><td colspan="1" rowspan="1" align="left">行区切り文字 (Line separator)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Zp</i></td><td colspan="1" rowspan="1" align="left">段落区切り文字 (Paragraph separator)</td></tr>
+
+        <tr valign="middle"><td colspan="1" rowspan="1" align="left"><i class="literal">Zs</i></td><td colspan="1" rowspan="1" align="left">空白文字 (Space separator)</td></tr>
+
+       </tbody>
+      </colgroup>
+
+     </table>
+
+     <p class="para">
+      &quot;Greek&quot; や &quot;InMusicalSymbols&quot; といった拡張プロパティ (extended properties)
+      は PCRE によりサポートされていません。
+     </p>
+     <p class="para">
+      大小文字を区別しないマッチングを設定していても、これらのエスケープ
+      シーケンスには影響しません。たとえば、<i class="literal">\p{Lu}</i> は
+      常に小文字にのみマッチします。
+     </p>
+     <p class="para">
+      <i class="literal">\X</i> は、拡張 Unicode シーケンスを構成する Unicode 文字群に
+      マッチします。<i class="literal">\X</i> は、<i class="literal">(?&gt;\PM\pM*)</i>
+      と等価です。
+     </p>
+     <p class="para">
+      つまり、記号 (mark) プロパティの付いていない文字と、その後に続く 0 以上の
+      記号プロパティ付きの文字にマッチし、その並びをアトミック (atomic) な
+      まとまりとして取り扱います。記号プロパティ付きの文字とは、アクセント記号などの
+      直前の文字に対して影響するようなもののことです。
+     </p>
+     <p class="para">
+      Unicode プロパティを使った文字列マッチングは速くありません。PCRE は
+      15,000 以上のデータからなるストラクチャを検索する必要が有るためです。
+      そのため、PCRE では、<i class="literal">\d</i> や <i class="literal">\w</i> といった
+      以前から有るエスケープシーケンスは Unicode プロパティを使用しないように
+      なっています。
+     </p>
+    </div>
+
+
+    <div class="refsect2 u">
+     <h4 class="title">ハット記号とドル記号</h4>
+     <p class="para">
+      ハット記号は、文字クラス外でマッチモード (matching mode) がデフォルトの場合、
+      カレントのマッチング位置が対象文字列の始端である場合に真だ
+      という言明です。文字クラス内では、ハット記号はまったく別の意味と
+      なります（別記参照）。
+     </p>
+     <p class="para">
+      パターン中で選択肢を用いる場合は、ハット記号は、それが必要な選択肢の
+      先頭に記述すればよく、パターン全体の先頭にしか記述できない訳では
+      ありません。すべての選択肢がハット記号で始まる場合、つまり
+      パターンが対象文字列の始端でのみマッチするように制限されている
+      パターンは、固定 (anchored) パターンと呼ばれます（もちろん、
+      他にもパターンを固定にする方法はあります）。
+     </p>
+     <p class="para">
+      ドル記号は、（デフォルトでは）カレントのマッチング位置が
+      対象文字列の終端にあるか、文字列の終わりの改行文字の直前にある場合に
+      真だという言明です。パターン中で選択肢を用いる場合は、ドル記号は、
+      必要な選択肢の最後に記述すればよく、パターン全体の最後にしか
+      記述できない訳ではありません。
+      ドル記号は、文字クラス内では特別な意味を持ちません。
+     </p>
+     <p class="para">
+      コンパイル時またはマッチング時に <a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_DOLLAR_ENDONLY</a> 
+      オプションを設定すると、ドル記号の動作を文字列の終端でのみ
+      マッチするように変更することができます
+      このオプションは \Z 言明には影響しません。
+     </p>
+     <p class="para">
+      ハット記号とドル記号の動作は、<a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_MULTILINE</a> 
+      オプションを設定すると変化します。この場合、対象文字列の始端および
+      終端にマッチするのに加えて、対象文字列の &quot;\n&quot; 文字の直前および直後に
+      それぞれマッチします。例えば、パターン /^abc$/ は、複数行モードに
+      おいては、対象文字列 &quot;def\nabc&quot; にマッチしますが、
+      複数行モードでない場合はマッチしません。すなわち、すべての選択肢が
+       &quot;^&quot; で始まっており単一行モードでは固定のパターンも、複数行モードでは
+       固定パターンでなくなります。<a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_DOLLAR_ENDONLY</a>
+       オプションは、 <a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_MULTILINE</a> 
+       オプションが設定されている場合は無視されます。
+     </p>
+     <p class="para">
+      どちらのモードでも、エスケープシーケンス \A, \Z, \z は、
+      対象文字列の始端および終端にマッチすることに注意してください。ですので、
+      パターン中の選択肢がすべて \A で始まる場合、<a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_MULTILINE</a> 
+      オプションの設定によらず、そのパターンは固定となります。
+     </p>
+    </div>
+
+
+    <div class="refsect2 u">
+     <h4 class="title">ドット</h4>
+     <p class="para">
+      パターン中のドット（ピリオド、終止符）は、文字クラス外では、
+      対象文字列の任意の 1 文字にマッチします。非出力文字も含まれます。
+      ただし、（デフォルトでは）改行文字とはマッチしません。
+      <a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_DOTALL</a> 
+      オプションを設定すると、ドットは改行にもマッチするようになります。
+      ドットの処理は、ハット記号およびドル記号とは完全に独立しています。
+      共通な点は共に改行文字と関連することだけです。ドットは、
+      文字クラス内では特別な意味を持ちません。
+     </p>
+     <p class="para">
+      <em class="emphasis">\C</em> は単一バイトの文字にマッチします。
+      これは、<em class="emphasis">UTF-8 モード</em> で、ドットが複数バイトの文字にも
+      マッチするような場合に有用です。
+     </p>
+    </div>
+
+
+    <div class="refsect2 u">
+     <h4 class="title">角カッコ</h4>
+     <p class="para">
+      開き角カッコは文字クラス (character class) の開始を表し、
+      閉じ角カッコにより文字クラスは終了します。閉じ角カッコだけでは、
+      特別な意味を持ちません。閉じ角カッコを文字クラスのメンバとしたい場合は、
+      文字クラスの最初の文字（否定のハット記号がある場合はその直後）とするか、
+      バックスラッシュでエスケープする必要があります。
+     </p>
+     <p class="para">
+      文字クラスは、検索対象文字列のたかだか 1 文字にマッチします。
+      マッチする文字は、その文字クラスによって定義された文字集合のうちの
+      どれかです。ただし、文字クラスの最初の文字がハット記号の場合は、
+      マッチする文字は、その文字クラスに定義されていない文字となります。
+      ハット記号自体をクラスのメンバとしたい場合は、文字クラスの
+      最初の文字としないか、バックスラッシュでエスケープしてください。
+     </p>
+     <p class="para">
+      例えば、文字クラス [aeiou] は小文字の母音にマッチしますが、[^aeiou] は
+      小文字の母音以外の文字にマッチします。ハット記号は、含まれない文字を
+      列挙することにより文字クラスに含まれる文字を指定するための簡略表記です。
+      文字クラスは、言明ではありません。対象文字列から文字を消費します。また、
+      カレントのポインタが文字列の終端にある場合には、マッチに失敗します。
+     </p>
+     <p class="para">
+      大小文字を区別しないマッチングを行うよう設定した場合は、
+      クラス内の文字は大小文字の両方を表します。例えば、
+      大小文字を区別しない場合、[aeiou] は &quot;a&quot; にも &quot;A&quot; にもマッチします。
+      同じく大小文字を区別しない場合 [^aeiou] は &quot;A&quot; にマッチしませんが、
+      区別する場合はマッチします
+     </p>
+     <p class="para">
+      <a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_DOTALL</a> 
+      または <a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_MULTILINE</a> 
+      オプションをどのように設定しようとも、改行文字は、文字クラスにおいて
+      特別な扱いはされません。たとえば、 [^a] のようなクラスは、
+      常に改行にマッチします。
+     </p>
+     <p class="para">
+      マイナス (ハイフン) 記号は、文字クラスで文字の範囲を指定するために
+      使われます。例えば、[d-m] は d と m の間のあらゆる文字にマッチします。
+      マイナス記号が文字クラス内に必要な場合は、バックスラッシュで
+      エスケープしてください。もしくは、文字クラスの最初または最後など、
+      範囲を示すと解釈されない場所に記述してください。
+     </p>
+     <p class="para">
+      文字リテラル &quot;]&quot; を、文字範囲を示す最後の文字として使うことは
+      できません。 [W-]46] というパターンは、2 つの文字 (&quot;W&quot; および&quot;-&quot;) が
+      含まれるクラスの後に文字列リテラル &quot;46]&quot; が続いていると解釈され、
+      &quot;W46]&quot; や &quot;-46]&quot; にマッチします。しかし、&quot;]&quot; をバックスラッシュで
+      エスケープすると文字範囲の終端として解釈され、 [W-]46] は、
+      範囲指定の後に 2 つの文字が続く 1 つのクラスとして解釈されます。 
+      &quot;]&quot; の 8 進あるいは 16 進表現も文字範囲の終端として使用可能です。
+     </p>
+     <p class="para">
+      文字範囲指定では、ASCII 照合順序 (collating sequence) が用いられます
+      〔つまり、範囲指定する際の文字の並び順として ASCII が用いられます〕。
+       [\000-\037] のような、数値的な文字の指定も使用可能です。大小文字を
+       区別しないマッチングを行うよう設定した場合、パターン中の英字は
+       大小文字の両方にマッチします。例えば、[W-c] は、[][\^_`wxyzabc] に
+       等価であり、大小文字に関係なくマッチします。また、 &quot;fr&quot; 
+       ロケールの文字テーブルを使う場合、[\xc8-\xcb] は、
+       大小文字の区別無くアクセント付きの E にマッチします。
+     </p>
+     <p class="para">
+      文字型 \d, \D, \s, \S, \w, \W も、文字クラス内で使え、
+      マッチする文字を追加することが可能です。例えば、[ABCDEF] は、
+      16進数にマッチします。ハット記号と大文字の文字型を組み合わせることで、
+      小文字の文字型がマッチするものより狭い文字集合を
+      簡便に指定することができます。例えば、クラス [^\W_] は、
+      〔単語構成〕文字および数字にマッチしますが、アンダースコアには
+      マッチしません。
+     </p>
+     <p class="para">
+      \, -, (始端の)^ および終端の ] 以外のすべての非英数字は、
+      文字クラスにおいて特別な意味を持たない文字ですが、
+      エスケープしても問題はありません。
+     </p>
+    </div>
+
+
+    <div class="refsect2 u">
+     <h4 class="title">縦線</h4>
+     <p class="para">
+      縦線は、パターンに選択肢 (alternative) を列挙するために使われます。
+      例えば、パターン
+      <pre class="literallayout">
+      gilbert|sullivan
+      </pre>
+      は、&quot;gilbert&quot; または &quot;sullivan&quot; にマッチします。
+      選択肢の数に制限はありません。また、空の選択肢も可能です 
+      (空の文字列にマッチします)。マッチの手順としては、
+      各選択肢が左から右に順にマッチするかどうか試行され、
+      最初にマッチに成功した選択肢が使われます。選択肢を（後述する）
+      サブパターン内に記述した場合、マッチの「成功」とは、
+      サブパターン内の選択肢も、メインのパターンの他の部分もマッチした
+      ということを意味します。
+     </p>
+    </div>
+
+    
+    <div class="refsect2 u">
+     <h4 class="title">内部オプション設定</h4>
+     <p class="para">
+      <a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_CASELESS</a>,
+      <a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_MULTILINE</a>,
+       <a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_DOTALL</a>
+       <a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_UNGREEDY</a>,
+      <a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_EXTRA</a>,
+       および <a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_EXTENDED</a> 
+       オプションの設定は、パターン中で変更できます。これには、Perl 
+       オプション文字を &quot;(?&quot; と &quot;)&quot; とで括った並びを用います。
+       オプション文字には以下のものがあります。
+
+      <table border="5">
+       <caption><b>内部オプション文字</b></caption>
+       <colgroup>
+
+        <tbody valign="middle">
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left"><i class="literal">i</i></td>
+          <td colspan="1" rowspan="1" align="left"><a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_CASELESS</a></td>
+         </tr>
+
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left"><i class="literal">m</i></td>
+          <td colspan="1" rowspan="1" align="left"><a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_MULTILINE</a></td>
+         </tr>
+
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left"><i class="literal">s</i></td>
+          <td colspan="1" rowspan="1" align="left"><a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_DOTALL</a></td>
+         </tr>
+
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left"><i class="literal">x</i></td>
+          <td colspan="1" rowspan="1" align="left"><a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_EXTENDED</a></td>
+         </tr>
+
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left"><i class="literal">U</i></td>
+          <td colspan="1" rowspan="1" align="left"><a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_UNGREEDY</a></td>
+         </tr>
+
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left"><i class="literal">X</i></td>
+          <td colspan="1" rowspan="1" align="left"><a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_EXTRA</a></td>
+         </tr>
+
+        </tbody>
+       </colgroup>
+
+      </table>
+
+     </p>
+     <p class="para">
+      例えば、(?im) は、大小文字を区別しない、複数行モードのマッチングを
+      設定します。ハイフンを前につけることにより、そのオプションを
+      解除することも可能です。 (?im-sx) のように設定と解除とを
+      組み合わせることも可能です。この場合、<a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_CASELESS</a> と
+       <a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_MULTILINE</a> 
+       とが設定され、<a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_DOTALL</a> と
+       <a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_EXTENDED</a> 
+       とが解除されます。
+       オプション文字がハイフンの前にも後にも指定された場合、
+       そのオプションは解除されます。
+     </p>
+     <p class="para">
+      オプションの変更がトップレベル（つまりサブパターンのカッコの外）で行われた場合、
+      その変更はパターンの後ろの部分に適用されます。
+      パターン <i class="literal">/ab(?i)c/</i> は &quot;abc&quot; および &quot;abC&quot; にマッチします。
+      PHP 4.3.3 以降にバンドルされている PCRE 4.0 以降で、このような動作に変更になりました。
+      以前のバージョンでは、<i class="literal">/ab(?i)c/</i> は
+      <i class="literal">/abc/i</i> と同じ処理をされていました（つまり &quot;ABC&quot; や &quot;aBc&quot;
+      にもマッチしました）。
+     </p>
+     <p class="para">
+      サブパターンの内部でオプションの変更を行った場合は、
+      その効果は違ったものになります。この動作変更は、Perl 5.005 
+      で行われました。サブパターン中のオプション変更は、そのサブパターンの
+      設定が行われた場所以降の部分にのみ影響します。そのため、パターン
+
+     <pre class="literallayout">
+      (a(?i)b)c
+     </pre>
+
+      は、abc および aBc にマッチし、他の文字列にはマッチしません
+      （<a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_CASELESS</a> 
+      が設定されていないと仮定）。このように、パターンの各場所に
+      異なった設定を行うようなオプション指定が可能です。
+      ある選択肢に行われた設定変更は、同じサブパターン中の後に続く選択肢に
+      波及します。例えば、パターン
+
+      <pre class="literallayout">
+      (a(?i)b|c)
+      </pre>
+
+      は、&quot;ab&quot;, &quot;aB&quot;, &quot;c&quot;, &quot;C&quot; にマッチします。&quot;C&quot; にマッチする場合を
+      見てみると、オプション設定が行われている最初の選択肢は
+      マッチせずに捨てられてしまっています。それでも、オプションの設定は
+      行われ &quot;C&quot; にマッチします。これは、オプション設定の効果が
+      コンパイル時に生じることによります。さもないと、
+      非常に奇妙な動作をするかもしれません。
+     </p>
+     <p class="para">
+      PCRE 特有のオプション <a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_UNGREEDY</a> 
+      および <a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_EXTRA</a> は、
+      それぞれ文字 U および X を用いて、Perl 互換のオプションと同様に
+      変更することが可能です。 (?X) フラグの設定は特別で、最上位においても、
+      パターン中で他の設定を有効にする前に指定する必要があります。
+      このフラグは、最初に指定するのが最善です。
+     </p>
+    </div>
+
+
+    <div class="refsect2 u">
+     <h4 class="title">サブパターン</h4>
+     <p class="para">
+     サブパターンは、丸カッコで括られたパターンのことで、ネストも可能です。
+     パターンの一部をサブパターンにすると、以下の 2 つのことが可能になります。
+    </p>
+    <p class="para">
+     1. 選択肢の範囲の指定 (localize)。例えば、パターン
+
+      <pre class="literallayout">
+      cat(aract|erpillar|)
+      </pre>
+
+     は、単語 &quot;cat&quot;, &quot;cataract&quot;, &quot;caterpillar&quot; にマッチします。
+     カッコをつけないと、このパターンは、&quot;cataract&quot;, &quot;erpillar&quot; 
+     または空の文字列にマッチしてしまいます。
+    </p>
+    <p class="para">
+     2. サブパターンによる値の取得（キャプチャ）。
+     パターン全体としてマッチに成功した場合、対象文字列の内、
+     サブパターンにマッチした部分の値がコールした側に返されます。
+     開きカッコの数が（1 から始まって）左から右に数えられ、
+     キャプチャ用サブパターン (capturing subpattern) の番号が指定されます。
+    </p>
+    <p class="para">
+     例えば、文字列 &quot;the red king&quot; に対し、パターン
+
+      <pre class="literallayout">
+      the ((red|white) (king|queen))
+      </pre>
+
+     をマッチングさせた場合、キャプチャされる部分文字列は、
+     &quot;red king&quot;, &quot;red&quot;, &quot;king&quot; であり、
+     それぞれ 1 番, 2 番, 3 番と番号がふられます。
+    </p>
+    <p class="para">
+     カッコに 2 つの機能があるということが、いつも良い方に働くわけでは
+     ありません。値をキャプチャする必要はないが、グループ分けのために
+     サブパターンを複数用いたい場合も少なくありません。開きカッコの後に 
+     &quot;?:&quot; を付けると、そのサブパターンは値のキャプチャを行わず、
+     キャプチャ用サブパターンの番号としてもカウントされません。例えば、
+     文字列 &quot;the white queen&quot; に対し、次のパターンをマッチングさせてみましょう。
+     
+      <pre class="literallayout">
+      the ((?:red|white) (king|queen))
+      </pre>
+
+     キャプチャされる部分文字列は、&quot;white queen&quot; と &quot;queen&quot; であり、
+     それぞれ 1 番と 2 番に番号付けされます。キャプチャ可能な部分文字列の
+     数は最大で 99 までです。また、キャプチャを行うものと行わないものを
+     合わせて、サブパターンの数は最大 200 までです。
+    </p>
+    <p class="para">
+     簡略形として、値のキャプチャをしないサブパターンの先頭で
+     オプションの設定をする場合、オプションの文字を &quot;?&quot; と &quot;:&quot; 
+     の間に入れることができます。つまり、次の 2 つのパターン、
+    </p>
+
+    <pre class="literallayout">
+       (?i:saturday|sunday)
+       (?:(?i)saturday|sunday)
+    </pre>
+
+    <p class="para">
+     は、まったく同じ文字列集合にマッチします。
+     選択肢は左から右に試行され、オプションはサブパターンの終端に達するまで
+     リセットされないので、ある選択枝にあるオプション設定は後に続く
+     選択枝にも作用します。このため、上のパターンは、&quot;Saturday&quot; と同様に
+     &quot;SUNDAY&quot; にもマッチします
+     </p>
+     
+     <p class="para">
+      PHP 4.3.3 以降、<i class="literal">(?P&lt;name&gt;pattern)</i> という記法を用いて
+      サブパターンに名前をつけることができる様になりました。
+      マッチ時に返される配列には、番号による添字に加えて、指定した文字列を添字とする
+      要素も含まれます。
+     </p>
+    </div>
+
+
+    <div class="refsect2 u">
+     <h4 class="title">繰り返し</h4>
+     <p class="para">
+     繰り返し (repetition) は、量指定子 (quantifier) を使って指定します。
+     量指定子は、以下の要素の後に付けることが出来ます。
+
+      <ul class="itemizedlist">
+       <li class="listitem"><span class="simpara">個々の文字。エスケープされた文字も含む</span></li>
+       <li class="listitem"><span class="simpara">メタ文字 . （ドット） </span></li>
+       <li class="listitem"><span class="simpara">文字クラス </span></li>
+       <li class="listitem"><span class="simpara">後方参照 (次のセクションを参照) </span></li>
+       <li class="listitem"><span class="simpara">カッコで括られたサブパターン（言明は除く - 別記参照）</span></li>
+      </ul>
+    </p>
+    <p class="para">
+     汎用の量指定子 (general repetition quantifier) は、波カッコの中に 
+     2 つの数をカンマで区切って記述したもので、マッチ可能な
+     最小と最大の繰り返し数を指定します。ただし、65536 以上の数は
+     指定できません。さらに、最初の数は 2 番目の数以下である必要があります。
+     例えば、パターン
+
+      <pre class="literallayout">
+      z{2,4}
+      </pre>
+
+    は、&quot;zz&quot;, &quot;zzz&quot;, &quot;zzzz&quot; にマッチします。閉じ波カッコだけでは
+    特別な意味を持ちません。カンマを残したまま 2 番目の数だけを省略すると、
+    繰り返しの上限が設定されません。 2 番目の数字とカンマの両方を省略すると、
+    必要なマッチの数を過不足なく指定できます。つまり、
+
+      <pre class="literallayout">
+      [aeiou]{3,}
+      </pre>
+
+     は、最短で 3 回母音が連続するものにマッチし、
+     もっと多く連続する場合にもマッチします。一方、
+
+      <pre class="literallayout">
+      \d{8}
+      </pre>
+
+     は、ぴったり 8 桁の数字にのみマッチします。開き波カッコは、
+     量指定子を置けない場所、つまり量指定子の構文に適合しない場所に
+     記述された場合、文字リテラルとして解釈されます。例えば、
+     {,6} は量指定子ではなく、4つの文字からなる文字リテラルとなります。
+    </p>
+    <p class="para">
+     {0} という量指定子の指定も可能です。
+     直前の項目および量指定子が存在しないという指定になります。
+    </p>
+    <p class="para">
+     簡単（および歴史的な互換性）のため、よく使われる 3 つの量指定子には、
+     次のような 1 文字の省略型があります。
+
+     <table border="5">
+      <caption><b>単一文字の量指定子</b></caption>
+      <colgroup>
+
+       <tbody valign="middle">
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left"><i class="literal">*</i></td>
+         <td colspan="1" rowspan="1" align="left"><i class="literal">{0,}</i> と同じ </td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left"><i class="literal">+</i></td>
+         <td colspan="1" rowspan="1" align="left"><i class="literal">{1,}</i> と同じ </td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left"><i class="literal">?</i></td>
+         <td colspan="1" rowspan="1" align="left"><i class="literal">{0,1}</i> と同じ </td>
+        </tr>
+
+       </tbody>
+      </colgroup>
+
+     </table>
+
+    </p>
+    <p class="para">
+     たとえば
+     
+      <pre class="literallayout">
+      (a?)*
+      </pre>
+     
+     の様に、「文字無し」にマッチし得るサブパターンの後ろに
+     上限指定の無い量指定子を記述すると、無限ループができてしまう可能性が
+     あります。
+    </p>
+    <p class="para">
+     以前のバージョンの Perl および PCRE は、このようなパターンに関して
+     コンパイル時にエラーを発生していました。しかし、有用な場合もあるので、
+     現在はこのようなパターンも許可されています。ただし、
+     繰り返しが指定されたサブパターンが文字無しにマッチすると、
+     ループは強制的に中断されます。
+    </p>
+    <p class="para">
+     デフォルトでは、量指定子は「貪欲 (greedy)」です。つまり、
+     残りのパターンが失敗しない限りにおいて、（許可された回数の上限まで）
+     出来るだけ多くマッチします。 この動作が問題を生じる場合もあります。
+     そのよく知られた例としては、 C プログラムのコメントに
+     マッチさせようとする場合が挙げられます。 /* と */ との間が
+     コメントですが、コメント中にも文字 * や / が現れる可能性があります。
+     そこで、C のコメントにマッチさせようとして、パターン
+
+      <pre class="literallayout">
+      /\*.*\*/
+      </pre>
+
+     を使って、文字列
+
+      <pre class="literallayout">
+      /* first comment */  not comment  /* second comment */
+      </pre>
+
+     に対して、マッチングを行うと、文字列全体にマッチしてしまい上手く行きません。
+     .* 要素が貪欲であるためです。
+    </p>
+    <p class="para">
+     しかし、量指定子の後に疑問符を付けると、貪欲さは消え、
+     できるだけ少ない回数だけマッチします。このため、パターン
+
+      <pre class="literallayout">
+      /\*.*?\*/
+      </pre>
+
+    は、C コメントに正しくマッチします。量指定子の他の意味は変化せず、
+    マッチの回数だけが変更されます。疑問符のこの使用法と、
+    量指定子としての使用法とを混同しないようにしてください。
+    このように疑問符には 2 種類の使用法があるため、
+    
+      <pre class="literallayout">
+      \d??\d
+      </pre>
+    
+    のように 2 重に使うこともできます。
+    このパターンは、可能であれば 1 桁の数字にマッチします。
+    パターンの残り部分がそうでないとマッチできない場合に限り、
+    2 桁の数字にもマッチします。
+    </p>
+    <p class="para">
+     <a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_UNGREEDY</a> 
+     オプション（Perl ではこのオプションは利用できません）を設定すると、
+     量指定子は、デフォルトで貪欲でなくなり、
+     各量指定子の後ろに疑問符をつけてはじめて貪欲になります。言いかえると、
+     疑問符のデフォルトの動作を逆転します。
+    </p>
+    <p class="para">
+     量指定子の後ろに <i class="literal">+</i> を記述すると「独占的 (possessive)」
+     になります。可能なだけ多くの文字を取り込み、パターンの残りの部分のマッチの際に
+     取り込んだ文字を戻すことはしません。したがって、パターン <i class="literal">.*abc</i> 
+     は &quot;aabc&quot; にマッチしますが、<i class="literal">.*+abc</i> はマッチしません。
+     これは、<i class="literal">.*+</i> が対象文字列のすべてを取り込んでしまうためです。
+     PHP 4.3.3 以降で、処理速度の向上を目的として、独占的量指定子を使うことが可能となりました。
+    </p>
+    <p class="para">
+     カッコを使ったサブパターンに、最小の繰り返し回数（1 以上）や
+     最大の繰り返し回数を指定した場合、その繰り返し数の大きさに応じて、
+     コンパイル済みのパターンが用いる記憶領域がより多く必要となります。
+    </p>
+    <p class="para">
+     パターンが .* または .{0,} で始まっており、<a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_DOTALL</a> 
+     オプション（Perl の /s に相当）が設定されている（つまり、
+     . が改行文字にもマッチする）場合、そのパターンは暗黙的に
+     固定パターンになります。.* もしくは .{0,} の後に続くパターンは、
+     対象文字列のすべての位置でマッチングが行われますが、パターン全体としては
+     対象文字列の始端以外でマッチングを再試行しても無駄だからです。PCRE は、
+     このようなパターンについては、その前に \A が記述されているものとして
+     扱います。こうした最適化を利用するために、
+     対象文字列が改行文字を含んでいなことが明らかな場合は、 .* 
+     で始まるパターンに対し <a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_DOTALL</a> を設定するか、
+     ^ を用いて明示的に固定パターンとなるよう指定すると良いでしょう。
+    </p>
+    <p class="para">
+     キャプチャ用サブパターンを繰り返した場合、キャプチャされる値は、
+     繰り返しの最後でマッチした部分文字列です。例えば、
+     
+      <pre class="literallayout">
+      (tweedle[dume]{3}\s*)+
+      </pre>
+
+     を &quot;tweedledum tweedledee&quot; にマッチングさせた場合、キャプチャされる
+     部分文字列は、 &quot;tweedledee&quot; です。しかし、キャプチャ用サブパターンが
+     ネストしている場合、キャプチャされる値は、より前の繰り返しで
+     得られたものとなる可能性があります。例えば
+     
+      <pre class="literallayout">
+      /(a|(b))+/
+      </pre>
+
+     を &quot;aba&quot; にマッチングさせると、キャプチャされた部分文字列の 2 番目のものは、
+     &quot;b&quot; になります。
+     </p>
+    </div>
+
+
+    <div class="refsect2 u">
+     <h4 class="title">後方参照</h4>
+     <p class="para">
+     文字クラス外で、バックスラッシュに続いて 1 以上の数値（複数桁可）
+     を記述したものは、パターン中のより前方（すなわち左）にある
+     キャプチャ用サブパターンに対する後方参照 (back reference) です。ただし、
+     その左方に、その数値以上の個数のキャプチャ用サブパターンの開きカッコが
+     ある必要があります。
+    </p>
+    <p class="para">
+     なお、バックスラッシュの後に 10 未満の 10 進数が続く場合は、
+     常に後方参照として解釈され、パターン全体で指定した個数以上の
+     キャプチャ用サブパターンが無いとエラーが発生します。言いかえると、
+     参照されるカッコは、10未満の番号に対しては、参照する側の左にある必要が
+     ないということです。バックスラッシュの後に数字が続く場合の処理の詳細に
+     ついては、前述の 「バックスラッシュ」のセクションを参照してください。
+    </p>
+    <p class="para">
+     後方参照は、カレントの対象文字列においてキャプチャ用サブパターンが
+     実際にマッチした文字列にマッチします。サブパターンがパターンとして
+     マッチし得るものではありません。すなわち、パターン
+
+      <pre class="literallayout">
+      (sens|respons)e and \1ibility
+      </pre>
+
+     は、&quot;sense and sensibility&quot; および &quot;response and responsibility&quot; 
+     にマッチしますが、 &quot;sense and responsibility&quot; にはマッチしません。また、
+     後方参照が記述されている位置で大小文字を区別するマッチングが有効ならば、
+     文字の大小文字の別も関係します。例えば、
+
+      <pre class="literallayout">
+      ((?i)rah)\s+\1
+      </pre>
+
+     は、&quot;rah rah&quot; および &quot;RAH RAH&quot; にマッチしますが、
+     元のキャプチャ用サブパターンは大小文字を区別しないマッチングを
+     行っているにもかかわらず、&quot;RAH rah&quot; にはマッチしません
+    </p>
+    <p class="para">
+     同じサブパターンに対して、複数回の後方参照を行うことができます。
+     また、使われなかったサブパターンに対する後方参照を行おうとすると、
+     マッチが失敗します。例えば、パターン
+
+      <pre class="literallayout">
+      (a|(bc))\2
+      </pre>
+
+     は、はじめに &quot;bc&quot; でなく &quot;a&quot; にマッチした場合は、マッチが失敗します。
+     最大 99 番までの後方参照を使用できるため、バックスラッシュの後に
+     数字が続くものはすべて後方参照番号の可能性があるものとして解釈されます。
+     後に数字が続く場合、後方参照を終了するためになんらかの区切り文字を
+     置く必要があります。<a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_EXTENDED</a> 
+     オプションを設定している場合は空白文字を区切り文字として使えます。
+     その他の場合は空のコメントを使います。
+    </p>
+    <p class="para">
+     後方参照を、それ自身が参照するサブパターンのカッコ内に記述した場合、
+     そのサブパターンが最初に使われた際にマッチが失敗します。ですので、
+     (a\1) は、何にもマッチしません。しかし、このような参照は、
+     複数回繰り返されるサブパターンの内部では有用です。例えば、パターン
+
+      <pre class="literallayout">
+      (a|b\1)+
+      </pre>
+
+     は、&quot;a&quot; が連続するものや &quot;aba&quot;, &quot;ababaa&quot; 等にマッチします。
+     サブパターンが繰り返される場合、後方参照は、直前の繰り返しで一致した
+     文字列にマッチします。こうしたパターンを動作させるためには、
+     繰り返しの1 回目に、後方参照を含むパターンとのマッチングが
+     行われないことが必要です。これには、上の例のように選択肢を使うか、
+     下限が 0 回の量指定子を使います。
+     </p>
+     
+     <p class="para">
+      名前を指定したサブパターンへの後方参照を行うには
+      <i class="literal">(?P=name)</i> とします。PHP 5.2.4 以降では、これ以外に
+      <i class="literal">\k&lt;name&gt;</i> や <i class="literal">\k&#039;name&#039;</i>、
+      <i class="literal">\k{name}</i> などとすることも可能です。
+     </p>
+    </div>
+
+
+    <div class="refsect2 u">
+     <h4 class="title">言明</h4>
+     <p class="para">
+     言明 (assertion) とは、カレントのマッチング位置の直前・直後の文字に対する
+     テストであり、文字を消費 (consume)〔つまり文字自体にマッチ〕しません。
+     単純な言明コード \b, \B, \A, \Z, \z, ^ および $ については、
+     前述しました。より複雑な言明は、サブパターンを用いて記述します
+     〔言明サブパターン (assertion subpattern) と呼ばれる〕。
+     言明サブパターンには、2 種類あります。対象文字列において
+     カレントの位置の先を読むものと、後ろを読むものです。
+    </p>
+    <p class="para">
+     言明サブパターンは、カレントのマッチング位置を変更しないことを除き、
+     通常と同じようにマッチングが行われます。先読み言明 (lookahead assertion) は、
+     肯定の言明 (positive assertion) の場合 (?= で始まり、
+     否定の言明 (negative assertion) の場合 (?! で始まります。例えば、
+     
+      <pre class="literallayout">
+      \w+(?=;)
+      </pre>
+
+     は、セミコロンが後に続く単語にマッチしますが、
+     マッチ対象それ自体にはセミコロンは含まれません。また、
+
+      <pre class="literallayout">
+      foo(?!bar)
+      </pre>
+
+     は、&quot;bar&quot; が後ろに続かない &quot;foo&quot; にマッチします。
+     なお、一見、良く似たパターンですが
+
+      <pre class="literallayout">
+      (?!foo)bar
+      </pre>
+
+     は、&quot;foo&quot; 以外のものの後にある &quot;bar&quot; を見つけるものではないことに
+     注意してください。これは、どこにある &quot;bar&quot; とでもマッチしてしまいます。
+     続く 3 文字が &quot;bar&quot; である場合、 (?!foo) は常に真となってしまうからです。
+     このような探索を実現するためには、戻り読み言明 (lookbehind assertion) 
+     が必要です。
+    </p>
+    <p class="para">
+     戻り読み言明は、肯定の言明の場合 (?&lt;= で始まり、
+     否定の言明の場合 (?&lt;! で始まります。例えば、
+
+      <pre class="literallayout">
+      (?&lt;!foo)bar
+      </pre>
+
+     は、&quot;foo&quot; 以外の後にある &quot;bar&quot; の存在を見つけるものです。
+     戻り読み言明内のパターンは、それがマッチし得る文字列の長さが
+     固定でなければなりません〔繰り返しを指定できません〕。ただし、
+     選択肢を用いた場合、各選択肢は〔固定長でなければいけませんが〕
+     すべて同じ長さである必要はありません。つまり、
+
+      <pre class="literallayout">
+      (?&lt;=bullock|donkey)
+      </pre>
+
+     とはできますが、
+
+      <pre class="literallayout">
+      (?&lt;!dogs?|cats?)
+      </pre>
+
+     は、コンパイル時にエラーになります。
+     戻り読み言明の最上位においてのみ、異なる長さの文字列にマッチするような
+     選択肢が使用可能です。Perl 5.005 においては、すべての選択肢が
+     同じ長さの文字列にマッチする必要があります。つまり、この機能は 
+     PCRE の拡張機能です。
+
+      <pre class="literallayout">
+      (?&lt;=ab(c|de))
+      </pre>
+
+     という戻り読み言明は、最上位にひとつの選択肢しかなく、
+     その選択肢は異なる長さの文字列にマッチしうるので、不正です。
+     しかし、
+
+      <pre class="literallayout">
+      (?&lt;=abc|abde)
+      </pre>
+       
+     のように、最上位において選択肢を 2 つ用いるように
+     書き換えると使用可能です。
+    </p>
+    <p class="para">
+     後方言明の実装においては、選択肢ことに一時的に固定の幅だけ
+     カレントの位置を後退させ、マッチを試みます。カレントの位置の前に
+     十分な文字がない場合は、マッチは失敗とみなされます。
+     再試行無しのサブパターンと組み合わせた戻り読み言明は、
+     文字列の終端でのマッチングに特に有用です。
+     再試行無しのサブパターンについてのセクションの最後にて例を示します。
+    </p>
+    <p class="para">
+     （任意の種類の）複数の言明を連続して指定することも可能です。例えば、
+
+      <pre class="literallayout">
+      (?&lt;=\d{3})(?&lt;!999)foo
+      </pre>
+
+    は、&quot;999&quot; でない 3 桁の数字の後にある &quot;foo&quot; にマッチします。
+    それぞれの言明は、対象文字列の同じ場所に独立して適用されることに
+    注意して下さい。まず、前の 3 文字がすべて数字であることがチェックされ、
+    続いて、同じ 3 文字が &quot;999&quot; でないことが確認されます。このパターンは、
+    &quot;foo&quot; の前に 6 個の文字があり、その前半が数字で後半の 3 文字が &quot;999&quot; 
+    でないというパターンにマッチするものではありません。例えば、&quot;123abcfoo&quot; 
+    にはマッチしません。これを行うパターンは次のようになります。
+
+      <pre class="literallayout">
+      (?&lt;=\d{3}...)(?&lt;!999)foo
+      </pre>
+    </p>
+    <p class="para">
+     この時、最初の言明は、先行する 6 つの文字を探し、
+     最初の 3 文字が数字であることを確認します。続いて、2 番目の言明は、
+     先行する 3 文字が &quot;999&quot; でないことを確認します。
+    </p>
+    <p class="para">
+     言明は、自由に組み合わせてネスト可能です。例えば、
+
+      <pre class="literallayout">
+      (?&lt;=(?&lt;!foo)bar)baz
+      </pre>
+
+     は、&quot;foo&quot; 以外の後にある &quot;bar&quot; の後に有る &quot;bar&quot; があればマッチします。
+     一方、
+
+      <pre class="literallayout">
+      (?&lt;=\d{3}...(?&lt;!999))foo
+      </pre>
+
+     は、999 でない 3 桁の数字とさらに 3 文字の後に続く &quot;foo&quot; 
+     にマッチするパターンです。
+    </p>
+    <p class="para">
+     言明サブパターンは、キャプチャ用サブパターンではありません
+     〔値のキャプチャは行われません〕。繰り返しもできません。
+     同じことを複数回言明しても意味がないからです。
+     キャプチャ用サブパターンが言明の内部に含まれている場合、
+     言明の種類に関係なく、キャプチャ用サブパターンの番号付けにあたって
+     カウントされます。しかし、文字列のキャプチャは、肯定の言明に対してのみ
+     行われます。否定の言明の中で行っても無意味だからです。
+    </p>
+    <p class="para">
+     カッコ付サブパターンによる言明は、最大 200 まで用いることができます。
+     </p>
+    </div>
+
+
+    <div class="refsect2 u">
+     <h4 class="title">再試行無しのサブパターン</h4>
+     <p class="para">
+     繰り返し回数の下限もしくは上限の指定をした場合、
+     〔繰り返しを指定した要素の〕続きがマッチに失敗すると、
+     繰り返し指定した要素が再評価され、繰り返し回数を変えた上で
+     残りのパターンがマッチするかどうか試されます。
+     マッチングを続けても無駄なことが明らかな場合、マッチングの性質を変え、
+     より速くマッチに失敗させるために、こうした動作を停止させることが
+     有用な場合があります。
+    </p>
+    <p class="para">
+     例えば、パターン \d+foo を
+     &quot;123456bar&quot;
+     という対象文字列に適用した場合を考えてみましょう。
+    </p>
+    <p class="para">
+     \d+ が 6 桁の数字すべてにマッチしますが、その後 &quot;foo&quot; 
+     とのマッチが失敗します。通常のマッチング処理の動作だと、5桁の数字のみが 
+     \d+ にマッチするとして再試行され、次いで 4 桁等々と続けられ、
+     最後には完全にマッチが失敗します。再試行無しのサブパターン 
+     (once-only subpattern) を用いると、パターンの一部が一度マッチしたら、
+     その後再評価されないよう指定することができます。つまり、最初に &quot;foo&quot; 
+     とのマッチに失敗した時点で、ただちにマッチングを取り止めることが
+     可能となります。表記には、
+     
+      <pre class="literallayout">
+      (?&gt;\d+)bar
+      </pre>
+     
+     のように、(?&gt; で始まる特別なカッコを用います。
+    </p>
+    <p class="para">
+     この種類のカッコは、一度マッチしたパターンの部分に鍵をかけ (lock up) 
+     ます。そのパターンへの再マッチは失敗し、バックトラック (backtrack) 
+     が起こらないようにします。それより前の要素に対するバックトラックは、
+     通常と同様に動作します。
+    </p>
+    <p class="para">
+     別の説明をすると、このタイプのサブパターンは、同一のスタンドアローンの
+     パターンが対象文字列のカレントの位置に固定されたかのように、
+     文字列とマッチします。
+    </p>
+    <p class="para">
+     再試行無しのサブパターンは、キャプチャ用サブパターンではありません
+     〔つまり、値のキャプチャは行われません〕。上の簡単な例では、
+     できるだけ多くのものを呑み込むよう繰り返しが最大化されました。つまり、
+     + や +? は残りのパターンがマッチするよう数字の桁数が調整されるのに
+     対して、 (?&gt;+) は数字の並び全体に対するマッチングだけしか行われません。
+    </p>
+    <p class="para">
+     この構文には、どんな複雑なものでも、任意のサブパターンを含むことができ、
+     ネストも可能です。
+    </p>
+    <p class="para">
+     再試行無しのサブパターンと戻り読み言明とを組み合わせると、
+     対象文字列の終端における効率的なマッチングを行うことができます。
+
+      <pre class="literallayout">
+      abcd$
+      </pre>
+       
+     というパターンを見てましょう。
+
+     マッチが成功しない長い文字列に適用した場合を考えます。
+     マッチングは左から右に行われるため、PCRE は対象文字列のすべての &quot;a&quot; を探し、
+     後に続く文字が残りのパターンにマッチするかどうか調べられます。
+     
+     パターンを
+
+      <pre class="literallayout">
+      ^.*abcd$
+      </pre>
+       
+     のように少し変更してみます。
+
+    この場合、最初の .* は、まず文字列全体にマッチします。
+    （&quot;a&quot; がその後に続かないので）マッチが失敗すると、最後の 1 文字を除く
+    文字列にマッチするようバックトラックが行なわれ、続いて最後の 2 文字を
+    除く文字列に、という風に動作します。 &quot;a&quot; の検索は、やはり文字列全体に
+    対して、右から左に、行われるため効率は良くありません。
+    
+    しかし、パターンを
+    
+      <pre class="literallayout">
+      ^(?&gt;.*)(?&lt;=abcd)
+      </pre>
+       
+     のようにしてみましょう。
+
+    要素 .* に対してバックトラックは行われず、文字列全体にのみマッチします。
+    続く戻り読み言明は、最後の 4 文字に対するテストを 1 回だけ行います。
+    テストが失敗すると、マッチはただちに失敗します。長い文字列に対しては、
+    この方法を用いると実行時間にかなりの差が生じます。
+    </p>
+    <p class="para">
+     パターン中にサブパターンがあって、その中に繰り返し数に
+     上限の無い要素があり、そのサブパターン自身も何回でも繰り返しが
+     可能な場合、マッチの失敗に非常に長い時間がかかってしまう事があります。
+     それを避ける唯一の方法は再試行無しのサブパターンを使うことです。
+     パターン
+
+      <pre class="literallayout">
+      (\D+|&lt;\d+&gt;)*[!?]
+      </pre>
+
+     は、非数字もしくは &lt;&gt; で括られた数字に ! または ? が続く
+     任意の長さの部分文字列にマッチします。マッチが成功するような
+     対象文字列に対しては、速く動作します。
+     しかし、これを
+
+      <pre class="literallayout">
+      aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      </pre>
+
+    に適用すると、マッチが失敗するまでに長い時間がかかります。これは、
+    この対象文字列を分割するやり方が数多くあり、それらすべてに対し
+    マッチを試みられる事になるためです。
+    （この例で、終端に単一の文字ではなく [!?] を使っているのは、
+    PCRE と Perl の双方とも、〔終端に〕単一の文字が使われると、
+    より速く失敗と判定できるように最適化が行われる
+    〔ので、それを避ける〕ためです。マッチに必要な最後の一文字が記憶され、
+    文字列にその文字が無い場合、早期に失敗と判定されます。）
+    このパターンを
+
+      <pre class="literallayout">
+      ((?&gt;\D+)|&lt;\d+&gt;)*[!?]
+      </pre>
+       
+     のように変更した場合、非数字の部分が分割されることがなくなるので、
+     より速くマッチが失敗するようになります。
+     </p>
+    </div>
+
+
+
+    <div class="refsect2 u">
+     <h4 class="title">条件付きサブパターン</h4>
+     <p class="para">
+     サブパターンを条件付きでマッチング処理させることが可能です。
+     言明の結果や直前のキャプチャ用サブパターンがマッチしたかどうかにより、
+     サブパターン中の 2 つの選択肢を選択させます。条件付きサブパターン 
+     (conditional subpattern) には、 2 つの形式があります。
+    </p>
+
+    <pre class="literallayout">
+       (?(条件)真パターン) 
+       (?(条件)真パターン|偽パターン)
+    </pre>
+    <p class="para">
+     条件が満たされた場合、真パターンが使われます。そうでない場合は、
+     （もしあれば）偽パターンが使われます。サブパターン内に 3 つ以上の
+     選択肢があると、コンパイル時にエラーになります。
+    </p>
+    <p class="para">
+     条件には 2 種類あります。条件のカッコ内が数値の場合、
+     その番号のキャプチャ用サブパターンがマッチしている場合に条件が
+     真となります。カッコ内の数値は 1 以上でないといけません。
+     次のパターンを見てみましょう。可読性を高めるために意味のない空白文字が
+     挿入され（<a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_EXTENDED</a> 
+     オプションが指定されていると仮定します）、
+     説明を簡単にするため 3 つの部分に分割されています。
+
+      <pre class="literallayout">
+      ( \( )?    [^()]+    (?(1) \) )
+      </pre>
+    </p>
+    <p class="para">
+     最初の部分は、オプションで、開きカッコにマッチします。
+     開きカッコが有る場合、1 番のキャプチャ文字列にセットされます。
+     第 2 の部分は、カッコでない一つ以上の文字にマッチします。第 3 の部分は、
+     最初のカッコがマッチしたかどうかをテストする条件付きサブパターンです。
+     カッコにマッチしている場合、つまり、対象文字列が開きカッコで
+     始まっている場合、条件は真となり、真パターンが実行され、閉じカッコが
+     必要となります。そうでない場合、偽パターンが存在しないため、
+     サブパターンは何にもマッチしません。言いかえると、このパターンは、
+     カッコなしの並びにマッチするものですが、オプションで
+     カッコで囲まれた並びにもマッチします。
+    </p>
+    <p class="para">
+     <i class="literal">(R)</i> という文字列を条件として指定すると、パターン全体もしくは
+     サブパターンへの再帰的呼び出しがなされた場合に、その条件が満たされることになります。
+     「トップレベル」においては、この条件は偽となります。
+    </p>
+    <p class="para">
+     数値の他にも、条件として言明が使用できます。先読み言明と
+     戻り読み言明のいずれも使え、肯定の言明も否定の言明も使用できます。
+     次のパターンを見てみましょう。このパターンにも意味のない空白文字が
+     挿入されており、2 行目に 2 つの選択肢が 書かれています。
+    </p>
+
+    <pre class="literallayout">
+       (?(?=[^a-z]*[a-z])
+       \d{2}-[a-z]{3}-\d{2}  |  \d{2}-\d{2}-\d{2} )
+    </pre>
+    <p class="para">
+     条件は、肯定の先読み言明であり、英字以外の文字の並びの後に英字が
+     続くものにマッチします。言いかえると、対象文字列に少なくとも英字が
+     一つあるかどうかが調べられます。英字がみつかると、最初の選択肢に対して
+     検索対象とのマッチングが行われます。みつからない場合は、2番目の選択肢に
+     対してマッチングが行われます。このパターンは、2つの形式 dd-aaa-dd 
+     または dd-dd-dd のどちらかの文字列にマッチします。ここで、aaa は英字、
+     dd は数字です。
+     </p>
+    </div>
+
+
+
+    <div class="refsect2 u">
+     <h4 class="title">コメント</h4>
+     <p class="para">
+     コメントは、(?# という並びにより始まり、次の閉じカッコで終わります。
+     カッコのネストはできません。コメント内の文字は、パターンマッチには
+     全く関係しません。
+    </p>
+    <p class="para">
+     <a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_EXTENDED</a> 
+     オプションが設定されている場合は、パターン中の文字クラス外にある
+     エスケープされていない # 文字からもコメントが始まり、
+     次の改行文字で終わります。
+     </p>
+    </div>
+
+
+
+    <div class="refsect2 u">
+     <h4 class="title">再帰的パターン</h4>
+     <p class="para">
+     どうすればカッコに括られた文字列とマッチできるか、という問題を
+     考えて見ましょう。このとき、カッコは何回でもネストできるとします。
+     再帰が使えないとすると、パターンを用いて、せいぜい、ある一定の深さの
+     ネストまでしかマッチできないでしょう。任意の深さのネストを
+     処理することは不可能です。Perl 5.6 では、正規表現において再帰を行う
+     実験的な機能が導入されています。
+     PCRE では、再帰という特殊なケースに対して専用のシーケンス (?R) 
+     が導入されました。上記のカッコ問題を解決する PCRE のコードは
+     以下のようになります（<a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_EXTENDED</a> 
+     オプションが設定され空白文字が無視されると仮定）。
+
+      <pre class="literallayout">
+      \( ( (?&gt;[^()]+) | (?R) )* \)
+      </pre>
+    </p>
+    <p class="para">
+     まず、このパターンは開きカッコにマッチします。続いて、
+     カッコ以外の文字が並んでいるか、または、再帰的にパターン自体に
+     マッチする（すなわち正しくカッコで括られている）かする部分文字列に
+     何回でもマッチします。最後に閉じカッコにマッチします。
+    </p>
+    <p class="para">
+     このパターン例には、ネストした無制限の繰り返しが含まれているため、
+     マッチが成功し得ない文字列に対してこのパターンが適用される場合も考えて、
+     カッコ以外の文字列にマッチングさせる部分に再試行無しのサブパターンを
+     使うことが重要です。例えば、このパターンを
+
+      <pre class="literallayout">
+      (aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa()
+      </pre>
+
+     という文字列に適用すると、「マッチしない」という判定が速やかに
+     行われます。しかし、再試行無しのサブパターンを使わないと、
+     対象文字列を分割し得る + と * の繰り返し数の種類が非常に多く、
+     そのすべてが確認された後にマッチの失敗が報告されるため、
+     マッチングに非常に時間がかかります。
+    </p>
+    <p class="para">
+     キャプチャ用サブパターンにセットされる値は、そのサブパターンに
+     値がセットされ得る最も外側で最も後の再帰レベルからのものになります。
+     上記のパターンを
+
+      <pre class="literallayout">
+      (ab(cd)ef)
+      </pre>
+       
+     にマッチングさせると、キャプチャされる値は &quot;ef&quot; であり、
+     最上位レベルの最後の値です
+
+      <pre class="literallayout">
+      \( ( ( (?&gt;[^()]+) | (?R) )* ) \)
+      </pre>
+     
+     次のようにカッコを追加すると、キャプチャされる文字列は、&quot;ab(cd)ef&quot; 
+     となり、最上位レベルのカッコの中身となります。一つのパターン中に 
+     15 以上のキャプチャ用サブパターンを用いると、PCRE は
+     再帰を行っている間のデータ保存用に追加の記憶領域を確保する必要が
+     あります。記憶領域が確保できない場合、メモリ不足エラーを再帰の内側から
+     出力する手段がないため、最初の 15 個のキャプチャ用サブパターンに
+     ついてのみデータが保存されます。
+     </p>
+     
+     <p class="para">
+      PHP 4.3.3 以降、<i class="literal">(?1)</i>, <i class="literal">(?2)</i> といった記法が
+      再帰的サブパターンとして使用可能になりました。
+      <i class="literal">(?P&lt;name&gt;foo)</i> といった名前付きのサブパターンも使用可能です。
+     </p>
+     <p class="para">
+      この再帰的サブパターンの記法は（数字によるものも名前によるものの双方とも）
+      参照するカッコの外で使用でき、プログラム言語のサブルーチンの様に処理されます。
+      前に示した例で、パターン <i class="literal">(sens|respons)e and \1ibility</i>
+      は &quot;sense and sensibility&quot; および &quot;response and responsibility&quot; にはマッチしますが
+      &quot;sense and responsibility&quot; にはマッチしませんでした。
+      一方、パターン <i class="literal">(sens|respons)e and (?1)ibility</i> は、
+      上記 2 つに加え &quot;sense and responsibility&quot; にもマッチします。
+      ただし、参照先のサブパターンの後に記述する必要があります。
+     </p>
+     
+     <p class="para">
+      対象文字列の最大の長さは、integer 型の最大の値となります。
+      しかし、PCRE は再帰を使用してサブパターンの処理や繰り返し処理を行います。
+      つまり、そのパターンで処理する対象文字列の長さによって、
+      使用可能なスタック空間の大きさが制限されるということです。
+     </p>
+     
+    </div>
+
+
+    <div class="refsect2 u">
+     <h4 class="title">パフォーマンス</h4>
+     <p class="para">
+     パターンに記述可能な要素のうち、幾つかの要素は、他の要素よりも
+     効率的に処理されます。 (a|e|i|o|u) のような選択肢の集合よりも 
+     [aeiou] のような文字クラスの方が効率的です。一般に、構文が
+     最も単純なものが、たいてい最も効率が良くなります。Jeffrey Friedl 
+     の本には、正規表現の性能を向上させる最適化について
+     様々な検討が行われています。
+    </p>
+    <p class="para">
+     パターンが .* で始まり、<a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_DOTALL</a> 
+     オプションを設定した場合、対象文字列の始端でしかマッチできないため、
+     PCRE は、暗黙のうちにそのパターンを固定パターンとみなします。しかし、
+     PCRE_DOTALL を設定しない場合、メタ文字 . が改行にマッチせず、
+     対象文字列が改行を含む場合、パターンは文字列の始端からではなく各改行の
+     直後の文字からマッチする可能性があるため、PCRE は
+     この最適化を行うことができません。
+     
+     例えば、パターン
+
+      <pre class="literallayout">
+      (.*) second
+      </pre>
+
+    を、対象文字列 &quot;firstnd second&quot;（ここで、は改行文字を意味します）に
+    マッチングさせます。 1 番目のキャプチャ文字列は、&quot;and&quot; になります。
+    このような動作をするには、 PCRE は対象文字列の各改行文字の後から
+    マッチングを繰り返し行う必要があります。
+    </p>
+    <p class="para">
+     このようなパターンを、改行を含まない対象文字列に適用する場合は、
+     <a href="reference.pcre.pattern.modifiers.html" class="link">PCRE_DOTALL</a> 
+     を設定するか、固定パターンであることを明示的に示すためにパターンを 
+     ^.* で開始すると最高の性能が得られます。そうすることで、PCRE 
+     が対象文字列の改行を探し、そこからマッチングが再び始められることを
+     防止します。
+    </p>
+    <p class="para">
+     制限のない繰り返しをネストするようなパターンについては注意が必要です。
+     そのようなパターンが、マッチが成功し得ない文字列に適用された場合には、
+     実行に長い時間を要します。
+     
+      <pre class="literallayout">
+      (a+)*
+      </pre>
+       
+     というパターンを考えてみましょう。
+    </p>
+    <p class="para">
+     このパターンが &quot;aaaa&quot; にマッチし得る方法は 33 通りもあります（つまり、
+     * による繰り返しは 0, 1, 2, 3 もしくは 4 回の繰り返しにマッチし、
+     0 回以外のそれぞれの場合について、 + による繰り返しは様々な回数分
+     マッチします)〔訳注：a 1文字の 4 回繰り返しとか、 a 1文字とa 3文字の
+     組合せとかを意味する〕。この数は、文字列が長くなるにつれて急激に
+     増大します。このパターンの後ろに、マッチが失敗するような別のパターンが
+     続いていて、パターン全体としてマッチが失敗してしまう場合、PCREは、基本的に
+     取り得るすべての選択肢を調べるため、非常に長い時間がかかります。
+    </p>
+    <p class="para">
+      <pre class="literallayout">
+      (a+)*b
+      </pre>
+       
+     のように単一の文字リテラルが最後にある場合には最適化が行われます。
+
+    標準のマッチング手順に着手する前に、PCRE は対象文字列の後方に &quot;b&quot; 
+    があるかどうかを調べます。無い場合には、直ちにマッチは失敗します。
+    文字リテラルが最後にない場合には、この最適化は行われません。
+
+      <pre class="literallayout">
+      (a+)*\d
+      </pre>
+       
+     というパターンと上に挙げたパターンの動作を比較してみましょう。
+
+     &quot;a&quot; 文字だけが連続する行に適用した場合、前者のパターンでは、
+     ほぼ瞬間的に失敗と判定されます。一方、後者のパターンでは、
+     文字列の長さがおよそ 20 文字を超えると、かなりの時間がかかります。
+     </p>
+    </div>
+
+
+   </div>
+
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="reference.pcre.pattern.modifiers.html">パターン修飾子</a></div>
+ <div class="next" style="float: right;"><a href="function.preg-grep.html">preg_grep</a></div>
+ <div class="up"><a href="ref.pcre.html">PCRE</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

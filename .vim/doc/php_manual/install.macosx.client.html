@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>Mac OS X クライアント用にコンパイルする</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="install.macosx.html">Mac OS X へのインストール</a></div>
+ <div class="next" style="float: right;"><a href="install.windows.html">Windows システムへのインストール</a></div>
+ <div class="up"><a href="install.macosx.html">Mac OS X へのインストール</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="install.macosx.client" class="sect1">
+  <h2 class="title">Mac OS X クライアント用にコンパイルする</h2>
+  
+  
+  
+ <p class="simpara">
+  以下の手順は、PHP モジュールを Mac OS X に付属する Apache Web サーバ用に
+  インストールする際の手引きとなるものです。本バージョンには、MySQL および 
+  PostgreSQL データベースのサポートが含まれます。以下の手引きは、
+  <a href="http://www.entropy.ch/software/macosx/" class="link external">&raquo; Marc Liyanage</a> 氏に提供して頂いたものです。
+ </p>
+ <div class="warning"><b class="warning">警告</b>
+  <p class="para">
+   以下の手順を行う際は、Apache Web サーバをダウンさせる可能性
+   があるので注意してください
+  </p>
+ </div>
+ <p class="para">
+  以下のインストール手順を実行してください。
+  <ol class="orderedlist">
+   <li class="listitem">
+    <span class="simpara">
+     ターミナルウインドウをオープンします。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     <strong class="userinput"><code>wget http://www.diax.ch/users/liyanage/software/macosx/libphp4.so.gz</code></strong>
+
+     とし、ダウンロード完了を待ちます。
+    </span>
+   </li>
+    <li class="listitem">
+     <span class="simpara">
+     <strong class="userinput"><code>gunzip libphp4.so.gz</code></strong>
+ と入力します。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     <strong class="userinput"><code>sudo apxs -i -a -n php4 libphp4.so</code></strong>
+ と入力します。
+    </span>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     次に <strong class="userinput"><code>sudo open -a TextEdit /etc/httpd/httpd.conf</code></strong>
+ と
+     入力すると、TextEdit により Web サーバの設定ファイルがオープンされます。ファイルの
+     末尾の方にある以下の 2 行を探してください（検索コマンドを使用しましょう。）
+     <div class="example-contents">
+<div class="cdata"><pre>
+#AddType application/x-httpd-php .php 
+#AddType application/x-httpd-php-source .phps
+</pre></div>
+     </div>
+
+     ハッシュ記号 (<i class="literal">#</i>) を削除して、ファイルを保存し、
+     TextEdit を終了させます。
+    </p>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     最後に、Web サーバを再起動させます。
+     <i class="literal">sudo apachectlgraceful</i> と入力してください。 
+    </span>
+   </li>
+  </ol>
+ </p>
+ <p class="para">
+  この時点で PHP が動作しているはずです。<var class="filename">test.php</var> という
+  名前のファイルを <var class="filename">Sites</var> フォルダに
+  作成してください。このファイルを編集し、<i class="literal">&lt;?php phpinfo() ?&gt;</i> 
+  と書いてください。
+ </p>
+ <p class="para">
+  次に、<i class="literal">127.0.0.1/~あなたのユーザ名/test.php</i> を Web ブラウザで
+  オープンしてください。ステータステーブルが表示され、インストールした PHP 
+  モジュールに関する情報を見ることができるはずです。
+ </p>
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="install.macosx.html">Mac OS X へのインストール</a></div>
+ <div class="next" style="float: right;"><a href="install.windows.html">Windows システムへのインストール</a></div>
+ <div class="up"><a href="install.macosx.html">Mac OS X へのインストール</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

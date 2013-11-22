@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>ある拡張機能がロードされているかどうかを調べる</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.dl.html">dl</a></div>
+ <div class="next" style="float: right;"><a href="function.get-cfg-var.html">get_cfg_var</a></div>
+ <div class="up"><a href="ref.info.html">PHP オプション/情報</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.extension-loaded" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">extension_loaded</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">extension_loaded ― ある拡張機能がロードされているかどうかを調べる</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>extension_loaded</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$name</tt></span>
+   )</div>
+
+  <p class="para">
+   拡張モジュールがロードされているかどうかを調べます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">name</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       拡張モジュールの名前。
+      </p>
+      <p class="para">
+       <a href="function.phpinfo.html" class="function">phpinfo()</a>を使って種々の拡張モジュールの
+       名前を見ることができます。PHP の
+       <i class="literal">CGI</i>または<i class="literal">CLI</i>バージョン
+       を使っている場合には <span class="option">-m</span> スイッチで、
+       使用できる全ての拡張モジュールのリストを得ることができます:
+       <div class="example-contents"><pre>
+<div class="cdata"><pre>
+$ php -m
+[PHP Modules]
+xml
+tokenizer
+standard
+sockets
+session
+posix
+pcre
+overload
+mysql
+mbstring
+ctype
+
+[Zend Modules]
+</pre></div>
+       </pre></div>
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   <i><tt class="parameter">name</tt></i>
+ で指定する拡張機能がロードされている場合に
+   <b><tt>TRUE</tt></b> を返します。さもなければ <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+   <p><b>Example#1 <b>extension_loaded()</b> の例</b></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">if&nbsp;(!</span><span style="color: #0000BB">extension_loaded</span><span style="color: #007700">(</span><span style="color: #DD0000">'gd'</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(!</span><span style="color: #0000BB">dl</span><span style="color: #007700">(</span><span style="color: #DD0000">'gd.so'</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exit;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    特定の拡張が使用可能かどうかをテストするために、
+    <b>extension_loaded()</b>はその内部拡張の名前を
+    使用します。ほとんどの内部拡張の名前は小文字ですが、
+    大文字のものもあるかもしれません。この関数は
+    <em class="emphasis">大文字小文字を区別する</em>ことに
+    注意してください!
+   <br />
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.get-loaded-extensions.html" class="function">get_loaded_extensions()</a></li>
+    <li class="member"><a href="function.get-extension-funcs.html" class="function">get_extension_funcs()</a></li>
+    <li class="member"><a href="function.phpinfo.html" class="function">phpinfo()</a></li>
+    <li class="member"><a href="function.dl.html" class="function">dl()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.dl.html">dl</a></div>
+ <div class="next" style="float: right;"><a href="function.get-cfg-var.html">get_cfg_var</a></div>
+ <div class="up"><a href="ref.info.html">PHP オプション/情報</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

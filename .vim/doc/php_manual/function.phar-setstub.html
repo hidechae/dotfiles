@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>Phar アーカイブの PHP ローダ (あるいは起動スタブ) を設定する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.phar-setmetadata.html">Phar->setMetaData</a></div>
+ <div class="next" style="float: right;"><a href="function.phar-startbuffering.html">Phar->startBuffering</a></div>
+ <div class="up"><a href="ref.phar.html">phar</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.phar-setstub" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">Phar-&gt;setStub</h1>
+  <p class="verinfo">(PECL phar:1.0.0-1.2.1)</p><p class="refpurpose">Phar->setStub ― Phar アーカイブの PHP ローダ (あるいは起動スタブ) を設定する</p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">void</span> <span class="methodname"><b><b>Phar->setStub</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$stub</tt></span>
+   )</div>
+
+
+  <p class="para">
+   このメソッドを使用して、新しい Phar アーカイブに
+   PHP 起動ローダスタブを追加します。あるいは、既存の
+   Phar アーカイブのローダスタブを置き換えます。
+  </p>
+  <p class="para">
+   Phar アーカイブのローダスタブは、
+   このようにアーカイブを直接インクルードした際に使用されます。
+  </p>
+  <div class="example-contents">
+   <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">include&nbsp;</span><span style="color: #DD0000">'myphar.phar'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+  </div>
+
+  <p class="para">
+   ストリームラッパーを使用して次のようにファイルをインクルードした際には、
+   ローダにはアクセスしません。
+  </p>
+  <div class="example-contents">
+   <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">include&nbsp;</span><span style="color: #DD0000">'phar://myphar.phar/somefile.php'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+  </div>
+
+
+ </div>
+
+
+ <div class="refsect1 errors">
+  <h3 class="title">エラー / 例外</h3>
+  <p class="para">
+   php.ini で <a href="ref.phar.html#ini.phar.readonly" class="link">phar.readonly</a>
+   が有効になっている場合に <span class="classname">UnexpectedValueException</span>
+   がスローされます。
+   変更をディスクに書き込む際に何らかの問題が発生した場合は
+   <span class="classname">PharException</span> がスローされます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>Phar->setStub()</b> の例</b></p>
+    <div class="example-contents"><p>
+    </p></div>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">try&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$p&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Phar</span><span style="color: #007700">(</span><span style="color: #0000BB">dirname</span><span style="color: #007700">(</span><span style="color: #0000BB">__FILE__</span><span style="color: #007700">)&nbsp;.&nbsp;</span><span style="color: #DD0000">'/brandnewphar.phar'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'brandnewphar.phar'</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$p</span><span style="color: #007700">[</span><span style="color: #DD0000">'a.php'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #DD0000">'&lt;?php&nbsp;var_dump("Hello");'</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$p</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setStub</span><span style="color: #007700">(</span><span style="color: #DD0000">'&lt;?php&nbsp;var_dump("First");&nbsp;Phar::mapPhar("brandnewphar.phar");&nbsp;__HALT_COMPILER();&nbsp;?&gt;'</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;include&nbsp;</span><span style="color: #DD0000">'phar://brandnewphar.phar/a.php'</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$p</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getStub</span><span style="color: #007700">());<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$p</span><span style="color: #007700">[</span><span style="color: #DD0000">'b.php'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #DD0000">'&lt;?php&nbsp;var_dump("World");'</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$p</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setStub</span><span style="color: #007700">(</span><span style="color: #DD0000">'&lt;?php&nbsp;var_dump("Second");&nbsp;Phar::mapPhar("brandnewphar.phar");&nbsp;__HALT_COMPILER();&nbsp;?&gt;'</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;include&nbsp;</span><span style="color: #DD0000">'phar://brandnewphar.phar/b.php'</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$p</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getStub</span><span style="color: #007700">());<br />}&nbsp;catch&nbsp;(</span><span style="color: #0000BB">Exception&nbsp;$e</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">'brandnewphar.phar&nbsp;での書き込み操作に失敗しました:&nbsp;'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$e</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+string(5) &quot;Hello&quot;
+string(82) &quot;&lt;?php var_dump(&quot;First&quot;); Phar::mapPhar(&quot;brandnewphar.phar&quot;); __HALT_COMPILER(); ?&gt;&quot;
+string(5) &quot;World&quot;
+string(83) &quot;&lt;?php var_dump(&quot;Second&quot;); Phar::mapPhar(&quot;brandnewphar.phar&quot;); __HALT_COMPILER(); ?&gt;&quot;
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.phar-getstub.html" class="link"><a href="function.phar-getstub.html" class="function">Phar->getStub()</a></a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.phar-setmetadata.html">Phar->setMetaData</a></div>
+ <div class="next" style="float: right;"><a href="function.phar-startbuffering.html">Phar->startBuffering</a></div>
+ <div class="up"><a href="ref.phar.html">phar</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

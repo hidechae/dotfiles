@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>データベースハンドラにおける直近の操作に関連する SQLSTATE を取得する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.PDO-construct.html">PDO->__construct()</a></div>
+ <div class="next" style="float: right;"><a href="function.PDO-errorInfo.html">PDO->errorInfo()</a></div>
+ <div class="up"><a href="ref.pdo.html">PDO</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.PDO-errorCode" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">PDO-&gt;errorCode()</h1>
+  <p class="verinfo">(PHP 5 &gt;= 5.1.0, PECL pdo:0.1-1.0.3)</p><p class="refpurpose">PDO->errorCode() ― 
+   データベースハンドラにおける直近の操作に関連する SQLSTATE を取得する
+  </p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="classsynopsis">
+   <div class="ooclass"><b class="classname">PDO</b></div>
+   <div class="methodsynopsis">
+    <span class="type">string</span> <span class="methodname"><b><b>errorCode</b></b></span>
+     ( <span class="methodparam">void</span>
+    )</div>
+
+  </div>
+
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   SQLSTATE を返します。これは、ANSI SQL-92 標準で定義された英数 5
+   文字の ID です。簡潔に言えば、SQLSTATE は 2文字のクラス値の後に
+   3 文字のサブクラス値が続きます。クラス値 01 はワーニングを表し、
+   戻り値のコード SQL_SUCCESS_WITH_INFO を伴います。
+   クラス &#039;IM&#039; を除く &#039;01&#039; 以外のクラス値はエラーを表します。
+   クラス &#039;IM&#039; は PDO 自身の実装 (もしくは ODBC ドライバを使用している場合は
+   ODBC かも知れません) に由来するワーニングやエラーに固有の値です。
+   あらゆるクラスでのサブクラス値 &#039;000&#039; は SQLSTATE
+   に対するサブクラスがない事を示しています。
+  </p>
+  <p class="para">
+   <a href="function.PDO-errorCode.html" class="xref">PDO->errorCode()</a> はデータベースハンドラに
+   直接行った操作に対するエラーコードのみを取得します。
+   もし <a href="function.PDO-prepare.html" class="xref">PDO->prepare()</a> や <a href="function.PDO-query.html" class="xref">PDO->query()</a>
+   を通して PDOStatement オブジェクトを生成し、
+   文でエラーが発生した場合、<a href="function.PDOStatement-errorCode.html" class="xref">PDOStatement->errorCode()</a>
+   はエラーを反映しません。
+   特定の文ハンドラに対して実行された操作についてのエラーコードを返すには
+   <a href="function.PDOStatement-errorCode.html" class="xref">PDOStatement->errorCode()</a>
+   をコールしなければなりません。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example"><p><b>Example#1 SQLSTATE コードを取得する</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/*&nbsp;エラーを発生させる&nbsp;--&nbsp;BONES&nbsp;テーブルは存在しない&nbsp;*/<br /></span><span style="color: #0000BB">$dbh</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">exec</span><span style="color: #007700">(</span><span style="color: #DD0000">"INSERT&nbsp;INTO&nbsp;bones(skull)&nbsp;VALUES&nbsp;('lucy')"</span><span style="color: #007700">);<br /><br />echo&nbsp;</span><span style="color: #DD0000">"\nPDO::errorCode():&nbsp;"</span><span style="color: #007700">;<br />print&nbsp;</span><span style="color: #0000BB">$dbh</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">errorCode</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+PDO::errorCode(): 42S02
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.PDO-errorInfo.html" class="xref">PDO->errorInfo()</a></li>
+    <li class="member"><a href="function.PDOStatement-errorCode.html" class="xref">PDOStatement->errorCode()</a></li>
+    <li class="member"><a href="function.PDOStatement-errorInfo.html" class="xref">PDOStatement->errorInfo()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.PDO-construct.html">PDO->__construct()</a></div>
+ <div class="next" style="float: right;"><a href="function.PDO-errorInfo.html">PDO->errorInfo()</a></div>
+ <div class="up"><a href="ref.pdo.html">PDO</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,277 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>ロケール情報を設定する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.rtrim.html">rtrim</a></div>
+ <div class="next" style="float: right;"><a href="function.sha1-file.html">sha1_file</a></div>
+ <div class="up"><a href="ref.strings.html">Strings</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.setlocale" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">setlocale</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">setlocale ― ロケール情報を設定する</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">string</span> <span class="methodname"><b><b>setlocale</b></b></span>
+    ( <span class="methodparam"><span class="type">int</span> <tt class="parameter">$category</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$locale</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$...</tt></span>
+  ] )</div>
+
+  <div class="methodsynopsis">
+   <span class="type">string</span> <span class="methodname"><b><b>setlocale</b></b></span>
+    ( <span class="methodparam"><span class="type">int</span> <tt class="parameter">$category</tt></span>
+   , <span class="methodparam"><span class="type">array</span> <tt class="parameter">$locale</tt></span>
+   )</div>
+
+  <p class="para">
+   ロケール情報を設定します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">category</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">category</tt></i>
+は、名前付きの定数(または文字列)であり、
+       ロケール設定により影響を受ける関数のカテゴリを指定します。
+       <ul class="itemizedlist">
+        <li class="listitem">
+         <span class="simpara">
+          LC_ALL 以下のものすべて
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          LC_COLLATE 文字列の比較用。<a href="function.strcoll.html" class="function">strcoll()</a> 参照
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          LC_CTYPE 文字の分類と変換。たとえば <a href="function.strtoupper.html" class="function">strtoupper()</a>
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          LC_MONETARY <a href="function.localeconv.html" class="function">localeconv()</a> 用
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          LC_NUMERIC 数字の区切り文字用(<a href="function.localeconv.html" class="function">localeconv()</a>
+          も参照ください)
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          LC_TIME 日時。<a href="function.strftime.html" class="function">strftime()</a>でフォーマットに使用
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          LC_MESSAGES システムの応答用(PHP が <i class="literal">libintl</i>
+          とともにコンパイルされている場合のみ使用可能)
+         </span>
+        </li>
+       </ul>
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">locale</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">locale</tt></i>
+が <b><tt>NULL</tt></b> もしくは空の文字列
+       <i class="literal">&quot;&quot;</i>
+       の場合、ロケール名は上記のカテゴリと同じ名前の環境変数の値、
+       または環境変数 &quot;LANG&quot; からセットされます。
+      </p>
+      <p class="para">
+       <i><tt class="parameter">locale</tt></i>
+ が <i class="literal">&quot;0&quot;</i> の場合、
+       ロケール設定は適用されず、単に現在の設定が返されます。
+      </p>
+      <p class="para">
+       <i><tt class="parameter">locale</tt></i>
+ が配列もしくは追加のパラメータが続く場合、
+       それぞれの配列要素もしくはパラメータは成功するまで新規ロケールとしてセットされます。
+       これは、ロケールが異なるシステムで異なる名前を持っている、
+       もしくはロケールが利用できない場合のフォールバックを提供するといった場合に有用です。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">...</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   現在の新しいロケールを返します。ロケール機能が未実装、
+   指定されたロケールが存在しない、カテゴリ名が無効などの場合は
+   <b><tt>FALSE</tt></b> を返します。
+  </p>
+  <p class="para">
+   また、カテゴリ名が無効の場合は警告メッセージが発生します。
+   カテゴリやロケール名は、
+   <a href="http://www.faqs.org/rfcs/rfc1766" class="link external">&raquo; RFC 1766</a>
+   や <a href="http://www.w3.org/WAI/ER/IG/ert/iso639.htm" class="link external">&raquo; ISO 639</a> にあります。
+   ロケールの命名方式は、システムによって異なります。
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    <b>setlocale()</b> の戻り値は、
+    PHP が実行されているシステムに依存します。
+    システムの setlocale 関数が返す値を返すためです。
+   <br />
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">4.3.0</td>
+       <td colspan="1" rowspan="1" align="left">
+        複数のロケールを渡せるようになりました。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">4.2.0</td>
+       <td colspan="1" rowspan="1" align="left">
+        <i><tt class="parameter">category</tt></i>
+ に文字列を指定することが非推奨となりました。
+        代わりに上記の定数を使用してください。これらを文字列として (クオートして)
+        渡すと、警告メッセージが表示されます。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>setlocale()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/*&nbsp;ロケールをオランダ語に設定&nbsp;*/<br /></span><span style="color: #0000BB">setlocale</span><span style="color: #007700">(</span><span style="color: #0000BB">LC_ALL</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'nl_NL'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;出力:&nbsp;vrijdag&nbsp;22&nbsp;december&nbsp;1978&nbsp;*/<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">strftime</span><span style="color: #007700">(</span><span style="color: #DD0000">"%A&nbsp;%e&nbsp;%B&nbsp;%Y"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">mktime</span><span style="color: #007700">(</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">12</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">22</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1978</span><span style="color: #007700">));<br /><br /></span><span style="color: #FF8000">/*&nbsp;PHP&nbsp;4.3.0&nbsp;以降、ドイツに対して利用可能な異なるロケール名を使用する&nbsp;*/<br /></span><span style="color: #0000BB">$loc_de&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">setlocale</span><span style="color: #007700">(</span><span style="color: #0000BB">LC_ALL</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'de_DE@euro'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'de_DE'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'de'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'ge'</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #DD0000">"Preferred&nbsp;locale&nbsp;for&nbsp;german&nbsp;on&nbsp;this&nbsp;system&nbsp;is&nbsp;'$loc_de'"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#2 Windows での <b>setlocale()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/*&nbsp;ロケールをオランダ語に設定&nbsp;*/<br /></span><span style="color: #0000BB">setlocale</span><span style="color: #007700">(</span><span style="color: #0000BB">LC_ALL</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'nld_nld'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;出力:&nbsp;vrijdag&nbsp;22&nbsp;december&nbsp;1978&nbsp;*/<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">strftime</span><span style="color: #007700">(</span><span style="color: #DD0000">"%A&nbsp;%d&nbsp;%B&nbsp;%Y"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">mktime</span><span style="color: #007700">(</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">12</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">22</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1978</span><span style="color: #007700">));<br /><br /></span><span style="color: #FF8000">/*&nbsp;PHP&nbsp;4.3.0&nbsp;以降、ドイツに対して利用可能な異なるロケール名を使用する&nbsp;*/<br /></span><span style="color: #0000BB">$loc_de&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">setlocale</span><span style="color: #007700">(</span><span style="color: #0000BB">LC_ALL</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'de_DE@euro'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'de_DE'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'deu_deu'</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #DD0000">"Preferred&nbsp;locale&nbsp;for&nbsp;german&nbsp;on&nbsp;this&nbsp;system&nbsp;is&nbsp;'$loc_de'"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <div class="warning"><b class="warning">警告</b>
+   <p class="para">
+    ロケール情報は、スレッド毎ではなくプロセス毎に維持されます。
+    もし PHP を IIS や Windows 用 Apache のようなマルチスレッドサーバ
+    API 上で動作させている場合、
+    スクリプトを実行している間にロケールの設定が突然変わるのを
+    経験するかも知れませんが、スクリプト自身は決して
+    <b>setlocale()</b> 自身をコールしていません。
+    これは同時に同一プロセスの異なるスレッドで実行されている他のスクリプトが
+    <b>setlocale()</b>
+    を使用してプロセスワイドなロケールを変更する事により発生します。
+   </p>
+  </div>
+  <div class="tip"><b class="tip">ヒント</b>
+   <p class="para">
+    Windows ユーザは Microsoft の <acronym title="Microsoft Developer Network">MSDN</acronym> の Web サイトに
+    <i><tt class="parameter">locale</tt></i>
+
+    文字列に関する有用な情報を見つけることができるでしょう。
+    サポートしている言語文字列は、<a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vclib/html/_crt_language_strings.asp" class="link external">&raquo; http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vclib/html/_crt_language_strings.asp</a> 、
+    サポートしている国/地域文字列は<a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vclib/html/_crt_country_strings.asp" class="link external">&raquo; 
+    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vclib/html/_crt_country_strings.asp</a>
+    にあります。Windows システムは、<i class="literal">ISO 3166-Alpha-3</i>
+    によって定められた国/地域文字列の 3 文字コードをサポートしています。
+    これは <a href="http://www.unicode.org/onlinedat/countries.html" class="link external">&raquo; Unicode website</a>
+    にあります。
+   </p>
+  </div>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.rtrim.html">rtrim</a></div>
+ <div class="next" style="float: right;"><a href="function.sha1-file.html">sha1_file</a></div>
+ <div class="up"><a href="ref.strings.html">Strings</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

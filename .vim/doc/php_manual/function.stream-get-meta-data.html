@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>ヘッダーあるいはメタデータをストリームまたはファイルポインタから取得する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.stream-get-line.html">stream_get_line</a></div>
+ <div class="next" style="float: right;"><a href="function.stream-get-transports.html">stream_get_transports</a></div>
+ <div class="up"><a href="ref.stream.html">ストリーム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.stream-get-meta-data" class="refentry">
+   <div class="refnamediv">
+    <h1 class="refname">stream_get_meta_data</h1>
+    <p class="verinfo">(PHP 4 &gt;= 4.3.0, PHP 5)</p><p class="refpurpose">stream_get_meta_data ― ヘッダーあるいはメタデータをストリームまたはファイルポインタから取得する</p>
+
+   </div>
+   <div class="refsect1 u">
+    <h3 class="title">説明</h3>
+     <div class="methodsynopsis">
+      <span class="type">array</span> <span class="methodname"><b><b>stream_get_meta_data</b></b></span>
+       ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$stream</tt></span>
+      )</div>
+
+    <p class="simpara">
+     既存の <i><tt class="parameter">stream</tt></i>
+ に関する情報を取得します。
+     ストリームは <a href="function.fopen.html" class="function">fopen()</a> か、
+     <a href="function.fsockopen.html" class="function">fsockopen()</a> か、<a href="function.pfsockopen.html" class="function">pfsockopen()</a> で
+     作成されたいずれのものも指定できます。
+     結果の配列は次のような項目を含みます。
+    </p>
+    <ul class="itemizedlist">
+     <li class="listitem">
+      <p class="para">
+       <i><tt class="parameter">timed_out</tt></i>
+ (<a href="language.types.boolean.html" class="type bool">bool</a>) - 最後に
+       <a href="function.fread.html" class="function">fread()</a> または <a href="function.fgets.html" class="function">fgets()</a>
+       でデータを待っている時にタイムアウトした場合 <b><tt>TRUE</tt></b> を返します。
+      </p>
+     </li>
+     <li class="listitem">
+      <p class="para">
+       <i><tt class="parameter">blocked</tt></i>
+ (<a href="language.types.boolean.html" class="type bool">bool</a>) -
+       ストリームがブロック I/O モードの場合に <b><tt>TRUE</tt></b> となります。
+       <a href="function.stream-set-blocking.html" class="function">stream_set_blocking()</a> を参照ください。
+      </p>
+     </li>
+     <li class="listitem">
+      <p class="para">
+       <i><tt class="parameter">eof</tt></i>
+ (<a href="language.types.boolean.html" class="type bool">bool</a>) - ストリームが EOF に
+       達した時 <b><tt>TRUE</tt></b> となります。
+       ストリームがソケットベースの場合、このメンバーは、
+       たとえ <i><tt class="parameter">unread_bytes</tt></i>
+ が 0 でなくても
+       <b><tt>TRUE</tt></b> になる場合があることに注意してください。
+       まだデータがあるかどうかを調べるには、このパラメータではなく、
+       <a href="function.feof.html" class="function">feof()</a> を使ってください。
+      </p>
+     </li>
+     <li class="listitem">
+      <p class="para">
+       <i><tt class="parameter">unread_bytes</tt></i>
+ (<a href="language.types.integer.html" class="type int">int</a>) - PHP の
+       内部バッファにあるデータのバイト数。
+      </p>
+      <blockquote><p><b class="note">注意</b>: 
+       <span class="simpara">
+        スクリプト中でこの値を使用すべきではありません。
+       </span>
+      </p></blockquote>
+     </li>
+    </ul>
+    <p class="simpara">
+     次の項目は PHP 4.3.0 で追加されました。
+    </p>
+    <ul class="itemizedlist">
+     <li class="listitem">
+      <p class="para">
+       <i><tt class="parameter">stream_type</tt></i>
+ (<a href="language.types.string.html" class="type string">string</a>) -
+       ストリームの下層にある実装を表すラベル
+      </p>
+     </li>
+     <li class="listitem">
+      <p class="para">
+       <i><tt class="parameter">wrapper_type</tt></i>
+ (<a href="language.types.string.html" class="type string">string</a>) -
+       ストリームを覆うプロトコルラッパを表すラベル。
+       ラッパについては <a href="wrappers.html" class="xref">サポートされるプロトコル/ラッパー</a> を参照ください。
+      </p>
+     </li>
+     <li class="listitem">
+      <p class="para">
+       <i><tt class="parameter">wrapper_data</tt></i>
+ (<a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a>) -
+       ストリームに付随しているラッパの固有のデータ。
+       ラッパとその固有の情報については、<a href="wrappers.html" class="xref">サポートされるプロトコル/ラッパー</a>
+       を参照ください。
+      </p>
+     </li>
+     <li class="listitem">
+      <p class="para">
+       <i><tt class="parameter">filters</tt></i>
+ (<a href="language.types.array.html" class="type array">array</a>) -
+       ストリームに付加されているフィルタの名称を格納した配列。
+       フィルタに関するドキュメントは
+       <a href="filters.html" class="link">利用できるフィルタのリスト</a> にあります。
+      </p>
+     </li>
+    </ul>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      この関数は PHP 4.3.0 で初めて導入されましたが、
+      それ以前には <em class="emphasis">ソケットベースのストリーム専用の</em>
+      <a href="function.socket-get-status.html" class="function">socket_get_status()</a> を使い、
+      最初に挙げた 4 つの項目に関しては取得できました。
+     <br />
+     
+      PHP 4.3.0 またはそれ以降では、
+      <a href="function.socket-get-status.html" class="function">socket_get_status()</a> はこの関数のエイリアスと
+      なっています。
+     <br />
+    </p></blockquote>
+    <blockquote><p><b class="note">注意</b>: 
+     <span class="simpara">この関数は <a href="ref.sockets.html" class="link">ソケット関数</a>
+     で作られたストリームに対しては機能しません。
+     </span>
+    </p></blockquote>
+    <p class="simpara">
+     次の項目は PHP 5.0.0 で追加されました。
+    </p>
+    <ul class="itemizedlist">
+     <li class="listitem">
+      <p class="para">
+       <i><tt class="parameter">mode</tt></i>
+ (string) - このストリームに要求される
+       アクセスモード（<a href="function.fopen.html" class="link">fopen()</a>
+       リファレンスの表 1 を参照ください）。
+      </p>
+     </li>
+     <li class="listitem">
+      <p class="para">
+       <i><tt class="parameter">seekable</tt></i>
+ (bool) - 現在のストリーム内で
+       移動が可能かどうか。
+      </p>
+     </li>
+     <li class="listitem">
+      <p class="para">
+       <i><tt class="parameter">uri</tt></i>
+ (string) - このストリームに関連付けられた
+       URI / ファイル名。
+      </p>
+     </li>
+    </ul>
+   </div>
+
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.stream-get-line.html">stream_get_line</a></div>
+ <div class="next" style="float: right;"><a href="function.stream-get-transports.html">stream_get_transports</a></div>
+ <div class="up"><a href="ref.stream.html">ストリーム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

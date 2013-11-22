@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>持続的なデータベース接続を開く</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.odbc-num-rows.html">odbc_num_rows</a></div>
+ <div class="next" style="float: right;"><a href="function.odbc-prepare.html">odbc_prepare</a></div>
+ <div class="up"><a href="ref.uodbc.html">ODBC</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.odbc-pconnect" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">odbc_pconnect</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">odbc_pconnect ― 持続的なデータベース接続を開く</p>
+
+ </div>
+ <div class="refsect1 u">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">resource</span> <span class="methodname"><b><b>odbc_pconnect</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$dsn</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$user</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$password</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$cursor_type</tt></span>
+  ] )</div>
+
+  <p class="para">
+   ODBC 接続 ID またはエラー時に 0 (<b><tt>FALSE</tt></b>) を返します。
+   この関数は、スクリプトが終了した時に接続が閉じられないということ以外は
+   <a href="function.odbc-connect.html" class="function">odbc_connect()</a> に非常に似ています。
+   同じ <i><tt class="parameter">dsn</tt></i>
+、<i><tt class="parameter">user</tt></i>
+、
+   <i><tt class="parameter">password</tt></i>
+ の組み合わせ
+   （<a href="function.odbc-connect.html" class="function">odbc_connect()</a> および
+   <b>odbc_pconnect()</b> による）接続の場合は、
+   持続的な接続を再利用することが可能です。
+  </p>
+  <p class="para">
+   <blockquote><p><b class="note">注意</b>: 
+    <span class="simpara">
+     持続的な接続 は、PHP が CGI プログラムとして使用される場合は使用できません。
+    </span>
+   </p></blockquote>
+  </p>
+  <p class="para">
+   オプションの cursor_type パラメータに関する情報については、
+   <a href="function.odbc-connect.html" class="function">odbc_connect()</a> 関数を参照ください。
+   持続的接続に関する更に詳細な情報については、PHP FAQ を参照ください。
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.odbc-num-rows.html">odbc_num_rows</a></div>
+ <div class="next" style="float: right;"><a href="function.odbc-prepare.html">odbc_prepare</a></div>
+ <div class="up"><a href="ref.uodbc.html">ODBC</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

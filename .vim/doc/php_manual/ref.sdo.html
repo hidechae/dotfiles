@@ -1,0 +1,2145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>SDO 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.SCA-getService.html">SCA::getService</a></div>
+ <div class="next" style="float: right;"><a href="function.SDO-DAS-ChangeSummary-beginLogging.html">SDO_DAS_ChangeSummary::beginLogging</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+ <h1 class="title">SDO 関数</h1>
+ 
+
+ <div class="partintro">
+  <div id="sdo.intro" class="section">
+   <h2 class="title">導入</h2>
+   <p class="para">
+    Service Data Objects (SDO) を使用すると、PHP アプリケーションから
+     (データベースクエリ・XML ファイル・スプレッドシートなどの)
+    さまざまな形式のデータへのアクセスが
+    同じインターフェイスで行えるようになります。
+   </p>
+   <p class="para">
+    データソースにアクセスするには、それぞれのデータソースに対応した
+    アクセス機能を提供するデータアクセスサービス (DAS) が必要となります。
+    PHP アプリケーションからは、データソース内のデータを表す
+    SDO インスタンスを作成するために DAS を使用します。そうすると、
+    標準的な SDO インターフェイスを使用して SDO インスタンスの
+    データに対する読み書きができるようになります。最後に、
+    変更されたデータを DAS でデータソースに書き込みます。
+    このデータソースは、通常は最初に作成したのと同じものとなります。
+   </p>
+   <p class="para">
+    現在使用可能なデータアクセスサービスの詳細は、
+    <a href="ref.sdo.html#sdo.das.table" class="link">データアクセスサービスの一覧</a>
+    を参照ください。提供されている DAS 以外にも、SDO は
+    他のサービスを実装するためのインターフェイスも提供しています
+    (詳細は <a href="ref.sdo.html#sdo.class.sdo-das-spis" class="link">SDO
+    データアクセスサービス インターフェイス</a> を参照ください)。
+   </p>
+    <p class="para">
+     この拡張モジュールは、
+     <a href="http://www-128.ibm.com/developerworks/java/library/j-commonj-sdowmt/" class="link external">&raquo; 
+     Service Data Objects specification
+     </a>
+     の概念に由来するものです。
+     <a href="http://incubator.apache.org/tuscany/" class="link external">&raquo; Apache Tuscany</a> SDO for C++ project
+     を含んでいます。
+   </p>
+
+   <div id="sdo.intro.structure" class="section">
+    <h2 class="title">Service Data Object の構造</h2>
+    <p class="para">
+     Service Data Object のインスタンスは、データオブジェクトのツリーで
+     構成されています。このツリーは、データオブジェクト間の閉じた関係で
+     定義されます。例えば、Company (会社) データオブジェクトに
+     いくつかの Department (部署) データオブジェクトが含まれていると
+     すると、Company が Department を包含しているということになります。
+    </p>
+    <p class="para">
+     SDO では、包含関係以外の関係もデータオブジェクトのツリー内で
+     保持することができます。例えば、ある Employee (従業員)
+     データオブジェクトが、上司として別の Employee を参照していることが
+     あるかもしれません。
+    </p>
+    <p class="para">
+     データオブジェクト同士がお互いを参照するだけではなく、
+     オブジェクト以外のプロパティを保持することもできます。
+     例えば、Company データオブジェクトに文字列型のプロパティ &quot;name&quot;
+     を含め、そこに会社名 (&quot;Acme&quot; など) を格納することもできます。
+    </p>
+    <p class="para">
+     これらのデータオブジェクトのプロパティ、すなわち包含関係をもつもの、
+     包含関係を持たないもの、そしてプリミティブなプロパティは、
+     ひとつの値を持つこともあれば複数の値を持つこともあります。
+     上の例では、Departments は複数の値をとりますが
+     Company の name はひとつの値しかとりません。
+    </p>
+    <p class="para">
+     PHP では、SDO データオブジェクトは PHP のオブジェクトとして表されます。
+     データオブジェクトのプロパティへは、
+     オブジェクト構文あるいは連想配列形式の構文でアクセスすることができます。
+     後でこれらの例を示します。
+    </p>
+   </div>
+  </div>
+
+  <div id="sdo.requirements" class="section">
+   <h2 class="title">要件</h2>
+   <p class="para">
+    SDO 拡張モジュールを使用するには、PHP 5.1.0 以降が必要です。
+    また、libxml2 ライブラリも必要です。通常は、既に
+    libxml2 はインストールされているでしょうが、もしインストールされていない場合は
+    <a href="http://www.xmlsoft.org/" class="link external">&raquo; http://www.xmlsoft.org/</a>
+    からダウンロードできます。
+   </p>
+  </div>
+
+  <div id="sdo.installation" class="section">
+   <h2 class="title">インストール手順</h2>
+   <blockquote><p><b class="note">注意</b>: 
+    
+     初期のバージョンの SDO 拡張モジュールは、XML DAS
+     用に別の共有ライブラリが必要でした。これは今は使われていないので、
+     <var class="filename">php_sdo_das_xml.dll</var> や
+     <var class="filename">sdo_das_xml.so</var> への参照を
+     <var class="filename">php.ini</var> から削除してください。
+    <br />
+   </p></blockquote>
+   <div class="procedure">
+    <b class="title">Unix システム</b>
+    <ol type="1"><li>
+     <p class="para">
+       SDO コンポーネント、すなわち SDO コア・XML DAS
+       およびリレーショナル DAS の最新版をダウンロード、
+       インストールするには、次のコマンドを使用します。
+      SDO を構成する 3 つのコンポーネントである SDO コア、XML DAS
+      およびリレーショナル DAS は、ひとつの PECL プロジェクト
+      Service Component Architecture (SCA) にまとめられており、SCA_SDO
+      という名前になっています。つまり、以下のコマンドで、
+      SCA をダウンロードして SDO の全パーツをインストールすることができます。
+      <div class="example-contents"><pre>
+       <div class="cdata"><pre>
+pecl install SCA_SDO
+</pre></div>
+      </pre></div>
+     </p>
+     <p class="para">
+      このコマンドは SDO 共有ライブラリをビルドし、
+      SCA およびリレーショナル DAS の PHP ファイルをインストールします。
+     </p>
+     <p class="para">
+      最新のベータ版を使用するには、代わりに次のコマンドを使用します。
+      <div class="example-contents"><pre>
+       <div class="cdata"><pre>
+pecl install SCA_SDO-beta
+</pre></div>
+      </pre></div>
+     </p>
+    </li>
+    <li>
+     <p class="para">
+      <strong class="command">pecl</strong> コマンドは、SDO
+      モジュールを自動的に PHP 拡張モジュールディレクトリにインストールします。
+      SDO 拡張モジュールを有効にするには、以下の行を
+      <var class="filename">php.ini</var> に追加しなければなりません。
+      <div class="example-contents"><pre> <div class="cdata"><pre>
+extension=sdo.so
+</pre></div>
+      </pre></div>
+     </p>
+     <p class="para">
+      PECL パッケージのビルド方法についての詳細は、マニュアルの
+      <a href="install.pecl.html" class="link">PECL 拡張モジュールのインストール</a>
+      を参照ください。
+     </p>
+    </li>
+    </ol></div>
+
+   <div class="procedure">
+    <b class="title">Windows</b>
+    <ol type="1"><li>
+     <p class="para">
+      SDO の最新版の DLL は、
+      <a href="http://pecl4win.php.net/ext.php/php_sdo.dll" class="link external">&raquo; php_sdo.dll</a>
+      からダウンロードできます。
+     </p>
+     <p class="para">
+      現在は、<a href="http://pecl4win.php.net/" class="link external">&raquo; pecl4win</a>
+      では安定リリース版のバイナリが提供されていないことに注意しましょう。
+      最新版のみがダウンロード可能となっています。
+     </p>
+    </li>
+    <li>
+     <p class="para">
+      <strong class="command">pecl</strong> コマンドは、SDO
+      モジュールを自動的に PHP 拡張モジュールディレクトリにインストールします。
+      SDO 拡張モジュールを有効にするには、以下の行を
+      <var class="filename">php.ini</var> に追加しなければなりません。
+      <div class="example-contents"><pre>
+       <div class="cdata"><pre>
+extension=php_sdo.dll
+</pre></div>
+      </pre></div>
+     </p>
+    </li>
+    <li>
+     <p class="para">
+      リレーショナル DAS をダウンロード、インストールするには、
+      以下のコマンドを実行します。
+      <div class="example-contents"><pre>
+      <div class="cdata"><pre>
+pecl install -B sdo
+</pre></div>
+      </pre></div>
+     </p>
+     <p class="para">
+      リレーショナル DAS は PHP で書かれています。
+      <var class="filename">sdo/DAS/Relational</var> を含むディレクトリを指すように
+      <var class="filename">php.ini</var> の <a href="ini.core.html#ini.include-path" class="link">include_path</a>
+      を設定しなければなりません。
+     </p>
+    </li>
+   </ol></div>
+
+   <div class="procedure">
+    <b class="title">Linux での SDO のビルド</b>
+    <p class="para">
+     この節では、Linux 上で SDO コアおよび XML DAS をビルドする方法を
+     説明します。これを知る必要があるのは、CVS からチェックアウトした
+     最新バージョンをビルドしたい場合のみです。
+    </p>
+    <ol type="1"><li>
+     <p class="para">
+      拡張モジュールのメインディレクトリに移動します。
+      <strong class="command">cd &lt; sdo のコードがある場所 &gt;</strong>
+     </p>
+    </li>
+    <li>
+     <p class="para">
+      <strong class="command">phpize</strong> を実行します。これにより、
+      SDO をコンパイルするための環境を設定します。
+     </p>
+    </li>
+    <li>
+     <p class="para">
+      次に <strong class="command">./configure; make; make install</strong> を実行します。
+      拡張モジュールをインストールするには、root としてログインする
+      必要があることに注意しましょう。
+     </p>
+    </li>
+    <li>
+     <p class="para">
+      <var class="filename">php.ini</var> ファイルに
+      <strong class="command">extension=sdo.so</strong>
+      を追加することで、このモジュールが PHP に読み込まれるようにします。
+     </p>
+    </li>
+   </ol></div>
+  </div>
+
+  <div id="sdo.das.table" class="section">
+   <h2 class="title">データアクセスサービス</h2>
+   <p class="para">
+    以下の表で、現在提供されている SDO データアクセスサービスの
+    一覧を示します。
+    <table class="informaltable">
+     <colgroup>
+
+      <thead valign="middle">
+       <tr valign="middle">
+        <th colspan="1">DAS 名</th>
+        <th colspan="1">説明</th>
+       </tr>
+
+      </thead>
+
+      <tbody valign="middle">
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">
+         <a href="ref.sdo-das-xml.html" class="link">SDO_DAS_XML</a>
+        </td>
+        <td colspan="1" rowspan="1" align="left">
+         XML データアクセスサービスは、SDO を XML ドキュメントとして
+         読み書きします。
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">
+         <a href="ref.sdo.das.rel.html" class="link">SDO_DAS_Relational</a>
+        </td>
+        <td colspan="1" rowspan="1" align="left">
+         PDO を基にしたデータアクセスサービスで、SDO をリレーショナル
+         データベースとして読み書きします。同時更新に対しては
+         楽観的な実装となっています。
+        </td>
+       </tr>
+
+      </tbody>
+     </colgroup>
+
+    </table>
+   </p>
+  </div>
+
+  <div id="sdo.limitations" class="section">
+   <h2 class="title">制限事項</h2>
+   <div class="procedure">
+    <b class="title">実装上の制限</b>
+    <p class="para">
+     現在の SDO の実装には、以下の制限があります。
+    </p>
+    <ol type="1"><li>
+     <p class="para">
+      マルチバイト文字セットはサポートしていません。
+      コミュニティの要望があれば、Unicode 対応版の PHP
+      で対応するかもしれません。
+      <a href="ref.unicode.html" class="link">Unicode 関数</a> を参照ください。
+     </p>
+    </li>
+   </ol></div>
+   <div class="procedure">
+    <b class="title">SDO の制限</b>
+    <p class="para">
+     現在の PHP の実装では、以下の SDO 2.0 の概念はサポートされていません。
+     将来これらのすべてが実装されるとは限りません。実装されるかどうかは
+     コミュニティの要望があるかどうかによります。
+    </p>
+    <ol type="1"><li>
+     <p class="para">
+      双方向のリレーション
+     </p>
+    </li>
+    <li>
+     <p class="para">
+      型およびプロパティのエイリアス
+     </p>
+    </li>
+    <li>
+     <p class="para">
+      読み込み専用のプロパティ
+     </p>
+    </li>
+    <li>
+     <p class="para">
+      SDO 2.0 で定義されているヘルパークラスは、直接には実装されていません。
+      しかし、同等の機能がより PHP らしい方法で提供されています。
+      例えば、<strong class="command">CopyHelper::copy()</strong> の機能については、
+      データオブジェクトに PHP の
+      <a href="language.oop5.cloning.html" class="link">clone</a>
+      キーワードを適用することで実現できます。
+     </p>
+    </li>
+   </ol></div>
+  </div>
+
+  <div id="sdo.examples" class="section">
+   <h2 class="title">例</h2>
+   <p class="para">
+    以下の例では、XML データアクセスサービスを使用して、
+    下のスキーマおよびインスタンスをもとに作成した SDO の使用を想定しています。
+   </p>
+   <p class="para">
+    以下で説明しているインスタンスドキュメントは、
+    &#039;MegaCorp&#039; という会社を扱っています。この会社には
+    &#039;Advanced Technologies&#039; という名前の部署がひとつあります。
+    Advanced Technologies 部門には 3 人の従業員がいます。
+    この会社の employeeOfTheMonth (今月の従業員) は、
+    2 人目の従業員である &#039;Jane Doe&#039; を指しています。
+   </p>
+   <p class="para">
+    <div class="example-contents">
+<div class="cdata"><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;company xmlns=&quot;companyNS&quot; name=&quot;MegaCorp&quot;
+  employeeOfTheMonth=&quot;E0003&quot;&gt;
+  &lt;departments name=&quot;Advanced Technologies&quot; location=&quot;NY&quot; number=&quot;123&quot;&gt;
+    &lt;employees name=&quot;John Jones&quot; SN=&quot;E0001&quot;/&gt;
+    &lt;employees name=&quot;Jane Doe&quot; SN=&quot;E0003&quot;/&gt;
+    &lt;employees name=&quot;Al Smith&quot; SN=&quot;E0004&quot; manager=&quot;true&quot;/&gt;
+  &lt;/departments&gt;
+&lt;/company&gt;
+</pre></div>
+    </div>
+
+   </p>
+   <p class="para">
+    このスキーマのルート要素は company です。company は departments
+    を含んでおり、個々の department は employees を含んでいます。
+    各要素はいくつかの属性を保持しており、ここに名前やシリアル番号などを保存します。
+    最後に、company は IDREF 属性を保持しており、
+    特定の従業員を &#039;employeeOfTheMonth&#039; として参照しています。
+   </p>
+   <p class="para">
+    <div class="example-contents">
+<div class="cdata"><pre>
+&lt;xsd:schema
+  xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;
+  xmlns:sdo=&quot;commonj.sdo&quot;
+  xmlns:sdoxml=&quot;commonj.sdo/xml&quot;
+  xmlns:company=&quot;companyNS&quot;
+  targetNamespace=&quot;companyNS&quot;&gt;
+  &lt;xsd:element name=&quot;company&quot; type=&quot;company:CompanyType&quot;/&gt;
+  &lt;xsd:complexType name=&quot;CompanyType&quot;&gt;
+    &lt;xsd:sequence&gt;
+      &lt;xsd:element name=&quot;departments&quot; type=&quot;company:DepartmentType&quot;
+        maxOccurs=&quot;unbounded&quot;/&gt;
+    &lt;/xsd:sequence&gt;
+    &lt;xsd:attribute name=&quot;name&quot; type=&quot;xsd:string&quot;/&gt;
+    &lt;xsd:attribute name=&quot;employeeOfTheMonth&quot; type=&quot;xsd:IDREF&quot;
+      sdoxml:propertyType=&quot;company:EmployeeType&quot;/&gt;
+  &lt;/xsd:complexType&gt;
+  &lt;xsd:complexType name=&quot;DepartmentType&quot;&gt;
+    &lt;xsd:sequence&gt;
+      &lt;xsd:element name=&quot;employees&quot; type=&quot;company:EmployeeType&quot;
+       maxOccurs=&quot;unbounded&quot;/&gt;
+    &lt;/xsd:sequence&gt;
+    &lt;xsd:attribute name=&quot;name&quot; type=&quot;xsd:string&quot;/&gt;
+    &lt;xsd:attribute name=&quot;location&quot; type=&quot;xsd:string&quot;/&gt;
+    &lt;xsd:attribute name=&quot;number&quot; type=&quot;xsd:int&quot;/&gt;
+  &lt;/xsd:complexType&gt;
+  &lt;xsd:complexType name=&quot;EmployeeType&quot;&gt;
+    &lt;xsd:attribute name=&quot;name&quot; type=&quot;xsd:string&quot;/&gt;
+    &lt;xsd:attribute name=&quot;SN&quot; type=&quot;xsd:ID&quot;/&gt;
+    &lt;xsd:attribute name=&quot;manager&quot; type=&quot;xsd:boolean&quot;/&gt;
+  &lt;/xsd:complexType&gt;
+&lt;/xsd:schema&gt;
+</pre></div>
+    </div>
+
+   </p>
+   <p class="para">
+    XML データアクセスサービスは、スキーマを SDO に関連付けます。
+    &quot;name&quot; のような属性はプリミティブプロパティに、
+    一連の employees は複数の値をとる包含関係に、といったようになります。
+    包含関係は、複合型の中に別の複合型を含めることで表され、
+    非包含関係は ID や IDREF に特別な属性
+    <strong class="command">sdoxml:propertyType</strong> を指定して表されることに注意しましょう。
+   </p>
+  </div>
+
+  <div id="sdo.sample.getset" class="section">
+   <h2 class="title">プロパティの値の設定および取得</h2>
+   <p class="para">
+    以下の例では、上で示したスキーマおよびインスタンスドキュメントをもとに
+    作成したデータオブジェクトツリーのルート要素が
+    <strong class="command">$company</strong> に入っているものとして考えます。
+   </p>
+   <p class="para">
+    <div class="example">
+     <p><b>Example#1 プロパティ名を使用したアクセス</b></p>
+     <div class="example-contents"><p>
+      データオブジェクトのプロパティへは、通常のオブジェクトの
+      プロパティにアクセスするのと同じ構文でアクセス可能です。
+      以下の例では、会社の名前を &#039;Acme&#039; に変更します。
+     </p></div>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;$company</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">name&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'Acme'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+
+   <p class="para">
+    <div class="example">
+     <p><b>Example#2 配列のインデックスを使用したプロパティへのアクセス</b></p>
+     <div class="example-contents"><p>
+      連想配列形式の構文を使用して、プロパティにアクセスすることもできます。
+      最も簡単な負尾法は、プロパティ名を配列のインデックスとして使用する方法です。
+      例えば、以下の例では会社の名前を設定してから「今月の従業員」を取得しています。
+     </p></div>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;$company</span><span style="color: #007700">[</span><span style="color: #DD0000">'name'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #DD0000">'UltraCorp'</span><span style="color: #007700">;<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$eotm&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$company</span><span style="color: #007700">[</span><span style="color: #DD0000">'employeeOfTheMonth'</span><span style="color: #007700">];<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+
+   <p class="para">
+    <div class="example">
+     <p><b>Example#3 データオブジェクトの繰り返し処理</b></p>
+     <div class="example-contents"><p>
+      foreach を使用することにより、データオブジェクトのプロパティを
+      順に処理していくことができます。以下の例では、
+      今月の従業員のプロパティを順に処理します。
+     </p></div>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;$eotm&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$company</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">employeeOfTheMonth</span><span style="color: #007700">;<br />&nbsp;&nbsp;foreach&nbsp;(</span><span style="color: #0000BB">$eotm&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$value</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"$name:&nbsp;$value\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+     <div class="example-contents"><p>
+      出力は以下のようになります。
+     </p></div>
+     <div class="example-contents">
+<div class="cdata"><pre>
+name: Jane Doe
+SN: E0003
+</pre></div>
+     </div>
+
+     <div class="example-contents"><p>
+      &#039;manager&#039; プロパティは表示されません。なぜなら設定されていないからです。
+     </p></div>
+    </div>
+   </p>
+
+   <p class="para">
+    <div class="example">
+     <p><b>Example#4 多くの値をとりうるプロパティへの名前によるアクセス</b></p>
+     <div class="example-contents"><p>
+      多くの値をとりうるデータオブジェクトのプロパティへのアクセスも、
+      オブジェクトのプロパティに対するアクセス構文でアクセスできます。
+      例えば部署の一覧を取得するにはこのようにします。
+     </p></div>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;$departments&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$company</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">departments</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+
+   <p class="para">
+    <div class="example">
+     <p><b>Example#5 多くの値をとりうる要素へのアクセス</b></p>
+     <div class="example-contents"><p>
+      配列の構文を使用することで、多くの値をとりうる要素における
+      個々の要素にアクセスすることが可能です。以下の例では、
+      会社の中の最初の部署にアクセスしています。
+     </p></div>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;$ad_tech_dept&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$company</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">departments</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">];<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+
+   <p class="para">
+    <div class="example">
+     <p><b>Example#6 多くの値をとりうるプロパティの順次処理</b></p>
+     <div class="example-contents"><p>
+      foreach を使用して、多くの値をとりうるプロパティを順に処理することができます。
+      会社の各部門を順に処理するにはこのようにします。
+     </p></div>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;</span><span style="color: #007700">foreach&nbsp;(</span><span style="color: #0000BB">$company</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">departments&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$department</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;...<br />&nbsp;&nbsp;</span><span style="color: #007700">}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+     <div class="example-contents"><p>
+      繰り返しのたびに、次の部署が変数
+      <strong class="command">$department</strong> に代入されます。
+     </p></div>
+    </div>
+   </p>
+
+   <p class="para">
+    <div class="example">
+     <p><b>Example#7 連結されたプロパティへのアクセス</b></p>
+     <div class="example-contents"><p>
+      プロパティへの参照を、ひとつの行に連結することができます。
+      以下の例では、最初の部署の名前を設定し、取得しています。
+     </p></div>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;$company</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">departments</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">]-&gt;</span><span style="color: #0000BB">name&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'Emerging&nbsp;Technologies'</span><span style="color: #007700">;<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$dept_name&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$company</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">departments</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">]-&gt;</span><span style="color: #0000BB">name</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+     <div class="example-contents"><p>同じことを連想配列構文で行うと、このようになります。</p></div>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;$company</span><span style="color: #007700">[</span><span style="color: #DD0000">'departments'</span><span style="color: #007700">][</span><span style="color: #0000BB">0</span><span style="color: #007700">][</span><span style="color: #DD0000">'name'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #DD0000">'Emerging&nbsp;Technologies'</span><span style="color: #007700">;<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$dept_name&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$company</span><span style="color: #007700">[</span><span style="color: #DD0000">'departments'</span><span style="color: #007700">][</span><span style="color: #0000BB">0</span><span style="color: #007700">][</span><span style="color: #DD0000">'name'</span><span style="color: #007700">];<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+     <div class="example-contents"><p>
+      どちらの場合でも、dept_name の内容は &#039;Emerging Technologies&#039;
+      となります。
+     </p></div>
+    </div>
+   </p>
+
+   <p class="para">
+    <div class="example">
+     <p><b>Example#8 XPath によるナビゲーション</b></p>
+     <div class="example-contents"><p>
+      連想配列のインデックスとして、XPath 風の式を使用することができます。
+      実際に使用できる式は、XPath の拡大サブセットです。
+     </p></div>
+     <div class="example-contents"><p>
+      多くの値をとりうるプロパティの表す方法として、
+      2 通りの方法がサポートされています。
+      最初の方法は、1 から始まる標準的な XPath の配列構文を使用するものです。
+      もうひとつは、SDO で XPath を拡張した構文で、
+      ゼロから始まるインデックスを使用します。
+      標準的な構文は以下のようになります。
+     </p></div>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;$jane_doe&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$company</span><span style="color: #007700">[</span><span style="color: #DD0000">"departments[1]/employees[2]"</span><span style="color: #007700">];<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+     <div class="example-contents"><p>そして SDO の拡張版 XPath 構文はこのようになります。</p></div>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;$jane_doe&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$company</span><span style="color: #007700">[</span><span style="color: #DD0000">"departments.0/employees.1"</span><span style="color: #007700">];<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+     <div class="example-contents"><p>
+      どちらの例でも、最初の部署の 2 番目の従業員を取得します。
+     </p></div>
+    </div>
+   </p>
+
+   <p class="para">
+    <div class="example">
+     <p><b>Example#9 XPath による問い合わせ</b></p>
+     <div class="example-contents"><p>
+      XPath を使用して、インスタンスのデータ内のデータオブジェクトを
+      検索することができます。以下の例では、部署
+      &#039;Advanced Technologies&#039; の manager を取得しています。
+     </p></div>
+     <div class="example-contents">
+      <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;$ad_tech_mgr&nbsp;</span><span style="color: #007700">=<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$company</span><span style="color: #007700">[</span><span style="color: #DD0000">"departments[name='Advanced&nbsp;Technologies']/employees[manager=true]"</span><span style="color: #007700">];<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+
+   <p class="para">
+    <div class="example">
+     <p><b>Example#10 子オブジェクトの作成</b></p>
+     <div class="example-contents"><p>
+      データオブジェクトは、自分自身の中に子オブジェクトを保持することが
+      できます。子データオブジェクトは自動的にデータグラフの一員となります。
+      以下の例では、部署 &#039;Advanced Technologies&#039; に新しい従業員を追加しています。
+     </p></div>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;$ad_tech_dept&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$company</span><span style="color: #007700">[</span><span style="color: #DD0000">"departments[name='Advanced&nbsp;Technologies']"</span><span style="color: #007700">];<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$new_hire&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$ad_tech_dept</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">createDataObject</span><span style="color: #007700">(</span><span style="color: #DD0000">'employees'</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$new_hire</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">name&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'John&nbsp;Johnson'</span><span style="color: #007700">;<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$new_hire</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">SN&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'E0005'</span><span style="color: #007700">;<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$new_hire</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">manager&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+
+   <p class="para">
+    <div class="example">
+     <p><b>Example#11 プリミティブなプロパティの開放</b></p>
+     <div class="example-contents"><p>
+      データオブジェクトに項目が登録されているかどうかを確かめたり
+      項目を削除したりする際には、それぞれ <a href="function.isset.html" class="function">isset()</a>
+      および <a href="function.unset.html" class="function">unset()</a> 関数が使用可能です。
+     </p></div>
+     <div class="example-contents"><p>
+      以下の例は、最初の部署の名前を消去します。
+     </p></div>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;</span><span style="color: #007700">unset(</span><span style="color: #0000BB">$company</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">departments</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">]-&gt;</span><span style="color: #0000BB">name</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+
+   <p class="para">
+    <div class="example">
+     <p><b>Example#12 データオブジェクトの開放</b></p>
+     <div class="example-contents"><p>
+      unset は、ツリーからデータオブジェクトを削除する場合にも使用できます。
+      以下の例は、John Jones を会社から削除します。
+     </p></div>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;</span><span style="color: #007700">unset(</span><span style="color: #0000BB">$company</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">departments</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">]-&gt;</span><span style="color: #0000BB">employees</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">]);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+
+   <p class="para">
+    <div class="example">
+     <p><b>Example#13 参照されているデータオブジェクトの開放</b></p>
+     <div class="example-contents"><p>
+      以下の例では、会社から「今月の従業員」を削除します。
+      もしこれらの間に包含関係があった場合、参照先の従業員も
+      削除されてしまいます (その月の一番優秀な従業員を毎月クビにしていく
+      なんてバカなことは、普通はしないでしょう!)。
+      しかし実際にはこれらは包含関係ではないので、参照先の
+      従業員は会社の中の部署の中に残り続けます。ただ、
+      employeeOfTheMonth プロパティを通じてはアクセスできなくなります。
+     </p></div>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;</span><span style="color: #007700">if&nbsp;(isset(</span><span style="color: #0000BB">$company</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">employeeOfTheMonth</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;unset(</span><span style="color: #0000BB">$company</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">employeeOfTheMonth</span><span style="color: #007700">);<br />&nbsp;&nbsp;}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+
+   <p class="para">
+    <div class="example">
+     <p><b>Example#14 プロパティのインデックスを使用したアクセス</b></p>
+     <div class="example-contents"><p>
+      配列構文を使用して、プロパティのインデックス経由で
+      データオブジェクトのプロパティにアクセスすることができます。
+      プロパティのインデックスは、モデル (この場合は xml スキーマ)
+      内でそのプロパティの定義が現れる位置となります。
+      上のスキーマの例では、会社の名前が company の
+      2 番目の属性であることがわかります (SDO のインターフェイスは、
+      XML の要素と属性を区別しません)。以下の例では、
+      会社の名前を &#039;Acme&#039; に設定します。これは
+      <a href="ref.sdo.html#sdo.examples.propname" class="link">プロパティ名を使用したアクセス</a>
+      と同じ結果となります。
+     </p></div>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;$company</span><span style="color: #007700">[</span><span style="color: #0000BB">1</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #DD0000">'Acme'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+     <div class="example-contents"><p>
+      このようにインデックスを直接使用すると、後で破綻してしまう可能性があります。
+      通常はプロパティ名を使用する方式を推奨します。
+      しかし、時にはインデックスによるアクセスが必要になる場合もあるでしょう。
+     </p></div>
+    </div>
+   </p>
+
+  </div>
+
+  <div id="sdo.sample.sequence" class="section">
+   <h2 class="title">シーケンスデータオブジェクトの使用</h2>
+   <p class="para">
+    シーケンスデータオブジェクトは、データオブジェクト内のさまざまな
+    プロパティの並び順を追跡する SDO です。ここには、非構造化
+    テキスト要素 (SDO のいずれのプロパティにも属さないテキスト要素)
+    を含めることも可能です。シーケンスデータオブジェクトは、
+    非構造化テキストを許可
+    (つまり、mixed=true である) したり、要素が交互に現れる
+    (<div class="cdata"><pre>&lt;A/&gt;&lt;B/&gt;&lt;A/&gt;</pre></div>) ような XML 文書を扱う場合に有用です。
+    これは、例えば order に choice を指定した複合型の要素に対して
+    スキーマで maxOccurs&gt;1 を定義している場合などに発生します。
+   </p>
+   <p class="para">
+    以下の例では、XML データアクセスサービスを使用して、
+    下のスキーマおよびインスタンスをもとに作成した SDO の使用を想定しています。
+   </p>
+   <p class="para">
+    このスキーマでは、手紙の書式を定義しています。letter (手紙) には
+    オプションで 3 つのプロパティ date (日付)、firstName (名前)、
+    および lastName (苗字) を含めることが可能です。このスキーマでは
+    <strong class="command">mixed=&quot;true&quot;</strong> としていますが、これは
+    3 つのプロパティの間に非構造化テキストをちりばめることが
+    できるということを意味します。
+   </p>
+   <p class="para">
+    <div class="example-contents">
+<div class="cdata"><pre>
+&lt;xsd:schema xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;
+  xmlns:letter=&quot;http://letterSchema&quot;
+  targetNamespace=&quot;http://letterSchema&quot;&gt;
+  &lt;xsd:element name=&quot;letters&quot; type=&quot;letter:FormLetter&quot;/&gt;
+  &lt;xsd:complexType name=&quot;FormLetter&quot; mixed=&quot;true&quot;&gt;
+    &lt;xsd:sequence&gt;
+      &lt;xsd:element name=&quot;date&quot; minOccurs=&quot;0&quot; type=&quot;xsd:string&quot;/&gt;
+      &lt;xsd:element name=&quot;firstName&quot; minOccurs=&quot;0&quot; type=&quot;xsd:string&quot;/&gt;
+      &lt;xsd:element name=&quot;lastName&quot; minOccurs=&quot;0&quot; type=&quot;xsd:string&quot;/&gt;
+    &lt;/xsd:sequence&gt;
+  &lt;/xsd:complexType&gt;
+&lt;/xsd:schema&gt;
+          </pre></div>
+    </div>
+
+   </p>
+
+   <p class="para">
+    以下が、手紙のインスタンスです。これには 3 つのプロパティ
+    date、firstName および lastName が含まれており、非構造化
+    テキスト要素として住所と本文が含まれています。
+   </p>
+   <p class="para">
+    <div class="example-contents">
+<div class="cdata"><pre>
+&lt;letter:letters xmlns:letter=&quot;http://letterSchema&quot;&gt;
+  &lt;date&gt;March 1, 2005&lt;/date&gt;
+  Mutual of Omaha
+  Wild Kingdom, USA
+  Dear
+  &lt;firstName&gt;Casy&lt;/firstName&gt;
+  &lt;lastName&gt;Crocodile&lt;/lastName&gt;
+  Please buy more shark repellent.
+  Your premium is past due.
+&lt;/letter:letters&gt;
+          </pre></div>
+    </div>
+
+   </p>
+   <p class="para">
+    このインスタンスが読み込まれると、letter データオブジェクトの
+    シーケンス番号およびプロパティ番号は以下の表のようになります。
+    <table class="informaltable">
+     <colgroup>
+
+      <thead valign="middle">
+       <tr valign="middle">
+        <th colspan="1">シーケンスのインデックス</th>
+        <th colspan="1">プロパティのインデックス:名前</th>
+        <th colspan="1">値</th>
+       </tr>
+
+      </thead>
+
+      <tbody valign="middle">
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">0</td>
+        <td colspan="1" rowspan="1" align="left">0:date</td>
+        <td colspan="1" rowspan="1" align="left">March 1, 2005</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">1</td>
+        <td colspan="1" rowspan="1" align="left">-</td>
+        <td colspan="1" rowspan="1" align="left">Mutual of Omaha</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">2</td>
+        <td colspan="1" rowspan="1" align="left">-</td>
+        <td colspan="1" rowspan="1" align="left">Wild Kingdom, USA</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">3</td>
+        <td colspan="1" rowspan="1" align="left">-</td>
+        <td colspan="1" rowspan="1" align="left">Dear</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">4</td>
+        <td colspan="1" rowspan="1" align="left">1:firstName</td>
+        <td colspan="1" rowspan="1" align="left">Casy</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">5</td>
+        <td colspan="1" rowspan="1" align="left">2:lastName</td>
+        <td colspan="1" rowspan="1" align="left">Crocodile</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">6</td>
+        <td colspan="1" rowspan="1" align="left">-</td>
+        <td colspan="1" rowspan="1" align="left">Please buy more shark repellent.</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left">7</td>
+        <td colspan="1" rowspan="1" align="left">-</td>
+        <td colspan="1" rowspan="1" align="left">Your premium is past due.</td>
+       </tr>
+
+      </tbody>
+     </colgroup>
+
+    </table>
+   </p>
+
+   <p class="para">
+    シーケンス番号の整合性を保つため、シーケンスデータオブジェクトの
+    操作には SDO_Sequence インターフェイスを使用しなければなりません。
+    これにより、データオブジェクトに対しての操作を
+    プロパティのインデックスではなくシーケンスのインデックスを使用して
+    行えるようになります (上の表を参照ください)。
+    以下の例では、letter のインスタンスが
+    データオブジェクト <strong class="command">$letter</strong> として
+    読み込まれているものと仮定します。
+    <div class="example">
+     <p><b>Example#15 SDO_Sequence インターフェイスの取得</b></p>
+     <div class="example-contents"><p>
+      データオブジェクトのシーケンスを取得するには
+      <b>getSequence()</b> メソッドを使用します。
+      以下の例では、letter データオブジェクトのシーケンスを取得します。
+     </p></div>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;$letter_seq&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$letter</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getSequence</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+   <p class="para">
+    これ以降の例では、letter データオブジェクトのシーケンスが
+    変数 <strong class="command">$letter_seq</strong> に代入されているものとします。
+   </p>
+
+   <p class="para">
+    <div class="example">
+     <p><b>Example#16 シーケンスの値の取得/設定</b></p>
+     <div class="example-contents"><p>
+      シーケンスのインデックスを使用することで、(非構造化
+      テキストも含め) それぞれの値を取得したり設定したりすることが可能です。
+      以下の例では、ファーストネームを &#039;Snappy&#039; に変更して
+      シーケンスの最後の値 (非構造化テキスト
+      &#039;Your premium is past due.&#039;) を取得します。
+     </p></div>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;$letter_seq</span><span style="color: #007700">[</span><span style="color: #0000BB">4</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #DD0000">'Snappy'</span><span style="color: #007700">;<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$text&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$letter_seq</span><span style="color: #007700">[</span><span style="color: #0000BB">count</span><span style="color: #007700">(</span><span style="color: #0000BB">$letter_seq</span><span style="color: #007700">)&nbsp;-&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">];<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+
+   <p class="para">
+    <div class="example">
+     <p><b>Example#17 シーケンスの繰り返し処理</b></p>
+     <div class="example-contents"><p>
+      foreach を使用して、個々のシーケンス値について処理を繰り返すことが
+      できます。以下の例では、シーケンス順に個々の値を処理します。
+     </p></div>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;</span><span style="color: #007700">foreach&nbsp;(</span><span style="color: #0000BB">$letter</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getSequence</span><span style="color: #007700">()&nbsp;as&nbsp;</span><span style="color: #0000BB">$value</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;...<br />&nbsp;&nbsp;</span><span style="color: #007700">}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+
+   <p class="para">
+    <div class="example">
+     <p><b>Example#18 シーケンスとデータオブジェクトの比較</b></p>
+     <div class="example-contents"><p>
+      データオブジェクトのインターフェイスから設定した値は、シーケンスの
+      一部とはならないことがあります。データオブジェクト経由で値を
+      設定した場合、そのプロパティが既にシーケンスに組み込まれていた
+      場合にのみシーケンスからアクセス可能となります。
+      以下の例では、データオブジェクト経由で lastName を設定して
+      それをシーケンスから取得しています。これがうまくいくのは、
+      lastName が既にシーケンス内に存在するからです。もしこれが
+      事前に設定されていなかった場合、lastName には &#039;Smith&#039; が
+      設定されますが、それはシーケンスの一部とはなりません。
+     </p></div>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;$letter</span><span style="color: #007700">[</span><span style="color: #0000BB">2</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #DD0000">'Smith'</span><span style="color: #007700">;<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$last_name&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$letter_seq</span><span style="color: #007700">[</span><span style="color: #0000BB">5</span><span style="color: #007700">];<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+
+   <p class="para">
+    <div class="example">
+     <p><b>Example#19 シーケンスへの追加</b></p>
+     <div class="example-contents"><p>
+      シーケンスに新しい値を追加するには
+      <a href="function.SDO-Sequence-insert.html" class="link"><b>SDO_Sequence::insert()</b></a>
+      メソッドを使用します。以下の例では、プロパティ &#039;firstName&#039; および
+      &#039;lastName&#039; が最初に削除されているものと仮定します。
+     </p></div>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;シーケンスに&nbsp;firstName&nbsp;を追加します<br />&nbsp;&nbsp;//&nbsp;値:&nbsp;'Smith'<br />&nbsp;&nbsp;//&nbsp;シーケンスのインデックス:&nbsp;NULL&nbsp;(追加)<br />&nbsp;&nbsp;//&nbsp;プロパティ&nbsp;ID:&nbsp;1&nbsp;(firtName&nbsp;プロパティのインデックス)<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$letter_seq</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">insert</span><span style="color: #007700">(</span><span style="color: #DD0000">'Smith'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">NULL</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;シーケンスに&nbsp;lastName&nbsp;を追加します<br />&nbsp;&nbsp;//&nbsp;値:&nbsp;'Jones'<br />&nbsp;&nbsp;//&nbsp;シーケンスのインデックス:&nbsp;NULL&nbsp;(追加)<br />&nbsp;&nbsp;//&nbsp;プロパティ&nbsp;ID:&nbsp;'lastName'&nbsp;(lastName&nbsp;プロパティの名前)<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$letter_seq</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">insert</span><span style="color: #007700">(</span><span style="color: #DD0000">'Jones'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">NULL</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'lastName'</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;非構造化テキストを追加します<br />&nbsp;&nbsp;//&nbsp;値:&nbsp;'Cancel&nbsp;Subscription.'<br />&nbsp;&nbsp;//&nbsp;シーケンスのインデックス:&nbsp;省略&nbsp;(追加)<br />&nbsp;&nbsp;//&nbsp;プロパティ&nbsp;ID:&nbsp;省略&nbsp;(非構造化テキスト)<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$letter_seq</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">insert</span><span style="color: #007700">(</span><span style="color: #DD0000">'Cancel&nbsp;Subscription.'</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;非構造化テキストを間に挿入します。それ以降のシーケンス値は<br />&nbsp;&nbsp;//&nbsp;ひとつずれます。<br />&nbsp;&nbsp;//&nbsp;値:&nbsp;'Care&nbsp;of:'<br />&nbsp;&nbsp;//&nbsp;シーケンスのインデックス:&nbsp;1&nbsp;(2&nbsp;番目の要素として挿入する)<br />&nbsp;&nbsp;//&nbsp;プロパティ&nbsp;ID:&nbsp;省略&nbsp;(非構造化テキスト)<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$letter_seq</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">insert</span><span style="color: #007700">(</span><span style="color: #DD0000">'Care&nbsp;of:'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+
+   <p class="para">
+    <div class="example">
+     <p><b>Example#20 シーケンスからの削除</b></p>
+     <div class="example-contents"><p>
+      シーケンスに項目が登録されているかどうかを確かめたり
+      シーケンスから項目を削除したりする際には、それぞれ
+      <a href="function.isset.html" class="function">isset()</a>
+      および <a href="function.unset.html" class="function">unset()</a> 関数が使用可能です
+      (注意: <a href="function.unset.html" class="function">unset()</a> は、現時点では値を
+      データオブジェクト内に残します。しかし、この挙動はおそらく今後
+      変更され、データオブジェクトからもデータを削除することに
+      なるでしょう)。シーケンスの挙動は、リスト構造に似ています。
+      そのため、シーケンスの途中の項目を削除すると、それ以降の
+      インデックスがひとつずつ小さいほうにずれます。以下の例では、
+      インデックスの最初の要素が存在するかどうか調べ、存在する場合に
+      それを削除しています。
+     </p></div>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;</span><span style="color: #007700">if&nbsp;(isset(</span><span style="color: #0000BB">$letter_seq</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">]))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;unset(</span><span style="color: #0000BB">$letter_seq</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">]);<br />&nbsp;&nbsp;}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+
+  </div>
+
+
+  <div id="sdo.sample.reflection" class="section">
+   <h2 class="title">サービスデータオブジェクトへのリフレクション</h2>
+   <p class="para">
+    SDO は、自分自身を作成するもととなったオブジェクト (モデル)
+    の構造を知っています。例えば、上の
+    <a href="ref.sdo.html#sdo.examples" class="link">Company XML スキーマ</a> を使用して
+    作成した Company SDO には DepartmentType データオブジェクトしか
+    含めることはできず、同様に DepartmentType データオブジェクトには
+    EmployeeType データオブジェクトしか含めることはできません。
+   </p>
+   <p class="para">
+    実行時にモデルの情報にアクセスできると、以下のような利点があります。
+    例えば、データオブジェクトに値を設定するためのユーザインターフェイスを
+    自動的に作成することができます。モデルの情報にアクセスするには、
+    リフレクションを使用します。
+   </p>
+
+   <p class="para">
+    <div class="example">
+     <p><b>Example#21 データオブジェクトへのリフレクション</b></p>
+     <div class="example-contents"><p>
+      以下の例では、空の Employee データオブジェクトへのリフレクションの
+      方法を示します。
+     </p></div>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;employee&nbsp;データオブジェクトを&nbsp;(例えば&nbsp;XML&nbsp;データアクセスサービスなどから)&nbsp;作成します<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$employee&nbsp;</span><span style="color: #007700">=&nbsp;...;<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$reflection&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">SDO_Model_ReflectionDataObject</span><span style="color: #007700">(</span><span style="color: #0000BB">$employee</span><span style="color: #007700">);<br />&nbsp;&nbsp;print(</span><span style="color: #0000BB">$reflection</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+     <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+
+     <div class="example-contents"><pre>
+<div class="cdata"><pre>
+object(SDO_Model_ReflectionDataObject)#4 { - ROOT OBJECT - Type {
+companyNS:EmployeeType[3] { commonj.sdo:String $name;
+commonj.sdo:String $SN; commonj.sdo:Boolean $manager; } }
+</pre></div>
+     </pre></div>
+     <div class="example-contents"><p>
+      SDO_Model_ReflectionDataObject に対して print を使用すると、
+      データオブジェクトのモデルを出力します。この出力結果から、
+      companyNS:EmployeeType 型には 3 つのプロパティがあることや
+      それぞれのプロパティの名前と型を知ることができます。
+      プリミティブ型は、SDO の型として表示されることに注意しましょう
+      (例: commonj.sdo namespace, String type)。これは SDO モデルであり、
+      アプリケーションからは PHP の同等の型 (例: string および boolean)
+      として扱えることを知っておくとよいでしょう。
+     </p></div>
+    </div>
+   </p>
+
+   <p class="para">
+    <div class="example">
+     <p><b>Example#22 型情報へのアクセス</b></p>
+     <div class="example-contents"><p>
+      リフレクションを使用して、データオブジェクトの型情報を取得することが
+      できます。以下の例では、まず型がプリミティブ型ではなく
+      データオブジェクトに対応するものであることを確認し、各プロパティの
+      名前を書き出しています ($type および $property は、それぞれ
+      SDO_Model_Type および SDO_Model_Property オブジェクトです)。
+     </p></div>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;employee&nbsp;データオブジェクトを&nbsp;(例えば&nbsp;XML&nbsp;データアクセスサービスなどから)&nbsp;作成します<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$employee&nbsp;</span><span style="color: #007700">=&nbsp;...;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$reflection&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">SDO_Model_ReflectionDataObject</span><span style="color: #007700">(</span><span style="color: #0000BB">$employee</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$type&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$reflection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getType</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(!&nbsp;</span><span style="color: #0000BB">$type</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">isDataType</span><span style="color: #007700">())&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;(</span><span style="color: #0000BB">$type</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getProperties</span><span style="color: #007700">()&nbsp;as&nbsp;</span><span style="color: #0000BB">$property</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;</span><span style="color: #0000BB">$property</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getName</span><span style="color: #007700">()&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+     <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+     <div class="example-contents"><pre>
+<div class="cdata"><pre>
+name
+SN
+manager
+</pre></div>
+     </pre></div>
+    </div>
+   </p>
+
+  </div>
+
+
+
+
+
+  
+  <div id="sdo.classes" class="section">
+   <h2 class="title">定義済みクラス</h2>
+   <p class="para">
+    SDO は、3 つの系統のインターフェイスから構成されています。ひとつめは
+    典型的な SDO アプリケーションで使用されるインターフェイスをカバーする
+    もので、これらには &#039;SDO_&#039; という名前がつけられています。2 番目は
+    データオブジェクトのモデルを扱うためのもので、これらには
+    &#039;SDO_Model_&#039; という名前がつけられています。最後はデータアクセスサービスで
+    使用されるもので、これらには &#039;SDO_DAS_&#039; という名前がつけられています。
+    SDO を使用するほとんどの人は、&#039;SDO_Model_&#039; や &#039;SDO_DAS_&#039;
+    を使用したり理解したりする必要はないでしょう。
+   </p>
+
+   <div id="sdo.class.sdo-apis" class="section">
+    <h2 class="title">SDO API</h2>
+
+    <div id="sdo.class.sdo-dataobject" class="section">
+     <h2 class="title">
+      <span class="classname">SDO_DataObject</span>
+     </h2>
+     <p class="para">
+      データオブジェクトを操作する際のメインとなるインターフェイスです。
+      以下で説明するメソッドに加え、SDO_DataObject は
+      ArrayAccess、SDO_PropertyAccess (プロパティへのアクセスのために
+      <b>__get()</b> /
+      <b>__set()</b> メソッドをオーバーロードします)、
+      Iterator および Countable インターフェイスを継承します。
+     </p>
+     <div id="sdo.class.SDO_DataObject.methods" class="section"> <h2 class="title">メソッド</h2>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-DataObject-getSequence.html" class="link">getSequence</a>
+         - データオブジェクトのシーケンスを取得する
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-DataObject-createDataObject.html" class="link">createDataObject</a>
+         - 子データオブジェクトを作成する
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-DataObject-clear.html" class="link">clear</a>
+         - データオブジェクトのプロパティの設定を解除する
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-DataObject-getContainer.html" class="link">getContainer</a>
+         - このオブジェクトのコンテナ (あるいは「親」) を取得する
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-DataObject-getTypeName.html" class="link">getTypeName</a>
+         - このデータオブジェクトの型の名前を取得する
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-DataObject-getTypeNamespaceURI.html" class="link">getTypeNamespaceURI</a>
+         - このデータオブジェクトの型の名前空間 URI を取得する
+        </p>
+       </li>
+      </ul>
+     </div>
+    </div>
+
+    <div id="sdo.class.sdo-sequence" class="section">
+     <h2 class="title">
+      <span class="classname">SDO_Sequence</span>
+     </h2>
+     <p class="para">
+      シーケンスデータオブジェクトが、データオブジェクトのプロパティの
+      並び順を保持したままアクセスをおこなったり
+      非構造化テキストを許可したりする際に使用するインターフェイスです。
+      SDO_Sequence は、インデックスが常に連続した数となるようにします。
+      そのため、要素を挿入したり削除したりすると、その他の要素のインデックスが
+      増減します。以下で説明するメソッドに加え、SDO_Sequence は
+      ArrayAccess、Iterator および Countable インターフェイスを
+      継承しています。
+     </p>
+     <div id="sdo.class.SDO_Sequence.methods" class="section">
+      <h2 class="title">メソッド</h2>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-Sequence-getProperty.html" class="link">getProperty</a>
+         - シーケンスのインデックスからプロパティを取得する
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-Sequence-move.html" class="link">move</a>
+         - 指定した要素を、現在のプロパティインデックスから別の位置に移動する
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-Sequence-insert.html" class="link">insert</a>
+         - シーケンスに新しい値を挿入する
+        </p>
+       </li>
+      </ul>
+     </div>
+    </div>
+
+    <div id="sdo.class.sdo-list" class="section">
+     <h2 class="title">
+      <span class="classname">SDO_List</span>
+     </h2>
+     <p class="para">
+      複数の値を保持するプロパティを操作するためのインターフェイスです。
+      以下に挙げるメソッドに加え、SDO_List は ArrayAccess、
+      Iterator および Countable を継承しています。
+      SDO_List は、常にインデックスが連続した数となるようにします。
+      そのため、要素を挿入したり削除したりすると
+      他の要素のインデックスが変化します。
+     </p>
+     <div id="sdo.class.SDO-List.methods" class="section">
+      <h2 class="title">メソッド</h2>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-List-insert.html" class="link">insert</a>
+         - 新しい値をリストに挿入する
+        </p>
+       </li>
+      </ul>
+     </div>
+    </div>
+
+    <div id="sdo.class.sdo-datafactory" class="section">
+     <h2 class="title">
+      <span class="classname">SDO_DataFactory</span>
+     </h2>
+     <p class="para">
+      データオブジェクトを作成するためのインターフェイスです。
+      ファクトリのモデルに値を設定する (すなわち、作成可能なデータ
+      オブジェクトの型および構造情報をもとにデータファクトリを設定する)
+      のはデータアクセスサービスの役目です。また、オプションとして
+      SDO_DataFactory インターフェイスのインスタンスを返すか、
+      それを実装します。
+     </p>
+     <div id="sdo.class.SDO-DataFactory.methods" class="section">
+      <h2 class="title">メソッド</h2>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-DataFactory-create.html" class="link">create</a>
+         - 新しいデータオブジェクトを作成する
+        </p>
+       </li>
+      </ul>
+     </div>
+    </div>
+
+    <div id="sdo.class.sdo-exception" class="section">
+     <h2 class="title">
+      <span class="classname">SDO_Exception</span>
+     </h2>
+     <p class="para">
+      SDO_Exception は、呼び出し元の要求を完了させられなかった際にスローされます。
+      SDO_Exception のサブクラスには以下のようなものがあります。
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para">SDO_PropertyNotSetException -
+        指定されたプロパティは存在するが、まだ値が設定されていません。
+        あるいはデフォルト値が設定されていません。
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">SDO_PropertyNotFoundException -
+        指定されたプロパティはデータオブジェクトの型の一部ではありません。
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">SDO_TypeNotFoundException -
+        指定された名前空間 URI あるいは型名が見つかりません。
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">SDO_InvalidConversionException -
+        代入時に、型の変換を行うことができません。
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">SDO_IndexOutOfBoundsException -
+        データオブジェクトやシーケンス、リストにおける数値インデックスが
+        有効な範囲にありません。
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">SDO_UnsupportedOperationException -
+        その操作が許可されていないため、要求を完了できませんでした。
+        例えば読み込み専用のプロパティに値を設定しようとした場合などです。
+        </p>
+       </li>
+      </ul>
+     </p>
+     <div id="sdo.class.SDO_Exception.methods" class="section"> <h2 class="title">メソッド</h2>
+     <p class="para">
+      組み込みの
+      <a href="language.exceptions.html#language.exceptions.extending" class="link">Exception</a>
+      クラスから継承したものに加え、次のメソッドが追加されています。
+     </p>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-Exception-getCause.html" class="link">getCause</a>
+         - この SDO_Exception の原因を取得する
+        </p>
+       </li>
+
+      </ul>
+     </div>
+    </div>
+
+   </div>
+
+
+
+   <div id="sdo.class.sdo-model-apis" class="section">
+    <h2 class="title">SDO リフレクション API</h2>
+
+    <div id="sdo.class.sdo-reflectiondataobject" class="section">
+     <h2 class="title">
+      <span class="classname">SDO_Model_ReflectionDataObject</span>
+     </h2>
+     <p class="para">
+      データオブジェクトのインスタンス自身について、モデルの型や
+      プロパティの情報を取得するためのインターフェイスです。
+      PHP 5 で使用可能となったリフレクションパターンに従うように
+      設計されています。
+     </p>
+     <div id="sdo.class.SDO_Model_ReflectionDataObject.constructor" class="section">
+       <h2 class="title">コンストラクタ</h2>
+       <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-Model-ReflectionDataObject-construct.html" class="link">__construct</a>
+         - 新しい SDO_Model_ReflectionDataObject を作成する
+        </p>
+       </li>
+      </ul>
+     </div>
+     <div id="sdo.class.SDO_Model_ReflectionDataObject.methods" class="section">
+       <h2 class="title">メソッド</h2>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-Model-ReflectionDataObject-export.html" class="link">export</a>
+         - データオブジェクトを表す文字列を取得する
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-Model-ReflectionDataObject-getType.html" class="link">getType</a>
+         - データオブジェクトの SDO_Model_Type を取得する
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-Model-ReflectionDataObject-getInstanceProperties.html" class="link">getInstanceProperties</a>
+         - データオブジェクトのインスタンスのプロパティを取得する
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-Model-ReflectionDataObject-getContainmentProperty.html" class="link">getContainmentProperty</a>
+         - データオブジェクトとの包含関係を定義しているプロパティを取得する
+        </p>
+       </li>
+      </ul>
+     </div>
+    </div>
+
+    <div id="sdo.class.sdo-type" class="section">
+     <h2 class="title">
+      <span class="classname">SDO_Model_Type</span>
+     </h2>
+     <p class="para">
+      データオブジェクトの型に関する情報を取得するための
+      インターフェイスです。このインターフェイスは、型の名前および
+      名前空間 URI・オープン型のデータを許可するかどうかなどを
+      調べるために使用します。
+     </p>
+     <div id="sdo.class.SDO_Model_Type.methods" class="section"> <h2 class="title">メソッド</h2>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-Model-Type-getName.html" class="link">getName</a>
+          - 型の名前を取得する
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-Model-Type-getNamespaceURI.html" class="link">getNamespaceURI</a>
+         - 型の名前空間 URI を取得する
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-Model-Type-isInstance.html" class="link">isInstance</a>
+         - データオブジェクトが特定の型のインスタンスであるかどうかを調べる
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-Model-Type-getProperties.html" class="link">getProperties</a>
+         - 型のプロパティを取得する
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-Model-Type-getProperty.html" class="link">getProperty</a>
+         - 型のプロパティを取得する
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-Model-Type-isDataType.html" class="link">isDataType</a>
+         - この型が基本的なスカラー型であるかどうかを調べる
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-Model-Type-isSequencedType.html" class="link">isSequencedType</a>
+         - この型がシーケンス型であるかどうかを調べる
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-Model-Type-isOpenType.html" class="link">isOpenType</a>
+         - この型がオープン型であるかどうかを調べる
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-Model-Type-isAbstractType.html" class="link">isAbstractType</a>
+         - この型が抽象型であるかどうかを調べる
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-Model-Type-getBaseType.html" class="link">getBaseType</a>
+         - この型の基底型を (もし存在すれば) 取得する
+        </p>
+       </li>
+      </ul>
+     </div>
+    </div>
+
+    <div id="sdo.class.sdo-property" class="section">
+     <h2 class="title">
+      <span class="classname">SDO_Model_Property</span>
+     </h2>
+     <p class="para">
+      データオブジェクトのプロパティに関する情報を取得するための
+      インターフェイスです。このインターフェイスは、プロパティの型・
+      デフォルト値の存在・包含関係の有無・カーディナリティなどを
+      調べるために使用します。
+     </p>
+     <div id="sdo.class.SDO_Model_Property.methods" class="section"> <h2 class="title">メソッド</h2>
+      <ul class="itemizedlist">
+        <li class="listitem">
+         <p class="para">
+          <a href="function.SDO-Model-Property-getName.html" class="link">getName</a>
+          - プロパティの名前を取得する
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <a href="function.SDO-Model-Property-getType.html" class="link">getType</a>
+          - プロパティの型を取得する
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <a href="function.SDO-Model-Property-isMany.html" class="link">isMany</a>
+          - プロパティが複数の値を保持するかどうかを調べる
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <a href="function.SDO-Model-Property-isContainment.html" class="link">isContainment</a>
+          - プロパティが包含関係を保持するかどうかを調べる
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <a href="function.SDO-Model-Property-getContainingType.html" class="link">getContainingType</a>
+          - このプロパティを含んでいる型を取得する
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <a href="function.SDO-Model-Property-getDefault.html" class="link">getDefault</a>
+          - プロパティのデフォルト値を取得する
+         </p>
+        </li>
+      </ul>
+     </div>
+    </div>
+
+
+
+   </div>
+
+   <div id="sdo.class.sdo-das-spis" class="section">
+    <h2 class="title">
+     SDO データアクセスサービス
+     開発者用インターフェイス
+    </h2>
+
+    <div id="sdo.class.sdodas-dataobject" class="section">
+     <h2 class="title">
+      <span class="classname">SDO_DAS_DataObject</span>
+     </h2>
+     <p class="para">
+      データアクセスサービスが、データオブジェクトの
+      <a href="ref.sdo.html#sdo.class.sdodas-changesummary" class="link">SDO_DAS_ChangeSummary</a>
+      にアクセスするためのインターフェイスです。これは、変更した内容を
+      データベースに書き戻す際に、データアクセスサービスがデータの
+      衝突を調べるために使用されます。
+     </p>
+     <div id="sdo.class.SDO_DAS_DataObject.methods" class="section"> <h2 class="title">メソッド</h2>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-DAS-DataObject-getChangeSummary.html" class="link">getChangeSummary</a>
+         - データオブジェクトの変更内容を取得する
+        </p>
+       </li>
+
+      </ul>
+     </div>
+    </div>
+
+    <div id="sdo.class.sdodas-changesummary" class="section">
+     <h2 class="title">
+      <span class="classname">SDO_DAS_ChangeSummary</span>
+     </h2>
+     <p class="para">
+      データオブジェクトの変更履歴にアクセスするためのインターフェイスです。
+      ログ取得が有効になってからデータオブジェクトに発生したあらゆる変更が、
+      変更内容に含まれます。削除あるいは修正の場合は、変更前の情報も保持されます。
+     </p>
+     <p class="para">
+      ログ取得が有効になっていない場合、ログ取得が無効にされた時点までの
+      変更内容が保存されます。ログ取得を再開すると、過去の変更内容は消去されます。
+      これは、変更内容を DAS で書き出した後にデータオブジェクトを
+      再利用する場合に有用です。
+     </p>
+     <div id="sdo.class.SDO_DAS_ChangeSummary.methods" class="section">
+      <h2 class="title">メソッド</h2>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-DAS-ChangeSummary-beginLogging.html" class="link">beginLogging</a>
+         - データオブジェクトの変更履歴のログ取得を開始する
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-DAS-ChangeSummary-endLogging.html" class="link">endLogging</a>
+         - データオブジェクトの変更履歴のログ取得を終了する
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-DAS-ChangeSummary-isLogging.html" class="link">isLogging</a>
+         - ログ取得が有効になっているかどうかを調べる
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-DAS-ChangeSummary-getChangedDataObjects.html" class="link">getChangedDataObjects</a>
+         - 変更されたデータオブジェクトの一覧を取得する
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-DAS-ChangeSummary-getChangeType.html" class="link">getChangeType</a>
+         - データオブジェクトの変更の型を取得する
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-DAS-ChangeSummary-getOldValues.html" class="link">getOldValues</a>
+         - データオブジェクトの変更前の値を取得する
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-DAS-ChangeSummary-getOldContainer.html" class="link">getOldContainer</a>
+         - 削除されたデータオブジェクトの削除前のコンテナを取得する
+        </p>
+       </li>
+      </ul>
+     </div>
+    </div>
+
+    <div id="sdo.class.sdodas-setting" class="section">
+     <h2 class="title">
+      <span class="classname">SDO_DAS_Setting</span>
+     </h2>
+     <p class="para">
+      プロパティの古い値にアクセスするためのインターフェイスです。
+      設定の一覧は、
+      <a href="function.SDO-DAS-ChangeSummary-getOldValues.html" class="link">
+       <b>getOldValues()</b> で返されます。
+      </a>.
+     </p>
+     <div id="sdo.class.SDO_DAS_Setting.methods" class="section">
+      <h2 class="title">メソッド</h2>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-DAS-Setting-getPropertyIndex.html" class="link">getPropertyIndex</a>
+         - 変更されたプロパティのプロパティインデックスを取得する
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-DAS-Setting-getPropertyName.html" class="link">getPropertyName</a>
+         - 変更されたプロパティのプロパティ名を取得する
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-DAS-Setting-getValue.html" class="link">getValue</a>
+         - 変更されたプロパティの古い値を取得する
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-DAS-Setting-getListIndex.html" class="link">getListIndex</a>
+         - 複数の値を持つプロパティだった場合に、古い値のインデックスの
+         一覧を取得する
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-DAS-Setting-isSet.html" class="link">isSet</a>
+         - 変更前に、プロパティが設定されていたかどうかを調べる
+         </p>
+       </li>
+      </ul>
+     </div>
+    </div>
+
+    <div id="sdo.class.sdodas-datafactory" class="section">
+     <h2 class="title">
+      <span class="classname">SDO_DAS_DataFactory</span>
+     </h2>
+     <p class="para">
+      SDO_DataObject のモデルを作成するインターフェイスです。
+      SDO_DAS_DataFactory は抽象クラスで、それを実装した具象データファクトリを
+      返すスタティックメソッドを提供します。この実装クラスを使用して、
+      データアクセスサービスが SDO モデルを作成します。
+      例えばリレーショナルデータアクセスサービスは、リレーショナル
+      データベースのスキーマをもとにして SDO_DAS_DataFactory モデルを
+      作成し、そこに値を設定します。
+     </p>
+     <div id="sdo.class.SDO_DAS_DataFactory.methods" class="section">
+      <h2 class="title">メソッド</h2>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-DAS-DataFactory-getDataFactory.html" class="link">getDataFactory</a>
+         - 具象データファクトリのインスタンスを取得するためのスタティックメソッド
+        </p>
+       </li>
+      </ul>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-DAS-DataFactory-addType.html" class="link">addType</a>
+         - SDO モデルに新しい型を追加する
+        </p>
+       </li>
+      </ul>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para">
+         <a href="function.SDO-DAS-DataFactory-addPropertyToType.html" class="link">addPropertyToType</a>
+         - SDO モデルの型定義に新しいプロパティを追加する
+        </p>
+       </li>
+      </ul>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  
+
+
+<div id="sdo.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <dl>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SDO_DAS_ChangeSummary::NONE=0</tt></b>
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     変更の型 &#039;none (変更していない)&#039; を表します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SDO_DAS_ChangeSummary::MODIFICATION=1</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     変更の型 &#039;modification (修正)&#039; を表します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SDO_DAS_ChangeSummary::ADDITION=2</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     変更の型 &#039;addition (追加)&#039; を表します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SDO_DAS_ChangeSummary::DELETION=3</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     変更の型 &#039;deletion (削除)&#039; を表します。
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+</div>
+
+
+
+
+ </div>
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.SDO-DAS-ChangeSummary-beginLogging.html">SDO_DAS_ChangeSummary::beginLogging</a> ― 変更内容の記録を開始する</li><li><a href="function.SDO-DAS-ChangeSummary-endLogging.html">SDO_DAS_ChangeSummary::endLogging</a> ― 変更内容の記録を終了する</li><li><a href="function.SDO-DAS-ChangeSummary-getChangeType.html">SDO_DAS_ChangeSummary::getChangeType</a> ― SDO_DataObject への変更の型を取得する</li><li><a href="function.SDO-DAS-ChangeSummary-getChangedDataObjects.html">SDO_DAS_ChangeSummary::getChangedDataObjects</a> ― 変更内容から、変更されたデータオブジェクトを取得する</li><li><a href="function.SDO-DAS-ChangeSummary-getOldContainer.html">SDO_DAS_ChangeSummary::getOldContainer</a> ― 削除された SDO_DataObject の削除前のコンテナを取得する</li><li><a href="function.SDO-DAS-ChangeSummary-getOldValues.html">SDO_DAS_ChangeSummary::getOldValues</a> ― 変更された SDO_DataObject の変更前の値を取得する</li><li><a href="function.SDO-DAS-ChangeSummary-isLogging.html">SDO_DAS_ChangeSummary::isLogging</a> ― 変更内容が記録されるようになっているかどうかを調べる</li><li><a href="function.SDO-DAS-DataFactory-addPropertyToType.html">SDO_DAS_DataFactory::addPropertyToType</a> ― 型にプロパティを追加する</li><li><a href="function.SDO-DAS-DataFactory-addType.html">SDO_DAS_DataFactory::addType</a> ― モデルに新しい型を追加する</li><li><a href="function.SDO-DAS-DataFactory-getDataFactory.html">SDO_DAS_DataFactory::getDataFactory</a> ― データファクトリのインスタンスを取得する</li><li><a href="function.SDO-DAS-DataObject-getChangeSummary.html">SDO_DAS_DataObject::getChangeSummary</a> ― データオブジェクトの変更内容を取得する</li><li><a href="function.SDO-DAS-Setting-getListIndex.html">SDO_DAS_Setting::getListIndex</a> ― 複数の値を持つプロパティのインデックスを取得する</li><li><a href="function.SDO-DAS-Setting-getPropertyIndex.html">SDO_DAS_Setting::getPropertyIndex</a> ― 変更されたプロパティのプロパティインデックスを取得する</li><li><a href="function.SDO-DAS-Setting-getPropertyName.html">SDO_DAS_Setting::getPropertyName</a> ― 変更されたプロパティのプロパティ名を取得する</li><li><a href="function.SDO-DAS-Setting-getValue.html">SDO_DAS_Setting::getValue</a> ― 変更されたプロパティの変更前の値を取得する</li><li><a href="function.SDO-DAS-Setting-isSet.html">SDO_DAS_Setting::isSet</a> ― 変更前にプロパティが設定されていたかどうかを調べる</li><li><a href="function.SDO-DataFactory-create.html">SDO_DataFactory::create</a> ― SDO_DataObject を作成する</li><li><a href="function.SDO-DataObject-clear.html">SDO_DataObject::clear</a> ― SDO_DataObject のプロパティを消去する</li><li><a href="function.SDO-DataObject-createDataObject.html">SDO_DataObject::createDataObject</a> ― 新しい子 SDO_DataObject を作成する</li><li><a href="function.SDO-DataObject-getContainer.html">SDO_DataObject::getContainer</a> ― データオブジェクトのコンテナを取得する</li><li><a href="function.SDO-DataObject-getSequence.html">SDO_DataObject::getSequence</a> ― データオブジェクトのシーケンスを取得する</li><li><a href="function.SDO-DataObject-getTypeName.html">SDO_DataObject::getTypeName</a> ― データオブジェクトの型の名前を取得する</li><li><a href="function.SDO-DataObject-getTypeNamespaceURI.html">SDO_DataObject::getTypeNamespaceURI</a> ― このデータオブジェクトの型の名前空間 URI を取得する</li><li><a href="function.SDO-Exception-getCause.html">SDO_Exception::getCause</a> ― 例外の原因を取得する</li><li><a href="function.SDO-List-insert.html">SDO_List::insert</a> ― リストに挿入する</li><li><a href="function.SDO-Model-Property-getContainingType.html">SDO_Model_Property::getContainingType</a> ― このプロパティを含む SDO_Model_Type を取得する</li><li><a href="function.SDO-Model-Property-getDefault.html">SDO_Model_Property::getDefault</a> ― プロパティのデフォルト値を取得する</li><li><a href="function.SDO-Model-Property-getName.html">SDO_Model_Property::getName</a> ― SDO_Model_Property の名前を取得する</li><li><a href="function.SDO-Model-Property-getType.html">SDO_Model_Property::getType</a> ― プロパティの SDO_Model_Type を取得する</li><li><a href="function.SDO-Model-Property-isContainment.html">SDO_Model_Property::isContainment</a> ― プロパティが包含関係を定義しているかどうかを調べる</li><li><a href="function.SDO-Model-Property-isMany.html">SDO_Model_Property::isMany</a> ― プロパティが複数の値を持つかどうかを調べる</li><li><a href="function.SDO-Model-ReflectionDataObject-construct.html">SDO_Model_ReflectionDataObject::__construct</a> ― SDO_Model_ReflectionDataObject を作成する</li><li><a href="function.SDO-Model-ReflectionDataObject-export.html">SDO_Model_ReflectionDataObject::export</a> ― SDO_DataObject を表す文字列を取得する</li><li><a href="function.SDO-Model-ReflectionDataObject-getContainmentProperty.html">SDO_Model_ReflectionDataObject::getContainmentProperty</a> ― データオブジェクトとの包含関係を定義しているプロパティを取得する</li><li><a href="function.SDO-Model-ReflectionDataObject-getInstanceProperties.html">SDO_Model_ReflectionDataObject::getInstanceProperties</a> ― SDO_DataObject のインスタンスプロパティを取得する</li><li><a href="function.SDO-Model-ReflectionDataObject-getType.html">SDO_Model_ReflectionDataObject::getType</a> ― SDO_DataObject の SDO_Model_Type を取得する</li><li><a href="function.SDO-Model-Type-getBaseType.html">SDO_Model_Type::getBaseType</a> ― この型の基底型を取得する</li><li><a href="function.SDO-Model-Type-getName.html">SDO_Model_Type::getName</a> ― 型の名前を取得する</li><li><a href="function.SDO-Model-Type-getNamespaceURI.html">SDO_Model_Type::getNamespaceURI</a> ― 型の名前空間 URI を取得する</li><li><a href="function.SDO-Model-Type-getProperties.html">SDO_Model_Type::getProperties</a> ― 型で定義されている SDO_Model_Property オブジェクトを取得する</li><li><a href="function.SDO-Model-Type-getProperty.html">SDO_Model_Type::getProperty</a> ― 型の SDO_Model_Property を取得する</li><li><a href="function.SDO-Model-Type-isAbstractType.html">SDO_Model_Type::isAbstractType</a> ― この SDO_Model_Type が抽象データ型であるかどうかを調べる</li><li><a href="function.SDO-Model-Type-isDataType.html">SDO_Model_Type::isDataType</a> ― この SDO_Model_Type がプリミティブなデータ型であるかどうかを調べる</li><li><a href="function.SDO-Model-Type-isInstance.html">SDO_Model_Type::isInstance</a> ― SDO_DataObject が、この SDO_Model_Type のインスタンスであるかどうかを調べる</li><li><a href="function.SDO-Model-Type-isOpenType.html">SDO_Model_Type::isOpenType</a> ― この型がオープン型であるかどうかを調べる</li><li><a href="function.SDO-Model-Type-isSequencedType.html">SDO_Model_Type::isSequencedType</a> ― この型がシーケンス型であるかどうかを調べる</li><li><a href="function.SDO-Sequence-getProperty.html">SDO_Sequence::getProperty</a> ― 指定したシーケンスインデックスに対応するプロパティを返す</li><li><a href="function.SDO-Sequence-insert.html">SDO_Sequence::insert</a> ― シーケンスに挿入する</li><li><a href="function.SDO-Sequence-move.html">SDO_Sequence::move</a> ― シーケンス上の指定した位置に項目を移動する</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.SCA-getService.html">SCA::getService</a></div>
+ <div class="next" style="float: right;"><a href="function.SDO-DAS-ChangeSummary-beginLogging.html">SDO_DAS_ChangeSummary::beginLogging</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

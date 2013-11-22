@@ -1,0 +1,289 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>文字列をファイルに書き込む</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.file-get-contents.html">file_get_contents</a></div>
+ <div class="next" style="float: right;"><a href="function.file.html">file</a></div>
+ <div class="up"><a href="ref.filesystem.html">ファイルシステム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.file-put-contents" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">file_put_contents</h1> 
+  <p class="verinfo">(PHP 5)</p><p class="refpurpose">file_put_contents ― 文字列をファイルに書き込む</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">int</span> <span class="methodname"><b><b>file_put_contents</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$filename</tt></span>
+   , <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$data</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$flags</tt></span>
+   [, <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$context</tt></span>
+  ]] )</div>
+
+  <p class="para"> 
+   この関数は、<a href="function.fopen.html" class="function">fopen()</a>、<a href="function.fwrite.html" class="function">fwrite()</a>、
+   <a href="function.fclose.html" class="function">fclose()</a> を続けてコールしてデータをファイルに書き込むのと等価です。
+  </p>
+  <p class="para">
+   <i><tt class="parameter">filename</tt></i>
+ が存在しない場合はファイルを作成します。
+   存在する場合はそのファイルを上書きします。ただし
+   <b><tt>FILE_APPEND</tt></b> フラグが設定されている場合は別です。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">filename</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       データを書き込むファイルへのパス。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">data</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       書き込むデータ。<span class="type 文字列">文字列</span>, <span class="type 配列">配列</span>
+       もしくは <span class="type ストリーム">ストリーム</span> リソース (上述)
+       のいずれかを指定可能です。
+      </p>
+      <p class="para">
+       <i><tt class="parameter">data</tt></i>
+ が <span class="type ストリーム">ストリーム</span> リソースの場合は、
+       ストリームのバッファに残っている内容が指定したファイルにコピーされます。
+       これは、<a href="function.stream-copy-to-stream.html" class="function">stream_copy_to_stream()</a> の挙動と似ています。
+      </p>
+      <p class="para">
+       <i><tt class="parameter">data</tt></i>
+ に一次元の配列を指定することもできます。この場合は
+       <i class="literal">file_put_contents($filename, implode(&#039;&#039;, $array))</i>
+       と同じ意味になります。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">flags</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">flags</tt></i>
+ の値は、以下のフラグを組み合わせたものとなります
+       (組み合わせ方には多少制限があります)。組み合わせる際には、論理 OR
+       (<i class="literal">|</i>) 演算子で連結します。
+      </p>
+      <p class="para">
+       <table border="5">
+        <caption><b>使用できるフラグ</b></caption>
+        <colgroup>
+
+         <thead valign="middle">
+          <tr valign="middle">
+           <th colspan="1">フラグ</th>
+           <th colspan="1">説明</th>
+          </tr>
+
+         </thead>
+
+         <tbody valign="middle">
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">
+            <b><tt>FILE_USE_INCLUDE_PATH</tt></b>
+           </td>
+           <td colspan="1" rowspan="1" align="left">
+            <i><tt class="parameter">filename</tt></i>
+ をインクルードディレクトリから探します。
+            詳細な情報は <a href="ini.core.html#ini.include-path" class="link">include_path</a> を参照ください。
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">
+            <b><tt>FILE_APPEND</tt></b>
+           </td>
+           <td colspan="1" rowspan="1" align="left">
+            <i><tt class="parameter">filename</tt></i>
+ がすでに存在する場合に、
+            データをファイルに上書きするするのではなく追記します。
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">
+            <b><tt>LOCK_EX</tt></b>
+           </td>
+           <td colspan="1" rowspan="1" align="left">
+            書き込み処理中に、ファイルに対する排他ロックを確保します。
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">
+            <b><tt>FILE_TEXT</tt></b>
+           </td>
+           <td colspan="1" rowspan="1" align="left">
+            <i><tt class="parameter">data</tt></i>
+ をテキストモードで書き込みます。
+            unicode が有効な場合、デフォルトのエンコーディングは UTF-8 です。
+            別のエンコーディングを指定するには、
+            独自のコンテキストを作成するか、あるいは
+            <b>stream_default_encoding()</b> でデフォルトを変更します。
+            このフラグは <b><tt>FILE_BINARY</tt></b> と同時に使用することはできません。
+            このフラグは PHP 6 以降でのみ使用可能です。
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">
+            <b><tt>FILE_BINARY</tt></b>
+           </td>
+           <td colspan="1" rowspan="1" align="left">
+            <i><tt class="parameter">data</tt></i>
+ をバイナリモードで書き込みます。これはデフォルトの設定で、
+            <b><tt>FILE_TEXT</tt></b> と同時に使用することはできません。
+            このフラグは PHP 6 以降でのみ使用可能です。
+           </td>
+          </tr>
+
+         </tbody>
+        </colgroup>
+
+       </table>
+
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">context</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <a href="function.stream-context-create.html" class="function">stream_context_create()</a>
+       で作成したコンテキストリソース。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   この関数はファイルに書き込まれたバイト数を返します。
+   あるいは失敗した場合には <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">5.0.0</td>
+       <td colspan="1" rowspan="1" align="left">
+        コンテキストがサポートされるようになりました。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">5.1.0</td>
+       <td colspan="1" rowspan="1" align="left">
+        <b><tt>LOCK_EX</tt></b> のサポートが追加され、
+        <i><tt class="parameter">data</tt></i>
+
+        パラメータにストリームリソースを指定することが可能になりました。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">6.0.0</td>
+       <td colspan="1" rowspan="1" align="left">
+        <b><tt>FILE_TEXT</tt></b> および
+        <b><tt>FILE_BINARY</tt></b> がサポートされるようになりました。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+  
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <blockquote><p><b class="note">注意</b>: <span class="simpara">この関数はバイナリデータに対応しています。
+</span></p></blockquote>
+  <div class="tip"><b class="tip">ヒント</b><p class="simpara"><a href="ref.filesystem.html#ini.allow-url-fopen" class="link">fopen wrappers</a> が有効の場合、この関数のファイル名として
+URL を使用することができます。ファイル名の指定方法に関する詳細は
+<a href="function.fopen.html" class="function">fopen()</a>、サポートされる URL プロトコルの種類
+については、(例えば)<a href="wrappers.html" class="xref">サポートされるプロトコル/ラッパー</a> を参照してください。
+</p></div>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.fopen.html" class="function">fopen()</a></li>
+    <li class="member"><a href="function.fwrite.html" class="function">fwrite()</a></li>
+    <li class="member"><a href="function.file-get-contents.html" class="function">file_get_contents()</a></li>
+    <li class="member"><a href="function.stream-context-create.html" class="function">stream_context_create()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.file-get-contents.html">file_get_contents</a></div>
+ <div class="next" style="float: right;"><a href="function.file.html">file</a></div>
+ <div class="up"><a href="ref.filesystem.html">ファイルシステム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

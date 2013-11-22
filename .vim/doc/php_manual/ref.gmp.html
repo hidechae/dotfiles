@@ -1,0 +1,499 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>GMP 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.textdomain.html">textdomain</a></div>
+ <div class="next" style="float: right;"><a href="function.gmp-abs.html">gmp_abs</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">GMP 関数</h1>
+  
+  <div class="partintro">
+
+   <div id="gmp.intro" class="section">
+   <h2 class="title">導入</h2>
+    <p class="simpara">
+     以下の関数により、GNU <acronym title="Multiple Precision">MP</acronym> ライブラリを使用して
+     任意長の整数を使用することが可能になります。
+    </p>
+    <p class="simpara">
+     これらの関数は、PHP 4.0.4 で追加されました。
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      多くの GMP 関数は、<i class="literal">resource</i> で定義された GMP 数を
+      引数としてとります。しかし、これらの関数の多くは、数値と文字列の
+      両方を引数として指定可能で、後者は数値に変換することが可能です。
+      また、整数引数を使用して処理を行うより高速な関数がある場合には、
+      指定された引数が整数である場合により低速となる関数の代わりに
+      使用されます。これは透過的に行われるため、結果的に、GMP 数値を
+      引数とする全ての関数について整数を使用することが可能です。関数
+      <a href="function.gmp-init.html" class="function">gmp_init()</a> も参照ください。
+     <br />
+    </p></blockquote>
+    <div class="warning"><b class="warning">警告</b>
+     <p class="simpara">
+      より大きな整数を明示的に指定するには、文字列として指定してください。
+      そうしない場合、PHP は値ををまず整数リテラルとして解釈し、
+      <i class="literal">GMP</i> にわたるまでに精度の劣化を生じる可能性が
+      あります。
+     </p>
+    </div>
+    <blockquote><p><b class="note">注意</b>: 
+     <span class="simpara">
+      PHP 5.1.0 以降、この拡張モジュールは Windows でも使用可能です。
+     </span>
+    </p></blockquote>
+   </div>
+
+   <div id="gmp.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">
+     <a href="http://www.swox.com/gmp/" class="link external">&raquo; http://www.swox.com/gmp/</a> から
+     <acronym title="GNU Multiple Precision">GMP</acronym> ライブラリをダウンロード可能です。
+     このサイトでは、<acronym title="GNU Multiple Precision">GMP</acronym> のマニュアルも入手可能です。
+    </p>
+    <p class="simpara">
+     これらの関数を使用するには、GMP バージョン 2 以降が必要です。
+     中には、より新しいバージョンの GMP ライブラリを必要とする関数も
+     あります。
+    </p>
+   </div>
+
+   
+
+
+<div id="gmp.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  これらの関数を利用可能とするには、オプション <span class="option">--with-gmp</span> を使用することにより
+  <acronym title="GNU Multiple Precision">GMP</acronym> サポートを有効にして PHP をコンパイルする必要が
+  あります。
+ </p>
+</div>
+
+
+
+
+   <div id="gmp.configuration" class="section">
+    <h2 class="title">実行時設定</h2>
+    <p class="para">設定ディレクティブは定義されていません。</p>
+   </div>
+
+   <div id="gmp.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">
+     ほとんどの GPM 関数は、GMP 数のリソースを使用するか、それを返します。
+    </p>
+   </div>
+
+   
+
+
+<div id="gmp.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <dl>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GMP_ROUND_ZERO</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GMP_ROUND_PLUSINF</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GMP_ROUND_MINUSINF</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GMP_VERSION</tt></b>
+    (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     GMP ライブラリのバージョン。
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+</div>
+
+
+
+
+   <div id="gmp.examples" class="section">
+   <h2 class="title">例</h2>
+    <p class="para">
+     <div class="example">
+      <p><b>Example#1 GMP を使用した階乗関数</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">fact</span><span style="color: #007700">(</span><span style="color: #0000BB">$x</span><span style="color: #007700">)&nbsp;<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$return&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(</span><span style="color: #0000BB">$i</span><span style="color: #007700">=</span><span style="color: #0000BB">2</span><span style="color: #007700">;&nbsp;</span><span style="color: #0000BB">$i&nbsp;</span><span style="color: #007700">&lt;&nbsp;</span><span style="color: #0000BB">$x</span><span style="color: #007700">;&nbsp;</span><span style="color: #0000BB">$i</span><span style="color: #007700">++)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$return&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">gmp_mul</span><span style="color: #007700">(</span><span style="color: #0000BB">$return</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$i</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$return</span><span style="color: #007700">;<br />}<br /><br />echo&nbsp;</span><span style="color: #0000BB">gmp_strval</span><span style="color: #007700">(</span><span style="color: #0000BB">fact</span><span style="color: #007700">(</span><span style="color: #0000BB">1000</span><span style="color: #007700">))&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+    </div>
+    </p>
+    <p class="para">
+     この例は、1000 の階乗(非常に大きな数です)を非常に高速に計算します。 
+    </p>
+   </div>
+
+   <div id="gmp.seealso" class="section">
+   <h2 class="title">参考</h2>
+    <p class="para">
+     より数学的な関数が、
+     <a href="ref.bc.html" class="link">BCMath 任意精度関数</a> および
+     <a href="ref.math.html" class="link">数学関数</a> の節にあります。
+    </p>
+   </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.gmp-abs.html">gmp_abs</a> ― 絶対値</li><li><a href="function.gmp-add.html">gmp_add</a> ― 数値を加算する</li><li><a href="function.gmp-and.html">gmp_and</a> ― 論理積を計算する</li><li><a href="function.gmp-clrbit.html">gmp_clrbit</a> ― ビットをクリアする</li><li><a href="function.gmp-cmp.html">gmp_cmp</a> ― 数を比較する</li><li><a href="function.gmp-com.html">gmp_com</a> ― 1 の補数を計算する</li><li><a href="function.gmp-div-q.html">gmp_div_q</a> ― 数値を除算する</li><li><a href="function.gmp-div-qr.html">gmp_div_qr</a> ― 除算を行い、商と余りを得る</li><li><a href="function.gmp-div-r.html">gmp_div_r</a> ― 除算の余りを計算する</li><li><a href="function.gmp-div.html">gmp_div</a> ― gmp_div_q のエイリアス</li><li><a href="function.gmp-divexact.html">gmp_divexact</a> ― 正確な除算</li><li><a href="function.gmp-fact.html">gmp_fact</a> ― 階乗</li><li><a href="function.gmp-gcd.html">gmp_gcd</a> ― 最大公約数を計算する</li><li><a href="function.gmp-gcdext.html">gmp_gcdext</a> ― 最大公約数と乗数を計算する</li><li><a href="function.gmp-hamdist.html">gmp_hamdist</a> ― ハミング距離</li><li><a href="function.gmp-init.html">gmp_init</a> ― GMP 数を作成する</li><li><a href="function.gmp-intval.html">gmp_intval</a> ― GMP 数を整数に変換する</li><li><a href="function.gmp-invert.html">gmp_invert</a> ― 法による逆</li><li><a href="function.gmp-jacobi.html">gmp_jacobi</a> ― ヤコビ記号</li><li><a href="function.gmp-legendre.html">gmp_legendre</a> ― ルジェンドル記号</li><li><a href="function.gmp-mod.html">gmp_mod</a> ― モジュロ演算</li><li><a href="function.gmp-mul.html">gmp_mul</a> ― 数値を乗算する</li><li><a href="function.gmp-neg.html">gmp_neg</a> ― 符号を反転する</li><li><a href="function.gmp-nextprime.html">gmp_nextprime</a> ― 次の素数を見つける</li><li><a href="function.gmp-or.html">gmp_or</a> ― 論理和を計算する</li><li><a href="function.gmp-perfect-square.html">gmp_perfect_square</a> ― 平方数かどうかを調べる</li><li><a href="function.gmp-popcount.html">gmp_popcount</a> ― セットされているビットの数</li><li><a href="function.gmp-pow.html">gmp_pow</a> ― べき乗を計算する</li><li><a href="function.gmp-powm.html">gmp_powm</a> ― べき乗とモジュロを計算する</li><li><a href="function.gmp-prob-prime.html">gmp_prob_prime</a> ― 数が"ほぼ素数"であるかどうかを調べる</li><li><a href="function.gmp-random.html">gmp_random</a> ― 乱数を生成する</li><li><a href="function.gmp-scan0.html">gmp_scan0</a> ― 0 を探す</li><li><a href="function.gmp-scan1.html">gmp_scan1</a> ― 1 を探す</li><li><a href="function.gmp-setbit.html">gmp_setbit</a> ― ビットを設定する</li><li><a href="function.gmp-sign.html">gmp_sign</a> ― 数の符号</li><li><a href="function.gmp-sqrt.html">gmp_sqrt</a> ― 平方根を計算する</li><li><a href="function.gmp-sqrtrem.html">gmp_sqrtrem</a> ― 余りつきの平方根</li><li><a href="function.gmp-strval.html">gmp_strval</a> ― GMP 数を文字列に変換する</li><li><a href="function.gmp-sub.html">gmp_sub</a> ― 数値の減算</li><li><a href="function.gmp-testbit.html">gmp_testbit</a> ― ビットが設定されているかどうかを調べる</li><li><a href="function.gmp-xor.html">gmp_xor</a> ― 排他的論理和を計算する</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.textdomain.html">textdomain</a></div>
+ <div class="next" style="float: right;"><a href="function.gmp-abs.html">gmp_abs</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

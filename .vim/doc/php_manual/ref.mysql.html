@@ -1,0 +1,1004 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>MySQL 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.muscat-setup.html">muscat_setup</a></div>
+ <div class="next" style="float: right;"><a href="function.mysql-affected-rows.html">mysql_affected_rows</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">MySQL 関数</h1>
+  
+
+  <div class="partintro">
+   <div id="mysql.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     以下の関数は、MySQL データベースサーバへのアクセスを可能にします。
+     MySQL に関するより詳細な情報は、
+     <a href="http://www.mysql.com/" class="link external">&raquo; http://www.mysql.com/</a> にあります。
+    </p>
+    <p class="para">
+     MySQL のドキュメントは、<a href="http://dev.mysql.com/doc/" class="link external">&raquo; http://dev.mysql.com/doc/</a>にあります。
+    </p>
+   </div>
+
+   <div id="mysql.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">
+     以下の関数を利用可能とするには、MySQL サポートを指定して PHP を
+     コンパイルする必要があります。
+    </p>
+   </div>
+    
+    
+
+
+
+<div id="mysql.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+
+ <p class="para">
+  コンパイルするには、単純に
+  <span class="option">--with-mysql[=DIR]</span>
+  設定オプションを利用してください。ここで、オプションの
+  <i class="literal">[DIR]</i> は MySQL がインストールされているディレクトリを表します。
+ </p>
+ <p class="para">
+  この MySQL 拡張モジュールは MySQL 4.1.0 以降とも互換性がありますが、
+  それ以降のバージョンが提供する新機能はサポートしていません。
+  この機能を使用するには、
+  <a href="ref.mysqli.html" class="link">MySQLi</a> 拡張モジュールを使用してください。
+ </p>
+ <p class="para">
+  もし mysql 拡張モジュールと mysqli
+  拡張モジュールを同時にインストールしたい場合は、
+  衝突を避けるために両方で同じクライアントライブラリを用いる必要があります。
+ </p>
+
+ <div id="mysql.installation.linux" class="section">
+  <h2 class="title">Linux へのインストール</h2>
+  <div class="section">
+   <h2 class="title">PHP 4</h2>
+   <p class="para">
+    オプション <span class="option">--with-mysql</span>
+    はデフォルトで有効となっています。configureオプション
+    <span class="option">--without-mysql</span> を使用すると、
+    この動作は無効になります。
+    MySQL インストールディレクトリへのパスを指定しなかった場合、
+    PHP はバンドルされた MySQL クライアントライブラリを使用します。
+   </p>
+   <p class="para">
+    （auth-mysqlのような）MySQL を使用する他のアプリケーションを実行するユーザは、
+    バンドルされたライブラリを使わず
+    <span class="option">--with-mysql=/path/to/mysql</span>
+    のように MySQL のインストールディレクトリを指定するべきです。
+    これにより、MySQL によりインストールされたクライアントライブラリを
+    PHP が使用するようになり、衝突が回避されます。
+   </p>
+  </div>
+  <div class="section">
+   <h2 class="title">PHP 5+</h2>
+   <p class="para">
+    MySQL はデフォルトでは有効とならず、PHP に MySQL
+    ライブラリも付属しません。
+    この理由の詳細については、<a href="faq.databases.html#faq.databases.mysql.php5" class="link">
+    FAQ</a> を参照してください。
+    <em class="emphasis">ヘッダとライブラリ</em> は、
+    <a href="http://www.mysql.com/" class="link external">&raquo; MySQL</a> からダウンロードできます。
+   </p>
+  </div>
+ </div>
+
+ <div id="mysql.installation.windows" class="section">
+  <h2 class="title">Windows へのインストール</h2>
+  <div class="section">
+   <h2 class="title">PHP 4</h2>
+   <p class="para">
+    MySQL 拡張モジュールは、PHP に組み込まれています。
+   </p>
+  </div>
+  <div class="section">
+   <h2 class="title">PHP 5+</h2>
+   <p class="para">
+    MySQL はもはやデフォルトでは有効となりません。したがって <var class="filename">php.ini</var>
+    で <var class="filename">php_mysql.dll</var> DLL を有効にしておく必要があります。
+    また、PHP が MySQL クライアントライブラリにアクセスできなければなりません。
+    <var class="filename">libmysql.dll</var> というファイルが Windows 版の PHP
+    配布ファイルに含まれており、PHP が MySQL と話すためにはこのファイルが
+    Windows の <span class="envar">PATH</span> にある必要があります。そのための方法については、
+    &quot;<a href="faq.installation.html#faq.installation.addtopath" class="link">Windows で PHP
+    のディレクトリを PATH  に追加するにはどうすればいいのですか?</a>&quot;
+    という FAQ を参照してください。
+    <var class="filename">libmysql.dll</var> を Windows
+    のシステムディレクトリにコピーしても動作しますが
+    (システムディレクトリは、デフォルトでシステムの <span class="envar">PATH</span>
+    に含まれています)、お勧めしません。
+   </p>
+   <p class="para">
+    (<var class="filename">php_mysql.dll</var> も含めた) PHP
+    拡張モジュールを有効にするには、PHP ディレクティブ
+    <a href="ini.core.html#ini.extension-dir" class="link">extension_dir</a>
+    に拡張モジュールの存在する場所を設定するべきです。
+    <a href="install.windows.manual.html" class="link">Windows
+    へのマニュアルインストール方法</a> も参照してください。PHP 5 での
+    extension_dir の例は <i class="literal">c:\php\ext</i> です。
+   </p>
+   <blockquote><p><b class="note">注意</b>: 
+    
+     Web サーバの起動時に以下のようなエラーが発生する場合：
+     <i class="literal">&quot;Unable to load dynamic library &#039;./php_mysql.dll&#039;&quot;</i>
+     これは <var class="filename">php_mysql.dll</var> や
+     <var class="filename">libmysql.dll</var>
+     がシステムによって見つけられなかったことが原因です。
+    <br />
+   </p></blockquote>
+  </div>
+ </div>
+
+ <div id="mysql.installation.notes" class="section">
+  <h2 class="title">MySQL インストールの注意</h2>
+   <div class="warning"><b class="warning">警告</b>
+    <p class="para">
+     この拡張モジュールと recode 拡張モジュールを同時にロードした場合、
+     PHP のクラッシュと起動に関する問題が発生する可能性があります。
+     より詳細な情報については、<a href="ref.recode.html" class="link">recode</a>
+     拡張モジュールを参照してください。
+    </p>
+   </div>
+   <blockquote><p><b class="note">注意</b>: 
+    
+     <em class="emphasis">latin</em>（デフォルト）以外の文字セットを必要とする場合、
+     使用する文字セットのサポートを有効にしてコンパイルした（バンドル版でない）
+     libmysql をインストールする必要があります。
+    <br />
+   </p></blockquote>
+ </div>
+</div>
+
+
+
+
+
+    
+
+
+
+<div id="mysql.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+  <table border="5">
+   <caption><b>MySQL 設定オプション</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">名前</th>
+      <th colspan="1">デフォルト</th>
+      <th colspan="1">変更の可否</th>
+      <th colspan="1">変更履歴</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">mysql.allow_persistent</td>
+      <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">mysql.max_persistent</td>
+      <td colspan="1" rowspan="1" align="left">&quot;-1&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">mysql.max_links</td>
+      <td colspan="1" rowspan="1" align="left">&quot;-1&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">mysql.trace_mode</td>
+      <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td colspan="1" rowspan="1" align="left">PHP 4.3.0 以降で使用可能です。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">mysql.default_port</td>
+      <td colspan="1" rowspan="1" align="left">NULL</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">mysql.default_socket</td>
+      <td colspan="1" rowspan="1" align="left">NULL</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td colspan="1" rowspan="1" align="left">PHP 4.0.1 以降で使用可能です。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">mysql.default_host</td>
+      <td colspan="1" rowspan="1" align="left">NULL</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">mysql.default_user</td>
+      <td colspan="1" rowspan="1" align="left">NULL</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">mysql.default_password</td>
+      <td colspan="1" rowspan="1" align="left">NULL</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">mysql.connect_timeout</td>
+      <td colspan="1" rowspan="1" align="left">&quot;60&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td colspan="1" rowspan="1" align="left">PHP &lt;= 4.3.2 では PHP_INI_SYSTEM で、PHP 4.3.0 以降で使用可能です。</td>
+     </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+  PHP_INI_* 定数の詳細および定義については
+<a href="ini.html" class="xref">php.ini ディレクティブ</a> を参照してください。
+</p>
+
+<p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+
+<p class="para">
+  <dl>
+
+   <dt id="ini.mysql.allow-persistent">
+    <span class="term">
+    <i><tt class="parameter">mysql.allow_persistent</tt></i>
+
+     <a href="language.types.boolean.html" class="type boolean">boolean</a>
+   </span>
+    <dd>
+
+     <p class="para">
+      MySQL への
+      <a href="features.persistent-connections.html" class="link">持続的接続
+      </a>を可能にするかどうか。
+     </p>
+    </dd>
+
+   </dt>
+
+   
+   <dt id="ini.mysql.max-persistent">
+    <span class="term">
+     <i><tt class="parameter">mysql.max_persistent</tt></i>
+
+     <a href="language.types.integer.html" class="type integer">integer</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      プロセス毎の持続的 MySQL 接続の最大数。
+     </p>
+    </dd>
+
+   </dt>
+
+   
+   <dt id="ini.mysql.max-links">
+    <span class="term">
+     <i><tt class="parameter">mysql.max_links</tt></i>
+
+     <a href="language.types.integer.html" class="type integer">integer</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      持続的接続を含むプロセス毎の MySQL 接続の最大数。
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.mysql.trace-mode">
+   <span class="term">
+    <i><tt class="parameter">mysql.trace_mode</tt></i>
+
+    <a href="language.types.boolean.html" class="type boolean">boolean</a>
+   </span>
+   <dd>
+
+    <p class="para">
+     トレースモード。<i class="literal">mysql.trace_mode</i> が有効の場合、
+     テーブル/インデックスのスキャン時の警告・結果セットの未開放・SQL エラー
+     などが画面に表示されます（PHP 4.3.0 以降で使用可能です）。
+    </p>
+   </dd>
+
+  </dt>
+
+
+   <dt id="ini.mysql.default-port">
+    <span class="term">
+     <i><tt class="parameter">mysql.default_port</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      他のポートが指定されない場合、データベースサーバ接続時に使用される
+      デフォルトの TCP ポート番号。デフォルトが指定されない場合は、
+      環境変数 <span class="envar">MYSQL_TCP_PORT</span>・
+      <var class="filename">/etc/services</var> の
+      <i class="literal">mysql-tcp</i>エントリ・コンパイル時の
+      <b><tt>MYSQL_PORT</tt></b> 定数の順番でポートが取得されます。
+      Win32 では、<b><tt>MYSQL_PORT</tt></b> 定数のみが使用されます。
+     </p>
+    </dd>
+
+   </dt>
+
+   
+   <dt id="ini.mysql.default-socket">
+    <span class="term">
+     <i><tt class="parameter">mysql.default_socket</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      他にソケット名が指定されない場合、ローカルなデータベースサーバに
+     接続する時のデフォルトのソケット名。
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt id="ini.mysql.default-host">
+    <span class="term">
+     <i><tt class="parameter">mysql.default_host</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      他のサーバ名が指定されない場合に、データベースサーバへの接続時に
+      使用されるデフォルトのサーバ名。
+      <a href="ini.core.html#ini.sql.safe-mode" class="link">SQL セーフモード</a> では適用されません。
+     </p>
+    </dd>
+
+   </dt>
+
+  
+   <dt id="ini.mysql.default-user">
+    <span class="term">
+     <i><tt class="parameter">mysql.default_user</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      他のユーザ名が指定されない場合に、データベースサーバへの接続時に
+      使用されるデフォルトのユーザ名。
+      <a href="ini.core.html#ini.sql.safe-mode" class="link">SQL セーフモード</a> では適用されません。
+     </p>
+    </dd>
+
+   </dt>
+
+   
+   <dt id="ini.mysql.default-password">
+    <span class="term">
+     <i><tt class="parameter">mysql.default_password</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      他のパスワードが指定されない場合に、データベースサーバへの接続時に
+      使用されるデフォルトのパスワード。
+      <a href="ini.core.html#ini.sql.safe-mode" class="link">SQL セーフモード</a> では適用されません。
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt id="ini.mysql.connect-timeout">
+    <span class="term">
+    <i><tt class="parameter">mysql.connect_timeout</tt></i>
+
+     <a href="language.types.integer.html" class="type integer">integer</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      接続の有効時間(単位:秒)。Linux では、この有効時間はサーバからの
+      最初の応答の待ち時間としても使用されます。
+     </p>
+    </dd>
+
+   </dt>
+
+  
+  </dl>
+
+ </p>
+</div>
+
+
+
+
+
+   <div id="mysql.resources" class="section">
+   <h2 class="title">リソース型</h2>
+    <p class="para">
+     MySQL モジュールでは、2 種類のリソース型が使用されています。
+     最初のリソースはデータベース接続のリンク ID で、2 番目のリソースは
+     クエリ結果を保持するリソースです。
+    </p>
+   </div>
+
+   
+
+
+<div id="mysql.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <p class="para">
+  PHP 4.3.0 以降では、<a href="function.mysql-connect.html" class="function">mysql_connect()</a> や
+  <a href="function.mysql-pconnect.html" class="function">mysql_pconnect()</a> で追加のクライアントフラグを
+  指定できるようになりました。以下の定数が定義されています。
+  <table border="5">
+   <caption><b>MySQL クライアント定数</b></caption>
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">定数</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">MYSQL_CLIENT_COMPRESS</td>
+       <td colspan="1" rowspan="1" align="left">圧縮プロトコルを利用します。</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">MYSQL_CLIENT_IGNORE_SPACE</td>
+       <td colspan="1" rowspan="1" align="left">関数名の後のスペースを許可します。</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">MYSQL_CLIENT_INTERACTIVE</td>
+       <td colspan="1" rowspan="1" align="left">interactive_timeout で指定された秒数（wait_timeout のかわり）
+        の無通信が続くまで接続を閉じません。</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">MYSQL_CLIENT_SSL</td>
+       <td colspan="1" rowspan="1" align="left">SSL による暗号化を使用します。このフラグは、バージョン 4.x
+        以降の MySQL クライアントライブラリを利用している場合にのみ有効です。
+        PHP 4 や、Windows 版の PHP 5 にバンドルされているのは、バージョン
+        3.23.x のライブラリです。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+  </table>
+
+ </p>
+
+ <p class="para">
+  <a href="function.mysql-fetch-array.html" class="function">mysql_fetch_array()</a> 関数は、結果の配列の形式を
+  指定するための定数を使用します。以下の定数が定義されています。
+  <table border="5">
+   <caption><b>MySQL フェッチ定数</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">定数</th>
+      <th colspan="1">説明</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">MYSQL_ASSOC</td>
+      <td colspan="1" rowspan="1" align="left">
+       カラムは、フィールド名を添字とする配列形式で返されます。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">MYSQL_BOTH</td>
+      <td colspan="1" rowspan="1" align="left">
+       カラムは、数値の添字とフィールド名の添字のどちらでもアクセスできる
+       配列形式で返されます。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">MYSQL_NUM</td>
+      <td colspan="1" rowspan="1" align="left">
+       カラムは、数値の添字を持つ配列形式で返されます。添字は 0 からはじまり、
+       結果の最初のフィールドです。
+      </td>
+     </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+ </p>
+</div>
+
+
+
+    
+   <div id="mysql.notes" class="section">
+   <h2 class="title">注意</h2>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      ほとんどの MySQL 関数は、<i><tt class="parameter">link_identifier</tt></i>
+ を
+      最後のパラメータとしてオプションで受け付けます。これを指定しなかった場合、
+      直近にオープンされた接続が使用されます。もし直近の接続が存在しない場合、
+      <var class="filename">php.ini</var> のデフォルトパラメータを使用して接続を確立しようとします。
+      この試行にも失敗した場合、関数は <b><tt>FALSE</tt></b> を返します。
+     <br />
+    </p></blockquote>
+   </div>
+
+   <div id="mysql.examples" class="section">
+   <h2 class="title">例</h2>
+    <p class="para">
+     以下は、MySQL データベースに接続し、クエリを実行し、結果レコードを
+     出力、接続を切断する例です。
+     <div class="example">
+      <p><b>Example#1 MySQL 拡張モジュールに関する例</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;データベースに接続し、選択する<br /></span><span style="color: #0000BB">$link&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysql_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'mysql_host'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'mysql_user'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'mysql_password'</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;or&nbsp;die(</span><span style="color: #DD0000">'Could&nbsp;not&nbsp;connect:&nbsp;'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">mysql_error</span><span style="color: #007700">());<br />echo&nbsp;</span><span style="color: #DD0000">'Connected&nbsp;successfully'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">mysql_select_db</span><span style="color: #007700">(</span><span style="color: #DD0000">'my_database'</span><span style="color: #007700">)&nbsp;or&nbsp;die(</span><span style="color: #DD0000">'Could&nbsp;not&nbsp;select&nbsp;database'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;SQL&nbsp;クエリを実行する<br /></span><span style="color: #0000BB">$query&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'SELECT&nbsp;*&nbsp;FROM&nbsp;my_table'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysql_query</span><span style="color: #007700">(</span><span style="color: #0000BB">$query</span><span style="color: #007700">)&nbsp;or&nbsp;die(</span><span style="color: #DD0000">'Query&nbsp;failed:&nbsp;'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">mysql_error</span><span style="color: #007700">());<br /><br /></span><span style="color: #FF8000">//&nbsp;HTML&nbsp;に結果を出力する<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"&lt;table&gt;\n"</span><span style="color: #007700">;<br />while&nbsp;(</span><span style="color: #0000BB">$line&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysql_fetch_array</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">MYSQL_ASSOC</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"\t&lt;tr&gt;\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;(</span><span style="color: #0000BB">$line&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$col_value</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"\t\t&lt;td&gt;$col_value&lt;/td&gt;\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"\t&lt;/tr&gt;\n"</span><span style="color: #007700">;<br />}<br />echo&nbsp;</span><span style="color: #DD0000">"&lt;/table&gt;\n"</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">//&nbsp;結果セットを開放する<br /></span><span style="color: #0000BB">mysql_free_result</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;接続を閉じる<br /></span><span style="color: #0000BB">mysql_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$link</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+   </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.mysql-affected-rows.html">mysql_affected_rows</a> ― 一番最近の操作で変更された行の数を得る</li><li><a href="function.mysql-change-user.html">mysql_change_user</a> ― アクティブな接続でログイン中のユーザーを変更する</li><li><a href="function.mysql-client-encoding.html">mysql_client_encoding</a> ― 文字セット名を返す</li><li><a href="function.mysql-close.html">mysql_close</a> ― MySQL 接続を閉じる</li><li><a href="function.mysql-connect.html">mysql_connect</a> ― MySQL サーバへの接続をオープンする</li><li><a href="function.mysql-create-db.html">mysql_create_db</a> ― MySQL データベースを作成する</li><li><a href="function.mysql-data-seek.html">mysql_data_seek</a> ― 内部的な結果ポインタを移動する</li><li><a href="function.mysql-db-name.html">mysql_db_name</a> ― データベース名を得る</li><li><a href="function.mysql-db-query.html">mysql_db_query</a> ― MySQL クエリーを送信する</li><li><a href="function.mysql-drop-db.html">mysql_drop_db</a> ― MySQLデータベースを破棄(削除)する</li><li><a href="function.mysql-errno.html">mysql_errno</a> ― 直近の MySQL 処理からエラーメッセージのエラー番号を返す</li><li><a href="function.mysql-error.html">mysql_error</a> ― 直近に実行された MySQL 操作のエラーメッセージを返す</li><li><a href="function.mysql-escape-string.html">mysql_escape_string</a> ― mysql_query で使用するために文字列をエスケープする</li><li><a href="function.mysql-fetch-array.html">mysql_fetch_array</a> ― 連想配列、添字配列、またはその両方として結果の行を取得する</li><li><a href="function.mysql-fetch-assoc.html">mysql_fetch_assoc</a> ― 連想配列として結果の行を取得する</li><li><a href="function.mysql-fetch-field.html">mysql_fetch_field</a> ― 結果からカラム情報を取得し、オブジェクトとして返す</li><li><a href="function.mysql-fetch-lengths.html">mysql_fetch_lengths</a> ― 結果における各出力の長さを得る</li><li><a href="function.mysql-fetch-object.html">mysql_fetch_object</a> ― 結果の行をオブジェクトとして取得する</li><li><a href="function.mysql-fetch-row.html">mysql_fetch_row</a> ― 結果を添字配列として取得する</li><li><a href="function.mysql-field-flags.html">mysql_field_flags</a> ― 結果において指定したフィールドのフラグを取得する</li><li><a href="function.mysql-field-len.html">mysql_field_len</a> ― 指定したフィールドの長さを返す</li><li><a href="function.mysql-field-name.html">mysql_field_name</a> ― 結果において指定したフィールド名を取得する</li><li><a href="function.mysql-field-seek.html">mysql_field_seek</a> ― 結果ポインタを指定したフィールドオフセットにセットする</li><li><a href="function.mysql-field-table.html">mysql_field_table</a> ― 指定したフィールドが含まれるテーブルの名前を取得する</li><li><a href="function.mysql-field-type.html">mysql_field_type</a> ― 結果において指定したフィールドの型を取得する</li><li><a href="function.mysql-free-result.html">mysql_free_result</a> ― 結果保持用メモリを開放する</li><li><a href="function.mysql-get-client-info.html">mysql_get_client_info</a> ― MySQL クライアント情報を取得する</li><li><a href="function.mysql-get-host-info.html">mysql_get_host_info</a> ― MySQL ホスト情報を取得する</li><li><a href="function.mysql-get-proto-info.html">mysql_get_proto_info</a> ― MySQL プロトコル情報を取得する</li><li><a href="function.mysql-get-server-info.html">mysql_get_server_info</a> ― MySQL サーバ情報を取得する</li><li><a href="function.mysql-info.html">mysql_info</a> ― 直近のクエリについての情報を得る</li><li><a href="function.mysql-insert-id.html">mysql_insert_id</a> ― 直近の INSERT 操作で生成された ID を得る</li><li><a href="function.mysql-list-dbs.html">mysql_list_dbs</a> ― MySQL サーバ上で利用可能なデータベースのリストを得る</li><li><a href="function.mysql-list-fields.html">mysql_list_fields</a> ― MySQL テーブルのフィールドのリストを得る</li><li><a href="function.mysql-list-processes.html">mysql_list_processes</a> ― MySQL プロセスのリストを得る</li><li><a href="function.mysql-list-tables.html">mysql_list_tables</a> ― MySQL データベース上のテーブルのリストを得る</li><li><a href="function.mysql-num-fields.html">mysql_num_fields</a> ― 結果におけるフィールドの数を得る</li><li><a href="function.mysql-num-rows.html">mysql_num_rows</a> ― 結果における行の数を得る</li><li><a href="function.mysql-pconnect.html">mysql_pconnect</a> ― MySQL サーバへの持続的な接続をオープンする</li><li><a href="function.mysql-ping.html">mysql_ping</a> ― サーバとの接続状況を調べ、接続されていない場合は再接続する</li><li><a href="function.mysql-query.html">mysql_query</a> ― MySQL クエリを送信する</li><li><a href="function.mysql-real-escape-string.html">mysql_real_escape_string</a> ― SQL 文中で用いる文字列の特殊文字をエスケープする</li><li><a href="function.mysql-result.html">mysql_result</a> ― 結果データを得る</li><li><a href="function.mysql-select-db.html">mysql_select_db</a> ― MySQL データベースを選択する</li><li><a href="function.mysql-set-charset.html">mysql_set_charset</a> ― クライアントの文字セットを設定する</li><li><a href="function.mysql-stat.html">mysql_stat</a> ― 現在のシステムの状態を取得する</li><li><a href="function.mysql-tablename.html">mysql_tablename</a> ― フィールドのテーブル名を得る</li><li><a href="function.mysql-thread-id.html">mysql_thread_id</a> ― カレントのスレッド ID を返す</li><li><a href="function.mysql-unbuffered-query.html">mysql_unbuffered_query</a> ― MySQL に SQL クエリを送信するが、結果に対してのフェッチやバッファリングは行わない</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.muscat-setup.html">muscat_setup</a></div>
+ <div class="next" style="float: right;"><a href="function.mysql-affected-rows.html">mysql_affected_rows</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

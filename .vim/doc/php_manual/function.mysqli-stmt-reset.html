@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>プリペアドステートメントをリセットする</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mysqli-stmt-prepare.html">mysqli_stmt_prepare</a></div>
+ <div class="next" style="float: right;"><a href="function.mysqli-stmt-result-metadata.html">mysqli_stmt_result_metadata</a></div>
+ <div class="up"><a href="ref.mysqli.html">mysqli</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mysqli-stmt-reset" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mysqli_stmt_reset</h1>
+  <h1 class="refname">stmt-&gt;reset()</h1>
+  <p class="verinfo">(No version information available, might be only in CVS)</p><p class="refpurpose">stmt->reset() ― プリペアドステートメントをリセットする</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <p class="para">手続き型:</p>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>mysqli_stmt_reset</b></b></span>
+    ( <span class="methodparam"><span class="type">mysqli_stmt</span> <tt class="parameter">$stmt</tt></span>
+   )</div>
+
+  <p class="para">オブジェクト指向型（メソッド）:</p>
+  <div class="classsynopsis">
+   <div class="ooclass"><b class="classname">mysqli_stmt</b></div>
+   <div class="methodsynopsis">
+    <span class="type">bool</span> <span class="methodname"><b><a href="function.reset.html" class="function">reset</a></b></span>
+     ( <span class="methodparam">void</span>
+    )</div>
+
+  </div>
+  <p class="para">
+   クライアントおよびサーバで、実行後のプリペアドステートメントをリセットします。
+  </p>
+  <p class="para">
+   現在のところ、これは主に
+   <a href="function.mysqli-stmt-send-long-data.html" class="function">mysqli_stmt_send_long_data()</a>
+   で送信したデータをリセットするために使用されます。
+  </p>
+  <p class="para">
+   別のクエリを元にプリペアドステートメントを用意する場合は、
+   <a href="function.mysqli-stmt-prepare.html" class="function">mysqli_stmt_prepare()</a> 関数を使用します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+<span class="term"><i><tt class="parameter">
+stmt</tt></i>
+</span><dd>
+<p class="para">手続き型のみ:
+<a href="function.mysqli-stmt-init.html" class="function">mysqli_stmt_init()</a> が返すステートメント ID。</p></dd>
+</dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.mysqli-prepare.html" class="function">mysqli_prepare()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mysqli-stmt-prepare.html">mysqli_stmt_prepare</a></div>
+ <div class="next" style="float: right;"><a href="function.mysqli-stmt-result-metadata.html">mysqli_stmt_result_metadata</a></div>
+ <div class="up"><a href="ref.mysqli.html">mysqli</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

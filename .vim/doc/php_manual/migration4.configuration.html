@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>設定ファイルの移行</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="migration4.php4.with.php3.html">PHP 3とPHP 4を同時に実行する</a></div>
+ <div class="next" style="float: right;"><a href="migration4.parser.html">パーサの動作</a></div>
+ <div class="up"><a href="migration4.html">PHP 3 から PHP 4 への移行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="migration4.configuration" class="section">
+   <h2 class="title">設定ファイルの移行</h2>
+   <p class="para">
+    グローバル設定ファイル<var class="filename">php3.ini</var>は、名前が
+    <var class="filename">php.ini</var>に変更となりました。
+   </p>
+   <p class="para">
+    Apache設定ファイルの場合、変更点はやや多くなっています。PHPモジュー
+    ルにより認識されるMIME型が変更となりました。
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="cdata"><pre>
+application/x-httpd-php3        --&gt;    application/x-httpd-php
+application/x-httpd-php3-source --&gt;    application/x-httpd-php-source
+</pre></div>
+     </div>
+
+    </div>
+   </p>
+   <p class="para">
+    以下の構文を使用することにより、(サーバに組み込まれているバージョ
+    ンに基づき)両方のバージョンで動作する設定ファイルを作成することが
+    可能です。
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="cdata"><pre>
+AddType  application/x-httpd-php3        .php3
+AddType  application/x-httpd-php3-source .php3s
+
+AddType  application/x-httpd-php         .php
+AddType  application/x-httpd-php-source  .phps
+</pre></div>
+     </div>
+
+    </div>
+   </p>
+   <p class="simpara">
+    加えて、Apache用のPHPディレクティブが変更となっています。
+   </p>
+   <p class="para">
+    PHP 4以降、PHPに関連するApacheディレクティブは以下の4種類のみと
+    なっています。
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="cdata"><pre>
+php_value [PHPディレクティブ名] [値]
+php_flag [PHPディレクティブ名] [On|Off]
+php_admin_value [PHPディレクティブ名] [値]
+php_admin_flag [PHPディレクティブ名] [On|Off]
+</pre></div>
+     </div>
+
+    </div>
+   </p>
+   <p class="simpara">
+    Adminの値とそれ以外の値には次の2つの違いがあります。
+   </p>
+   <ul class="itemizedlist">
+    <li class="listitem">
+     <span class="simpara">
+      Admin の値(またはフラグ)は、サーバ全体のApache設定ファイル(すな
+      わち<var class="filename">httpd.conf</var>)でのみ設定可能です。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      通常の値(またはフラグ)は<a href="features.safe-mode.html#ini.safe-mode" class="link">セーフモード</a>のようなある種のPHPディレク
+      ティブを制御できません(<a href="features.safe-mode.html#ini.safe-mode" class="link">セーフモード</a>の設定を<var class="filename">.htaccess</var>で上書きで
+      きるとしたら、<a href="features.safe-mode.html#ini.safe-mode" class="link">セーフモード</a>の目的は達成されなくなります)。逆に
+      Admin値では全てのPHPディレクティブの値を修整可能です。
+     </span>
+    </li>
+   </ul>
+   <p class="simpara">
+    移行の過程をより容易にするために、PHP 4にはApache設定命令と
+    <var class="filename">.htaccess</var>ファイルをPHP 3とPHP 4の両方で動作するように変換するス
+    クリプトがバンドルされています。これらのスクリプトは、MIME型の行を
+    変換しません。これらは自分で変更を行う必要があります。
+   </p>
+   <p class="para">
+    Apache設定ファイルを変換するために、(<var class="filename">scripts/apache/</var> ディレクトリに
+    ある) <var class="filename">apconf-conv.sh</var> スクリプトを実行してください。 例えば、
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="cdata"><pre>
+~/php4/scripts/apache:#  ./apconf-conv.sh /usr/local/apache/conf/httpd.conf
+</pre></div>
+     </div>
+
+    </div>
+   </p>
+   <p class="simpara">
+    元の設定ファイルは、httpd.conf.origに保存されます。
+   </p>
+   <p class="para">
+    <var class="filename">.htaccess</var> ファイルを変換するには、(同じくscripts/apache/ディレクト
+    リにある)aphtaccess-conv.sh スクリプトを実行してください。
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="cdata"><pre>
+~/php4/scripts/apache:#  find / -name .htaccess -exec ./aphtaccess-conv.sh {} \;
+</pre></div>
+     </div>
+
+    </div>
+   </p>
+   <p class="simpara">
+    同様に古い<var class="filename">.htaccess</var>ファイルには.origが付加されて保存されます。
+   </p>
+   <p class="simpara">
+    この変換スクリプトを使用するには、&#039;awk&#039; をインストールしておく必要があります。
+   </p>
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="migration4.php4.with.php3.html">PHP 3とPHP 4を同時に実行する</a></div>
+ <div class="next" style="float: right;"><a href="migration4.parser.html">パーサの動作</a></div>
+ <div class="up"><a href="migration4.html">PHP 3 から PHP 4 への移行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

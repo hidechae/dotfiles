@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>FrontBase 結果セットの LOB 取得モードを設定する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.fbsql-set-characterset.html">fbsql_set_characterset</a></div>
+ <div class="next" style="float: right;"><a href="function.fbsql-set-password.html">fbsql_set_password</a></div>
+ <div class="up"><a href="ref.fbsql.html">FrontBase</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.fbsql-set-lob-mode" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">fbsql_set_lob_mode</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.2.0, PHP 5)</p><p class="refpurpose">fbsql_set_lob_mode ― FrontBase 結果セットの LOB 取得モードを設定する</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>fbsql_set_lob_mode</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$result</tt></span>
+   , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$lob_mode</tt></span>
+   )</div>
+
+  <p class="para">
+   データベースから LOB データを取得する際のモードを設定します。
+  </p>
+  <p class="para">
+   BLOB および CLOB のデータが FrontBase に格納されている場合、
+   それは直接的あるいは間接的に保存することが可能です。直接保存された LOB データは
+   lob モードの設定にかかわらず常に取得されます。LOB データが
+   512 バイトより小さい場合は常に直接保存されます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+<span class="term"><i><tt class="parameter">
+result</tt></i>
+</span><dd>
+<p class="para"> <a href="function.fbsql-query.html" class="function">fbsql_query()</a> あるいは
+<a href="function.fbsql-db-query.html" class="function">fbsql_db_query()</a> が返す結果 ID。</p></dd>
+</dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">lob_mode</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       以下のいずれかです。
+       <ul class="itemizedlist">
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>FBSQL_LOB_DIRECT</tt></b> -
+          LOB データは直接取得されます。
+          データベースから <a href="function.fbsql-fetch-row.html" class="function">fbsql_fetch_row()</a>
+          やその他の関数を使用してデータを取得した場合、すべての
+          CLOB あるいは BLOB カラムはその内容が直接返されます。
+          これは新規 FrontBase 結果のデフォルト値です。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>FBSQL_LOB_HANDLE</tt></b> -
+          LOB データは、実際のデータへのハンドルとして
+          取得されます。<a href="function.fbsql-fetch-row.html" class="function">fbsql_fetch_row()</a> あるいはその他の
+          関数によってデータが取得された際、LOB データが間接的に格納されていた
+          場合はそのハンドルを、直接格納されていた場合はデータそのものを返します。
+          ハンドルが返された場合、それは
+          <i class="literal">@&#039;000000000000000000000000&#039;</i>
+          のような形式の 27 バイトの文字列となります。
+         </span>
+        </li>
+       </ul>
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.fbsql-create-blob.html" class="function">fbsql_create_blob()</a></li>
+    <li class="member"><a href="function.fbsql-create-clob.html" class="function">fbsql_create_clob()</a></li>
+    <li class="member"><a href="function.fbsql-read-blob.html" class="function">fbsql_read_blob()</a></li>
+    <li class="member"><a href="function.fbsql-read-clob.html" class="function">fbsql_read_clob()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.fbsql-set-characterset.html">fbsql_set_characterset</a></div>
+ <div class="next" style="float: right;"><a href="function.fbsql-set-password.html">fbsql_set_password</a></div>
+ <div class="up"><a href="ref.fbsql.html">FrontBase</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

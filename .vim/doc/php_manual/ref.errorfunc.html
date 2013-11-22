@@ -1,0 +1,991 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>エラー処理およびログ記録関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.enchant-dict-suggest.html">enchant_dict_suggest</a></div>
+ <div class="next" style="float: right;"><a href="function.debug-backtrace.html">debug_backtrace</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">エラー処理およびログ記録関数</h1>
+  
+
+  <div class="partintro">
+   <div id="errorfunc.intro" class="section">
+   <h2 class="title">導入</h2>
+   <p class="para">
+    以下の関数は、エラー処理およびログ記録を行います。これらの関数によ
+    り、独自のエラー処理規則を定義することが可能になり、同時にエラーの
+    ログを記録する方法を修正することが可能になります。これにより、ニーズに
+    即したエラー出力の変更と拡張が可能になります。
+   </p>
+   <p class="para"> 
+    ログ記録関数により他のマシンやemail(またはポケベルのゲートウエイ
+    に!)、システムログ等に直接メッセージを送信することが可能になります。
+    これにより、ログを行うものを選択したり、アプリケーションやWebサイ
+    トに最も重要な部分をモニタすることが可能になります。
+   </p>
+   <p class="para"> 
+    エラー出力関数により、エラーのフィードバックのレベルと種類、
+    簡単な通知からカスタマイズされた関数までエラーの際に返すもの
+    をカスタマイズすることが可能になります。
+   </p>
+   </div>
+
+   <div id="errorfunc.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">外部ライブラリを必要としません。</p>
+   </div>
+
+   <div id="errorfunc.installation" class="section">
+    <h2 class="title">インストール手順</h2>
+    <p class="para">PHP コアに含まれるため、
+追加のインストール無しで使用できます。</p>
+   </div>
+
+   
+
+
+
+<div id="errorfunc.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+  <table border="5">
+   <caption><b>エラーおよびロギング設定オプション</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">名前</th>
+      <th colspan="1">デフォルト</th>
+      <th colspan="1">変更の可否</th>
+      <th colspan="1">変更履歴</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">error_reporting</td>
+     <td colspan="1" rowspan="1" align="left">NULL</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">display_errors</td>
+     <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">display_startup_errors</td>
+     <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.0.3 以降で有効です。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">log_errors</td>
+     <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">log_errors_max_len</td>
+     <td colspan="1" rowspan="1" align="left">&quot;1024&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.3.0 以降で有効です。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">ignore_repeated_errors</td>
+     <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.3.0 以降で有効です。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">ignore_repeated_source</td>
+     <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.3.0 以降で有効です。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">report_memleaks</td>
+     <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.3.0 以降で有効です。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">track_errors</td>
+     <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">html_errors</td>
+     <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP &lt;= 4.2.3 では PHP_INI_SYSTEM 。PHP 4.0.2 以降で有効です。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">docref_root</td>
+     <td colspan="1" rowspan="1" align="left">&quot;&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.3.0 以降で有効です。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">docref_ext</td>
+     <td colspan="1" rowspan="1" align="left">&quot;&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.3.2 以降で有効です。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">error_prepend_string</td>
+     <td colspan="1" rowspan="1" align="left">NULL</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">error_append_string</td>
+     <td colspan="1" rowspan="1" align="left">NULL</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">error_log</td>
+     <td colspan="1" rowspan="1" align="left">NULL</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">warn_plus_overloading</td>
+     <td colspan="1" rowspan="1" align="left">NULL</td>
+     <td class="empty">&nbsp;</td>
+     <td colspan="1" rowspan="1" align="left">このオプションは、PHP 4.0.0 以降には存在しません。</td>
+    </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+  PHP_INI_* 定数の詳細および定義については
+<a href="ini.html" class="xref">php.ini ディレクティブ</a> を参照してください。
+ </p>
+ <p class="para">
+  以下に設定ディレクティブの簡単な説明を示します。
+  <dl>
+
+   <dt id="ini.error-reporting">
+    <span class="term">
+     <i><tt class="parameter">error_reporting</tt></i>
+
+     <a href="language.types.integer.html" class="type integer">integer</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      エラー出力レベルを設定します。パラメータは、あるビットフィールドを表
+      す整数か定数名で指定します。このerror_reportingのレベルと定数は、
+      <a href="ref.errorfunc.html#errorfunc.constants" class="link">定義済の定数</a>および
+      <var class="filename">php.ini</var>に記述されています。 実行時に設定するには、
+      <a href="function.error-reporting.html" class="function">error_reporting()</a> 関数を指定してください。
+      <a href="ref.errorfunc.html#ini.display-errors" class="link">display_errors</a> 
+      ディレクティブも参照してください。
+     </p>
+     <p class="para">
+      PHP 4とPHP 5のデフォルトは E_ALL &amp; ~E_NOTICE です。
+      この設定は<b><tt>E_NOTICE</tt></b>レベルのエラーは出力されません。
+      開発時にはこのエラーを表示させたい場合もあるかもしれません。
+     </p>
+     <blockquote><p><b class="note">注意</b>: 
+      
+       開発時に<b><tt>E_NOTICE</tt></b>を有効にすることにはいくつ
+       かの利点があります。デバッグのために、NOTICE メッセージはコード
+       の中のバグの可能性について警告を与えます。例えば、代入されていな
+       い値を使用した場合は、警告を発生します。
+       これは、書き間違いを見付け、デバッグの時間を節約するために非常
+       に有用です。NOTICEメッセージは、好ましくないコードに警告します。
+       例えば、$arr[item] は $arr[&#039;item&#039;] と書く方が好ましいです。
+       これは、PHPが&quot;item&quot;を定数として取り扱うためです。
+       定数でない場合、PHPは配列の添字ようの文字列と判断します。
+      <br />
+     </p></blockquote>
+     <blockquote><p><b class="note">注意</b>: 
+      
+       PHP 5では新しいエラーレベル<b><tt>E_STRICT</tt></b>を使用できます。
+       <b><tt>E_STRICT</tt></b>は<b><tt>E_ALL</tt></b>には
+       含まれないため、明示的にこのエラーレベルを設定する必要があります。
+       開発中に<b><tt>E_STRICT</tt></b>を有効にすることは
+       いくつかの利点があります。STRICTメッセージは最新かつもっとも有効で
+       推奨されるコーディングメソッドを使用するように手助けしてくれます。
+       例えば推奨されない関数を使用したさいに警告を発します。
+      <br />
+     </p></blockquote>
+     <blockquote><p><b class="note">注意</b>: 
+      <b>PHP 定数の、PHP 以外での使用</b>
+      
+       PHP の定数を、<var class="filename">httpd.conf</var> など PHP
+       の外部で使用しても何の意味もありません。外部で使用する場合には、
+       <a href="language.types.integer.html" class="type integer">integer</a> 型の値を指定しなければなりません。
+       また、エラーレベルはこれからも追加されることがあるので、
+       最大値 (<b><tt>E_ALL</tt></b> に対応する値)
+       は変わる可能性があります。そこで、<b><tt>E_ALL</tt></b>
+       を指定する場面では <i class="literal">2147483647</i>
+       のような数を指定するようにしましょう。
+       これは現状の全ビットに対応した上で、かつ値が将来追加された場合にも対応できます。
+      <br />
+     </p></blockquote>
+     <p class="para">
+      PHP 3では、<i class="literal">(E_ERROR | E_WARNING | E_PARSE)</i>が
+      デフォルトの設定で、同じことを意味しました。しかし、PHP 3の
+      <var class="filename">php3.ini</var>では定数がサポートされていないため、
+      error_reportingの設定は数値で指定する必要があり、この場合は、
+      <i class="literal">7</i>とします。
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.display-errors">
+    <span class="term">
+     <i><tt class="parameter">display_errors</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      エラーをHTML出力の一部として画面に出力するかどうかを定義します。
+     </p>
+     <p class="para">
+      &quot;stderr&quot; を指定すると、エラーの内容を <i class="literal">stdout</i>
+      (標準出力) ではなく <i class="literal">stderr</i> (標準エラー出力)
+      に送ります。この値は PHP 5.2.4 以降で使用可能です。それより前のバージョンでは、
+      このディレクティブは <a href="language.types.boolean.html" class="type boolean">boolean</a> 型でした。
+     </p>
+     <blockquote><p><b class="note">注意</b>: 
+      
+      開発をサポートする仕組みであり、本番のシステムでは
+      使用すべきではありません (例えばインターネットに接続されたシステムなど)。
+      <br />
+     </p></blockquote>
+     <blockquote><p><b class="note">注意</b>: 
+      
+       display_errors は実行時にも設定可能（<a href="function.ini-set.html" class="function">ini_set()</a>
+       関数を用いて）ですが、スクリプトが致命的（fatal）なエラーを発生した場合は
+       その設定は反映されません。なぜなら、要求されたアクションは
+       実行されなかったからです。
+      <br />
+     </p></blockquote>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.display-startup-errors">
+    <span class="term">
+     <i><tt class="parameter">display_startup_errors</tt></i>
+
+     <a href="language.types.boolean.html" class="type boolean">boolean</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      display_errorsをonにした場合でも、PHPの起動シーケンスにおいて発
+      生したエラーは表示されません。デバッグ時を除き、
+      display_startup_errorsをoffにしておくことが強く推奨されます。
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.log-errors">
+    <span class="term">
+     <i><tt class="parameter">log_errors</tt></i>
+
+     <a href="language.types.boolean.html" class="type boolean">boolean</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      エラーメッセージを、サーバーのエラーログまたは<a href="ref.errorfunc.html#ini.error-log" class="link">error_log</a>に記録するかどうかを指定
+      します。このオプションはサーバーに依存します。
+     </p>
+     <blockquote><p><b class="note">注意</b>: 
+      
+       実用Webサイトではエラー表示を行う変わりにエラーを記録することを
+       強く推奨します。
+      <br />
+     </p></blockquote>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.log-errors-max-len">
+    <span class="term">
+     <i><tt class="parameter">log_errors_max_len</tt></i>
+
+     <a href="language.types.integer.html" class="type integer">integer</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      log_errorsの最大長をキロバイト単位で設定します。
+      <a href="ref.errorfunc.html#ini.error-log" class="link">error_log</a> には、
+      この設定で情報が追加されます。デフォルトは 1024 で、0 を指定すると
+      最大長の制限は全く適用されなくなります。
+      この長さはエラーログに記録され、
+      エラー表示と <a href="reserved.variables.html#reserved.variables.phperrormsg" class="link">$php_errormsg</a>
+      に適用されます。
+     </p>
+
+     <span class="simpara"><a href="language.types.integer.html" class="type integer">integer</a>を使用する際、
+その値はバイト単位で測られます。
+<a href="faq.using.html#faq.using.shorthandbytes" class="link">この FAQ</a> に記載された
+短縮表記を使用することも可能です。</span>
+
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.ignore-repeated-errors">
+    <span class="term">
+     <i><tt class="parameter">ignore_repeated_errors</tt></i>
+
+     <a href="language.types.boolean.html" class="type boolean">boolean</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      繰り返されるメッセージを記録しません。エラーの繰り返しは、
+      <a href="ref.errorfunc.html#ini.ignore-repeated-source" class="link">ignore_repeated_source</a>が
+      trueに設定されるまで同じファイルの同じ行で発生します。
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.ignore-repeated-source">
+    <span class="term">
+     <i><tt class="parameter">ignore_repeated_source</tt></i>
+
+     <a href="language.types.boolean.html" class="type boolean">boolean</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      メッセージの繰り返しを無視する場合にメッセージのソースを無視しま
+      す。この設定をOnにすると、異なるファイルまたはソース行からの同じ
+      エラーメッセージの繰り返しを記録しなくなります。
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.report-memleaks">
+    <span class="term">
+     <i><tt class="parameter">report_memleaks</tt></i>
+
+     <a href="language.types.boolean.html" class="type boolean">boolean</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      このパラメータをOffにした場合、(stdoutまたはログに)メモリーリー
+      クは表示されなくなります。これは、デバッグ用コンパイル時に
+      <a href="ref.errorfunc.html#ini.error-reporting" class="link">error_reporting</a>で
+      E_WARNINGを有効にしている場合のみ有効です。
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.track-errors">
+    <span class="term">
+     <i><tt class="parameter">track_errors</tt></i>
+
+     <a href="language.types.boolean.html" class="type boolean">boolean</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      有効にした場合、直近のエラーメッセージが、
+      <a href="reserved.variables.html#reserved.variables.phperrormsg" class="link">$php_errormsg</a>変
+      数に常に代入されます。
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.html-errors">
+    <span class="term">
+     <i><tt class="parameter">html_errors</tt></i>
+
+     <a href="language.types.boolean.html" class="type boolean">boolean</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      エラーメッセージのHTMLタグをオフにします。htmlエラー用の新しい形
+      式では、ユーザがエラーまたはエラーを発生した関数を説明するページ
+      に導くようクリック可能なメッセージを出力します。これらのリファレ
+      ンスは、<a href="ref.errorfunc.html#ini.docref-root" class="link">docref_root</a> およ
+      び <a href="ref.errorfunc.html#ini.docref-ext" class="link">docref_ext</a>の設定に依存
+      します。
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.docref-root">
+    <span class="term">
+     <i><tt class="parameter">docref_root</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      新しいエラーフォーマットはエラーやエラーの原因となった関数に関するマニュアル
+      のページの情報を含んでいます。マニュアルのページによっては母国語でダウンロードが
+      可能であり、このiniディレクティブをマニュアルのローカルコピーのURLにセット
+      することができます。
+      マニュアルのローカルコピーが&#039;/manual/&#039;でアクセスできるとすると、単に
+      <strong class="userinput"><code>docref_root=/manual/</code></strong>
+とするだけです。
+      ローカルコピーのファイルの拡張子は<strong class="userinput"><code>docref_ext=.html</code></strong>
+
+      で指定できます。拡張リファレンスを使用することもできます。例えば
+      <strong class="userinput"><code>docref_root=http://manual/en/</code></strong>
+または
+      <strong class="userinput"><code>docref_root=&quot;http://landonize.it/?how=url&amp;theme=classic&amp;filter=Landon&amp;url=http%3A%2F%2Fwww.php.net%2F&quot;</code></strong>
+が使用できます。
+     </p>
+     <p class="para">
+      ほとんどの場合docref_rootの値の最後を&#039;/&#039;にしようと思うでしょう。
+      しかし上の二つ目の例を見ではその必要はありません。
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.docref-ext">
+    <span class="term">
+     <i><tt class="parameter">docref_ext</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      <a href="ref.errorfunc.html#ini.docref-root" class="link">docref_root</a>を参照して下さ
+      い。
+     </p>
+     <blockquote><p><b class="note">注意</b>: 
+      
+       docref_extの値はドット &#039;.&#039;で始まる必要があります。
+      <br />
+     </p></blockquote>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.error-prepend-string">
+    <span class="term">
+     <i><tt class="parameter">error_prepend_string</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      エラーメッセージの前に出力する文字列。
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.error-append-string">
+    <span class="term">
+     <i><tt class="parameter">error_append_string</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      エラーメッセージの後に出力する文字列。
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.error-log">
+    <span class="term">
+     <i><tt class="parameter">error_log</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      スクリプトエラーが記録されるファイル名です。
+      ファイルはウェブサーバユーザで書き込めなければなりません。
+      <i class="literal">syslog</i> が指定されると、エラーはファイルではなく
+      システムロガーに送られます。これは Unix では syslog(3) であり
+      Windows NT ではイベントログのことです。システムロガーは
+      Windows 95 ではサポートされていません。
+      <a href="function.syslog.html" class="function">syslog()</a> も参照してください。
+      このディレクティブが設定されていない場合、エラーは SAPI
+      エラーロガーに送信されます。これは、例えば Apache のエラーログ、
+      あるいは CLI なら <i class="literal">stderr</i> になります。
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.warn-plus-overloading">
+    <span class="term">
+     <i><tt class="parameter">warn_plus_overloading</tt></i>
+
+     <a href="language.types.boolean.html" class="type boolean">boolean</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      有効な場合、このオプションは加算演算子 (<i class="literal">+</i>)
+      が文字列で使用されている場合に警告を出力します。
+      これにより、文字列結合演算子 (<i class="literal">.</i>) を用いて
+      書き直す必要があるスクリプトを見付けることが容易になります。
+      このオプションは、PHP 4 には存在しません。
+     </p>
+    </dd>
+
+   </dt>
+
+
+  </dl>
+
+ </p>
+</div>
+
+
+
+
+   
+
+
+<div id="errorfunc.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数は、PHP コアに含まれており、常に利用可能です。
+</p>
+ <blockquote><p><b class="note">注意</b>: 
+  <span class="simpara">
+   以下の定数を<var class="filename">php.ini</var>で使用することができますが、
+   <var class="filename">httpd.conf</var>のようなPHPの外部では、
+   代わりにビットマスク値を使用する必要があります。
+  </span>
+ </p></blockquote>
+ <table border="5">
+  <caption><b>エラーとロギング</b></caption>
+  <colgroup>
+
+   <thead valign="middle">
+    <tr valign="middle">
+     <th colspan="1">値</th>
+     <th colspan="1">定数</th>
+     <th colspan="1">説明</th>
+     <th colspan="1">注記</th>
+    </tr>
+
+   </thead>
+
+   <tbody valign="middle">
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">1</td>
+     <td colspan="1" rowspan="1" align="left">
+      <b><tt>E_ERROR</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </td>
+     <td colspan="1" rowspan="1" align="left">
+      重大な実行時エラー。これは、メモリ確保に関する問題のように復帰で
+      きないエラーを示します。スクリプトの実行は中断されます。
+     </td>
+     <td colspan="1" rowspan="1" align="left">
+     </td>
+    </tr>
+
+    
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">2</td>
+     <td colspan="1" rowspan="1" align="left">
+      <b><tt>E_WARNING</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </td>
+     <td colspan="1" rowspan="1" align="left">
+      実行時の警告 (致命的なエラーではない)。スクリプトの実行は中断さ
+      れません。
+     </td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">4</td>
+     <td colspan="1" rowspan="1" align="left">
+      <b><tt>E_PARSE</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </td>
+     <td colspan="1" rowspan="1" align="left">
+      コンパイル時のパースエラー。パースエラーはパーサでのみ生成されま
+      す。
+     </td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">8</td>
+     <td colspan="1" rowspan="1" align="left">
+      <b><tt>E_NOTICE</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </td>
+     <td colspan="1" rowspan="1" align="left">
+      実行時の警告。エラーを発しうる状況に遭遇したことを示す。
+      ただし通常のスクリプト実行の場合にもこの警告を発することがありうる。
+     </td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">16</td>
+     <td colspan="1" rowspan="1" align="left">
+      <b><tt>E_CORE_ERROR</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </td>
+     <td colspan="1" rowspan="1" align="left">
+      PHPの初期始動時点での致命的なエラー。<b><tt>E_ERROR</tt></b>に
+      似ているがPHPのコアによって発行される点が違う。
+     </td>
+     <td colspan="1" rowspan="1" align="left">PHP 4 より</td>
+    </tr>
+
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">32</td>
+     <td colspan="1" rowspan="1" align="left">
+      <b><tt>E_CORE_WARNING</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </td>
+     <td colspan="1" rowspan="1" align="left">
+      （致命的ではない）警告。PHPの初期始動時に発生する。
+      <b><tt>E_WARNING</tt></b>に似ているがPHPのコアによって発行される
+      点が違う。
+     </td>
+     <td colspan="1" rowspan="1" align="left">PHP 4 より</td>
+    </tr>
+
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">64</td>
+     <td colspan="1" rowspan="1" align="left">
+      <b><tt>E_COMPILE_ERROR</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </td>
+     <td colspan="1" rowspan="1" align="left">
+      コンパイル時の致命的なエラー。<b><tt>E_ERROR</tt></b>に
+      似ているがZendスクリプティングエンジンによって発行される点が違う。
+     </td>
+     <td colspan="1" rowspan="1" align="left">PHP 4 より</td>
+    </tr>
+
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">128</td>
+     <td colspan="1" rowspan="1" align="left">
+      <b><tt>E_COMPILE_WARNING</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </td>
+     <td colspan="1" rowspan="1" align="left">
+      コンパイル時の警告（致命的ではない）。<b><tt>E_WARNING</tt></b>に
+      似ているがZendスクリプティングエンジンによって発行される点が違う。
+     </td>
+     <td colspan="1" rowspan="1" align="left">PHP 4 より</td>
+    </tr>
+
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">256</td>
+     <td colspan="1" rowspan="1" align="left">
+      <b><tt>E_USER_ERROR</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </td>
+     <td colspan="1" rowspan="1" align="left">
+      ユーザーによって発行されるエラーメッセージ。<b><tt>E_ERROR</tt></b>
+      に似ているがPHPコード上で<a href="function.trigger-error.html" class="function">trigger_error()</a>関数を
+      使用した場合に発行される点が違う。
+     </td>
+     <td colspan="1" rowspan="1" align="left">PHP 4 より</td>
+    </tr>
+
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">512</td>
+     <td colspan="1" rowspan="1" align="left">
+      <b><tt>E_USER_WARNING</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </td>
+     <td colspan="1" rowspan="1" align="left">
+      ユーザーによって発行される警告メッセージ。<b><tt>E_WARNING</tt></b>
+      に似ているがPHPコード上で<a href="function.trigger-error.html" class="function">trigger_error()</a>関数を
+      使用した場合に発行される点が違う。
+     </td>
+     <td colspan="1" rowspan="1" align="left">PHP 4 より</td>
+    </tr>
+
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">1024</td>
+     <td colspan="1" rowspan="1" align="left">
+      <b><tt>E_USER_NOTICE</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </td>
+     <td colspan="1" rowspan="1" align="left">
+      ユーザーによって発行される注意メッセージ。<b><tt>E_NOTICE</tt></b>に
+      に似ているがPHPコード上で<a href="function.trigger-error.html" class="function">trigger_error()</a>関数を
+      使用した場合に発行される点が違う。
+     </td>
+     <td colspan="1" rowspan="1" align="left">PHP 4 より</td>
+    </tr>
+
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">2048</td>
+     <td colspan="1" rowspan="1" align="left">
+      <b><tt>E_STRICT</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </td>
+     <td colspan="1" rowspan="1" align="left">
+      実行時の注意。コードの相互運用性や互換性を維持するために
+      PHP がコードの変更を提案する。
+     </td>
+     <td colspan="1" rowspan="1" align="left">PHP 5 より</td>
+    </tr>
+
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">4096</td>
+     <td colspan="1" rowspan="1" align="left">
+      <b><tt>E_RECOVERABLE_ERROR</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </td>
+     <td colspan="1" rowspan="1" align="left">
+      キャッチできる致命的なエラー。危険なエラーが発生したが、
+      エンジンが不安定な状態になるほどではないことを表す。
+      ユーザ定義のハンドラでエラーがキャッチされなかった場合
+      (<a href="function.set-error-handler.html" class="function">set_error_handler()</a> も参照ください) は、
+      <b><tt>E_ERROR</tt></b> として異常終了する。
+     </td>
+     <td colspan="1" rowspan="1" align="left">PHP 5.2.0 より</td>
+    </tr>
+
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">8191</td>
+     <td colspan="1" rowspan="1" align="left">
+      <b><tt>E_ALL</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+     </td>
+     <td colspan="1" rowspan="1" align="left">
+      サポートされる全てのエラーと警告。PHP &lt; 6 では
+      <b><tt>E_STRICT</tt></b> レベルのエラーは除く。
+     </td>
+     <td colspan="1" rowspan="1" align="left">PHP 5.2.x では 6143、それより前のバージョンでは 2047 でした。</td>
+    </tr>
+
+
+   </tbody>
+  </colgroup>
+
+ </table>
+
+
+ <p class="para">
+  上記の値（数値も論理値も）はどのエラーをレポートするかを指定する
+  ビットマスクを組み立てる。<a href="language.operators.bitwise.html" class="link">ビット演算子</a>
+  を使用して値を組み合わせたり特定のエラータイプをマスクすることができる。
+  <var class="filename">php.ini</var> では&#039;|&#039;, &#039;~&#039;, &#039;!&#039;, &#039;^&#039; and &#039;&amp;&#039;のみが解釈されることに
+  注意すべきであるが、しかし、<var class="filename">php3.ini</var>では
+  ビット演算子は解釈されないことにも注意すべきである。
+ </p>
+</div> 
+
+
+
+
+
+   
+
+
+<div id="errorfunc.examples" class="section">
+ <h2 class="title">例</h2>
+  <p class="para">
+   エラー処理機能を PHP で使用するための例を示します。
+   ファイルに(XML 形式で)情報を記録し、論理的に致命的なエラーの場合に、
+   開発者に電子メールを送信するようなエラー処理関数を定義します。
+   <div class="example">
+    <p><b>Example#1 スクリプト内でのエラー処理</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;自分のエラーハンドリングを行います<br /></span><span style="color: #0000BB">error_reporting</span><span style="color: #007700">(</span><span style="color: #0000BB">0</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;ユーザーの定義したエラーハンドリング関数<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">userErrorHandler</span><span style="color: #007700">(</span><span style="color: #0000BB">$errno</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$errmsg</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$filename</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$linenum</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$vars</span><span style="color: #007700">)&nbsp;<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;エラーエントリのタイムスタンプ<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$dt&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">date</span><span style="color: #007700">(</span><span style="color: #DD0000">"Y-m-d&nbsp;H:i:s&nbsp;(T)"</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;エラー文字列の連想配列を定義します。<br />&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;実際のところ、考慮する必要があるのは<br />&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;E_WARNING、E_NOTICE、E_USER_ERROR、<br />&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;E_USER_WARNING&nbsp;そして&nbsp;E_USER_NOTICE&nbsp;だけです。<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$errortype&nbsp;</span><span style="color: #007700">=&nbsp;array&nbsp;(<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">E_ERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'Error'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">E_WARNING&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'Warning'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">E_PARSE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'Parsing&nbsp;Error'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">E_NOTICE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'Notice'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">E_CORE_ERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'Core&nbsp;Error'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">E_CORE_WARNING&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'Core&nbsp;Warning'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">E_COMPILE_ERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'Compile&nbsp;Error'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">E_COMPILE_WARNING&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'Compile&nbsp;Warning'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">E_USER_ERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'User&nbsp;Error'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">E_USER_WARNING&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'User&nbsp;Warning'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">E_USER_NOTICE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'User&nbsp;Notice'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">E_STRICT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'Runtime&nbsp;Notice'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">E_RECOVERABLE_ERROR&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'Catchable&nbsp;Fatal&nbsp;Error'<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;set&nbsp;of&nbsp;errors&nbsp;for&nbsp;which&nbsp;a&nbsp;var&nbsp;trace&nbsp;will&nbsp;be&nbsp;saved<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$user_errors&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #0000BB">E_USER_ERROR</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">E_USER_WARNING</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">E_USER_NOTICE</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$err&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"&lt;errorentry&gt;\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$err&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #DD0000">"\t&lt;datetime&gt;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$dt&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"&lt;/datetime&gt;\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$err&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #DD0000">"\t&lt;errornum&gt;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$errno&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"&lt;/errornum&gt;\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$err&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #DD0000">"\t&lt;errortype&gt;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$errortype</span><span style="color: #007700">[</span><span style="color: #0000BB">$errno</span><span style="color: #007700">]&nbsp;.&nbsp;</span><span style="color: #DD0000">"&lt;/errortype&gt;\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$err&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #DD0000">"\t&lt;errormsg&gt;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$errmsg&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"&lt;/errormsg&gt;\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$err&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #DD0000">"\t&lt;scriptname&gt;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$filename&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"&lt;/scriptname&gt;\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$err&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #DD0000">"\t&lt;scriptlinenum&gt;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$linenum&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"&lt;/scriptlinenum&gt;\n"</span><span style="color: #007700">;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">in_array</span><span style="color: #007700">(</span><span style="color: #0000BB">$errno</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$user_errors</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$err&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #DD0000">"\t&lt;vartrace&gt;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">wddx_serialize_value</span><span style="color: #007700">(</span><span style="color: #0000BB">$vars</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"Variables"</span><span style="color: #007700">)&nbsp;.&nbsp;</span><span style="color: #DD0000">"&lt;/vartrace&gt;\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$err&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #DD0000">"&lt;/errorentry&gt;\n\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;テスト用<br />&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;echo&nbsp;$err;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;エラーログを保存し、重大なユーザーエラーは自分にメールする<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">error_log</span><span style="color: #007700">(</span><span style="color: #0000BB">$err</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"/usr/local/php4/error.log"</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">$errno&nbsp;</span><span style="color: #007700">==&nbsp;</span><span style="color: #0000BB">E_USER_ERROR</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">mail</span><span style="color: #007700">(</span><span style="color: #DD0000">"phpdev@example.com"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"Critical&nbsp;User&nbsp;Error"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$err</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br /><br />function&nbsp;</span><span style="color: #0000BB">distance</span><span style="color: #007700">(</span><span style="color: #0000BB">$vect1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$vect2</span><span style="color: #007700">)&nbsp;<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(!</span><span style="color: #0000BB">is_array</span><span style="color: #007700">(</span><span style="color: #0000BB">$vect1</span><span style="color: #007700">)&nbsp;||&nbsp;!</span><span style="color: #0000BB">is_array</span><span style="color: #007700">(</span><span style="color: #0000BB">$vect2</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">trigger_error</span><span style="color: #007700">(</span><span style="color: #DD0000">"Incorrect&nbsp;parameters,&nbsp;arrays&nbsp;expected"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">E_USER_ERROR</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">NULL</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">count</span><span style="color: #007700">(</span><span style="color: #0000BB">$vect1</span><span style="color: #007700">)&nbsp;!=&nbsp;</span><span style="color: #0000BB">count</span><span style="color: #007700">(</span><span style="color: #0000BB">$vect2</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">trigger_error</span><span style="color: #007700">(</span><span style="color: #DD0000">"Vectors&nbsp;need&nbsp;to&nbsp;be&nbsp;of&nbsp;the&nbsp;same&nbsp;size"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">E_USER_ERROR</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">NULL</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(</span><span style="color: #0000BB">$i</span><span style="color: #007700">=</span><span style="color: #0000BB">0</span><span style="color: #007700">;&nbsp;</span><span style="color: #0000BB">$i</span><span style="color: #007700">&lt;</span><span style="color: #0000BB">count</span><span style="color: #007700">(</span><span style="color: #0000BB">$vect1</span><span style="color: #007700">);&nbsp;</span><span style="color: #0000BB">$i</span><span style="color: #007700">++)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$c1&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$vect1</span><span style="color: #007700">[</span><span style="color: #0000BB">$i</span><span style="color: #007700">];&nbsp;</span><span style="color: #0000BB">$c2&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$vect2</span><span style="color: #007700">[</span><span style="color: #0000BB">$i</span><span style="color: #007700">];<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$d&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">0.0</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(!</span><span style="color: #0000BB">is_numeric</span><span style="color: #007700">(</span><span style="color: #0000BB">$c1</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">trigger_error</span><span style="color: #007700">(</span><span style="color: #DD0000">"Coordinate&nbsp;$i&nbsp;in&nbsp;vector&nbsp;1&nbsp;is&nbsp;not&nbsp;a&nbsp;number,&nbsp;using&nbsp;zero"</span><span style="color: #007700">,&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">E_USER_WARNING</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$c1&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">0.0</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(!</span><span style="color: #0000BB">is_numeric</span><span style="color: #007700">(</span><span style="color: #0000BB">$c2</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">trigger_error</span><span style="color: #007700">(</span><span style="color: #DD0000">"Coordinate&nbsp;$i&nbsp;in&nbsp;vector&nbsp;2&nbsp;is&nbsp;not&nbsp;a&nbsp;number,&nbsp;using&nbsp;zero"</span><span style="color: #007700">,&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">E_USER_WARNING</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$c2&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">0.0</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$d&nbsp;</span><span style="color: #007700">+=&nbsp;</span><span style="color: #0000BB">$c2</span><span style="color: #007700">*</span><span style="color: #0000BB">$c2&nbsp;</span><span style="color: #007700">-&nbsp;</span><span style="color: #0000BB">$c1</span><span style="color: #007700">*</span><span style="color: #0000BB">$c1</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">sqrt</span><span style="color: #007700">(</span><span style="color: #0000BB">$d</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #0000BB">$old_error_handler&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">set_error_handler</span><span style="color: #007700">(</span><span style="color: #DD0000">"userErrorHandler"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;未定義定数による警告の生成<br /></span><span style="color: #0000BB">$t&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">I_AM_NOT_DEFINED</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">//&nbsp;いくつかの「ベクタ」定義<br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #0000BB">2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"foo"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$b&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #0000BB">5.5</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">4.3</span><span style="color: #007700">,&nbsp;-</span><span style="color: #0000BB">1.6</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$c&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;-</span><span style="color: #0000BB">3</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;ユーザエラーの生成<br /></span><span style="color: #0000BB">$t1&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">distance</span><span style="color: #007700">(</span><span style="color: #0000BB">$c</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$b</span><span style="color: #007700">)&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">//&nbsp;他のユーザエラーの生成<br /></span><span style="color: #0000BB">$t2&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">distance</span><span style="color: #007700">(</span><span style="color: #0000BB">$b</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"i&nbsp;am&nbsp;not&nbsp;an&nbsp;array"</span><span style="color: #007700">)&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">//&nbsp;警告の生成<br /></span><span style="color: #0000BB">$t3&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">distance</span><span style="color: #007700">(</span><span style="color: #0000BB">$a</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$b</span><span style="color: #007700">)&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+</div>
+
+
+
+
+   <div id="errorfunc.seealso" class="section">
+   <h2 class="title">参考</h2>
+    <p class="para">
+     <a href="function.syslog.html" class="function">syslog()</a>も参照してください。
+    </p>
+   </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.debug-backtrace.html">debug_backtrace</a> ― バックトレースを生成する</li><li><a href="function.debug-print-backtrace.html">debug_print_backtrace</a> ― バックトレースを表示する</li><li><a href="function.error-get-last.html">error_get_last</a> ― 最後に発生したエラーを取得する</li><li><a href="function.error-log.html">error_log</a> ― エラーメッセージを送信する</li><li><a href="function.error-reporting.html">error_reporting</a> ― 出力する PHP エラーの種類を設定する</li><li><a href="function.restore-error-handler.html">restore_error_handler</a> ― 以前のエラーハンドラ関数を回復する</li><li><a href="function.restore-exception-handler.html">restore_exception_handler</a> ― 以前の例外ハンドラ関数を回復する</li><li><a href="function.set-error-handler.html">set_error_handler</a> ― ユーザ定義のエラーハンドラ関数を設定する</li><li><a href="function.set-exception-handler.html">set_exception_handler</a> ― ユーザ定義の例外ハンドラ関数を設定する</li><li><a href="function.trigger-error.html">trigger_error</a> ― ユーザレベルのエラー/警告/通知メッセージを生成する</li><li><a href="function.user-error.html">user_error</a> ― trigger_error のエイリアス</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.enchant-dict-suggest.html">enchant_dict_suggest</a></div>
+ <div class="next" style="float: right;"><a href="function.debug-backtrace.html">debug_backtrace</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

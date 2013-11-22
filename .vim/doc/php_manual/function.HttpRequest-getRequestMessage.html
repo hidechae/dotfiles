@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>リクエストメッセージを取得する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.HttpRequest-getRawResponseMessage.html">HttpRequest::getRawResponseMessage</a></div>
+ <div class="next" style="float: right;"><a href="function.HttpRequest-getResponseBody.html">HttpRequest::getResponseBody</a></div>
+ <div class="up"><a href="ref.http.html">http</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.HttpRequest-getRequestMessage" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">HttpRequest::getRequestMessage</h1>
+  <p class="verinfo">(PECL pecl_http:0.11.0-1.5.5)</p><p class="refpurpose">HttpRequest::getRequestMessage ― リクエストメッセージを取得する</p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="modifier">public</span>
+   <span class="type">HttpMessage</span> <span class="methodname"><b><b>HttpRequest::getRequestMessage</b></b></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+
+
+  <p class="para">
+   送信された HTTP メッセージを取得します。
+  </p>
+  <p class="para">
+   リダイレクトが許可されており、複数のレスポンスを受信した場合は、
+   最後に受信したレスポンスを参照します。このリクエストにおいて
+   その前に送信したリクエストの内容にアクセスするには
+   <b>HttpMessage::getParentMessage()</b>
+   を使用します。
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    内部的なリクエストメッセージは不変であることに注意しましょう。
+    つまり、<b>HttpRequest::getRequestMessage()</b>
+    で受け取るリクエストメッセージは、同一リクエストにおいては
+    常に同じになるということです。これは、リクエストオブジェクトに
+    何か変更を加えた場合でも同じです。
+   <br />
+  </p></blockquote>
+
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   送信されたリクエストを表す HttpMessage オブジェクトを返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 errors">
+  <h3 class="title">エラー / 例外</h3>
+  <p class="para">
+   HttpMalformedHeadersException、HttpEncodingException をスローします。
+  </p>
+ </div>
+
+
+
+ 
+
+
+ 
+
+
+ 
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.HttpRequest-getRawResponseMessage.html">HttpRequest::getRawResponseMessage</a></div>
+ <div class="next" style="float: right;"><a href="function.HttpRequest-getResponseBody.html">HttpRequest::getResponseBody</a></div>
+ <div class="up"><a href="ref.http.html">http</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>インターネットドメインまたは Unix ドメインのソケット接続を開く</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.stream-socket-accept.html">stream_socket_accept</a></div>
+ <div class="next" style="float: right;"><a href="function.stream-socket-enable-crypto.html">stream_socket_enable_crypto</a></div>
+ <div class="up"><a href="ref.stream.html">ストリーム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.stream-socket-client" class="refentry">
+   <div class="refnamediv">
+    <h1 class="refname">stream_socket_client</h1>
+    <p class="verinfo">(PHP 5)</p><p class="refpurpose">stream_socket_client ― 
+     インターネットドメインまたは Unix ドメインのソケット接続を開く
+    </p>
+ 
+   </div>
+   <div class="refsect1 u">
+    <h3 class="title">説明</h3>
+     <div class="methodsynopsis">
+      <span class="type">resource</span> <span class="methodname"><b><b>stream_socket_client</b></b></span>
+       ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$remote_socket</tt></span>
+      [, <span class="methodparam"><span class="type">int</span> <tt class="parameter reference">&$errno</tt></span>
+      [, <span class="methodparam"><span class="type">string</span> <tt class="parameter reference">&$errstr</tt></span>
+      [, <span class="methodparam"><span class="type">float</span> <tt class="parameter">$timeout</tt></span>
+      [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$flags</tt></span>
+      [, <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$context</tt></span>
+     ]]]]] )</div>
+
+    <p class="para">
+     <i><tt class="parameter">remote_socket</tt></i>
+ で指定された接続先との、
+     ストリームまたはデータグラム接続を確立します。
+     作成されるソケットのタイプは、<i class="literal">[トランスポート]://[ターゲット]</i>
+     という形式の URL フォーマットによって指定された
+     トランスポートによって決定されます。
+     TCP や UDP といったインターネットドメインのソケット (AF_INET)
+     には、<i><tt class="parameter">remote_socket</tt></i>
+ パラメータの
+     <i class="literal">ターゲット</i> の部分は、ホスト名または IP アドレスと、
+     それに続くコロンで区切られたポート番号から構成されていなければなりません。
+     Unix ドメインのソケットの場合は、<i><tt class="parameter">ターゲット</tt></i>
+
+     の部分は、ファイルシステムにおけるソケットのファイルを指定しなくては
+     いけません。
+
+     省略可能な <i><tt class="parameter">timeout</tt></i>
+ パラメータを使うことで、
+     接続するためのシステムコールにおけるタイムアウトを設定することができます。
+
+     <i><tt class="parameter">flags</tt></i>
+ は、接続設定フラグの任意の組み合わせ
+     を指定できるビットフィールドです。
+     現在、接続設定フラグとして選択できる値は、
+     <b><tt>STREAM_CLIENT_CONNECT</tt></b>（デフォルト）、
+     <b><tt>STREAM_CLIENT_ASYNC_CONNECT</tt></b> と 
+     <b><tt>STREAM_CLIENT_PERSISTENT</tt></b> のみです。
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     <span class="simpara">
+      ソケット上のデータの読み書きに関してタイムアウトを設定する必要がある場合は、
+      <a href="function.stream-set-timeout.html" class="function">stream_set_timeout()</a> を使ってください。
+      <b>stream_socket_client()</b> に渡される
+      <i><tt class="parameter">timeout</tt></i>
+ は、ソケットの接続時にのみ適用されます。
+     </span>
+    </p></blockquote>
+    <blockquote><p><b class="note">注意</b>: 
+     <span class="simpara">
+      パラメータ timeout は、非同期通信を試みている場合には適用されません。
+     </span>
+    </p></blockquote>
+    <p class="para">
+     <b>stream_socket_client()</b> は、
+     <a href="function.fgets.html" class="function">fgets()</a>, <a href="function.fgetss.html" class="function">fgetss()</a>,
+     <a href="function.fwrite.html" class="function">fwrite()</a>, <a href="function.fclose.html" class="function">fclose()</a>,
+     <a href="function.feof.html" class="function">feof()</a> といった、ファイル関数と共に
+     使うことのできるストリームリソースを返します。
+    </p>
+    <p class="para">
+     もし、呼び出しに失敗すると、<b><tt>FALSE</tt></b> を返し、
+     さらに省略可能な <i><tt class="parameter">errno</tt></i>
+ 引数と
+     <i><tt class="parameter">errstr</tt></i>
+ 引数がある場合は、そこに
+     システムレベルの <i class="literal">connect()</i> 関数の実行時に
+     発生したシステムレベルのエラーを表す値を返します。
+     もし、<i><tt class="parameter">errno</tt></i>
+ に返された値が <i class="literal">0</i>
+     で、かつ、 この関数が <b><tt>FALSE</tt></b> を返した時は、
+     <i class="literal">connect()</i> システムコールの前に何らかのエラーが
+     発生したことを示しています。これは、多くの場合、ソケットの初期化
+     に失敗したことで起こります。<i><tt class="parameter">errno</tt></i>
+ と 
+     <i><tt class="parameter">errstr</tt></i>
+ パラメータは常に参照渡しされることに
+     留意してください。
+    </p>
+    <p class="para">
+     環境により、Unix ドメインや接続タイムアウトが利用できない場合があります。
+     有効なトランスポートのリストは、<a href="function.stream-get-transports.html" class="function">stream_get_transports()</a>
+     で取得できます。
+     組み込むのポートの一覧については、<a href="transports.html" class="xref">サポートされるソケットトランスポートのリスト</a> を
+     参照ください。
+    </p>
+    <p class="para">
+     ストリームはデフォルトではブロックモードで開かれますが、
+     <a href="function.stream-set-blocking.html" class="function">stream_set_blocking()</a> を使うことで非ブロックモードに
+     変更することができます。
+     <div class="example">
+      <p><b>Example#1 <b>stream_socket_client()</b> の例</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$fp&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">stream_socket_client</span><span style="color: #007700">(</span><span style="color: #DD0000">"tcp://www.example.com:80"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$errno</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$errstr</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">30</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$fp</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"$errstr&nbsp;($errno)&lt;br&nbsp;/&gt;\n"</span><span style="color: #007700">;<br />}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"GET&nbsp;/&nbsp;HTTP/1.0\r\nHost:&nbsp;www.example.com\r\nAccept:&nbsp;*/*\r\n\r\n"</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;while&nbsp;(!</span><span style="color: #0000BB">feof</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">fgets</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1024</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">fclose</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">);<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+     下記の例は、PHP のスクリプトで、どのようにローカル上で動いている
+     UDP サービスの &quot;daytime&quot; (ポート 13) によって日時の情報を
+     取得できるかを表しています。
+     <div class="example">
+      <p><b>Example#2 UDP 接続を使う</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$fp&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">stream_socket_client</span><span style="color: #007700">(</span><span style="color: #DD0000">"udp://127.0.0.1:13"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$errno</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$errstr</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$fp</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"ERROR:&nbsp;$errno&nbsp;-&nbsp;$errstr&lt;br&nbsp;/&gt;\n"</span><span style="color: #007700">;<br />}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">fread</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">26</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">fclose</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">);<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+     <div class="warning"><b class="warning">警告</b>
+      <p class="simpara">
+        UDP ソケットは、リモートホストに到達できなくても
+        エラーを発生せず、開いているかような状態になることがありす。
+        このエラーは、実際にソケットに対して、読み込みや書き込み動作を
+        行ってみないと判断できません。原因としては、UDP が非接続型の
+        プロトコルであることが挙げられます。つまり、実際にデータを
+        送受信する段階になるまで、OS の側では接続を確立しようとしないという
+        ことです。
+      </p>
+     </div>
+    </p>
+    <blockquote><p><b class="note">注意</b>: <span class="simpara">数値で IPv6 アドレスを指定するときは、
+(例 fe80::1) アドレスを角カッコでくくらなくてはなりません。たとえば、
+<i class="literal">tcp://[fe80::1]:80</i>.</span></p></blockquote>
+    <p class="para">
+     <a href="function.stream-socket-server.html" class="function">stream_socket_server()</a>, 
+     <a href="function.stream-set-blocking.html" class="function">stream_set_blocking()</a>,
+     <a href="function.stream-set-timeout.html" class="function">stream_set_timeout()</a>, 
+     <a href="function.stream-select.html" class="function">stream_select()</a>, 
+     <a href="function.fgets.html" class="function">fgets()</a>,
+     <a href="function.fgetss.html" class="function">fgetss()</a>, <a href="function.fwrite.html" class="function">fwrite()</a>,
+     <a href="function.fclose.html" class="function">fclose()</a>, <a href="function.feof.html" class="function">feof()</a>,
+     <a href="ref.curl.html" class="link">Curl extension</a> も参照ください。
+    </p>
+   </div>
+
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.stream-socket-accept.html">stream_socket_accept</a></div>
+ <div class="next" style="float: right;"><a href="function.stream-socket-enable-crypto.html">stream_socket_enable_crypto</a></div>
+ <div class="up"><a href="ref.stream.html">ストリーム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

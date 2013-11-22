@@ -1,0 +1,20 @@
+#! /bin/sh
+if [ $# -ne 2 ]; then
+cat<<EOF
+Usage: rmall [file name] [path]
+EOF
+exit
+fi
+
+files=`find $2 -type f -name "$1"`
+i=0
+for file in $files
+do
+    echo $file
+    i=$i+1
+done
+if [ $i -eq 0 ]; then
+    echo "No file is found"
+    exit
+fi
+rm -i $files

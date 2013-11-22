@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>フォーマット文字列に基づき入力を処理する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.sprintf.html">sprintf</a></div>
+ <div class="next" style="float: right;"><a href="function.str-getcsv.html">str_getcsv</a></div>
+ <div class="up"><a href="ref.strings.html">Strings</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.sscanf" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">sscanf</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.0.1, PHP 5)</p><p class="refpurpose">sscanf ― フォーマット文字列に基づき入力を処理する</p>
+
+ </div>
+ <div class="refsect1 u">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">mixed</span> <span class="methodname"><b><b>sscanf</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$str</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$format</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$var1</tt></span>
+   [, <span class="methodparam"><span class="type">mixed</span> <tt class="parameter reference">&$...</tt></span>
+  ]] )</div>
+
+  <p class="para">
+   関数 <b>sscanf()</b> は、<a href="function.printf.html" class="function">printf()</a>
+   の入力版です。<b>sscanf()</b> は、文字列
+   <i><tt class="parameter">str</tt></i>
+ を読み込み、これを指定したフォーマット
+   <i><tt class="parameter">format</tt></i>
+ に基づき解釈します。
+   このフォーマットは、<a href="function.sprintf.html" class="function">sprintf()</a>のマニュアルに記述されています。
+   この関数のパラメータが二つだけの場合、処理された値は配列として返されます。
+   それ以外の場合は、もしオプションのパラメータが渡されればこの関数は
+   割り当てられた値の数を返します。オプションのパラメータは
+   参照渡しにする必要があります。
+  </p>
+  <p class="para">
+   フォーマット文字列の中のあらゆる空白文字は、入力文字列の中の
+   空白文字列にマッチします。つまり、フォーマット文字列の中にタブ文字
+   \t が含まれていても、それは入力中の半角スペースにマッチしてしまうと
+   いうことです。
+  </p>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>sscanf()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;シリアル番号を得る<br /></span><span style="color: #007700">list(</span><span style="color: #0000BB">$serial</span><span style="color: #007700">)&nbsp;=&nbsp;</span><span style="color: #0000BB">sscanf</span><span style="color: #007700">(</span><span style="color: #DD0000">"SN/2350001"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"SN/%d"</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">//&nbsp;続いて製造日を得る<br /></span><span style="color: #0000BB">$mandate&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"January&nbsp;01&nbsp;2000"</span><span style="color: #007700">;<br />list(</span><span style="color: #0000BB">$month</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$day</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$year</span><span style="color: #007700">)&nbsp;=&nbsp;</span><span style="color: #0000BB">sscanf</span><span style="color: #007700">(</span><span style="color: #0000BB">$mandate</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"%s&nbsp;%d&nbsp;%d"</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #DD0000">"Item&nbsp;$serial&nbsp;was&nbsp;manufactured&nbsp;on:&nbsp;$year-"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">substr</span><span style="color: #007700">(</span><span style="color: #0000BB">$month</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">)&nbsp;.&nbsp;</span><span style="color: #DD0000">"-$day\n"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+     オプションのパラメータが指定された場合、この関数は、代入された値の
+     数を返します。
+     <div class="example">
+      <p><b>Example#2 <b>sscanf()</b> - オプションパラメータの使用法</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;author&nbsp;情報を取得し、DocBook&nbsp;エントリを生成<br /></span><span style="color: #0000BB">$auth&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"24\tLewis&nbsp;Carroll"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$n&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">sscanf</span><span style="color: #007700">(</span><span style="color: #0000BB">$auth</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"%d\t%s&nbsp;%s"</span><span style="color: #007700">,&nbsp;&amp;</span><span style="color: #0000BB">$id</span><span style="color: #007700">,&nbsp;&amp;</span><span style="color: #0000BB">$first</span><span style="color: #007700">,&nbsp;&amp;</span><span style="color: #0000BB">$last</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #DD0000">"&lt;author&nbsp;id='$id'&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;firstname&gt;$first&lt;/firstname&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;surname&gt;$last&lt;/surname&gt;<br />&amp;lt;/author&amp;gt;\n"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+    <p class="para">
+     <a href="function.fscanf.html" class="function">fscanf()</a>, <a href="function.printf.html" class="function">printf()</a>,
+     <a href="function.sprintf.html" class="function">sprintf()</a> も参照ください。
+    </p>
+   </div>
+
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.sprintf.html">sprintf</a></div>
+ <div class="next" style="float: right;"><a href="function.str-getcsv.html">str_getcsv</a></div>
+ <div class="up"><a href="ref.strings.html">Strings</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

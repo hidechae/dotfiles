@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>型演算子</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="language.operators.html">演算子</a></div>
+ <div class="next" style="float: right;"><a href="language.control-structures.html">制御構造</a></div>
+ <div class="up"><a href="language.operators.html">演算子</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="language.operators.type" class="sect1">
+   <h2 class="title">型演算子</h2>
+   <p class="para">
+    <i class="literal">instanceof</i> を使用して、
+    ある PHP 変数が特定の
+    <a href="language.oop5.basic.html#language.oop5.basic.class" class="link">クラス</a>
+    のオブジェクトのインスタンスであるかどうかを調べます。
+    <div class="example">
+     <p><b>Example#1 クラスでの instanceof の使用法</b></p>
+     <div class="example-contents">
+     <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">MyClass<br /></span><span style="color: #007700">{<br />}<br />class&nbsp;</span><span style="color: #0000BB">NotMyClass<br /></span><span style="color: #007700">{<br />}<br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MyClass</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">instanceof&nbsp;</span><span style="color: #0000BB">MyClass</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">instanceof&nbsp;</span><span style="color: #0000BB">NotMyClass</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+bool(true)
+bool(false)
+</pre></div>
+     </pre></div>
+    </div>
+    <i class="literal">instanceof</i> は、ある変数が
+    特定の親クラスを継承したクラスのオブジェクトのインスタンスであるかどうかを調べることもできます。
+    <div class="example">
+     <p><b>Example#2 継承したクラスでの instanceof の使用法</b></p>
+     <div class="example-contents">
+     <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">ParentClass<br /></span><span style="color: #007700">{<br />}<br />class&nbsp;</span><span style="color: #0000BB">MyClass&nbsp;</span><span style="color: #007700">extends&nbsp;</span><span style="color: #0000BB">ParentClass<br /></span><span style="color: #007700">{<br />}<br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MyClass</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">instanceof&nbsp;</span><span style="color: #0000BB">MyClass</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">instanceof&nbsp;</span><span style="color: #0000BB">ParentClass</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+bool(true)
+bool(true)
+</pre></div>
+     </pre></div>
+    </div>
+    最後に、<i class="literal">instanceof</i>
+    は、ある変数が特定の
+    <a href="language.oop5.interfaces.html" class="link">インターフェイス</a>
+    を実装したクラスのオブジェクトのインスタンスであるかどうかも調べることができます。
+    <div class="example">
+     <p><b>Example#3 クラスでの instanceof の使用法</b></p>
+     <div class="example-contents">
+     <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">interface&nbsp;</span><span style="color: #0000BB">MyInterface<br /></span><span style="color: #007700">{<br />}<br />class&nbsp;</span><span style="color: #0000BB">MyClass&nbsp;</span><span style="color: #007700">implements&nbsp;</span><span style="color: #0000BB">MyInterface<br /></span><span style="color: #007700">{<br />}<br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MyClass</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">instanceof&nbsp;</span><span style="color: #0000BB">MyClass</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">instanceof&nbsp;</span><span style="color: #0000BB">MyInterface</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+bool(true)
+bool(true)
+</pre></div>
+     </pre></div>
+    </div>
+   </p>
+   <p class="para">
+    通常、<i class="literal">instanceof</i> ではリテラルのクラス名を使用しますが、
+    別のオブジェクトや文字列変数を使用することもできます。
+    <div class="example">
+     <p><b>Example#4 変数を用いた instanceof の使用法</b></p>
+     <div class="example-contents">
+     <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">interface&nbsp;</span><span style="color: #0000BB">MyInterface<br /></span><span style="color: #007700">{<br />}<br />class&nbsp;</span><span style="color: #0000BB">MyClass&nbsp;</span><span style="color: #007700">implements&nbsp;</span><span style="color: #0000BB">MyInterface<br /></span><span style="color: #007700">{<br />}<br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MyClass</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$b&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MyClass</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$c&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'MyClass'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$d&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'NotMyClass'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">instanceof&nbsp;</span><span style="color: #0000BB">$b</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;$b&nbsp;MyClass&nbsp;クラスのオブジェクトです<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">instanceof&nbsp;</span><span style="color: #0000BB">$c</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;$c&nbsp;は文字列&nbsp;'MyClass'&nbsp;です<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">instanceof&nbsp;</span><span style="color: #0000BB">$d</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;$d&nbsp;は文字列&nbsp;'NotMyClass'&nbsp;です<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+bool(true)
+bool(true)
+bool(false)
+</pre></div>
+     </pre></div>
+    </div>
+   </p>
+   <p class="para">
+    注意すべき落とし穴があります。PHP 5.1.0 より前のバージョンでは、
+    <i class="literal">instanceof</i> は、クラス名が存在しない場合に
+    <a href="language.oop5.autoload.html" class="link">__autoload()</a> をコールしていました。
+    さらに、クラスが読み込めなかった場合に致命的なエラーが発生していました。
+    この問題の回避策としては、<i class="literal">動的なクラス参照</i>
+    を使用するか、クラス名を含む文字列変数を使用します。
+    <div class="example">
+     <p><b>Example#5 PHP 5.0 における、クラス名検索時の致命的エラーの回避策</b></p>
+     <div class="example-contents">
+     <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$d&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'NotMyClass'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">instanceof&nbsp;</span><span style="color: #0000BB">$d</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;これで、致命的なエラーは発生しません<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+bool(false)
+</pre></div>
+     </pre></div>
+    </div>
+   </p>
+   <p class="simpara">
+    <i class="literal">instanceof</i> 演算子は PHP 5 から使用可能になりました。
+    それ以前には <a href="function.is-a.html" class="function">is_a()</a> が使用されていましたが、
+    現在は <a href="function.is-a.html" class="function">is_a()</a> は推奨されておらず、
+    <i class="literal">instanceof</i> の使用が推奨されています。
+   </p>
+   <p class="para">
+    <a href="function.get-class.html" class="function">get_class()</a> および
+    <a href="function.is-a.html" class="function">is_a()</a> も参照ください。
+   </p>
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="language.operators.html">演算子</a></div>
+ <div class="next" style="float: right;"><a href="language.control-structures.html">制御構造</a></div>
+ <div class="up"><a href="language.operators.html">演算子</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

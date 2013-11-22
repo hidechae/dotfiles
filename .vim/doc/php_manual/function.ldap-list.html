@@ -1,0 +1,313 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>単一階層の検索を行う</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ldap-get-values.html">ldap_get_values</a></div>
+ <div class="next" style="float: right;"><a href="function.ldap-mod-add.html">ldap_mod_add</a></div>
+ <div class="up"><a href="ref.ldap.html">LDAP</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.ldap-list" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ldap_list</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">ldap_list ― 単一階層の検索を行う</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">resource</span> <span class="methodname"><b><b>ldap_list</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$link_identifier</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$base_dn</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$filter</tt></span>
+   [, <span class="methodparam"><span class="type">array</span> <tt class="parameter">$attributes</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$attrsonly</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$sizelimit</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$timelimit</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$deref</tt></span>
+  ]]]]] )</div>
+
+  <p class="para">
+   指定したフィルタ <i><tt class="parameter">filter</tt></i>
+
+   を使用し、スコープ <b><tt>LDAP_SCOPE_ONELEVEL</tt></b>
+   でディレクトリを検索します。
+  </p>
+  <p class="para">
+   <b><tt>LDAP_SCOPE_ONELEVEL</tt></b> は、コール時に指定した
+   <i><tt class="parameter">base_dn</tt></i>
+ の直下の階層から検索した結果のみを返すことを表します
+   (&quot;ls&quot; と入力して、現在の作業ディレクトリのファイル/フォルダ
+   一覧を取得するのと同じようなものです)。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">link_identifier</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <a href="function.ldap-connect.html" class="function">ldap_connect()</a> が返す LDAP リンク ID。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">base_dn</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       ディレクトリのベース DN。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">filter</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">attributes</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       必要な属性を、
+       array(&quot;mail&quot;, &quot;sn&quot;, &quot;cn&quot;) のような通常の PHP 文字列配列で保持します。
+       &quot;dn&quot; は要求された属性の型によらず常に返されることに注意してください。
+      </p>
+      <p class="para">
+       このパラメータを使用すると、デフォルトの動作よりもかなり効率的になります
+       (デフォルトでは、すべての属性とその値を返します)。
+       したがって、これを使用することを推奨します。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">attrsonly</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       属性の型のみを取得したい場合は 1 を設定します。
+       属性の型および値の両方を取得したい場合は 0
+       を設定します (これがデフォルトの挙動です)。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">sizelimit</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       取得するエントリ数の制限を設定します。
+       0 は無制限であることを表します。
+      </p>
+      <blockquote><p><b class="note">注意</b>: 
+       
+        このパラメータは、サーバ側で事前に設定されている
+        sizelimit を上書きすることはできません。それ以下の値を指定することはできます。
+       <br />
+       
+        ディレクトリサーバのホストによっては、
+        事前に設定された数以上のエントリを返さないようになっているものもあります。
+        この場合、サーバでは、それが結果セットのすべてではないことを通知します。
+        このパラメータでエントリ数を制限した場合にも、同じことが起こります。
+       <br />
+      </p></blockquote>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">timelimit</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       検索に要する最大秒数を設定します。
+       これを 0 にすると無制限であることを表します。
+      </p>
+      <blockquote><p><b class="note">注意</b>: 
+       
+        このパラメータは、サーバ側で事前に設定されている
+        timelimit を上書きすることはできません。それ以下の値を指定することはできます。
+       <br />
+      </p></blockquote>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">deref</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       検索時のエイリアスの扱いについて指定します。
+       以下のいずれかとなります。
+       <ul class="itemizedlist">
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>LDAP_DEREF_NEVER</tt></b> - (デフォルト)
+          エイリアスは参照されません。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>LDAP_DEREF_SEARCHING</tt></b> -
+          エイリアスを参照しますが、検索のベースオブジェクト上にいるときは参照しません。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>LDAP_DEREF_FINDING</tt></b> -
+          エイリアスの参照は、ベースオブジェクト上にいて検索中でない場合に行われます。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <b><tt>LDAP_DEREF_ALWAYS</tt></b> - エイリアスを常に参照します。
+         </span>
+        </li>
+       </ul>
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   検索結果 ID を返します。エラーの場合は、<b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">4.0.5</td>
+       <td colspan="1" rowspan="1" align="left">
+        並列検索のサポートが追加されました。詳細は
+        <a href="function.ldap-search.html" class="function">ldap_search()</a> を参照ください。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">4.0.2</td>
+       <td colspan="1" rowspan="1" align="left">
+        <i><tt class="parameter">attrsonly</tt></i>
+、<i><tt class="parameter">sizelimit</tt></i>
+、
+        <i><tt class="parameter">timelimit</tt></i>
+ および <i><tt class="parameter">deref</tt></i>
+
+        が追加されました。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 ある組織の全ての組織単位を一覧表示する</b></p>
+    <div class="example-contents">
+<div class="cdata"><pre>
+// $ds はディレクトリサーバーの有効なリンク ID
+
+$basedn = &quot;o=My Company, c=US&quot;;
+$justthese = array(&quot;ou&quot;);
+
+$sr=ldap_list($ds, $basedn, &quot;ou=*&quot;, $justthese);
+
+$info = ldap_get_entries($ds, $sr);
+
+for ($i=0; $i&lt;$info[&quot;count&quot;]; $i++) {
+    echo $info[$i][&quot;ou&quot;][0] ;
+}
+
+</pre></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.ldap-search.html" class="function">ldap_search()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ldap-get-values.html">ldap_get_values</a></div>
+ <div class="next" style="float: right;"><a href="function.ldap-mod-add.html">ldap_mod_add</a></div>
+ <div class="up"><a href="ref.ldap.html">LDAP</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

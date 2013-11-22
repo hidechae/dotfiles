@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>XBM 画像をブラウザあるいはファイルに出力する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.imagewbmp.html">imagewbmp</a></div>
+ <div class="next" style="float: right;"><a href="function.iptcembed.html">iptcembed</a></div>
+ <div class="up"><a href="ref.image.html">イメージ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.imagexbm" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">imagexbm</h1>
+  <p class="verinfo">(PHP 5)</p><p class="refpurpose">imagexbm ― XBM 画像をブラウザあるいはファイルに出力する</p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>imagexbm</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$image</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$filename</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$foreground</tt></span>
+  ] )</div>
+
+  <p class="para">
+   <a href="function.imagewbmp.html" class="function">imagewbmp()</a> は、指定した
+   <i><tt class="parameter">image</tt></i>
+ を
+   <acronym title="X Bitmap">XBM</acronym> にして出力あるいは保存します。
+  </p>
+ </div>
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+<span class="term"><i><tt class="parameter">
+image</tt></i>
+</span><dd>
+<p class="para"><a href="function.imagecreatetruecolor.html" class="function">imagecreatetruecolor()</a>
+のような画像作成関数が返す画像リソース。</p></dd>
+</dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">filename</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       保存するファイルへのパス。省略したり <b><tt>NULL</tt></b> を設定したりした場合は、
+       生の画像ストリームを直接出力します。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">foreground</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       このパラメータで、
+       前景の色を指定できます。<a href="function.imagecolorallocate.html" class="function">imagecolorallocate()</a> で
+       取得した ID を使用してください。デフォルトの前景色は黒です。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <blockquote><p><b class="note">注意</b>: <span class="simpara">この関数は、PHP がバンドル版の GD ライブラリで
+コンパイルされている場合のみ使用可能です。</span></p></blockquote>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.imagewbmp.html">imagewbmp</a></div>
+ <div class="next" style="float: right;"><a href="function.iptcembed.html">iptcembed</a></div>
+ <div class="up"><a href="ref.image.html">イメージ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

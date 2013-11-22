@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>一つ以上の要素を配列の最後に追加する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.array-product.html">array_product</a></div>
+ <div class="next" style="float: right;"><a href="function.array-rand.html">array_rand</a></div>
+ <div class="up"><a href="ref.array.html">配列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.array-push" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">array_push</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">array_push ― 一つ以上の要素を配列の最後に追加する</p>
+
+ </div>
+ <div class="refsect1 u">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">int</span> <span class="methodname"><b><b>array_push</b></b></span>
+    ( <span class="methodparam"><span class="type">array</span> <tt class="parameter reference">&$array</tt></span>
+   , <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$var</tt></span>
+   [, <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$...</tt></span>
+  ] )</div>
+
+  <p class="para">
+   <b>array_push()</b>は、<i><tt class="parameter">array</tt></i>
+
+   をスタックとして処理し、渡された変数を
+   <i><tt class="parameter">array</tt></i>
+ の最後に加えます。配列
+   <i><tt class="parameter">array</tt></i>
+ の長さは渡された変数の数だけ増加します。
+   各 <i><tt class="parameter">var</tt></i>
+
+   毎に以下を繰り返すことと同じ効果があります。
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$array</span><span style="color: #007700">[]&nbsp;=&nbsp;</span><span style="color: #0000BB">$var</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   各 <i><tt class="parameter">var</tt></i>
+ で繰り返されます。
+  </p>
+  <p class="para">
+   処理後の配列の中の要素の数を返します。
+  </p>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>array_push()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$stack&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #DD0000">"orange"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"banana"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">array_push</span><span style="color: #007700">(</span><span style="color: #0000BB">$stack</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"apple"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"raspberry"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$stack</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+Array
+(
+    [0] =&gt; orange
+    [1] =&gt; banana
+    [2] =&gt; apple
+    [3] =&gt; raspberry
+)
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   <span class="simpara">
+    もし配列にひとつの要素を加えるために
+    <b>array_push()</b> を使用するなら、
+    関数を呼ぶオーバーヘッドがないので、<i class="literal">$array[] = </i>
+    を使用するほうがいいです。
+   </span>
+  </p></blockquote>
+  <blockquote><p><b class="note">注意</b>: 
+   <span class="simpara">
+    最初の引数が配列でない場合、<b>array_push()</b>
+    は警告を発生させます。これは新規配列を生成する場合における
+    <i class="literal">$var[]</i> の動作と異なります。
+   </span>
+  </p></blockquote>
+  <p class="para">
+   <a href="function.array-pop.html" class="function">array_pop()</a>、
+   <a href="function.array-shift.html" class="function">array_shift()</a> および
+   <a href="function.array-unshift.html" class="function">array_unshift()</a> も参照ください。
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.array-product.html">array_product</a></div>
+ <div class="next" style="float: right;"><a href="function.array-rand.html">array_rand</a></div>
+ <div class="up"><a href="ref.array.html">配列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

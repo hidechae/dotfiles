@@ -1,0 +1,259 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>デバッガのプロトコル</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="debugger.html">PHP のデバッグ</a></div>
+ <div class="next" style="float: right;"><a href="configure.html">Configure オプション</a></div>
+ <div class="up"><a href="debugger.html">PHP のデバッグ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="debugger-protocol" class="sect1">
+   <h2 class="title">デバッガのプロトコル</h2>
+   <p class="para">
+    PHP 3 のデバッガのプロトコルは行ベースです。各行には
+    <em class="emphasis">タイプ</em> を持ち、また <em class="emphasis">メッセージ</em>
+    を構成する行もあります。
+    各メッセージはタイプ <i class="literal">start</i>
+    を持つ行で始まり、タイプ <i class="literal">end</i>
+    を持つ行で終わります。
+    PHP 3 は異なったメッセージを持つ行を同時に送ることがあります。
+   </p>
+   <p class="para">
+    A line has this format:
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="cdata"><pre>
+date time host(pid) type: message-data
+</pre></div>
+     </div>
+
+    </div>
+   </p>
+   <p class="para">
+    <dl>
+
+     <dt>
+
+      <span class="term"><span class="replaceable">日付</span></span>
+      <dd>
+
+       <span class="simpara">ISO 8601 フォーマットの日付
+    (<span class="replaceable">yyyy</span>-<span class="replaceable">mm</span>-<span class="replaceable">dd</span>)
+       </span>
+      </dd>
+
+     </dt>
+
+     <dt>
+
+      <span class="term"><span class="replaceable">時刻</span></span>
+      <dd>
+
+       <span class="simpara">マイクロ秒単位の時刻:
+    <span class="replaceable">hh</span>:<span class="replaceable">mm</span>:<span class="replaceable">uuuuuu</span>
+       </span>
+      </dd>
+
+     </dt>
+
+     <dt>
+
+      <span class="term"><span class="replaceable">ホスト名</span></span>
+      <dd>
+
+       <span class="simpara">
+    スクリプト・エラーを生成したホストのDNS名
+    またはIPアドレス。
+       </span>
+      </dd>
+
+     </dt>
+
+     <dt>
+
+      <span class="term"><span class="replaceable">プロセス ID</span></span>
+      <dd>
+
+       <span class="simpara">
+    <span class="replaceable">ホスト</span>において
+    このエラーを生成した PHP 3 スクリプトのプロセス ID
+       </span>
+      </dd>
+
+     </dt>
+
+     <dt>
+
+      <span class="term"><span class="replaceable">タイプ</span></span>
+      <dd>
+
+       <p class="para">
+    行のタイプ。以降に続くデータをどう解釈すべきかを、
+    受信プログラムに知らせます。
+    <table border="5">
+     <caption><b>デバッガの行タイプ</b></caption>
+     <colgroup>
+
+      <thead valign="middle">
+       <tr valign="middle">
+        <th colspan="1">名前</th>
+        <th colspan="1">意味</th>
+       </tr>
+
+      </thead>
+
+      <tbody valign="middle">
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left"><i class="literal">start</i></td> 
+        <td colspan="1" rowspan="1" align="left">
+         デバッガ・メッセージが、
+         ここから始まることを受信プログラムに伝える役割をします。
+         <span class="replaceable">データ</span> の内容は、
+         以下に示すエラーメッセージのタイプです。
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left"><i class="literal">message</i></td>
+        <td colspan="1" rowspan="1" align="left">PHP 3 エラーメッセージ</td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left"><i class="literal">location</i></td>
+        <td colspan="1" rowspan="1" align="left">
+         エラーが発生したファイル名と行番号。最初の
+         <i class="literal">location</i>
+         行は常に最上位レベルの位置が入っています。
+         <span class="replaceable">データ</span>は
+         <i class="literal"><span class="replaceable">ファイル名</span>:
+          <span class="replaceable">行番号</span></i> のようになります。
+         <i class="literal">message</i> の後、および、すべての
+         <i class="literal">function</i> の後の行には常に
+         <i class="literal">location</i> が付きます。
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left"><i class="literal">frames</i></td> 
+        <td colspan="1" rowspan="1" align="left">
+         後に続くスタックダンプの中のフレーム数。もし4フレームあれば、
+         4レベルに渡ってコールされた関数の情報があることになります。
+         &quot;frames&quot; 行がない場合は、ネストの深さは0
+         (エラーはトップレベルで起こった)と仮定されます。
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left"><i class="literal">function</i></td> 
+        <td colspan="1" rowspan="1" align="left">
+         エラーが発生した関数名。関数コール・スタックにおいて、
+         各レベル毎に繰り返されます。
+        </td>
+       </tr>
+
+       <tr valign="middle">
+        <td colspan="1" rowspan="1" align="left"><i class="literal">end</i></td> 
+        <td colspan="1" rowspan="1" align="left">
+         受信プログラムに対して、
+         デバッガのメッセージがここで終わることを知らせます。
+        </td>
+       </tr>
+
+      </tbody>
+     </colgroup>
+
+    </table>
+
+       </p>
+      </dd>
+
+     </dt>
+
+     <dt>
+
+      <span class="term"><span class="replaceable">データ</span></span>
+      <dd>
+
+       <span class="simpara">行データ</span>
+      </dd>
+
+     </dt>
+
+    </dl>
+
+    
+    <table border="5">
+     <caption><b>デバッガのエラータイプ</b></caption>
+     <colgroup>
+
+      <thead valign="middle">
+       <tr valign="middle">
+    <th colspan="1">デバッガ</th>
+    <th colspan="1">PHP 3 内部</th>
+       </tr>
+
+      </thead>
+
+      <tbody valign="middle">
+       <tr valign="middle">
+    <td colspan="1" rowspan="1" align="left"><span class="errortype">警告</span></td>
+    <td colspan="1" rowspan="1" align="left"><span class="errortype">E_WARNING</span></td>
+       </tr>
+
+       <tr valign="middle">
+    <td colspan="1" rowspan="1" align="left"><span class="errortype">エラー</span></td>
+    <td colspan="1" rowspan="1" align="left"><span class="errortype">E_ERROR</span></td>
+       </tr>
+
+       <tr valign="middle">
+    <td colspan="1" rowspan="1" align="left"><span class="errortype">パース</span></td>
+    <td colspan="1" rowspan="1" align="left"><span class="errortype">E_PARSE</span></td>
+       </tr>
+
+       <tr valign="middle">
+    <td colspan="1" rowspan="1" align="left"><span class="errortype">通知</span></td>
+    <td colspan="1" rowspan="1" align="left"><span class="errortype">E_NOTICE</span></td>
+       </tr>
+
+       <tr valign="middle">
+    <td colspan="1" rowspan="1" align="left"><span class="errortype">コア・エラー</span></td>
+    <td colspan="1" rowspan="1" align="left"><span class="errortype">E_CORE_ERROR</span></td>
+       </tr>
+
+       <tr valign="middle">
+    <td colspan="1" rowspan="1" align="left"><span class="errortype">コア警告</span></td>
+    <td colspan="1" rowspan="1" align="left"><span class="errortype">E_CORE_WARNING</span></td>
+       </tr>
+
+       <tr valign="middle">
+    <td colspan="1" rowspan="1" align="left"><span class="errortype">未定義</span></td>
+    <td colspan="1" rowspan="1" align="left">(その他)</td>
+       </tr>
+
+      </tbody>
+     </colgroup>
+
+    </table>
+
+    
+    <div class="example">
+     <p><b>Example#1 デバッガメッセージの例</b></p>
+     <pre class="literallayout">
+1998-04-05 23:27:400966 lucifer.guardian.no(20481) start: notice
+1998-04-05 23:27:400966 lucifer.guardian.no(20481) message: Uninitialized variable
+1998-04-05 23:27:400966 lucifer.guardian.no(20481) location: (<b><tt>NULL</tt></b>):7
+1998-04-05 23:27:400966 lucifer.guardian.no(20481) frames: 1
+1998-04-05 23:27:400966 lucifer.guardian.no(20481) function: display
+1998-04-05 23:27:400966 lucifer.guardian.no(20481) location: /home/ssb/public_html/test.php3:10
+1998-04-05 23:27:400966 lucifer.guardian.no(20481) end: notice
+     </pre>
+    </div>
+  </p>
+ </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="debugger.html">PHP のデバッグ</a></div>
+ <div class="next" style="float: right;"><a href="configure.html">Configure オプション</a></div>
+ <div class="up"><a href="debugger.html">PHP のデバッグ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

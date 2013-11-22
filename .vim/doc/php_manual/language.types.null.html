@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>NULL</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="language.types.resource.html">リソース</a></div>
+ <div class="next" style="float: right;"><a href="language.pseudo-types.html">本ドキュメントにおける疑似的な型および変数</a></div>
+ <div class="up"><a href="language.types.html">型</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="language.types.null" class="sect1">
+   <h2 class="title">NULL</h2>
+
+   <p class="para">
+    特別な <b><tt>NULL</tt></b> 値は、ある変数が値を持たないことを表します。<b><tt>NULL</tt></b>
+    は、<a href="language.types.null.html" class="type NULL">NULL</a> 型の唯一の値です。
+   </p>
+   <blockquote><p><b class="note">注意</b>: 
+    <span class="simpara">
+     NULL 型は、PHP 4 で導入されました。
+    </span>
+   </p></blockquote>
+   <p class="para">
+    変数は、以下の場合に <b><tt>NULL</tt></b> とみなされます。
+    <ul class="itemizedlist">
+     <li class="listitem">
+      <p class="para">
+       定数 <b><tt>NULL</tt></b> が代入されている場合。
+      </p>
+     </li>
+     <li class="listitem">
+      <p class="para">
+       まだ値が何も代入されていない場合。
+      </p>
+     </li>
+     <li class="listitem">
+      <p class="para">
+       <a href="function.unset.html" class="function">unset()</a> されている場合。
+      </p>
+     </li>
+    </ul>
+   </p>
+
+   <div id="language.types.null.syntax" class="sect2">
+    <h3 class="title">構文</h3>
+    <p class="para">
+     <b><tt>NULL</tt></b> 型の値は一つだけで、
+     大文字小文字を区別しないキーワード <b><tt>NULL</tt></b>です。
+     <div class="informalexample">
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$var&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">NULL</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+    <p class="para">
+     <a href="function.is-null.html" class="function">is_null()</a> および <a href="function.unset.html" class="function">unset()</a>
+     も参照ください。
+    </p>
+   </div>
+
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="language.types.resource.html">リソース</a></div>
+ <div class="next" style="float: right;"><a href="language.pseudo-types.html">本ドキュメントにおける疑似的な型および変数</a></div>
+ <div class="up"><a href="language.types.html">型</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>フォントを読み込む</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ps-fill.html">ps_fill</a></div>
+ <div class="next" style="float: right;"><a href="function.ps-get-buffer.html">ps_get_buffer</a></div>
+ <div class="up"><a href="ref.ps.html">PS</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.ps-findfont" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ps_findfont</h1>
+  <p class="verinfo">(PECL ps:1.1.0-1.3.5)</p><p class="refpurpose">ps_findfont ― フォントを読み込む</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">int</span> <span class="methodname"><b><b>ps_findfont</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$psdoc</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$fontname</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$encoding</tt></span>
+   [, <span class="methodparam"><span class="type">bool</span> <tt class="parameter">$embed</tt></span>
+  ] )</div>
+
+  <p class="para">
+    あとで使用するために、フォントを読み込みます。読み込んだフォントを実際に利用するためには、
+    <a href="function.ps-setfont.html" class="function">ps_setfont()</a> で設定しなければなりません。
+    文字の間隔を計算するため、この関数は adobe フォントメトリックファイルを必要とします。
+    ページの内部で読み込まれたフォントは、
+    そのページ内でのみ有効となります。ドキュメント全体で使われるフォントは、
+    最初の <a href="function.ps-begin-page.html" class="function">ps_begin_page()</a> の実行より前に読み込まれなければなりません。
+    ページとページの間で <b>ps_findfont()</b>
+    が呼ばれた場合は、それ以降のページでフォントが有効になります。
+  </p>
+  <p class="para">
+   afm ファイルの名前は、
+   <i><tt class="parameter">fontname</tt></i>
+<i class="literal">.afm</i> でなければなりません。
+   フォントを埋め込む場合は、フォントのアウトラインを含む
+   <i><tt class="parameter">fontname</tt></i>
+<i class="literal">.pfb</i>
+   が存在しなければなりません。
+  </p>
+  <p class="para">
+   最初のページを処理する前に <b>ps_findfont()</b> をコール際、
+   postscript ヘッダが出力されます。ここには、ドキュメント全体に適用される
+   BoundingBox が含まれます。
+   通常は、BoundingBox を設定するのは最初に <a href="function.ps-begin-page.html" class="function">ps_begin_page()</a>
+   がコールされたときで、これは <b>ps_findfont()</b>
+   をコールした後になります。
+   したがって、<b>ps_findfont()</b> のコール時にはまだ
+   BoundingBox が設定されておらず、警告が発生してしまいます。
+   こうなることを避けるため、<b>ps_findfont()</b> をコールする前に
+   <a href="function.ps-set-parameter.html" class="function">ps_set_parameter()</a> をコールし、BoundingBox
+   を設定しておくべきです。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">psdoc</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <a href="function.ps-new.html" class="function">ps_new()</a> が返す、postscript
+       ファイルのリソース ID。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">fontname</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       フォントの名前。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">encoding</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+        <b>ps_findfont()</b> は、<i><tt class="parameter">encoding</tt></i>
+
+        で渡されたファイルを読み込もうと試みます。 エンコーディングファイルは、
+        <strong class="command">dvips(1)</strong> で使われるものと同形式です。
+        そこにはフォントエンコーディングベクタ（現在は利用されていませんが、
+        存在する必要があります）が含まれており、また afm ファイルから
+        生成されたリゲチャのリストを拡張するための拡張リゲチャが含まれています。
+      </p>
+      <p class="para">
+        <i><tt class="parameter">encoding</tt></i>
+ は <b><tt>NULL</tt></b> または空文字列とすることも可能で、
+        その場合はデフォルトエンコーディング（TeXBase1）が用いられます。
+      </p>
+      <p class="para">
+        encoding が <i class="literal">builtin</i> と指定された場合は、
+        エンコード処理は行われずにフォント固有のエンコーディングがそのまま用いられます。
+        これは、記号フォントを扱う場合に便利です。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">embed</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       0 より大きい値を設定すると、フォントがドキュメントに埋め込まれます。
+       これを使用するには、フォントのアウトライン (.pfb ファイル) が必要です。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+    成功した場合にフォントの ID を、失敗した場合にゼロを返します。
+    ID は正の数値です。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.ps-begin-page.html" class="function">ps_begin_page()</a></li>
+    <li class="member"><a href="function.ps-setfont.html" class="function">ps_setfont()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ps-fill.html">ps_fill</a></div>
+ <div class="next" style="float: right;"><a href="function.ps-get-buffer.html">ps_get_buffer</a></div>
+ <div class="up"><a href="ref.ps.html">PS</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

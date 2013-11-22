@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>╩╤┐Ї</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="language.types.type-juggling.html">╖┐д╬┴ъ╕▀╩╤┤╣</a></div>
+ <div class="next" style="float: right;"><a href="language.variables.predefined.html">─ъ╡┴║╤д▀д╬╩╤┐Ї</a></div>
+ <div class="up"><a href="langref.html">╕└╕ьеъе╒ебеьеєе╣</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1>╩╤┐Ї</h1>
+<h2>╠▄╝б</h2><ul class="chunklist chunklist_chapter"><li><a href="language.variables.predefined.html">─ъ╡┴║╤д▀д╬╩╤┐Ї</a></li><li><a href="language.variables.scope.html">╩╤┐Їд╬е╣е│б╝е╫</a></li><li><a href="language.variables.variable.html">▓─╩╤╩╤┐Ї</a></li><li><a href="language.variables.external.html">PHPд╬│░╔Їдлдщ═шды╩╤┐Ї</a></li></ul>
+
+  
+  <div id="language.variables.basics" class="sect1">
+   <h2 class="title">┤Ё╦▄┼кд╩╗Ў</h2>
+   
+   <p class="simpara">
+    PHP д╬╩╤┐Їд╧е╔еы╡н╣цд╬╕хд╦╩╤┐Ї╠╛дм┬│дп╖┴╝░д╟╔╜д╡дьд▐д╣бг
+    ╩╤┐Ї╠╛д╧┬ч╩╕╗·╛о╩╕╗·дЄ╢ш╩╠д╖д▐д╣бг
+   </p>
+
+   <p class="para">
+    ╩╤┐Ї╠╛д╧бвPHPд╬┬╛д╬еще┘еыд╚╞▒д╕еыб╝еыд╦╜╛ддд▐д╣бг
+    ═н╕·д╩╩╤┐Ї╠╛д╧╩╕╗·д▐д┐д╧евеєе└б╝е╣е│евдлдщ╗╧д▐дъбв╟д░╒д╬┐Їд╬╩╕╗·бв
+    ┐Ї╗·бвевеєе└б╝е╣е│евдм┬│днд▐д╣бг└╡╡м╔╜╕╜д╦дшдьд╨бвд│дьд╧╝бд╬
+    дшджд╦╔╜╕╜д╣дыд│д╚дмд╟днд▐д╣бг
+    &#039;[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*&#039;
+   </p>
+   
+   <blockquote><p><b class="note">├э░╒</b>: 
+    <span class="simpara">
+     д│д│д╟╕└джд╚д│дэд╬╩╕╗·д╚д╧a-zбвA-Zбв127длдщ255д▐д╟
+     (0x7f-0xff)д╬еве╣енб╝╩╕╗·дЄ░╒╠гд╖д▐д╣бг
+    </span>
+   </p></blockquote>
+
+   <blockquote><p><b class="note">├э░╒</b>: 
+    <span class="simpara">
+     <i class="literal">$this</i> д╧╞├╩╠д╩╩╤┐Їд╟двдъбвд│д│д╦┬х╞■д╣дыд│д╚д╧д╟днд▐д╗дєбг
+    </span>
+   </p></blockquote>
+
+   <div class="tip"><b class="tip">е╥еєе╚</b><p class="simpara">
+<a href="userlandnaming.html" class="xref">ецб╝е╢еье┘еыд╟д╬╠┐╠╛д╬╝ъ░·дн</a> дтд┤═ўд╦д╩дыд╚дшддд╟д╖дчджбг</p></div>
+
+   <p class="para">
+    ╩╤┐Ї┤╪╧вд╬┤╪┐Їд╦┤╪д╣ды╛Ё╩єд╦д─ддд╞д╧бв
+    <a href="ref.var.html" class="link">╩╤┐Ї┤╪┐Їеъе╒ебеьеєе╣</a>
+    дЄ╗▓╛╚дпд└д╡ддбг
+   </p>
+
+   <p class="para">
+    <div class="informalexample">
+     <div class="example-contents"> 
+<div class="phpcode"><code><span style="color: #000000">
+$var&nbsp;=&nbsp;'Bob';<br />$Var&nbsp;=&nbsp;'Joe';<br />echo&nbsp;"$var,&nbsp;$Var";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;"Bob,&nbsp;Joe"дЄ╜╨╬╧д╖д▐д╣бг<br /><br />$4site&nbsp;=&nbsp;'not&nbsp;yet';&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;╠╡╕·бз┐Ї╗·д╟╗╧д▐д├д╞дддыбг<br />$_4site&nbsp;=&nbsp;'not&nbsp;yet';&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;═н╕·бзевеєе└б╝е╣е│евд╟╗╧д▐д├д╞дддыбг<br />$t└yte&nbsp;=&nbsp;'mansikka';&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;═н╕·бз'└'&nbsp;д╧еве╣енб╝е│б╝е╔228д╟д╣бг</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+
+   <p class="para">
+    PHP 3д╟д╧бв╩╤┐Їд╧╛яд╦д╜д╬├═д╦дшдъ┬х╞■д╡дьд╞ддд▐д╖д┐бг
+    д│дьд╧бвд─д▐дъбвдвды╩╤┐Їд╦двды╝░дЄ┬х╞■д╣ды║▌бв╕╡д╬╝░д╬
+    ├═┴┤┬╬дме│е╘б╝д╡дьды┬жд╬╩╤┐Їд╦е│е╘б╝д╡дьдыд╚ддджд│д╚д╟д╣бг
+    д│дьд╧бв╬удид╨бвдвды╩╤┐Їд╬├═дЄ┬╛д╬╩╤┐Їд╦┬х╞■д╖д┐╕хд╟бв
+    д│дьдщд╬╩╤┐Їд╬1д─дЄ╩╤╣╣д╖д╞дт┬╛д╬╩╤┐Їд╦д╧▒╞╢┴дЄ═┐дид╩ддд╚дддж
+    д│д╚дЄ░╒╠гд╖д▐д╣бгд│д╬╝яд╬┬х╞■д╦┤╪д╣дыдшдъ╛▄║┘д╩╛Ё╩єд╦д─ддд╞д╧бв
+    <a href="language.expressions.html" class="link">╝░</a> дЄ╗▓╛╚дпд└д╡ддбг
+   </p>
+   <p class="para">
+    PHP 4░╩╣▀д╟д╧бв╩╤┐Їд╦├═д╬┬х╞■дЄ╣╘дж╩╠д╬╩¤╦бдЄ─є╢бд╖д▐д╣бгд╜дьд╧бв
+    <em class="emphasis">╗▓╛╚д╦дшды┬х╞■</em> д╟д╣бг
+    д│д╬╛ь╣чбв┐╖╡мд╬╩╤┐Їд╧╕╡д╬╩╤┐ЇдЄ╗▓╛╚д╣дыд└д▒д╟д╣бг
+    (╕└дддлдидыд╚бв╕╡д╬╩╤┐Їд╬&quot;еиедеъеве╣дЄ║юды&quot;д▐д┐д╧╕╡д╬╩╤┐ЇдЄ&quot;╗╪д╣&quot;)
+    ┐╖╡мд╬╩╤┐Їд╪д╬┬х╞■д╧бв╕╡д╬╩╤┐Їд╦▒╞╢┴д╖бвд╜д╬╡╒дт╞▒══д╚д╩дъд▐д╣бг
+   </p>
+   <p class="para">
+   ╗▓╛╚д╦дшдъ┬х╞■дЄ╣╘джд╦д╧бв┬х╞■д╣ды╩╤┐Ї(е╜б╝е╣╩╤┐Ї)д╬└ш╞мд╦
+   евеєе╤е╡еєе╔дЄ▓├дид▐д╣бгд┐д╚дид╨бв╝бд╬┤╩├▒д╩е│б╝е╔д╧
+   &#039;My name is Bob&#039;дЄ╞є┼┘╜╨╬╧д╖д▐д╣бг
+
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$foo&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'Bob'</span><span style="color: #007700">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;├═'Bob'дЄ$fooд╦┬х╞■д╣дыбг<br /></span><span style="color: #0000BB">$bar&nbsp;</span><span style="color: #007700">=&nbsp;&amp;</span><span style="color: #0000BB">$foo</span><span style="color: #007700">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;$fooдЄ$barд╦дшдъ╗▓╛╚<br /></span><span style="color: #0000BB">$bar&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"My&nbsp;name&nbsp;is&nbsp;$bar"</span><span style="color: #007700">;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;$barдЄ╩╤╣╣...<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">$bar</span><span style="color: #007700">;<br />echo&nbsp;</span><span style="color: #0000BB">$foo</span><span style="color: #007700">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;$fooдт╩╤╣╣д╡дьдыбг<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+
+   <p class="para">
+    ├э░╒д╣д┘дн╜┼═╫д╩┼└д╚д╖д╞бв╠╛┴░д╬двды╩╤┐Їд╬д▀дм╗▓╛╚д╦дшдъ┬х╞■д╟днды
+    д╚ддджд│д╚дмдвдъд▐д╣бг
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$foo&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">25</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$bar&nbsp;</span><span style="color: #007700">=&nbsp;&amp;</span><span style="color: #0000BB">$foo</span><span style="color: #007700">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;д│дьд╧═н╕·д╩┬х╞■д╟д╣бг<br /></span><span style="color: #0000BB">$bar&nbsp;</span><span style="color: #007700">=&nbsp;&amp;(</span><span style="color: #0000BB">24&nbsp;</span><span style="color: #007700">*&nbsp;</span><span style="color: #0000BB">7</span><span style="color: #007700">);&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;╠╡╕·д╟д╣бг╠╛┴░д╬д╩дд╝░дЄ╗▓╛╚д╖д╞ддд▐д╣бг<br /><br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">test</span><span style="color: #007700">()&nbsp;{<br />&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">25</span><span style="color: #007700">;<br />}<br /><br /></span><span style="color: #0000BB">$bar&nbsp;</span><span style="color: #007700">=&nbsp;&amp;</span><span style="color: #0000BB">test</span><span style="color: #007700">();&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;╠╡╕·бг<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+   
+   
+   <p class="para">
+    PHP д╟д╧╩╤┐ЇдЄ╜щ┤№▓╜д╣ды╔м═╫д╧двдъд▐д╗дєдмбвд╜д╬дшджд╦д╣дыд╬д╧д╚д╞дт
+    дшддд│д╚д╟д╣бг╜щ┤№▓╜д╡дьд╞ддд╩дд╩╤┐Їд╬├═д╧бвд╜д╬╖┐д╬е╟е╒ейеые╚├═
+    - <b><tt>FALSE</tt></b>бве╝еэбв╢їд╬╩╕╗·╬єдвдыддд╧╢їд╬╟█╬єд╚д╩дъд▐д╣бг
+   </p>
+   <p class="para">
+    <div class="example">
+     <p><b>Example#1 ╜щ┤№▓╜д╡дьд╞ддд╩дд╩╤┐Їд╬е╟е╒ейеые╚├═</b></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">echo&nbsp;(</span><span style="color: #0000BB">$unset_bool&nbsp;</span><span style="color: #007700">?&nbsp;</span><span style="color: #DD0000">"true"&nbsp;</span><span style="color: #007700">:&nbsp;</span><span style="color: #DD0000">"false"</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;false<br /></span><span style="color: #0000BB">$unset_int&nbsp;</span><span style="color: #007700">+=&nbsp;</span><span style="color: #0000BB">25</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;0&nbsp;+&nbsp;25&nbsp;=&gt;&nbsp;25<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">$unset_string&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"abc"</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;""&nbsp;.&nbsp;"abc"&nbsp;=&gt;&nbsp;"abc"<br /></span><span style="color: #0000BB">$unset_array</span><span style="color: #007700">[</span><span style="color: #0000BB">3</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #DD0000">"def"</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;array()&nbsp;+&nbsp;array(3&nbsp;=&gt;&nbsp;"def")&nbsp;=&gt;&nbsp;array(3&nbsp;=&gt;&nbsp;"def")<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+   <p class="para">
+    ╜щ┤№▓╜д╡дьд╞ддд╩дд╩╤┐Їд╬е╟е╒ейеые╚├═д╦░═┬╕д╣дыд╚бвд╜д╬е╒ебедеыдЄ
+    include д╖д╞ддды╩╠д╬е╒ебедеыд╟╞▒╠╛д╬╩╤┐Їдм╗╚═╤д╡дьд╞ддд┐╛ь╣чд╩д╔д╦
+    ╠ф┬ъдЄ╡пд│д╖д▐д╣бгд▐д┐бв<a href="ini.core.html#ini.register-globals" class="link">register_globals</a>
+    дм on д╬╛ь╣чд╦д╧╜┼┬чд╩<a href="security.globals.html" class="link">е╗енехеъе╞егеъе╣еп</a>
+    дЄ╩·дидыд│д╚д╦д╩дъд▐д╣бг╜щ┤№▓╜д╡дьд╞ддд╩дд╩╤┐ЇдЄ╗╚═╤д╣дыд╚бв
+    <a href="ref.errorfunc.html#errorfunc.constants.errorlevels.e-notice" class="link">E_NOTICE</a> еье┘еыд╬еиещб╝дм╚п└╕д╖д▐д╣бг
+    д╖длд╖бв╜щ┤№▓╜д╡дьд╞ддд╩дд╟█╬єд╦═╫┴╟дЄ─╔▓├д╣ды╛ь╣чд╧еиещб╝д╦д╧д╩дъд▐д╗дєбг
+    ╩╤┐Їдм╜щ┤№▓╜д╡дьд╞дддыдлд╔дждлд╬╚╜├╟д╦д╧бв<a href="function.isset.html" class="function">isset()</a>
+    дЄ╗╚═╤д╖д▐д╣бг
+   </p>
+  </div>
+  
+  
+  
+  
+
+  
+  
+  
+     
+ </div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="language.types.type-juggling.html">╖┐д╬┴ъ╕▀╩╤┤╣</a></div>
+ <div class="next" style="float: right;"><a href="language.variables.predefined.html">─ъ╡┴║╤д▀д╬╩╤┐Ї</a></div>
+ <div class="up"><a href="langref.html">╕└╕ьеъе╒ебеьеєе╣</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

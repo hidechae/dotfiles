@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>追加のデバッグ出力を有効あるいは無効にする</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.samconnection-send.html">SAMConnection->send()</a></div>
+ <div class="next" style="float: right;"><a href="function.samconnection-subscribe.html">SAMConnection->subscribe()</a></div>
+ <div class="up"><a href="ref.sam.html">SAM</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.samconnection-setDebug" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">SAMConnection::setDebug()</h1>
+  <p class="verinfo">(No version information available, might be only in CVS)</p><p class="refpurpose">SAMConnection::setDebug() ― 
+   追加のデバッグ出力を有効あるいは無効にする
+  </p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <p class="para">
+  &quot;setdebug&quot; メソッドを使用して、追加のデバッグ出力を有効あるいは無効にします。
+  SAM フレームワークは、メソッド/関数
+  エントリや終了トレースデータなどの追加情報を提供します。
+  プロトコル固有の実装についても追加出力として提供します。
+  </p>
+  <div class="classsynopsis">
+   <div class="ooclass"><b class="classname">SAMConnection</b></div>
+   <div class="methodsynopsis">
+    <span class="type">void</span> <span class="methodname"><b><b>send</b></b></span>
+       ( <span class="methodparam"><span class="type">bool</span> <tt class="parameter">$switch</tt></span>
+    )</div>
+
+  </div>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">switch</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+        このパラメータを <b><tt>TRUE</tt></b> にすると、追加のデバッグ出力が行われます。
+        値を <b><tt>FALSE</tt></b> にすると、追加情報の出力を停止します。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 デバッグ出力を有効にする</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$conn</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setdebug</span><span style="color: #007700">(</span><span style="color: #0000BB">TRUE</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#2 デバッグ出力を無効にする</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$conn</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setdebug</span><span style="color: #007700">(</span><span style="color: #0000BB">FALSE</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.samconnection-send.html">SAMConnection->send()</a></div>
+ <div class="next" style="float: right;"><a href="function.samconnection-subscribe.html">SAMConnection->subscribe()</a></div>
+ <div class="up"><a href="ref.sam.html">SAM</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

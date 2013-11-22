@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>指定した値を配列で検索し、見つかった場合に対応するキーを返す</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.array-reverse.html">array_reverse</a></div>
+ <div class="next" style="float: right;"><a href="function.array-shift.html">array_shift</a></div>
+ <div class="up"><a href="ref.array.html">配列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.array-search" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">array_search</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.0.5, PHP 5)</p><p class="refpurpose">array_search ― 
+   指定した値を配列で検索し、見つかった場合に対応するキーを返す
+  </p>
+
+ </div>
+ <div class="refsect1 u">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">mixed</span> <span class="methodname"><b><b>array_search</b></b></span>
+    ( <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$needle</tt></span>
+   , <span class="methodparam"><span class="type">array</span> <tt class="parameter">$haystack</tt></span>
+   [, <span class="methodparam"><span class="type">bool</span> <tt class="parameter">$strict</tt></span>
+  ] )</div>
+
+  <p class="para">
+   <i><tt class="parameter">haystack</tt></i>
+ において
+   <i><tt class="parameter">needle</tt></i>
+ を検索し、
+   配列中に見付かった場合にそのキーを返します。そうでない場合に<b><tt>FALSE</tt></b>を返します。
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    もし <i><tt class="parameter">needle</tt></i>
+ が文字列の場合、
+    大文字小文字を区別して比較が行われます。
+   <br />
+  </p></blockquote>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    PHP 4.2.0 以前では、<b>array_search()</b> は、
+    失敗した場合に <b><tt>FALSE</tt></b> ではなく <b><tt>NULL</tt></b> を返します。
+   <br />
+  </p></blockquote>
+  <p class="para">
+   オプションの3番目のパラメータ <i><tt class="parameter">strict</tt></i>
+ に
+   <b><tt>TRUE</tt></b> が指定された場合、<b>array_search()</b> は
+   <i><tt class="parameter">haystack</tt></i>
+ の中で
+   <i><tt class="parameter">needle</tt></i>
+ の型に一致するかどうかも確認します。
+  </p>
+  <p class="para">
+   もし <i><tt class="parameter">haystack</tt></i>
+ に 1 つ以上の
+   <i><tt class="parameter">needle</tt></i>
+ に見つかった場合、
+   最初にマッチしたキーが返されます。
+   全てのマッチした値に対するキーを返すためには、代わりに
+   <a href="function.array-keys.html" class="function">array_keys()</a> にパラメータ
+   <i><tt class="parameter">search_value</tt></i>
+ を付けて使用してください。
+  </p>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>array_search()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$array&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #0000BB">0&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'blue'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'red'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">2&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'green'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">3&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'red'</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$key&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">array_search</span><span style="color: #007700">(</span><span style="color: #DD0000">'green'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$array</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;$key&nbsp;=&nbsp;2;<br /></span><span style="color: #0000BB">$key&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">array_search</span><span style="color: #007700">(</span><span style="color: #DD0000">'red'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$array</span><span style="color: #007700">);&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;$key&nbsp;=&nbsp;1;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+  <div class="warning"><b class="warning">警告</b><p class="simpara">この関数は論理値
+<b><tt>FALSE</tt></b> を返す可能性がありますが、<b><tt>FALSE</tt></b> として評価される
+<i class="literal">0</i> や &quot;&quot; といった値を返す可能性もあります。
+詳細については <a href="language.types.boolean.html" class="link">論理値</a>の
+セクションを参照してください。この関数の返り値を調べるには
+<a href="language.operators.comparison.html" class="link">===演算子</a> を
+使用してください。</p></div>
+  <p class="para">
+   <a href="function.array-keys.html" class="function">array_keys()</a>、
+   <a href="function.array-values.html" class="function">array_values()</a>、
+   <a href="function.array-key-exists.html" class="function">array_key_exists()</a> および
+   <a href="function.in-array.html" class="function">in_array()</a> も参照ください。
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.array-reverse.html">array_reverse</a></div>
+ <div class="next" style="float: right;"><a href="function.array-shift.html">array_shift</a></div>
+ <div class="up"><a href="ref.array.html">配列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

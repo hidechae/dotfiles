@@ -1,0 +1,218 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>文字列変換のエラーモードを設定する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.unicode-semantics.html">unicode_semantics</a></div>
+ <div class="next" style="float: right;"><a href="function.unicode-set-subst-char.html">unicode_set_subst_char</a></div>
+ <div class="up"><a href="ref.unicode.html">Unicode</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.unicode-set-error-mode" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">unicode_set_error_mode</h1>
+  <p class="verinfo">(No version information available, might be only in CVS)</p><p class="refpurpose">unicode_set_error_mode ― 文字列変換のエラーモードを設定する</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>unicode_set_error_mode</b></b></span>
+    ( <span class="methodparam"><span class="type">int</span> <tt class="parameter">$direction</tt></span>
+   , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$mode</tt></span>
+   )</div>
+
+  <p class="para">
+   この関数は、異なるエンコーディング間での文字列変換の際のエラーモードを設定します。
+   文字列変換の際にエラーが発生する原因としては、
+   不正な文字があらわれた場合や
+   変換先のエンコードで表現できない文字があらわれた場合などがあります。
+   デフォルトでは、エラーが発生したらその場で変換を停止します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">direction</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">direction</tt></i>
+ は、
+       そのエラーモードを適用する変換方向を設定します。
+       <b><tt>FROM_UNICODE</tt></b> か <b><tt>TO_UNICODE</tt></b>
+       のいずれかです。
+       <b><tt>FROM_UNICODE</tt></b> の場合は <span class="type unicode">unicode</span>
+       文字列からバイナリ文字列への変換、<b><tt>TO_UNICODE</tt></b>
+       の場合はバイナリ文字列から <span class="type unicode">unicode</span> 文字列への変換を表します。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">mode</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">mode</tt></i>
+ は、変換エラーの処理方法を指定します。
+       以下の定数のいずれかとなります。
+      </p>
+      <p class="para">
+       <table border="5">
+        <caption><b>使用できるモード</b></caption>
+        <colgroup>
+
+         <thead valign="middle">
+          <tr valign="middle">
+           <th colspan="1">モード</th>
+           <th colspan="1">説明</th>
+          </tr>
+
+         </thead>
+
+         <tbody valign="middle">
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">
+            <b><tt>U_CONV_ERROR_STOP</tt></b>
+           </td>
+           <td colspan="1" rowspan="1" align="left">
+            変換を停止する。これがデフォルトのモードです。
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">
+            <b><tt>U_CONV_ERROR_SKIP</tt></b>
+           </td>
+           <td colspan="1" rowspan="1" align="left">
+            その文字を読み飛ばす。
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">
+            <b><tt>U_CONV_ERROR_SUBST</tt></b>
+           </td>
+           <td colspan="1" rowspan="1" align="left">
+            特定の文字で置き換える。置き換える文字は
+            <a href="function.unicode-set-subst-char.html" class="function">unicode_set_subst_char()</a> で設定します。
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">
+            <b><tt>U_CONV_ERROR_ESCAPE_UNICODE</tt></b>
+           </td>
+           <td colspan="1" rowspan="1" align="left">
+            間違ったバイト列をエスケープし、Unicode 形式の文字フォーマットで表す。
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">
+            <b><tt>U_CONV_ERROR_ESCAPE_ICU</tt></b>
+           </td>
+           <td colspan="1" rowspan="1" align="left">
+            間違ったバイト列をエスケープし、ICU 形式の文字フォーマットで表す。
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">
+            <b><tt>U_CONV_ERROR_ESCAPE_JAVA</tt></b>
+           </td>
+           <td colspan="1" rowspan="1" align="left">
+            間違ったバイト列をエスケープし、Java 形式の文字フォーマットで表す。
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">
+            <b><tt>U_CONV_ERROR_ESCAPE_XML_DEC</tt></b>
+           </td>
+           <td colspan="1" rowspan="1" align="left">
+            間違ったバイト列をエスケープし、十進形式の文字フォーマットで表す。
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">
+            <b><tt>U_CONV_ERROR_ESCAPE_XML_HEX</tt></b>
+           </td>
+           <td colspan="1" rowspan="1" align="left">
+            間違ったバイト列をエスケープし、十六進形式の文字フォーマットで表す。
+           </td>
+          </tr>
+
+         </tbody>
+        </colgroup>
+
+       </table>
+
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 errors">
+  <h3 class="title">エラー / 例外</h3>
+  <p class="para">
+   direction あるいは mode に不正な値を指定した場合は
+   <b><tt>E_WARNING</tt></b> レベルのエラーが発生します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <div class="warning"><b class="warning">警告</b><p class="simpara">この関数は、
+<em class="emphasis">実験的</em> なものです。この関数の動作・
+名前・その他ドキュメントに書かれている事項は、予告なく、将来的な PHP
+のリリースにおいて変更される可能性があります。
+この関数は自己責任で使用してください。</p></div>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.unicode-encode.html" class="function">unicode_encode()</a></li>
+    <li class="member"><a href="function.unicode-decode.html" class="function">unicode_decode()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.unicode-semantics.html">unicode_semantics</a></div>
+ <div class="next" style="float: right;"><a href="function.unicode-set-subst-char.html">unicode_set_subst_char</a></div>
+ <div class="up"><a href="ref.unicode.html">Unicode</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

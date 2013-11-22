@@ -1,0 +1,524 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>作業コピー内のファイルやディレクトリの状態を返す</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.svn-repos-recover.html">svn_repos_recover</a></div>
+ <div class="next" style="float: right;"><a href="function.svn-update.html">svn_update</a></div>
+ <div class="up"><a href="ref.svn.html">SVN</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.svn-status" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">svn_status</h1>
+  <p class="verinfo">(PECL svn:0.1-0.2)</p><p class="refpurpose">svn_status ― 作業コピー内のファイルやディレクトリの状態を返す</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">array</span> <span class="methodname"><b><b>svn_status</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$path</tt></span>
+   [, <span class="methodparam"><span class="type">bool</span> <tt class="parameter">$recursive</tt></span>
+   [, <span class="methodparam"><span class="type">bool</span> <tt class="parameter">$get_all</tt></span>
+   [, <span class="methodparam"><span class="type">bool</span> <tt class="parameter">$update</tt></span>
+   [, <span class="methodparam"><span class="type">bool</span> <tt class="parameter">$no_ignore</tt></span>
+  ]]]] )</div>
+
+  <p class="para">
+   作業コピー内のファイルやディレクトリの状態を返します。
+   作業コピー内での変更、追加、削除などの内容を取得できます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">path</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       状態を取得したいファイルやディレクトリへのパス。
+      </p>
+      <blockquote><p><b class="note">注意</b>: <span class="simpara">相対パスは、PHP バイナリが存在するディレクトリを基準として解決されます。呼び出しもとのスクリプトの作業ディレクトリを基準とするには、<a href="function.realpath.html" class="function">realpath()</a> あるいは dirname(__FILE__) を使用してください。</span></p></blockquote>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">recursive</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       再帰的にディレクトリを掘り下げていくかどうか。
+       デフォルトは <b><tt>TRUE</tt></b> です。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">get_all</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       変更の有無にかかわらずすべてのアイテムの状態を返すかどうか。
+       デフォルトは <b><tt>FALSE</tt></b> です。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">update</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       作業コピーが最新の状態かどうかにかかわらず、
+       常にサーバからの情報を返すようにするかどうか (通常の変更チェックのほかに、
+       サーバ上の最新を反映していないアイテムについての情報も追加します)。
+       デフォルトは <b><tt>FALSE</tt></b> です。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">no_ignore</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       新しいファイルを探すときに svn:ignore プロパティを無視するかどうか。
+       デフォルトは <b><tt>FALSE</tt></b> です。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   数値添字の配列を返します。配列の各要素は連想配列となり、
+   リポジトリ内のアイテムの状態の詳細を表します。
+  </p>
+  <div class="example-contents"><pre>
+<div class="cdata"><pre>
+Array (
+    [0] =&gt; Array (
+        // アイテムの情報
+    )
+    [1] =&gt; ...
+)
+</pre></div>
+  </pre></div>
+  <p class="para">
+   アイテムの情報を表す連想配列には、以下のようなキーが含まれます。
+  </p>
+  <dl>
+
+   <dt>
+
+    <span class="term"><var class="varname">path</var></span>
+     <dd>
+
+      <span class="simpara">
+       このエントリのファイル/ディレクトリの、ローカルファイルシステム上でのパスを表す文字列。
+      </span>
+     </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term"><var class="varname">text_status</var></span>
+     <dd>
+
+      <span class="simpara">
+       アイテムのテキストの状態。とりうる値については <a href="ref.svn.html#svn.constants.status" class="link">状態に関する定数</a> を参照ください。
+      </span>
+     </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term"><var class="varname">repos_text_status</var></span>
+     <dd>
+
+      <span class="simpara">
+       リポジトリ内でのアイテムのテキストの状態。正確な値となるのは、
+       <i><tt class="parameter">update</tt></i>
+ が <b><tt>TRUE</tt></b> の場合のみです。
+       とりうる値については <a href="ref.svn.html#svn.constants.status" class="link">状態に関する定数</a> を参照ください。
+      </span>
+     </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term"><var class="varname">prop_status</var></span>
+     <dd>
+
+      <span class="simpara">
+       アイテムのプロパティの状態。とりうる値については <a href="ref.svn.html#svn.constants.status" class="link">状態に関する定数</a> を参照ください。
+      </span>
+     </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term"><var class="varname">repos_prop_status</var></span>
+     <dd>
+
+      <span class="simpara">
+       リポジトリ内でのアイテムのプロパティの状態。正確な値となるのは、
+       <i><tt class="parameter">update</tt></i>
+ が <b><tt>TRUE</tt></b> の場合のみです。
+       とりうる値については <a href="ref.svn.html#svn.constants.status" class="link">状態に関する定数</a> を参照ください。
+      </span>
+     </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term"><var class="varname">locked</var></span>
+     <dd>
+
+      <span class="simpara">
+       そのアイテムがロックされているかどうか
+       (設定されるのは <b><tt>TRUE</tt></b> の場合のみです)。
+      </span>
+     </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term"><var class="varname">copied</var></span>
+     <dd>
+
+      <span class="simpara">
+       アイテムがコピーされている (追加予約されている) かどうか。
+       (設定されるのは <b><tt>TRUE</tt></b> の場合のみです)。
+      </span>
+     </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term"><var class="varname">switched</var></span>
+     <dd>
+
+      <span class="simpara">
+       switch コマンドによる変更がされているかどうか。
+       (設定されるのは <b><tt>TRUE</tt></b> の場合のみです)。
+      </span>
+     </dd>
+
+   </dt>
+
+  </dl>
+
+  <p class="para">
+   これらのキーは、バージョン管理されているアイテムについてのみ設定されます。
+  </p>
+  <dl>
+
+   <dt>
+
+    <span class="term"><var class="varname">name</var></span>
+     <dd>
+
+      <span class="simpara">
+       リポジトリ内でのアイテムのベース名。
+      </span>
+     </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term"><var class="varname">url</var></span>
+     <dd>
+
+      <span class="simpara">
+       リポジトリ内でのアイテムの URL。
+      </span>
+     </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term"><var class="varname">repos</var></span>
+     <dd>
+
+      <span class="simpara">
+       リポジトリのベース URL。
+      </span>
+     </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term"><var class="varname">revision</var></span>
+     <dd>
+
+      <span class="simpara">
+       作業コピーのリビジョン番号。
+      </span>
+     </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term"><var class="varname">kind</var></span>
+     <dd>
+
+      <span class="simpara">
+       アイテムの形式。file あるいは directory のいずれか。とりうる値については <a href="ref.svn.html#svn.constants.type" class="link">型に関する定数</a> を参照ください。
+      </span>
+     </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term"><var class="varname">schedule</var></span>
+     <dd>
+
+      <span class="simpara">
+       そのアイテムに予定されているアクション (追加や削除など)。
+       これらのマジックナンバーに対応する定数は定義されていません。
+       定数を定義するには、次のようにします。
+      </span>
+       <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">if&nbsp;(!</span><span style="color: #0000BB">defined</span><span style="color: #007700">(</span><span style="color: #DD0000">'svn_wc_schedule_normal'</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">define</span><span style="color: #007700">(</span><span style="color: #DD0000">'svn_wc_schedule_normal'</span><span style="color: #007700">,&nbsp;&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;何も予定なし<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">define</span><span style="color: #007700">(</span><span style="color: #DD0000">'svn_wc_schedule_add'</span><span style="color: #007700">,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;追加予定<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">define</span><span style="color: #007700">(</span><span style="color: #DD0000">'svn_wc_schedule_delete'</span><span style="color: #007700">,&nbsp;&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;削除予定<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">define</span><span style="color: #007700">(</span><span style="color: #DD0000">'svn_wc_schedule_replace'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;追加・削除予定<br /></span><span style="color: #007700">}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term"><var class="varname">deleted</var></span>
+     <dd>
+
+      <span class="simpara">
+       アイテムが削除されたが、親リビジョンのログがあるかどうか
+       (設定されるのは <b><tt>TRUE</tt></b> の場合のみです)。
+      </span>
+     </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term"><var class="varname">absent</var></span>
+     <dd>
+
+      <span class="simpara">
+       アイテムが行方不明、
+       つまり Subversion 上では存在するはずなのに実際には存在しない
+       という状態になっているかどうか
+       (設定されるのは <b><tt>TRUE</tt></b> の場合のみです)。
+      </span>
+     </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term"><var class="varname">incomplete</var></span>
+     <dd>
+
+      <span class="simpara">
+       Whether or not the entries file for a directory is incomplete.
+       (設定されるのは <b><tt>TRUE</tt></b> の場合のみです)。
+      </span>
+     </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term"><var class="varname">cmt_date</var></span>
+     <dd>
+
+      <span class="simpara">
+       最終更新日時を表す Unix タイムスタンプ
+       (<i><tt class="parameter">update</tt></i>
+ の影響を受けません)。
+      </span>
+     </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term"><var class="varname">cmt_rev</var></span>
+     <dd>
+
+      <span class="simpara">
+       最終更新時のリビジョン
+       (<i><tt class="parameter">update</tt></i>
+ の影響を受けません)。
+      </span>
+     </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term"><var class="varname">cmt_author</var></span>
+     <dd>
+
+      <span class="simpara">
+       最終更新者
+       (<i><tt class="parameter">update</tt></i>
+ の影響を受けません)。
+      </span>
+     </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term"><var class="varname">prop_time</var></span>
+     <dd>
+
+      <span class="simpara">
+       プロパティの最新日時を表す Unix タイムスタンプ。
+      </span>
+     </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term"><var class="varname">text_time</var></span>
+     <dd>
+
+      <span class="simpara">
+       テキストの最新日時を表す Unix タイムスタンプ。
+      </span>
+     </dd>
+
+   </dt>
+
+   
+  </dl>
+
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <div class="warning"><b class="warning">警告</b><p class="simpara">この関数は、
+<em class="emphasis">実験的</em> なものです。この関数の動作・
+名前・その他ドキュメントに書かれている事項は、予告なく、将来的な PHP
+のリリースにおいて変更される可能性があります。
+この関数は自己責任で使用してください。</p></div>
+ </div>
+
+
+ 
+
+ 
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 基本的な使用例</b></p>
+    <div class="example-contents"><p>
+     これは、この関数の基本的な使用法を示すものです。
+    </p></div>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">svn_status</span><span style="color: #007700">(</span><span style="color: #0000BB">realpath</span><span style="color: #007700">(</span><span style="color: #DD0000">'wc'</span><span style="color: #007700">)));<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は、たとえば
+以下のようになります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+Array (
+    [0] =&gt; Array (
+        [path] =&gt; /home/bob/wc/sandwich.txt
+        [text_status] =&gt; 8 // アイテムが修正されました
+        [repos_text_status] =&gt; 1 // 情報が存在しません。update を使用します
+        [prop_status] =&gt; 3 // 変更されていません
+        [repos_prop_status] =&gt; 1 // 情報が存在しません。update を使用します
+        [name] =&gt; sandwich.txt
+        [url] =&gt; http://www.example.com/svnroot/deli/trunk/sandwich.txt
+        [repos] =&gt; http://www.example.com/svnroot/
+        [revision] =&gt; 123
+        [kind] =&gt; 1 // ファイル
+        [schedule] =&gt; 0 // 特別なアクションは予定されていません
+        [cmt_date] =&gt; 1165543135
+        [cmt_rev] =&gt; 120
+        [cmt_author] =&gt; Alice
+        [prop_time] =&gt; 1180201728
+        [text_time] =&gt; 1180201729
+    )
+)
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.svn-update.html" class="function">svn_update()</a></li>
+    <li class="member"><a href="function.svn-log.html" class="function">svn_log()</a></li>
+    <li class="member"><a href="http://svnbook.red-bean.com/en/1.2/svn.ref.svn.c.status.html" class="link external">&raquo; SVN ドキュメントの svn status</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.svn-repos-recover.html">svn_repos_recover</a></div>
+ <div class="next" style="float: right;"><a href="function.svn-update.html">svn_update</a></div>
+ <div class="up"><a href="ref.svn.html">SVN</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

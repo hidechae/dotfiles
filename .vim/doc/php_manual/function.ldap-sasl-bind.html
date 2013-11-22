@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>SASL を使用して LDAP ディレクトリにバインドする</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ldap-rename.html">ldap_rename</a></div>
+ <div class="next" style="float: right;"><a href="function.ldap-search.html">ldap_search</a></div>
+ <div class="up"><a href="ref.ldap.html">LDAP</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.ldap-sasl-bind" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ldap_sasl_bind</h1>
+  <p class="verinfo">(PHP 5)</p><p class="refpurpose">ldap_sasl_bind ― SASL を使用して LDAP ディレクトリにバインドする</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>ldap_sasl_bind</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$link</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$binddn</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$password</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$sasl_mech</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$sasl_realm</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$sasl_authz_id</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$props</tt></span>
+  ]]]]]] )</div>
+
+  <div class="warning"><b class="warning">警告</b><p class="simpara">この関数は、
+現在のところ詳細な情報はありません。引数のリストのみが
+記述されています。</p></div>
+ </div>
+
+ 
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <blockquote><p><b class="note">注意</b>: 
+   <b>前提条件</b>
+   <span class="simpara">
+    <b>ldap_sasl_bind()</b> は <acronym title="Simple Authentication and Security Layer">SASL</acronym>
+    サポート（<var class="filename">sasl.h</var>）を必要とします。PHP の
+    configure 時に <i class="literal">--with-ldap-sasl</i> が指定されている
+    ことを確認してください。さもないとこの関数は未定義となります。
+   </span>
+  </p></blockquote>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ldap-rename.html">ldap_rename</a></div>
+ <div class="next" style="float: right;"><a href="function.ldap-search.html">ldap_search</a></div>
+ <div class="up"><a href="ref.ldap.html">LDAP</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

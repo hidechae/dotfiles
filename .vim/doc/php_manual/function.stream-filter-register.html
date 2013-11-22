@@ -1,0 +1,244 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>php_user_filter に由来するクラスとして実装されたストリームフィルタを登録する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.stream-filter-prepend.html">stream_filter_prepend</a></div>
+ <div class="next" style="float: right;"><a href="function.stream-filter-remove.html">stream_filter_remove</a></div>
+ <div class="up"><a href="ref.stream.html">ストリーム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.stream-filter-register" class="refentry">
+   <div class="refnamediv">
+    <h1 class="refname">stream_filter_register</h1>
+    <p class="verinfo">(PHP 5)</p><p class="refpurpose">stream_filter_register ― <i class="literal">php_user_filter</i> に由来するクラスとして実装されたストリームフィルタを登録する</p>
+
+   </div>
+   <div class="refsect1 u">
+    <h3 class="title">説明</h3>
+    <div class="methodsynopsis">
+     <span class="type">bool</span> <span class="methodname"><b><b>stream_filter_register</b></b></span>
+      ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$filtername</tt></span>
+     , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$classname</tt></span>
+     )</div>
+
+    <p class="para">
+     <b>stream_filter_register()</b> は、<a href="function.fopen.html" class="function">fopen()</a>
+     や <a href="function.fread.html" class="function">fread()</a> などのファイルシステムの関数で利用可能な
+     登録されているどの種類のストリームとも一緒に使うことのできる
+     カスタムフィルタを登録します。
+    </p>
+    <p class="para">
+     フィルタを実装するには、まず、<i class="literal">php_user_fitler</i>
+     を継承したクラスの下記に示されたメンバ関数を実装しなくてはなりません。
+     <i class="literal">PHP</i> は、書き込みまたは読み出し操作を
+     カスタムフィルタの付加されたストリームに対して行う際に、まず
+     データをそのフィルタに(そして、付加されている他のすべてのフィルタにも)
+     渡し、指示どおりストリームのデータが変更されるようにします。
+     下記のメソッドは、説明の通り実装されなくてはなりません。
+     さもないと、定義されていない動作をします。
+    </p>
+    <p class="para">
+     <b>stream_filter_register()</b> は、
+     指定された <i><tt class="parameter">filtername</tt></i>
+ がすでに定義されている場合、
+     <b><tt>FALSE</tt></b> を返します。
+    </p>
+
+    <div class="methodsynopsis">
+     <span class="type">int</span> <span class="methodname"><b><b>filter</b></b></span>
+      ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$in</tt></span>
+     , <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$out</tt></span>
+     , <span class="methodparam"><span class="type">int</span> <tt class="parameter reference">&$consumed</tt></span>
+     , <span class="methodparam"><span class="type">bool</span> <tt class="parameter">$closing</tt></span>
+     )</div>
+
+    <p class="para">
+     このメソッドは、<a href="function.fread.html" class="function">fread()</a> や <a href="function.fwrite.html" class="function">fwrite()</a>
+     等の関数で、付加されたストリームからデータを読み出す時や、
+     データを書き込む度に呼ばれます。
+     <i><tt class="parameter">in</tt></i>
+ は、<i class="literal">bucket brigade</i> (バケツリレー隊) を指すポインタです。
+     これは、フィルタの対象になるデータを含む複数の
+     <i class="literal">bucket</i> オブジェクトから成っています。
+     <i><tt class="parameter">out</tt></i>
+ は、変更されたバケットが渡される
+     <i class="literal">bucket brigade</i> を示しています。
+     <i><tt class="parameter">consumed</tt></i>
+ は、参照渡しされるパラメータで、
+     ここには、フィルタが実際に処理した元のデータ長を加算します。
+     ほとんどの場合、それぞれのバケットについて、そのデータ長
+     <i class="literal">$bucket-&gt;datalen</i> を、そこに足すだけでいいはずです。
+     もし、ストリームが閉じようとしている時 (すなわちフィルタ連鎖の中の
+     最後の呼び出しだった時)、<i><tt class="parameter">closing</tt></i>
+ パラメータは、
+     <b><tt>TRUE</tt></b> となります。 <span class="methodname"><b><b>filter</b></b></span> パラメータは、さらに、
+     次の値のいずれかを終了時に返さなくてはなりません。
+
+     <table class="informaltable">
+      <colgroup>
+
+       <thead valign="middle">
+        <tr valign="middle">
+         <th colspan="1">返り値</th>
+         <th colspan="1">意味</th>
+        </tr>
+
+       </thead>
+
+       <tbody valign="middle">
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left"><b><tt>PSFS_PASS_ON</tt></b></td>
+         <td colspan="1" rowspan="1" align="left">
+          フィルタの処理に成功し、
+          <i><tt class="parameter">out</tt></i>
+ の <i class="literal">バケツ隊</i> に
+          データが渡されました。
+         </td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left"><b><tt>PSFS_FEED_ME</tt></b></td>
+         <td colspan="1" rowspan="1" align="left">
+          フィルタの処理に成功しましたが、データは返されませんでした。
+          ストリームあるいは前段階のフィルタに対してさらにデータが必要です。
+         </td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left"><b><tt>PSFS_ERR_FATAL</tt></b>（デフォルト）</td>
+         <td colspan="1" rowspan="1" align="left">
+          フィルタにおいて復旧不可能なエラーが発生し、処理を継続できません。
+         </td>
+        </tr>
+
+       </tbody>
+      </colgroup>
+
+     </table>
+    </p>
+
+    <div class="methodsynopsis">
+     <span class="type">bool</span> <span class="methodname"><b><b>onCreate</b></b></span>
+      ( <span class="methodparam">void</span>
+     )</div>
+
+    <p class="simpara">
+     このメソッドは、フィルタクラスのオブジェクトが実体化されるときに
+     呼び出されます。もし、フィルタがバッファなど他のリソースを
+     確保したり初期化しなくてはならない場合、この時点で行ってください。
+     このメソッドを実装する際には、失敗した場合に <b><tt>FALSE</tt></b>、成功した場合に
+     <b><tt>TRUE</tt></b> を返すようにする必要があります。
+    </p>
+    <p class="simpara">
+     最初にフィルタのインスタンスが作成され
+     <i class="literal">yourfilter-&gt;onCreate()</i> がコールされた際に、
+     以下の表に示す多くのプロパティが使用可能となります。
+    </p>
+    <p class="para">
+     <table class="informaltable">
+      <colgroup>
+
+       <thead valign="middle">
+        <tr valign="middle">
+         <th colspan="1">プロパティ</th>
+         <th colspan="1">内容</th>
+        </tr>
+
+       </thead>
+
+       <tbody valign="middle">
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left"><i class="literal">FilterClass-&gt;filtername</i></td>
+         <td colspan="1" rowspan="1" align="left">インスタンス化されたフィルタの名前を含む文字列。
+                フィルタは複数の名前で登録されりワイルドカードで登録されたり
+                することもありえます。どのような名前が使われたのか、
+                このプロパティで調べます。</td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left"><i class="literal">FilterClass-&gt;params</i></td>
+         <td colspan="1" rowspan="1" align="left"><a href="function.stream-filter-append.html" class="function">stream_filter_append()</a> あるいは
+                <a href="function.stream-filter-prepend.html" class="function">stream_filter_prepend()</a>
+                に渡すパラメータの内容。</td> 
+        </tr>
+
+       </tbody>
+      </colgroup>
+
+     </table>
+    </p>
+
+    <div class="methodsynopsis">
+     <span class="type">void</span> <span class="methodname"><b><b>onClose</b></b></span>
+      ( <span class="methodparam">void</span>
+     )</div>
+
+    <p class="para">
+     このメソッドは、フィルタが遮断される時(通常、ストリームが遮断
+     される時)に呼ばれます。また、同様に、<i class="literal">flush</i> メソッドが
+     呼ばれた<em class="emphasis">後に</em>呼び出されます。
+     もし、何らかのリソースが、<i class="literal">oncreate</i> メソッドの
+     呼び出し時に確保されていた場合は、それらをここで廃棄するのが
+     いいでしょう。
+    </p>
+
+    <p class="para">
+     下記の例は、読み込まれたり書き出されたりするデータに含まれるすべての英文字を
+     大文字化する <i class="literal">strtoupper</i> ストリームを実装し、<i class="literal">foo-bar.txt</i>
+     ストリームに適用するものです。
+
+     <div class="example"> 
+      <p><b>Example#1 foo-bar.txt ストリームの文字を大文字化するフィルタ</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">/*&nbsp;フィルタクラスを定義する&nbsp;*/<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">strtoupper_filter&nbsp;</span><span style="color: #007700">extends&nbsp;</span><span style="color: #0000BB">php_user_filter&nbsp;</span><span style="color: #007700">{<br />&nbsp;&nbsp;function&nbsp;</span><span style="color: #0000BB">filter</span><span style="color: #007700">(</span><span style="color: #0000BB">$in</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$out</span><span style="color: #007700">,&nbsp;&amp;</span><span style="color: #0000BB">$consumed</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$closing</span><span style="color: #007700">)&nbsp;<br />&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;while&nbsp;(</span><span style="color: #0000BB">$bucket&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">stream_bucket_make_writeable</span><span style="color: #007700">(</span><span style="color: #0000BB">$in</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$bucket</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">data&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">strtoupper</span><span style="color: #007700">(</span><span style="color: #0000BB">$bucket</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">data</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$consumed&nbsp;</span><span style="color: #007700">+=&nbsp;</span><span style="color: #0000BB">$bucket</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">datalen</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">stream_bucket_append</span><span style="color: #007700">(</span><span style="color: #0000BB">$out</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$bucket</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">PSFS_PASS_ON</span><span style="color: #007700">;<br />&nbsp;&nbsp;}<br />}&nbsp;<br /><br /></span><span style="color: #FF8000">/*&nbsp;PHP&nbsp;にフィルタを登録する&nbsp;*/<br /></span><span style="color: #0000BB">stream_filter_register</span><span style="color: #007700">(</span><span style="color: #DD0000">"strtoupper"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"strtoupper_filter"</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;or&nbsp;die(</span><span style="color: #DD0000">"Failed&nbsp;to&nbsp;register&nbsp;filter"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$fp&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">"foo-bar.txt"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"w"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;フィルタを開いたストリームに付加する&nbsp;*/<br /></span><span style="color: #0000BB">stream_filter_append</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"strtoupper"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"Line1\n"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"Word&nbsp;-&nbsp;2\n"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"Easy&nbsp;As&nbsp;123\n"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">fclose</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;ファイルを読み出し出力する。&nbsp;<br />&nbsp;*/<br /></span><span style="color: #0000BB">readfile</span><span style="color: #007700">(</span><span style="color: #DD0000">"foo-bar.txt"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+      <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+      <div class="example-contents"><pre>
+<div class="cdata"><pre>
+LINE1
+WORD - 2
+EASY AS 123
+</pre></div>
+      </pre></div>
+     </div>
+    </p>
+    <p class="para">
+     <div class="example">
+      <p><b>Example#2 複数のフィルタ名に対応する一般的なフィルタクラスを登録する</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">/*&nbsp;フィルタクラスを定義する&nbsp;*/<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">string_filter&nbsp;</span><span style="color: #007700">extends&nbsp;</span><span style="color: #0000BB">php_user_filter&nbsp;</span><span style="color: #007700">{<br />&nbsp;&nbsp;var&nbsp;</span><span style="color: #0000BB">$mode</span><span style="color: #007700">;<br /><br />&nbsp;&nbsp;function&nbsp;</span><span style="color: #0000BB">filter</span><span style="color: #007700">(</span><span style="color: #0000BB">$in</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$out</span><span style="color: #007700">,&nbsp;&amp;</span><span style="color: #0000BB">$consumed</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$closing</span><span style="color: #007700">)&nbsp;<br />&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;while&nbsp;(</span><span style="color: #0000BB">$bucket&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">stream_bucket_make_writeable</span><span style="color: #007700">(</span><span style="color: #0000BB">$in</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">mode&nbsp;</span><span style="color: #007700">==&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$bucket</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">data&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">strtoupper</span><span style="color: #007700">(</span><span style="color: #0000BB">$bucket</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">data</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;elseif&nbsp;(</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">mode&nbsp;</span><span style="color: #007700">==&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$bucket</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">data&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">strtolower</span><span style="color: #007700">(</span><span style="color: #0000BB">$bucket</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">data</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$consumed&nbsp;</span><span style="color: #007700">+=&nbsp;</span><span style="color: #0000BB">$bucket</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">datalen</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">stream_bucket_append</span><span style="color: #007700">(</span><span style="color: #0000BB">$out</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$bucket</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">PSFS_PASS_ON</span><span style="color: #007700">;<br />&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;function&nbsp;</span><span style="color: #0000BB">onCreate</span><span style="color: #007700">()&nbsp;<br />&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">filtername&nbsp;</span><span style="color: #007700">==&nbsp;</span><span style="color: #DD0000">'str.toupper'</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">mode&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;elseif&nbsp;(</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">filtername&nbsp;</span><span style="color: #007700">==&nbsp;</span><span style="color: #DD0000">'str.tolower'</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">mode&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;その他の&nbsp;str.*&nbsp;フィルタが問い合わせられた場合は<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;失敗を報告し、PHP&nbsp;が検索を続けられるようにする&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">return&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">;<br />&nbsp;&nbsp;}<br />}&nbsp;<br /><br /></span><span style="color: #FF8000">/*&nbsp;PHP&nbsp;にフィルタを登録する&nbsp;*/<br /></span><span style="color: #0000BB">stream_filter_register</span><span style="color: #007700">(</span><span style="color: #DD0000">"str.*"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"string_filter"</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;or&nbsp;die(</span><span style="color: #DD0000">"Failed&nbsp;to&nbsp;register&nbsp;filter"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$fp&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">"foo-bar.txt"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"w"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;フィルタを開いたストリームに付加する<br />&nbsp;&nbsp;&nbsp;ここで&nbsp;str.tolower&nbsp;をバインドすることも可能&nbsp;*/<br /></span><span style="color: #0000BB">stream_filter_append</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"str.toupper"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"Line1\n"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"Word&nbsp;-&nbsp;2\n"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"Easy&nbsp;As&nbsp;123\n"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">fclose</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;ファイルを読み出し出力する。&nbsp;<br />&nbsp;*/<br /></span><span style="color: #0000BB">readfile</span><span style="color: #007700">(</span><span style="color: #DD0000">"foo-bar.txt"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+      <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+      <div class="example-contents"><pre>
+<div class="cdata"><pre>
+LINE1
+WORD - 2
+EASY AS 123
+</pre></div>
+      </pre></div>
+     </div>
+    </p>
+
+    <p class="simpara">
+     <a href="function.stream-wrapper-register.html" class="function">stream_wrapper_register()</a>、
+     <a href="function.stream-filter-prepend.html" class="function">stream_filter_prepend()</a> および
+     <a href="function.stream-filter-append.html" class="function">stream_filter_append()</a> も参照ください。
+    </p>
+   </div>
+
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.stream-filter-prepend.html">stream_filter_prepend</a></div>
+ <div class="next" style="float: right;"><a href="function.stream-filter-remove.html">stream_filter_remove</a></div>
+ <div class="up"><a href="ref.stream.html">ストリーム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

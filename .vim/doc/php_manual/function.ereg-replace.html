@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>正規表現による置換を行う</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.regex.html">POSIX Regex</a></div>
+ <div class="next" style="float: right;"><a href="function.ereg.html">ereg</a></div>
+ <div class="up"><a href="ref.regex.html">POSIX Regex</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.ereg-replace" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ereg_replace</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">ereg_replace ― 正規表現による置換を行う</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">string</span> <span class="methodname"><b><b>ereg_replace</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$pattern</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$replacement</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$string</tt></span>
+   )</div>
+
+  <p class="simpara">
+   この関数は、<i><tt class="parameter">string</tt></i>
+ をスキャンして
+   <i><tt class="parameter">pattern</tt></i>
+ にマッチするものを探し、
+   マッチしたテキストを <i><tt class="parameter">replacement</tt></i>
+
+   で置換します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">pattern</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       POSIX 拡張正規表現。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">replacement</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">pattern</tt></i>
+ の中に括弧でくくられた部分
+       文字列が含まれている場合、<i><tt class="parameter">replacement</tt></i>
+
+       の中に <i class="literal">\\<span class="replaceable">数字</span></i>
+       のような部分文字列を埋め込むこともできます。この部分は、
+       「数字」番目の括弧でくくられた部分文字列にマッチする文字列に
+       置き換えられます。また、<i class="literal">\\0</i> は文字列全体を
+       指します。9 個までの部分文字列を使うことができます。括弧は
+       入れ子になっていても構いません。この場合は開き括弧 &#039;(&#039; が
+       最大 9 個まで使用可能です。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">string</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       入力文字列。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   置換後の文字列を返します。
+   マッチしなかった場合は、元の文字列をそのまま返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   たとえば、以下のサンプルコードは &quot;This was a test&quot; と 3 回表示します。
+  </p>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>ereg_replace()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$string&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"This&nbsp;is&nbsp;a&nbsp;test"</span><span style="color: #007700">;<br />echo&nbsp;</span><span style="color: #0000BB">str_replace</span><span style="color: #007700">(</span><span style="color: #DD0000">"&nbsp;is"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"&nbsp;was"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$string</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #0000BB">ereg_replace</span><span style="color: #007700">(</span><span style="color: #DD0000">"(&nbsp;)is"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"\\1was"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$string</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #0000BB">ereg_replace</span><span style="color: #007700">(</span><span style="color: #DD0000">"((&nbsp;)is)"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"\\2was"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$string</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+  <p class="para">
+   注意しなければならないのは、パラメータ
+   <i><tt class="parameter">replacement</tt></i>
+ として整数値を使用する場合、
+   期待する結果が得られない可能性があるということです。これは、
+   <b>ereg_replace()</b> がその数値を文字コードとして
+   解釈し使用するためです。例えば、次のようになります。
+  </p>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#2 <b>ereg_replace()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/*&nbsp;これは期待した通りに動作しません。&nbsp;*/<br /></span><span style="color: #0000BB">$num&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">4</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$string&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"This&nbsp;string&nbsp;has&nbsp;four&nbsp;words."</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$string&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">ereg_replace</span><span style="color: #007700">(</span><span style="color: #DD0000">'four'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$num</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$string</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #0000BB">$string</span><span style="color: #007700">;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;出力:&nbsp;'This&nbsp;string&nbsp;has&nbsp;&nbsp;&nbsp;words.'&nbsp;*/<br /><br />/*&nbsp;これは動作します。&nbsp;*/<br /></span><span style="color: #0000BB">$num&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'4'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$string&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"This&nbsp;string&nbsp;has&nbsp;four&nbsp;words."</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$string&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">ereg_replace</span><span style="color: #007700">(</span><span style="color: #DD0000">'four'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$num</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$string</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #0000BB">$string</span><span style="color: #007700">;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;出力:&nbsp;'This&nbsp;string&nbsp;has&nbsp;4&nbsp;words.'&nbsp;*/<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#3 URL をリンクで置換する</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$text&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">ereg_replace</span><span style="color: #007700">(</span><span style="color: #DD0000">"[[:alpha:]]+://[^&lt;&gt;[:space:]]+[[:alnum:]/]"</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"&lt;a&nbsp;href=\"\\0\"&gt;\\0&lt;/a&gt;"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$text</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <div class="tip"><b class="tip">ヒント</b>
+   <p class="para">
+    Perl 互換の正規表現構文を使用する
+    <a href="function.preg-replace.html" class="function">preg_replace()</a> のほうが、
+    <b>ereg_replace()</b> より高速に動作することがよくあります。
+   </p>
+  </div>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.ereg.html" class="function">ereg()</a></li>
+    <li class="member"><a href="function.eregi.html" class="function">eregi()</a></li>
+    <li class="member"><a href="function.eregi-replace.html" class="function">eregi_replace()</a></li>
+    <li class="member"><a href="function.str-replace.html" class="function">str_replace()</a></li>
+    <li class="member"><a href="function.preg-match.html" class="function">preg_match()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.regex.html">POSIX Regex</a></div>
+ <div class="next" style="float: right;"><a href="function.ereg.html">ereg</a></div>
+ <div class="up"><a href="ref.regex.html">POSIX Regex</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>定義済のクラスの名前を配列として返す</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.get-class.html">get_class</a></div>
+ <div class="next" style="float: right;"><a href="function.get-declared-interfaces.html">get_declared_interfaces</a></div>
+ <div class="up"><a href="ref.classobj.html">クラス/オブジェクト</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.get-declared-classes" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">get_declared_classes</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">get_declared_classes ― 定義済のクラスの名前を配列として返す</p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">array</span> <span class="methodname"><b><b>get_declared_classes</b></b></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+
+  <p class="para">
+   Gets the declared classes.
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   この関数は、現在のスクリプトで宣言されたクラスの名前の配列を返します。
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    PHP 4.0.1では、この他に次の3つのクラスが配列の先頭に返されます。
+    : <var class="varname">stdClass</var>
+    (<var class="filename">Zend/zend.c</var>で定義)、
+    <var class="varname">OverloadedTestClass</var>
+    (<var class="filename">ext/standard/basic_functions.c</var>で定義)、
+    <var class="varname">Directory</var>
+    (<var class="filename">ext/standard/dir.c</var>で定義)
+   <br />
+   
+    PHP にコンパイル時に組み込んだり読み込んだりしている拡張モジュールの種類に依存して、
+    他のクラスも存在する可能性があることにも注意してください。
+    これは、自作のクラスをそれらと同じ名前で作成できないことを意味します。
+    定義済みのクラスについては付録の<a href="reserved.classes.html" class="link">定義済みクラス</a>のセクションを
+    参照してください。
+   <br />
+  </p></blockquote>
+ </div>
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>get_declared_classes()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">get_declared_classes</span><span style="color: #007700">());<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は、たとえば
+以下のようになります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+Array
+(
+    [0] =&gt; stdClass
+    [1] =&gt; __PHP_Incomplete_Class
+    [2] =&gt; Directory
+)
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+ </div>
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.class-exists.html" class="function">class_exists()</a></li>
+    <li class="member"><a href="function.get-declared-interfaces.html" class="function">get_declared_interfaces()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.get-class.html">get_class</a></div>
+ <div class="next" style="float: right;"><a href="function.get-declared-interfaces.html">get_declared_interfaces</a></div>
+ <div class="up"><a href="ref.classobj.html">クラス/オブジェクト</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

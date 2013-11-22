@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>ファイルを phar から削除する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.phar-offsetset.html">Phar::offsetSet</a></div>
+ <div class="next" style="float: right;"><a href="function.phar-setmetadata.html">Phar->setMetaData</a></div>
+ <div class="up"><a href="ref.phar.html">phar</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.phar-offsetunset" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">Phar::offsetUnset</h1>
+  <p class="verinfo">(PECL phar:1.0.0-1.2.1)</p><p class="refpurpose">Phar::offsetUnset ― ファイルを phar から削除する</p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>Phar::offsetUnset</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$offset</tt></span>
+   )</div>
+
+
+  <p class="para">
+   これは <span class="interfacename">ArrayAccess</span> インターフェイスを実装したものです。
+   これにより、Phar アーカイブの内容に対して配列形式の角括弧を使用したアクセスが可能となります。
+   offsetUnset を使用して、既存のファイルを削除します。また
+   <a href="function.unset.html" class="function">unset()</a> が使用された場合にもコールされます。
+  </p>
+
+ </div>
+
+ 
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">offset</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       Phar 内で変更するファイル名 (相対パス)。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 errors">
+  <h3 class="title">エラー / 例外</h3>
+  <p class="para">
+   <a href="ref.phar.html#ini.phar.readonly" class="link">phar.readonly</a> に <i class="literal">1</i> の場合は
+   <span class="classname">BadMethodCallException</span> がスローされます。
+   Phar の変更ができるのは phar.readonly が <i class="literal">0</i>
+   のときだけだからです。Phar アーカイブへの変更をディスクに書き込む際に何らかのエラーが発生すると
+   <span class="classname">PharException</span> がスローされます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>Phar::offsetUnset()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$p&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Phar</span><span style="color: #007700">(</span><span style="color: #DD0000">'/path/to/my.phar'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'my.phar'</span><span style="color: #007700">);<br />try&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;offsetUnset&nbsp;がコールされ、file.txt&nbsp;が&nbsp;my.phar&nbsp;から削除されます<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">unset(</span><span style="color: #0000BB">$p</span><span style="color: #007700">[</span><span style="color: #DD0000">'file.txt'</span><span style="color: #007700">]);<br />}&nbsp;catch&nbsp;(</span><span style="color: #0000BB">Exception&nbsp;$e</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">'file.txt&nbsp;を削除できません:&nbsp;'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$e</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.phar-offsetexists.html" class="link"><a href="function.phar-offsetexists.html" class="function">Phar::offsetExists()</a></a></li>
+    <li class="member"><a href="function.phar-offsetget.html" class="link"><a href="function.phar-offsetget.html" class="function">Phar::offsetGet()</a></a></li>
+    <li class="member"><a href="function.phar-offsetset.html" class="link"><a href="function.phar-offsetset.html" class="function">Phar::offsetSet()</a></a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.phar-offsetset.html">Phar::offsetSet</a></div>
+ <div class="next" style="float: right;"><a href="function.phar-setmetadata.html">Phar->setMetaData</a></div>
+ <div class="up"><a href="ref.phar.html">phar</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

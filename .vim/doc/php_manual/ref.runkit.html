@@ -1,0 +1,629 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>runkit 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.rpm-version.html">rpm_version</a></div>
+ <div class="next" style="float: right;"><a href="runkit.sandbox.html">Runkit_Sandbox</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+ <h1 class="title">runkit 関数</h1>
+ 
+
+ <div class="partintro">
+  <div id="runkit.intro" class="section">
+   <h2 class="title">導入</h2>
+   <p class="simpara">
+    runkit 拡張モジュールは、定数・ユーザ定義関数
+    およびユーザ定義クラスを変更する機能を提供します。
+    また、独自のスーパーグローバル変数を定義したり、
+    サンドボックスを利用した組み込みインタプリタの作成も可能です。
+   </p>
+
+   <p class="simpara">
+    この PECL 拡張モジュールをインストールする方法は、
+マニュアルの <a href="install.pecl.html" class="link">
+PECL 拡張モジュールのインストール</a> という章にあります。
+新規リリース・ダウンロード・ソースファイル・管理者情報・CHANGELOG
+といった関連する情報については、次の場所にあります。
+    <a href="http://pecl.php.net/package/runkit" class="link external">&raquo; http://pecl.php.net/package/runkit</a>.
+   </p>
+
+   <p class="simpara">
+    このパッケージには、
+    <a href="http://pecl.php.net/package/classkit" class="link external">&raquo; classkit</a> パッケージに
+    取って代わるための機能も含まれています。
+    ./configure に <i class="literal">--enable-runkit=classkit</i> オプションを
+    つけてコンパイルすると、classkit と互換性のある関数や定数を提供します。
+   </p>
+  </div>
+
+  <div id="runkit.installation" class="section">
+   <h2 class="title">インストール手順</h2>
+   <p class="para">
+    この <a href="http://pecl.php.net/" class="link external">&raquo; PECL</a> 拡張
+モジュールは PHP にバンドルされていません。
+   </p>
+   <p class="para">
+    この PECL 拡張モジュールをインストールする方法は、
+マニュアルの <a href="install.pecl.html" class="link">
+PECL 拡張モジュールのインストール</a> という章にあります。
+新規リリース・ダウンロード・ソースファイル・管理者情報・CHANGELOG
+といった関連する情報については、次の場所にあります。
+    <a href="http://pecl.php.net/package/runkit" class="link external">&raquo; http://pecl.php.net/package/runkit</a>.
+   </p>
+   <p class="para">
+    
+この <acronym title="PHP Extension and Application Repository">PECL</acronym> 拡張モジュール用の <acronym title="Dynamic Link Library">DLL</acronym>
+は、<a href="http://www.php.net/downloads.php" class="link external">&raquo; PHP のダウンロード</a> ページあるいは
+<a href="http://pecl4win.php.net/" class="link external">&raquo; http://pecl4win.php.net/</a> からダウンロードできます。
+   </p>
+  </div>
+
+  <div id="runkit.requirements" class="section">
+   <h2 class="title">要件</h2>
+   <p class="simpara">
+    <em class="emphasis">定数・関数・クラス・メソッドの変更機能</em>
+    は、PHP 4 と PHP 5 の全てのリリースで動作します。特別な動作条件はありません。
+   </p>
+
+   <p class="simpara">
+    <em class="emphasis">独自のスーパーグローバル変数</em> は PHP 4.2.0
+    以降で使用可能です。
+   </p>
+
+   <p class="simpara">
+    <em class="emphasis">サンドボックスのサポート</em> は、PHP 5.1.0 以降か
+    あるいは TSRM パッチを適用した PHP 5.0.0 が必要です。
+    どのバージョンの PHP を使用しているかにかかわらず、コンパイル時に
+    <i class="literal">--enable-maintainer-zts</i> オプションが必要です。
+    詳しい情報は、runkit パッケージに含まれる <i class="literal">README</i>
+    ファイルを参照ください。
+   </p>
+  </div>
+
+  
+
+
+<div id="runkit.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+  <table border="5">
+   <caption><b>Runkit 設定オプション</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">名前</th>
+      <th colspan="1">デフォルト</th>
+      <th colspan="1">変更の可否</th>
+      <th colspan="1">変更履歴</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">runkit.superglobal</td>
+      <td colspan="1" rowspan="1" align="left">&quot;&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_PERDIR</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">runkit.internal_override</td>
+      <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+  PHP_INI_* 定数の詳細および定義については
+<a href="ini.html" class="xref">php.ini ディレクティブ</a> を参照してください。
+</p>
+
+<p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+
+<p class="para">
+ <dl>
+
+  <dt id="ini.runkit.superglobal">
+   <span class="term">
+    <i><tt class="parameter">runkit.superglobal</tt></i>
+
+    <a href="language.types.string.html" class="type string">string</a>
+   </span>
+   <dd>
+
+    <span class="simpara">
+     スーパーグローバルとして扱いたい変数名の、カンマ区切りのリストです。
+     これはシステム全体で利用する php.ini ファイルで指定すべきですが、SAPI
+     の設定によってはディレクトリローカルで指定しても動作するかもしれません。
+    </span>
+    <div class="example">
+     <p><b>Example#1 php.ini で runkit.superglobal=_FOO,_BAR と指定した場合のスーパーグローバル</b></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">show_values</span><span style="color: #007700">()&nbsp;{<br />&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Foo&nbsp;is&nbsp;$_FOO\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Bar&nbsp;is&nbsp;$_BAR\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Baz&nbsp;is&nbsp;$_BAZ\n"</span><span style="color: #007700">;<br />}<br /><br /></span><span style="color: #0000BB">$_FOO&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'foo'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$_BAR&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'bar'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$_BAZ&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'baz'</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">/*&nbsp;foo&nbsp;と&nbsp;bar&nbsp;が表示されるが、baz&nbsp;は表示されない&nbsp;*/<br /></span><span style="color: #0000BB">show_values</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </dd>
+
+  </dt>
+
+  
+ </dl>
+
+ </p>
+</div>
+
+
+
+
+  
+
+
+
+
+<div id="runkit.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <dl>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>RUNKIT_IMPORT_FUNCTIONS</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.runkit-import.html" class="function">runkit_import()</a> のフラグで、
+     指定したファイルから通常の関数が読み込まれることを示します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>RUNKIT_IMPORT_CLASS_METHODS</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.runkit-import.html" class="function">runkit_import()</a> のフラグで、
+     指定したファイルからクラスメソッドが読み込まれることを示します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>RUNKIT_IMPORT_CLASS_CONSTS</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.runkit-import.html" class="function">runkit_import()</a> のフラグで、
+     指定したファイルからクラス定数が読み込まれることを示します。
+     このフラグは PHP のバージョン 5.1.0 以降でしか意味を持たないことに
+     注意しましょう。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>RUNKIT_IMPORT_CLASS_PROPS</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.runkit-import.html" class="function">runkit_import()</a> のフラグで、
+     指定したファイルからクラスのプロパティが読み込まれることを示します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>RUNKIT_IMPORT_CLASSES</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.runkit-import.html" class="function">runkit_import()</a> のフラグで、
+     <b><tt>RUNKIT_IMPORT_CLASS_*</tt></b> の論理和（ビット OR）を表します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>RUNKIT_IMPORT_OVERRIDE</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.runkit-import.html" class="function">runkit_import()</a> のフラグで、
+     すでに存在する関数・メソッド・定数
+     あるいはプロパティが指定された場合に新しい定義で置き換えることを
+     示します。このフラグが設定されていない場合、すでに定義されている
+     内容については新しい定義は無視されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>RUNKIT_ACC_PUBLIC</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.runkit-method-add.html" class="function">runkit_method_add()</a> の PHP5 限定のフラグです。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>RUNKIT_ACC_PROTECTED</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.runkit-method-add.html" class="function">runkit_method_add()</a> の PHP5 限定のフラグです。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>RUNKIT_ACC_PRIVATE</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.runkit-method-add.html" class="function">runkit_method_add()</a> の PHP5 限定のフラグです。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>CLASSKIT_ACC_PUBLIC</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.runkit-method-add.html" class="function">runkit_method_add()</a> の PHP5 限定のフラグです。
+     classkit 互換モードが有効になっている場合にのみ定義されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>CLASSKIT_ACC_PROTECTED</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.runkit-method-add.html" class="function">runkit_method_add()</a> の PHP5 限定のフラグです。
+     classkit 互換モードが有効になっている場合にのみ定義されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>CLASSKIT_ACC_PRIVATE</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.runkit-method-add.html" class="function">runkit_method_add()</a> の PHP5 限定のフラグです。
+     classkit 互換モードが有効になっている場合にのみ定義されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>CLASSKIT_AGGREGATE_OVERRIDE</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     <a href="function.classkit-import.html" class="function">classkit_import()</a> の PHP5 限定のフラグです。
+     classkit 互換モードが有効になっている場合にのみ定義されます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>RUNKIT_VERSION</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     runkit パッケージのバージョンを定義します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>CLASSKIT_VERSION</tt></b>
+     (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     runkit パッケージのバージョンを定義します。
+     classkit 互換モードが有効になっている場合にのみ定義されます。
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+</div>
+
+
+
+
+ </div>
+
+ 
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="runkit.sandbox.html">Runkit_Sandbox</a> ― Runkit Sandbox クラス -- PHP バーチャルマシン</li><li><a href="runkit.sandbox-parent.html">Runkit_Sandbox_Parent</a> ― Runkit 反サンドボックス（Anti-Sandbox）クラス</li><li><a href="function.runkit-class-adopt.html">runkit_class_adopt</a> ― ある基底クラスを、他のクラスを継承させたクラスに変換する。親クラスの適切なメソッドを追加する</li><li><a href="function.runkit-class-emancipate.html">runkit_class_emancipate</a> ― 他のクラスを継承しているクラスから継承関係を解消し、
+   親クラスから継承しているメソッドを取り除く</li><li><a href="function.runkit-constant-add.html">runkit_constant_add</a> ― define() と同じだが、クラス定数も指定可能</li><li><a href="function.runkit-constant-redefine.html">runkit_constant_redefine</a> ― 定義済みの定数を再定義する</li><li><a href="function.runkit-constant-remove.html">runkit_constant_remove</a> ― 定義済みの定数を削除する</li><li><a href="function.runkit-function-add.html">runkit_function_add</a> ― 新しい関数を追加する。create_function と同じ</li><li><a href="function.runkit-function-copy.html">runkit_function_copy</a> ― 関数を別の名前でコピーする</li><li><a href="function.runkit-function-redefine.html">runkit_function_redefine</a> ― 関数の定義を新しい実装で置き換える</li><li><a href="function.runkit-function-remove.html">runkit_function_remove</a> ― 関数の定義を削除する</li><li><a href="function.runkit-function-rename.html">runkit_function_rename</a> ― 関数名を変更する</li><li><a href="function.runkit-import.html">runkit_import</a> ― ファイルから関数やクラスの定義を読み込み、必要に応じて書き換える</li><li><a href="function.runkit-lint-file.html">runkit_lint_file</a> ― 指定したファイルの PHP 文法をチェックする</li><li><a href="function.runkit-lint.html">runkit_lint</a> ― 指定した PHP コードの文法をチェックする</li><li><a href="function.runkit-method-add.html">runkit_method_add</a> ― 指定したクラスに、新しいメソッドを動的に追加する</li><li><a href="function.runkit-method-copy.html">runkit_method_copy</a> ― あるクラスのメソッドを別のクラスにコピーする</li><li><a href="function.runkit-method-redefine.html">runkit_method_redefine</a> ― 指定されたメソッドのコードを動的に変更する</li><li><a href="function.runkit-method-remove.html">runkit_method_remove</a> ― 指定したメソッドを動的に削除する</li><li><a href="function.runkit-method-rename.html">runkit_method_rename</a> ― 指定したメソッドの名前を動的に変更する</li><li><a href="function.runkit-return-value-used.html">runkit_return_value_used</a> ― 現在の関数の返り値が使用されているかどうかを調べる</li><li><a href="function.runkit-sandbox-output-handler.html">runkit_sandbox_output_handler</a> ― サンドボックス内での出力を取得・処理するための関数を指定する</li><li><a href="function.runkit-superglobals.html">runkit_superglobals</a> ― 登録されているスーパーグローバルを、数値添字の配列で返す</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.rpm-version.html">rpm_version</a></div>
+ <div class="next" style="float: right;"><a href="runkit.sandbox.html">Runkit_Sandbox</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

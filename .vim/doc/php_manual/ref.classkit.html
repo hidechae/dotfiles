@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>Classkit 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.property-exists.html">property_exists</a></div>
+ <div class="next" style="float: right;"><a href="function.classkit-import.html">classkit_import</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+ <h1 class="title">Classkit 関数</h1>
+ 
+
+ <div class="partintro">
+  <div id="classkit.intro" class="section">
+   <h2 class="title">導入</h2>
+   <p class="para">
+     これらの関数は、PHP クラスの動的な操作を実行時に行います。
+   </p>
+   <blockquote><p><b class="note">注意</b>: 
+    
+     この拡張モジュールは
+     <a href="ref.runkit.html" class="link">runkit</a> に置き換えられ、
+     クラスの操作だけでなく関数の操作も同様に可能となっています。
+    <br />
+   </p></blockquote>
+  </div>
+
+  
+
+
+<div id="classkit.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  この <a href="http://pecl.php.net/" class="link external">&raquo; PECL</a> 拡張
+モジュールは PHP にバンドルされていません。
+ </p>
+ <p class="para">
+  この PECL 拡張モジュールをインストールする方法は、
+マニュアルの <a href="install.pecl.html" class="link">
+PECL 拡張モジュールのインストール</a> という章にあります。
+新規リリース・ダウンロード・ソースファイル・管理者情報・CHANGELOG
+といった関連する情報については、次の場所にあります。
+  <a href="http://pecl.php.net/package/classkit" class="link external">&raquo; http://pecl.php.net/package/classkit</a>.
+ </p>
+ <p class="para">
+  
+この <acronym title="PHP Extension and Application Repository">PECL</acronym> 拡張モジュール用の <acronym title="Dynamic Link Library">DLL</acronym>
+は、<a href="http://www.php.net/downloads.php" class="link external">&raquo; PHP のダウンロード</a> ページあるいは
+<a href="http://pecl4win.php.net/" class="link external">&raquo; http://pecl4win.php.net/</a> からダウンロードできます。
+ </p>
+</div>
+
+
+
+
+  
+
+
+<div id="classkit.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="para">設定ディレクティブは定義されていません。</p>
+</div>
+
+
+
+  <div id="classkit.resources" class="section">
+   <h2 class="title">リソース型</h2>
+   <p class="para">リソース型は定義されていません。</p>
+  </div>
+
+  
+
+
+<div id="classkit.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <p class="para">
+  <dl>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>CLASSKIT_ACC_PRIVATE</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      メソッドを <i class="literal">private</i> としてマークする
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>CLASSKIT_ACC_PROTECTED</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      メソッドを <i class="literal">protected</i> としてマークする
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>CLASSKIT_ACC_PUBLIC</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      メソッドを <i class="literal">public</i> としてマークする
+     </span>
+    </dd>
+
+   </dt>
+
+  </dl>
+
+ </p>
+</div>
+
+
+ </div>
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.classkit-import.html">classkit_import</a> ― 新しいクラスメソッドの定義をファイルから読み込む</li><li><a href="function.classkit-method-add.html">classkit_method_add</a> ― 指定したクラスに、新しいメソッドを動的に追加する</li><li><a href="function.classkit-method-copy.html">classkit_method_copy</a> ― あるクラスのメソッドを別のクラスにコピーする</li><li><a href="function.classkit-method-redefine.html">classkit_method_redefine</a> ― 指定されたメソッドのコードを動的に変更する</li><li><a href="function.classkit-method-remove.html">classkit_method_remove</a> ― 指定したメソッドを動的に削除する</li><li><a href="function.classkit-method-rename.html">classkit_method_rename</a> ― 指定したメソッドの名前を動的に変更する</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.property-exists.html">property_exists</a></div>
+ <div class="next" style="float: right;"><a href="function.classkit-import.html">classkit_import</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

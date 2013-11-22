@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>指定した暗号のブロックサイズを得る</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mcrypt-generic.html">mcrypt_generic</a></div>
+ <div class="next" style="float: right;"><a href="function.mcrypt-get-cipher-name.html">mcrypt_get_cipher_name</a></div>
+ <div class="up"><a href="ref.mcrypt.html">mcrypt</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mcrypt-get-block-size" class="refentry">
+   <div class="refnamediv">
+    <h1 class="refname">mcrypt_get_block_size</h1>
+    <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">mcrypt_get_block_size ― 指定した暗号のブロックサイズを得る</p>
+
+   </div>
+   <div class="refsect1 u">
+    <h3 class="title">説明</h3>
+     <div class="methodsynopsis">
+      <span class="type">int</span> <span class="methodname"><b><b>mcrypt_get_block_size</b></b></span>
+       ( <span class="methodparam"><span class="type">int</span> <tt class="parameter">$cipher</tt></span>
+      )</div>
+
+     <div class="methodsynopsis">
+      <span class="type">int</span> <span class="methodname"><b><b>mcrypt_get_block_size</b></b></span>
+       ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$cipher</tt></span>
+      , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$module</tt></span>
+      )</div>
+
+    <p class="para">
+     最初のプロトタイプは libmcrypt 2.2.x とリンクした場合であり、2 番目
+     のものは libmcrypt 2.4.x あるいは 2.5.x とリンクした場合です。
+    </p>
+    <p class="para">
+     <b>mcrypt_get_block_size()</b>は、指定した
+     <i><tt class="parameter">cipher</tt></i>
+ のブロック長を返します
+     (暗号化モードと組み合わせます)。
+    </p>
+    <p class="para">
+     <b>mcrypt_get_block_size()</b>は、一つまたは二つの引数、
+     つまり、<i><tt class="parameter">cipher</tt></i>
+と
+     <i><tt class="parameter">module</tt></i>
+を引数とし、長さをバイト数で返します。
+    </p>
+    <p class="para">
+     <a href="function.mcrypt-get-key-size.html" class="function">mcrypt_get_key_size()</a>も参照ください。 
+    </p>
+   </div>
+
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mcrypt-generic.html">mcrypt_generic</a></div>
+ <div class="next" style="float: right;"><a href="function.mcrypt-get-cipher-name.html">mcrypt_get_cipher_name</a></div>
+ <div class="up"><a href="ref.mcrypt.html">mcrypt</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

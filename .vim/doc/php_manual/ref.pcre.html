@@ -1,0 +1,457 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>正規表現関数（Perl 互換）</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.pcntl-wtermsig.html">pcntl_wtermsig</a></div>
+ <div class="next" style="float: right;"><a href="reference.pcre.pattern.modifiers.html">パターン修飾子</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">正規表現関数（Perl 互換）</h1>
+  
+
+  <div class="partintro">
+   <div id="pcre.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     この正規表現関数で使用するパターンの構文は、Perl と類似しています。
+     正規表現は、スラッシュ (/) などのデリミタで囲う必要があります。
+     デリミタとしては、英数字およびバックスラッシュ(\) 以外のすべての文字を使用可能です。
+     デリミタ文字を正規表現本体において使用する必要がある場合は、
+     バックスラッシュでエスケープします。PHP 4.0.4 以降、
+     Perl形式の (), {}, [], &lt;&gt; も使用可能です。
+     パターンの詳細については、<a href="reference.pcre.pattern.syntax.html" class="link">パターン構文</a>
+     を参照してください。
+    </p>
+    <p class="para">
+     様々な修飾子を終端デリミタの後に付け、
+     マッチングに変化を与えることができます。
+     <a href="reference.pcre.pattern.modifiers.html" class="link">パターン修飾子</a>
+     を参照ください。
+    </p>
+    <p class="para">
+     PHP は、<a href="ref.regex.html" class="link">POSIX 拡張正規表現関数</a> において、
+     POSIX 拡張構文を用いた正規表現もサポートしています。
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      この拡張モジュールでは、コンパイルした正規表現のために
+      スレッド単位のグローバルキャッシュ (最大 4096) を管理しています。
+     <br />
+    </p></blockquote>
+    <div class="warning"><b class="warning">警告</b>
+     <p class="para">
+      PCRE には、いくつかの制限があります。詳細は、<a href="http://www.pcre.org/pcre.txt" class="link external">&raquo; http://www.pcre.org/pcre.txt</a> を参照してください。
+     </p>
+    </div>
+   </div>
+
+   <div id="pcre.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">外部ライブラリを必要としません。</p>
+   </div>
+
+   
+
+
+
+<div id="pcre.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  PHP 4.2.0 以降、本関数はデフォルトで有効となっています。
+  <span class="option">--without-pcre-regex</span> で PCRE 関数を
+  無効にすることができます。
+  付属のライブラリを使用しない場合、
+  <span class="option">--with-pcre-regex=DIR</span> を使用して
+  PCRE のインクルードおよびライブラリファイルがある場所 DIR を指定してください。
+  以前のバージョンでは、本関数を使用するためには
+  <span class="option">--with-pcre-regex[=DIR]</span> を指定して
+  PHP を configure およびコンパイルする必要があります。
+ </p>
+ <p class="simpara">Windows 版の <i class="literal">PHP</i> には
+この拡張モジュールのサポートが組み込まれています。これらの関数を使用
+するために拡張モジュールを追加でロードする必要はありません。</p>
+</div>
+
+
+
+
+   
+
+
+<div id="pcre.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+  <table border="5">
+   <caption><b>PCRE 設定オプション</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">名前</th>
+      <th colspan="1">デフォルト</th>
+      <th colspan="1">変更の可否</th>
+      <th colspan="1">変更履歴</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">pcre.backtrack_limit</td>
+      <td colspan="1" rowspan="1" align="left">&quot;100000&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td colspan="1" rowspan="1" align="left">PHP 5.2.0 以降で使用可能</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">pcre.recursion_limit</td>
+      <td colspan="1" rowspan="1" align="left">&quot;100000&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td colspan="1" rowspan="1" align="left">PHP 5.2.0 以降で使用可能</td>
+     </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+  PHP_INI_* 定数の詳細および定義については
+<a href="ini.html" class="xref">php.ini ディレクティブ</a> を参照してください。
+ </p>
+
+ <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+
+ <p class="para">
+  <dl>
+
+   <dt id="ini.pcre.backtrack-limit">
+    <span class="term">
+     <i><tt class="parameter">pcre.backtrack_limit</tt></i>
+
+     <a href="language.types.integer.html" class="type integer">integer</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      PCRE のバックトラック処理の制限値です。
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt id="ini.pcre.recursion-limit">
+    <span class="term">
+     <i><tt class="parameter">pcre.recursion_limit</tt></i>
+
+     <a href="language.types.integer.html" class="type integer">integer</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      PCRE の再帰処理の制限値です。この値を大きくすると、
+      使用可能なプロセススタックを使い切ってしまい、
+      (OS のスタックサイズの制限値に達して) PHP
+      をクラッシュさせてしまうことに注意しましょう。
+     </p>
+    </dd>
+
+   </dt>
+
+  </dl>
+
+ </p>
+
+</div>
+
+
+
+
+   <div id="pcre.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">リソース型は定義されていません。</p>
+   </div>
+
+   
+
+
+
+<div id="pcre.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <table border="5">
+  <caption><b>PREG 定数</b></caption>
+  <colgroup>
+
+   <thead valign="middle">
+    <tr valign="middle">
+     <th colspan="1">定数</th>
+     <th colspan="1">説明</th>
+    </tr>
+
+   </thead>
+
+   <tbody valign="middle">
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left"><b><tt>PREG_PATTERN_ORDER</tt></b></td>
+     <td colspan="1" rowspan="1" align="left">
+      $matches[0] はパターン全体にマッチした文字列の配列、
+      $matches[1] は第 1 のキャプチャ用サブパターンにマッチした文字列の配列、
+      といったように結果の順序を指定します。
+      このフラグは、<a href="function.preg-match-all.html" class="function">preg_match_all()</a> でのみ使用されます。
+     </td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left"><b><tt>PREG_SET_ORDER</tt></b></td>
+     <td colspan="1" rowspan="1" align="left">
+      $matches[0] は 1 回目のマッチングでキャプチャした値の配列、
+      $matches[1] は 2 回目のマッチングでキャプチャした値の配列、
+      といったように結果の順序を指定します。
+      このフラグは、<a href="function.preg-match-all.html" class="function">preg_match_all()</a> でのみ使用されます。
+     </td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left"><b><tt>PREG_OFFSET_CAPTURE</tt></b></td>
+     <td colspan="1" rowspan="1" align="left">
+      <b><tt>PREG_SPLIT_OFFSET_CAPTURE</tt></b> の説明を参照してください。
+      このフラグは、PHP 4.3.0 以降で利用可能です。
+     </td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left"><b><tt>PREG_SPLIT_NO_EMPTY</tt></b></td>
+     <td colspan="1" rowspan="1" align="left">
+      このフラグは、<a href="function.preg-split.html" class="function">preg_split()</a> が、空文字列でないものだけ
+      を返すようにします。
+     </td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left"><b><tt>PREG_SPLIT_DELIM_CAPTURE</tt></b></td>
+     <td colspan="1" rowspan="1" align="left">
+      このフラグは、<a href="function.preg-split.html" class="function">preg_split()</a> が
+      文字列分割用のパターン中のカッコによるサブパターンでキャプチャされた値も
+      同時に返すようにします。
+      このフラグは、PHP 4.0.5 以降で利用可能です。
+     </td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left"><b><tt>PREG_SPLIT_OFFSET_CAPTURE</tt></b></td>
+     <td colspan="1" rowspan="1" align="left">
+      このフラグを設定した場合、各マッチに対応する文字列のオフセットも返されます。
+      これにより、返り値は配列となり、配列の要素 0 はマッチした文字列、 要素 1 
+      は対象文字列中におけるマッチした文字列のオフセット値となることに注意してください。 
+      このフラグは、<i class="literal">PHP</i> 4.3.0 以降で利用可能で、
+      <a href="function.preg-split.html" class="function">preg_split()</a> のみで使用されます。
+     </td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left"><b><tt>PREG_NO_ERROR</tt></b></td>
+     <td colspan="1" rowspan="1" align="left">
+      エラーが存在しなかった場合に
+      <a href="function.preg-last-error.html" class="function">preg_last_error()</a> から返されます。
+      PHP 5.2.0 以降で使用可能です。
+     </td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left"><b><tt>PREG_INTERNAL_ERROR</tt></b></td>
+     <td colspan="1" rowspan="1" align="left">
+      PCRE 内部エラーが発生した場合に
+      <a href="function.preg-last-error.html" class="function">preg_last_error()</a> から返されます。
+      PHP 5.2.0 以降で使用可能です。
+     </td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left"><b><tt>PREG_BACKTRACK_LIMIT_ERROR</tt></b></td>
+     <td colspan="1" rowspan="1" align="left">
+      <a href="ref.pcre.html#ini.pcre.backtrack-limit" class="link">backtrack limit</a> に達した場合に
+      <a href="function.preg-last-error.html" class="function">preg_last_error()</a> から返されます。
+      PHP 5.2.0 以降で使用可能です。
+     </td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left"><b><tt>PREG_RECURSION_LIMIT_ERROR</tt></b></td>
+     <td colspan="1" rowspan="1" align="left">
+      <a href="ref.pcre.html#ini.pcre.recursion-limit" class="link">recursion limit</a> に達した場合に
+      <a href="function.preg-last-error.html" class="function">preg_last_error()</a> から返されます。
+      PHP 5.2.0 以降で使用可能です。
+     </td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left"><b><tt>PREG_BAD_UTF8_ERROR</tt></b></td>
+     <td colspan="1" rowspan="1" align="left">
+      壊れている UTF8 データによって直近のエラーが発生した場合に
+      <a href="function.preg-last-error.html" class="function">preg_last_error()</a> から返されます
+      (<a href="reference.pcre.pattern.modifiers.html" class="link">UTF-8 モード</a>
+      で正規表現を実行した場合のみ)。
+      PHP 5.2.0 以降で使用可能です。
+     </td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left"><b><tt>PCRE_VERSION</tt></b></td>
+     <td colspan="1" rowspan="1" align="left">
+      PCRE のバージョンおよびリリース日 (例: &quot;7.0 18-Dec-2006&quot;)。
+      PHP 5.2.4 以降で使用可能です。
+     </td>
+    </tr>
+
+   </tbody>
+  </colgroup>
+
+ </table>
+
+</div>
+
+
+
+
+   <div id="pcre.examples" class="section">
+    <h2 class="title">例</h2>
+    <p class="para">
+     <div class="example">
+      <p><b>Example#1 有効なパターンの例</b></p>
+      <ul class="itemizedlist">
+       <li class="listitem"><span class="simpara"><i class="literal">/&lt;\/\w+&gt;/</i></span></li>
+       <li class="listitem"><span class="simpara"><i class="literal">|(\d{3})-\d+|Sm</i></span></li>
+       <li class="listitem"><span class="simpara"><i class="literal">/^(?i)php[34]/</i></span></li>
+       <li class="listitem"><span class="simpara"><i class="literal">{^\s+(\s+)?$}</i></span></li>
+      </ul>
+     </div>
+    </p>
+    <p class="para">
+     <div class="example">
+      <p><b>Example#2 無効なパターンの例</b></p>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <span class="simpara">
+         <i class="literal">/href=&#039;(.*)&#039;</i> - 終端デリミタが抜けている
+        </span>
+      </li>
+       <li class="listitem">
+        <span class="simpara">
+         <i class="literal">/\w+\s*\w+/J</i> - 未知の修飾子 &#039;J&#039;
+        </span>
+       </li>
+       <li class="listitem">
+        <span class="simpara">
+         <i class="literal">1-\d3-\d3-\d4|</i> - 始端デリミタが抜けている
+        </span>
+       </li>
+      </ul>
+     </div>
+    </p>
+   </div>
+  </div>
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="reference.pcre.pattern.modifiers.html">パターン修飾子</a> ― 正規表現パターンに使用可能な修飾子</li><li><a href="reference.pcre.pattern.syntax.html">パターン構文</a> ― PCRE 正規表現の説明</li><li><a href="function.preg-grep.html">preg_grep</a> ― パターンにマッチする配列の要素を返す</li><li><a href="function.preg-last-error.html">preg_last_error</a> ― 直近の PCRE 正規表現処理のエラーコードを返す</li><li><a href="function.preg-match-all.html">preg_match_all</a> ― 繰り返し正規表現検索を行う</li><li><a href="function.preg-match.html">preg_match</a> ― 正規表現によるマッチングを行う</li><li><a href="function.preg-quote.html">preg_quote</a> ― 正規表現文字をクオートする</li><li><a href="function.preg-replace-callback.html">preg_replace_callback</a> ― 正規表現検索を行い、コールバック関数を使用して置換を行う</li><li><a href="function.preg-replace.html">preg_replace</a> ― 正規表現検索および置換を行う</li><li><a href="function.preg-split.html">preg_split</a> ― 正規表現で文字列を分割する</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.pcntl-wtermsig.html">pcntl_wtermsig</a></div>
+ <div class="next" style="float: right;"><a href="reference.pcre.pattern.modifiers.html">パターン修飾子</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

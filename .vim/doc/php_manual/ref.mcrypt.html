@@ -1,0 +1,688 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>Mcrypt 暗号化関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mcal-week-of-year.html">mcal_week_of_year</a></div>
+ <div class="next" style="float: right;"><a href="function.mcrypt-cbc.html">mcrypt_cbc</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">Mcrypt 暗号化関数</h1>
+  
+  
+  <div class="partintro">
+   <div id="mcrypt.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     この関数は、CBC, OFB, CFB, ECB 暗号モードの DES, TripleDES, Blowfish
+     (デフォルト), 3-WAY, SAFER-SK64, SAFER-SK128, TWOFISH, TEA, RC2
+     , GOST のような広範なブロックアルゴリズムをサポートする mcrypt
+     ライブラリへのインターフェースです。加えて、&quot;フリーではない&quot; とされている
+     RC6 および IDEA もサポートします。
+    </p>
+   </div>
+
+   <div id="mcrypt.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">
+     ここで示す関数は、<a href="http://mcrypt.sourceforge.net/" class="link external">&raquo; mcrypt</a> を
+     使用して動作します。この拡張モジュールを使用するには、<a href="http://mcrypt.sourceforge.net/" class="link external">&raquo; http://mcrypt.sourceforge.net/</a> から <var class="filename">libmcrypt-x.x.tar.gz</var>
+     をダウンロードし、含まれているインストール用の指示に従ってください。
+     Windows ユーザは、コンパイル済みの mcrypt バイナリを
+     <a href="http://files.edin.dk/php/win32/mcrypt/" class="link external">&raquo; http://files.edin.dk/php/win32/mcrypt/</a>
+     から入手することが可能です。
+    </p>
+    <p class="simpara">
+     PHP 5.0.0 以降では、libmcrypt のバージョン 2.5.6 以降が必要です。
+    </p>
+    <p class="para">
+     libmcrypt 2.4.x とリンクした場合、加えてブロックアルゴリズム:
+     CAST, LOKI97, RIJNDAEL, SAFERPLUS, SERPENT および次のストリーム暗号:
+     ENIGMA (crypt), PANAMA, RC4, WAKE がサポートされます。
+     libmcrypt 2.4.x を使用した場合、暗号モード nOFB もサポートされます。
+    </p>
+   </div>
+
+   
+
+
+<div id="mcrypt.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  この拡張機能を利用可能にするためには、
+  PHP を <span class="option">--with-mcrypt</span> パラメータを
+  付けてコンパイルする必要があります。DIR は mcrypt のインストール
+  ディレクトリです。必ず、
+  <span class="option">--disable-posix-threads</span>を付けて
+  libmcrypt をコンパイルするようにしてください。
+ </p>
+</div>
+
+
+
+
+   
+
+
+<div id="mcrypt.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+ <table border="5">
+  <caption><b>Mcrypt 設定オプション</b></caption>
+  <colgroup>
+
+   <thead valign="middle">
+    <tr valign="middle">
+     <th colspan="1">名前</th>
+     <th colspan="1">デフォルト</th>
+     <th colspan="1">変更の可否</th>
+     <th colspan="1">変更履歴</th>
+    </tr>
+
+   </thead>
+
+   <tbody valign="middle">
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">mcrypt.algorithms_dir</td>
+     <td colspan="1" rowspan="1" align="left">NULL</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.0.2 以降で使用可能です。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">mcrypt.modes_dir</td>
+     <td colspan="1" rowspan="1" align="left">NULL</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.0.2 以降で使用可能です。</td>
+    </tr>
+
+   </tbody>
+  </colgroup>
+
+ </table>
+
+ PHP_INI_* 定数の詳細および定義については
+<a href="ini.html" class="xref">php.ini ディレクティブ</a> を参照してください。
+ </p>
+</div>
+
+
+
+
+
+   <div id="mcrypt.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">
+     <a href="function.mcrypt-module-open.html" class="function">mcrypt_module_open()</a> は暗号記述子を返します。
+    </p>
+   </div>
+
+   
+
+
+<div id="mcrypt.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <p class="para">
+  mcryptは 4 つのブロック暗号モード(CBC, OFB, CFB, ECB)で実行可能です。
+  libmcrypt-2.4.x 以降にリンクした場合、ブロック暗号モード nOFG と
+  STREAM モードでも実行可能です。MCRYPT_MODE_mode 形式を関数で使用する
+  際には、いくつかの制約があります。ここで、これらの各モードの通常の
+  使用法の概要を示します。詳細なリファレンスおよび議論に関しては、
+  Applied Cryptography by Schneier (ISBN 0-471-11709-9) を参照ください。
+  <ul class="itemizedlist">
+   <li class="listitem">
+    <span class="simpara">
+     MCRYPT_MODE_ECB (electronic codebook) は、他のキーを暗号化すると
+     いったランダムデータに適しています。出力データが短くランダムであると
+     いう ECB の短所は、都合の良い逆の効果を持っています。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     MCRYPT_MODE_CBC (cipher block chaining)は、特に、ECB よりも著しく
+     高いセキュリティでファイルを暗号化する用途に適しています。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     MCRYPT_MODE_CFB (cipher feedback) は、1 バイト毎に暗号化する必要がある
+     バイトストリームを暗号化する際に最も適したモードです。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     MCRYPT_MODE_OFB (output feedback、8 ビット形式) はCFBと互換性が
+     ありますが、エラーの伝播が許容されないアプリケーションに使用する
+     ことが可能です。このモードは(8 ビットモードで処理を行うため)安全では
+     なく、使用は推奨されません。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     MCRYPT_MODE_NOFB (output feedback, nビット形式) は OFB と互換ですが、
+     アルゴリズムのブロックサイズを変更可能なため、より安全です。
+    </span>
+   </li> 
+   <li class="listitem">
+    <span class="simpara">
+     MCRYPT_MODE_STREAM は、WAKE や RC4 のようないくつかのストリーム
+     アルゴリズムを読み込む追加のモードです。
+    </span>
+   </li> 
+  </ul>
+ </p>
+
+ <p class="para">
+  他のモードおよびランダムデバイス定数:
+  <dl>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>MCRYPT_ENCRYPT</tt></b> 
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>MCRYPT_DECRYPT</tt></b> 
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>MCRYPT_DEV_RANDOM</tt></b> 
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>MCRYPT_DEV_URANDOM</tt></b> 
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>MCRYPT_RAND</tt></b> 
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      
+     </span>
+    </dd>
+
+   </dt>
+
+  </dl>
+
+ </p>
+</div>
+
+
+
+   
+   <div id="mcrypt.ciphers" class="section">
+    <h2 class="title">Mcrypt 暗号</h2>
+    <p class="para">
+     以下に、mcrypt 拡張モジュールにより現在サポートされている暗号のリストを
+     示します。サポートされる暗号の完全なリストについては、
+     <var class="filename">mcrypt.h</var> の最後にある define を参照ください。
+     mcrypt-2.2.x API に関する一般的な規則は、
+     MCRYPT_暗号名で PHP から暗号をアクセス可能であるということです。
+     mcrypt-2.4.x および mcrypt-2.5.x の API についてもこれらの定数は
+     使用できますが、<a href="function.mcrypt-module-open.html" class="function">mcrypt_module_open()</a> を
+     コールする際に文字列で暗号名を指定することも可能です。
+     <ul class="itemizedlist">
+      <li class="listitem"><span class="simpara">MCRYPT_3DES</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_ARCFOUR_IV (libmcrypt &gt; 2.4.x のみ)</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_ARCFOUR (libmcrypt &gt; 2.4.x のみ)</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_BLOWFISH</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_CAST_128</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_CAST_256</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_CRYPT</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_DES</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_DES_COMPAT (libmcrypt 2.2.x only)</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_ENIGMA (libmcrypt &gt; 2.4.x のみ、
+      MCRYPT_CRYPTへのエイリアス)</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_GOST</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_IDEA (non-free)</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_LOKI97 (libmcrypt &gt; 2.4.x のみ)</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_MARS (libmcrypt &gt; 2.4.xのみ, non-free)</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_PANAMA (libmcrypt &gt; 2.4.xのみ)</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_RIJNDAEL_128 (libmcrypt &gt; 2.4.xのみ)</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_RIJNDAEL_192 (libmcrypt &gt; 2.4.xのみ)</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_RIJNDAEL_256 (libmcrypt &gt; 2.4.xのみ)</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_RC2</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_RC4 (libmcrypt 2.2.xのみ)</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_RC6 (libmcrypt &gt; 2.4.xのみ)</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_RC6_128 (libmcrypt 2.2.xのみ)</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_RC6_192 (libmcrypt 2.2.xのみ)</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_RC6_256 (libmcrypt 2.2.xのみ)</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_SAFER64</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_SAFER128</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_SAFERPLUS (libmcrypt &gt; 2.4.xのみ)</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_SERPENT(libmcrypt &gt; 2.4.xのみ)</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_SERPENT_128 (libmcrypt 2.2.xのみ)</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_SERPENT_192 (libmcrypt 2.2.xのみ)</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_SERPENT_256 (libmcrypt 2.2.xのみ)</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_SKIPJACK (libmcrypt &gt; 2.4.xのみ)</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_TEAN (libmcrypt 2.2.xのみ)</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_THREEWAY</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_TRIPLEDES (libmcrypt &gt; 2.4.xのみ)</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_TWOFISH (mcrypt 2.x より古いバージョン、
+      またはmcrypt &gt; 2.4.xの場合)</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_TWOFISH128 (TWOFISHxxx は 2.x の新しいバージョンで使用可能ですが、2.4.x では使用できません)</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_TWOFISH192</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_TWOFISH256</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_WAKE (libmcrypt &gt; 2.4.xのみ)</span></li>
+      <li class="listitem"><span class="simpara">MCRYPT_XTEA (libmcrypt &gt; 2.4.xのみ)</span></li>
+     </ul>
+    </p>
+    <p class="para">
+     (CFB および OFB モードでは)それぞれの暗号関数に初期化ベクトル(IV)
+     を指定する必要があり、(CBC モードでは)IV を指定することが可能です。
+     IV はユニークである必要があり、暗号化/復号化の際に同じである
+     必要があります。暗号化されて保存されたデータの場合、関数の出力を
+     (ファイル名の MD5 キーのように) 保存されたデータの位置を表す
+     インデックスとして使用することができます。もしくは、暗号化された
+     データと共に IV を渡すことができます(このトピックに関する議論については、
+     Applied Cryptography by Schneier (ISBN 0-471-11709-9) の 9.3 章を参照ください)。
+    </p>
+   </div>
+   
+   <div id="mcrypt.examples" class="section">
+    <h2 class="title">例</h2>
+    <p class="para">
+     mcrypt は、上に示した暗号を用いて暗号化および復号化を
+     行うことが可能です。libmcrypt-2.2.xとリンクした場合、4つの重要な
+     mcrypt コマンド (<a href="function.mcrypt-cfb.html" class="function">mcrypt_cfb()</a>,
+     <a href="function.mcrypt-cbc.html" class="function">mcrypt_cbc()</a>,<a href="function.mcrypt-ecb.html" class="function">mcrypt_ecb()</a>, 
+     <a href="function.mcrypt-ofb.html" class="function">mcrypt_ofb()</a>) は、MCRYPT_ENCRYPT および
+     MCRYPT_DECRYPT という 2つのモードの両方で実行可能です。
+     <div class="example">
+      <p><b>Example#1 入力値を 2.2.x において ECB モードの TripleDES で暗号化する</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$key&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"this&nbsp;is&nbsp;a&nbsp;secret&nbsp;key"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$input&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"Let&nbsp;us&nbsp;meet&nbsp;at&nbsp;9&nbsp;o'clock&nbsp;at&nbsp;the&nbsp;secret&nbsp;place."</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$encrypted_data&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mcrypt_ecb&nbsp;</span><span style="color: #007700">(</span><span style="color: #0000BB">MCRYPT_3DES</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$key</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$input</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">MCRYPT_ENCRYPT</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+     この例では、<i class="literal">$encrypted_data</i> に文字列として
+     暗号化されたデータが返されます。
+    </p>
+    <p class="para">
+     libmcrypt 2.4.x または 2.5.x とリンクした場合、上記の関数も利用可能
+     ですが、新しい関数を使用されることを推奨します。
+     <div class="example">
+      <p><b>Example#2 2.4.x 以降において ECB モードで TripleDES により入力を暗号化する</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;&nbsp;&nbsp;$key&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"this&nbsp;is&nbsp;a&nbsp;secret&nbsp;key"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$input&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"Let&nbsp;us&nbsp;meet&nbsp;at&nbsp;9&nbsp;o'clock&nbsp;at&nbsp;the&nbsp;secret&nbsp;place."</span><span style="color: #007700">;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$td&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mcrypt_module_open</span><span style="color: #007700">(</span><span style="color: #DD0000">'tripledes'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">''</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'ecb'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">''</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$iv&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mcrypt_create_iv&nbsp;</span><span style="color: #007700">(</span><span style="color: #0000BB">mcrypt_enc_get_iv_size</span><span style="color: #007700">(</span><span style="color: #0000BB">$td</span><span style="color: #007700">),&nbsp;</span><span style="color: #0000BB">MCRYPT_RAND</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">mcrypt_generic_init</span><span style="color: #007700">(</span><span style="color: #0000BB">$td</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$key</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$iv</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$encrypted_data&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mcrypt_generic</span><span style="color: #007700">(</span><span style="color: #0000BB">$td</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$input</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">mcrypt_generic_deinit</span><span style="color: #007700">(</span><span style="color: #0000BB">$td</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">mcrypt_module_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$td</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+     この例は、<i class="literal">$encrypted_data</i> に文字列として
+     暗号化されたデータを取得します。詳細な例については、
+     <a href="function.mcrypt-module-open.html" class="function">mcrypt_module_open()</a> を参照してください。
+    </p>
+   </div>
+  </div>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.mcrypt-cbc.html">mcrypt_cbc</a> ― CBC モードでデータを暗号化/復号化する</li><li><a href="function.mcrypt-cfb.html">mcrypt_cfb</a> ― CFB モードでデータを暗号化/復号化する</li><li><a href="function.mcrypt-create-iv.html">mcrypt_create_iv</a> ― 乱数ソースから初期化ベクトル(IV)を生成する</li><li><a href="function.mcrypt-decrypt.html">mcrypt_decrypt</a> ― 指定したパラメータで暗号化されたテキストを復号化する</li><li><a href="function.mcrypt-ecb.html">mcrypt_ecb</a> ― 非推奨: ECB モードでデータを暗号化/復号化する</li><li><a href="function.mcrypt-enc-get-algorithms-name.html">mcrypt_enc_get_algorithms_name</a> ― オープンされたアルゴリズムの名前を返す</li><li><a href="function.mcrypt-enc-get-block-size.html">mcrypt_enc_get_block_size</a> ― オープンされたアルゴリズムのブロックサイズを返す</li><li><a href="function.mcrypt-enc-get-iv-size.html">mcrypt_enc_get_iv_size</a> ― オープンされたアルゴリズムの IV の大きさを返す</li><li><a href="function.mcrypt-enc-get-key-size.html">mcrypt_enc_get_key_size</a> ― オープンされたモードでサポートされる最大キー長を返す</li><li><a href="function.mcrypt-enc-get-modes-name.html">mcrypt_enc_get_modes_name</a> ― オープンされたモードの名前を返す</li><li><a href="function.mcrypt-enc-get-supported-key-sizes.html">mcrypt_enc_get_supported_key_sizes</a> ― オープンされたアルゴリズムでサポートされるキー長を配列にして返す</li><li><a href="function.mcrypt-enc-is-block-algorithm-mode.html">mcrypt_enc_is_block_algorithm_mode</a> ― オープンされたモードの暗号がブロックモードで動作するかどうかを調べる</li><li><a href="function.mcrypt-enc-is-block-algorithm.html">mcrypt_enc_is_block_algorithm</a> ― オープンされたモードの暗号がブロックアルゴリズムであるかどうかを調べる</li><li><a href="function.mcrypt-enc-is-block-mode.html">mcrypt_enc_is_block_mode</a> ― オープンされたモードがブロック出力を行うかどうかを調べる</li><li><a href="function.mcrypt-enc-self-test.html">mcrypt_enc_self_test</a> ― オープンしたモジュールのセルフテストを実行する</li><li><a href="function.mcrypt-encrypt.html">mcrypt_encrypt</a> ― 指定したパラメータでプレーンテキストを暗号化する</li><li><a href="function.mcrypt-generic-deinit.html">mcrypt_generic_deinit</a> ― 暗号化モジュールを終了する</li><li><a href="function.mcrypt-generic-end.html">mcrypt_generic_end</a> ― 暗号処理を終了する</li><li><a href="function.mcrypt-generic-init.html">mcrypt_generic_init</a> ― 暗号化に必要な全てのバッファを初期化する</li><li><a href="function.mcrypt-generic.html">mcrypt_generic</a> ― データを暗号化する</li><li><a href="function.mcrypt-get-block-size.html">mcrypt_get_block_size</a> ― 指定した暗号のブロックサイズを得る</li><li><a href="function.mcrypt-get-cipher-name.html">mcrypt_get_cipher_name</a> ― 指定した暗号の名前を得る</li><li><a href="function.mcrypt-get-iv-size.html">mcrypt_get_iv_size</a> ― 指定した暗号/モードの組み合わせに属する IV の大きさを返す</li><li><a href="function.mcrypt-get-key-size.html">mcrypt_get_key_size</a> ― 指定した暗号のキーの長さを得る</li><li><a href="function.mcrypt-list-algorithms.html">mcrypt_list_algorithms</a> ― サポートされる全ての暗号を配列として取得する</li><li><a href="function.mcrypt-list-modes.html">mcrypt_list_modes</a> ― サポートされる全てのモードの配列を取得する</li><li><a href="function.mcrypt-module-close.html">mcrypt_module_close</a> ― mcrypt モジュールを閉じる</li><li><a href="function.mcrypt-module-get-algo-block-size.html">mcrypt_module_get_algo_block_size</a> ― 指定したアルゴリズムのブロック長を返す</li><li><a href="function.mcrypt-module-get-algo-key-size.html">mcrypt_module_get_algo_key_size</a> ― オープンされたモードでサポートされる最大キー長を返す</li><li><a href="function.mcrypt-module-get-supported-key-sizes.html">mcrypt_module_get_supported_key_sizes</a> ― オープンされたアルゴリズムでサポートされるキーのサイズを配列として返す</li><li><a href="function.mcrypt-module-is-block-algorithm-mode.html">mcrypt_module_is_block_algorithm_mode</a> ― 指定したモジュールがブロックアルゴリズムであるかどうかを返す</li><li><a href="function.mcrypt-module-is-block-algorithm.html">mcrypt_module_is_block_algorithm</a> ― 指定したアルゴリズムがブロックアルゴリズムであるかを調べる</li><li><a href="function.mcrypt-module-is-block-mode.html">mcrypt_module_is_block_mode</a> ― 指定したモードがブロック出力を行うかどうかを返す</li><li><a href="function.mcrypt-module-open.html">mcrypt_module_open</a> ― 使用するアルゴリズムおよびモードのモジュールをオープンする</li><li><a href="function.mcrypt-module-self-test.html">mcrypt_module_self_test</a> ― 指定したモジュールのセルフテストを実行する</li><li><a href="function.mcrypt-ofb.html">mcrypt_ofb</a> ― OFB モードでデータを暗号化/復号化する</li><li><a href="function.mdecrypt-generic.html">mdecrypt_generic</a> ― データを復号化する</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mcal-week-of-year.html">mcal_week_of_year</a></div>
+ <div class="next" style="float: right;"><a href="function.mcrypt-cbc.html">mcrypt_cbc</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

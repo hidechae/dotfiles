@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>do-while</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="control-structures.while.html">while</a></div>
+ <div class="next" style="float: right;"><a href="control-structures.for.html">for</a></div>
+ <div class="up"><a href="language.control-structures.html">制御構造</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="control-structures.do.while" class="sect1">
+   <h2 class="title"><i class="literal">do-while</i></h2>
+   <p class="simpara">
+    <i class="literal">do-while</i>ループは、論理式のチェックが各反復の
+    最初ではなく最後に行われること以外は、<i class="literal">while</i>ループと
+    全く同じです。通常の<i class="literal">while</i>ループとの主な差は、
+    <i class="literal">do-while</i>ループは最低1回の実行を保証されていることです。
+    一方、通常の<i class="literal">while</i>ループは、実行されないかもしれません。
+    (論理式は各反復の最初でチェックされるので、
+    最初から値が<b><tt>FALSE</tt></b>である場合はループの実行は
+    すぐに終わります。)
+   </p>
+   <p class="para">
+    <i class="literal">do-while</i> ループの構文は次の一つのみです。
+
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+$i&nbsp;=&nbsp;0;<br />do&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;$i;<br />}&nbsp;while&nbsp;($i&gt;0);</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+   <p class="simpara">
+    上記のループは必ず一度だけ実行されます。その原因は、最初の反復の後、
+    論理値のチェックを行った際に値が<b><tt>FALSE</tt></b>と
+    なり($iは0より大きくない)、ループの実行が終了するためです。
+   </p>
+   <p class="para">
+    優れたCプログラマは、コードブロック中での実行中止が可能な
+    <i class="literal">do-while</i>ループの別の使用法について熟知している
+    かもしれません。
+    これは、<i class="literal">do-while</i>(0)でコードを括り、
+    <a href="control-structures.break.html" class="link"><i class="literal">break</i></a>
+    文を使用する方法です。次のコードは、この方法の例を示しています。
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+do&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;($i&nbsp;&lt;&nbsp;5)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"i&nbsp;は十分大きくはありません。";<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;$i&nbsp;*=&nbsp;$factor;<br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;($i&nbsp;&lt;&nbsp;$minimum_limit)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"iはOKです。";<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;...iを使った処理...<br /><br />}&nbsp;while(0);</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+   <p class="simpara">
+    この例をすぐに理解できなかったり、全く理解できなかったりしても
+    問題ありません。この&#039;機能&#039;を使用しなくても
+    スクリプトコードを書くことができますし、強力なスクリプトでさえ
+    作成することが可能です。
+   </p>
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="control-structures.while.html">while</a></div>
+ <div class="next" style="float: right;"><a href="control-structures.for.html">for</a></div>
+ <div class="up"><a href="language.control-structures.html">制御構造</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

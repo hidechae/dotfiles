@@ -1,0 +1,188 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>フォーマットに基づきファイルからの入力を処理する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.fread.html">fread</a></div>
+ <div class="next" style="float: right;"><a href="function.fseek.html">fseek</a></div>
+ <div class="up"><a href="ref.filesystem.html">ファイルシステム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.fscanf" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">fscanf</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.0.1, PHP 5)</p><p class="refpurpose">fscanf ― フォーマットに基づきファイルからの入力を処理する</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">mixed</span> <span class="methodname"><b><b>fscanf</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$handle</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$format</tt></span>
+   [, <span class="methodparam"><span class="type">mixed</span> <tt class="parameter reference">&$...</tt></span>
+  ] )</div>
+
+  <p class="para">
+   関数<b>fscanf()</b> は <a href="function.sscanf.html" class="function">sscanf()</a>
+   に似ていますが、<i><tt class="parameter">handle</tt></i>
+ が指すファイルから入力を取得し、
+   指定したフォーマット <i><tt class="parameter">format</tt></i>
+ に基づき解釈を行います。
+   フォーマットについては <a href="function.sprintf.html" class="function">sprintf()</a> に解説されています。
+  </p>
+  <p class="para">
+   フォーマット文字列におけるあらゆる空白は
+   入力ストリームのあらゆる空白にマッチします。
+   これはつまりフォーマット文字列の<i class="literal">\t</i>（タブ）すらも
+   入力ストリームの空白1個にマッチしてしまうことを意味します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">handle</tt></i>
+</span>
+     <dd>
+
+      <p class="para"><a href="function.fopen.html" class="function">fopen()</a>
+を使用して作成したファイルシステムポインタリソース。</p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">format</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <a href="function.sprintf.html" class="function">sprintf()</a> のドキュメントに説明されているフォーマット。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">...</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       オプションで代入する値。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   この関数のパラメータが二つだけの場合、処理された値は配列として返されます。
+   他方、オプションのパラメータが指定された場合、
+   この関数は、代入された値の数を返します。
+   オプション引数は参照渡しとする必要があります。
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">4.3.0</td>
+       <td colspan="1" rowspan="1" align="left">
+        このバージョンまでは、ファイルから読み込む文字の最大数は512
+        （または最初に\nが現れるまで）でした。
+        これ以降では任意の長い行を読みスキャンすることができます。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>fscanf()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$handle&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">"users.txt"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"r"</span><span style="color: #007700">);<br />while&nbsp;(</span><span style="color: #0000BB">$userinfo&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fscanf</span><span style="color: #007700">(</span><span style="color: #0000BB">$handle</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"%s\t%s\t%s\n"</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;list&nbsp;(</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$profession</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$countrycode</span><span style="color: #007700">)&nbsp;=&nbsp;</span><span style="color: #0000BB">$userinfo</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//...&nbsp;これらの値を使用して何か行う<br /></span><span style="color: #007700">}<br /></span><span style="color: #0000BB">fclose</span><span style="color: #007700">(</span><span style="color: #0000BB">$handle</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#2 users.txt の内容</b></p>
+    <div class="example-contents">
+<div class="cdata"><pre>
+javier  argonaut        pe
+hiroshi sculptor        jp
+robert  slacker us
+luigi   florist it
+</pre></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.fread.html" class="function">fread()</a></li>
+    <li class="member"><a href="function.fgets.html" class="function">fgets()</a></li>
+    <li class="member"><a href="function.fgetss.html" class="function">fgetss()</a></li>
+    <li class="member"><a href="function.sscanf.html" class="function">sscanf()</a></li>
+    <li class="member"><a href="function.printf.html" class="function">printf()</a></li>
+    <li class="member"><a href="function.sprintf.html" class="function">sprintf()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.fread.html">fread</a></div>
+ <div class="next" style="float: right;"><a href="function.fseek.html">fseek</a></div>
+ <div class="up"><a href="ref.filesystem.html">ファイルシステム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

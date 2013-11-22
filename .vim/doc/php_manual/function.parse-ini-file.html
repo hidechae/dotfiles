@@ -1,0 +1,242 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>設定ファイルをパースする</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.move-uploaded-file.html">move_uploaded_file</a></div>
+ <div class="next" style="float: right;"><a href="function.pathinfo.html">pathinfo</a></div>
+ <div class="up"><a href="ref.filesystem.html">ファイルシステム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.parse-ini-file" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">parse_ini_file</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">parse_ini_file ― 設定ファイルをパースする</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">array</span> <span class="methodname"><b><b>parse_ini_file</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$filename</tt></span>
+   [, <span class="methodparam"><span class="type">bool</span> <tt class="parameter">$process_sections</tt></span>
+  ] )</div>
+
+  <p class="para">
+   <b>parse_ini_file()</b> は、
+   <i><tt class="parameter">filename</tt></i>
+ で指定した ini ファイルをロードし、
+   連想配列としてその設定値を返します。
+  </p>
+  <p class="para">
+   初期ファイルの構造は、<var class="filename">php.ini</var> の構造と同じです。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">filename</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       パースしたい ini ファイルのファイル名。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">process_sections</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       直近の <i><tt class="parameter">process_sections</tt></i>
+ パラメータに <b><tt>TRUE</tt></b>
+       を設定することにより、セクション名と設定が含まれた多次元の配列を
+       得ることができます。デフォルトでは、
+       <i><tt class="parameter">process_sections</tt></i>
+ は <b><tt>FALSE</tt></b> です。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   設定を連装配列形式で返します。
+  </p>
+ </div>
+
+
+ 
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">5.2.4</td>
+       <td colspan="1" rowspan="1" align="left">
+        数字から始まるキーおよびセクション名は、PHP では
+        <a href="language.types.integer.html" class="link">整数</a> として評価されます。
+        よって、0 で始まる数字は 8 進数として評価され、0x で始まる数字は
+        16 進数として評価されます。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">5.0.0</td>
+       <td colspan="1" rowspan="1" align="left">
+        値をダブルクォートで囲めばその中で改行を使用することもできます。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">4.2.1</td>
+       <td colspan="1" rowspan="1" align="left">
+        この関数は <a href="features.safe-mode.html#ini.safe-mode" class="link">セーフモード</a> と
+        <a href="features.safe-mode.html#ini.open-basedir" class="link">open_basedir</a> の影響を受けます。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <var class="filename">sample.ini</var> の内容</b></p>
+    <div class="example-contents">
+<div class="cdata"><pre>
+; これは設定ファイルのサンプルです。
+; php.ini と同様、&#039;;&#039; で始まる行はコメントです。
+
+[first_section]
+one = 1
+five = 5
+animal = BIRD
+
+[second_section]
+path = &quot;/usr/local/bin&quot;
+URL = &quot;http://www.example.com/~username&quot;
+</pre></div>
+    </div>
+
+   </div>
+   <div class="example">
+    <p><b>Example#2 <b>parse_ini_file()</b> の例</b></p>
+    <div class="example-contents"><p>
+     <a href="language.constants.html" class="link">定数</a>も ini ファイル上でパースされます。
+     そのため、<b>parse_ini_file()</b> をコールする前に
+     ini ファイル上の値として定数を定義した場合、返り値に統合されます。
+     ini ファイル上の値だけが評価されます。以下は例です：
+    </p></div>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />define</span><span style="color: #007700">(</span><span style="color: #DD0000">'BIRD'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'Dodo&nbsp;bird'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;セクションを無視してパースします。<br /></span><span style="color: #0000BB">$ini_array&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">parse_ini_file</span><span style="color: #007700">(</span><span style="color: #DD0000">"sample.ini"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$ini_array</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;セクションを意識してパースします。<br /></span><span style="color: #0000BB">$ini_array&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">parse_ini_file</span><span style="color: #007700">(</span><span style="color: #DD0000">"sample.ini"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$ini_array</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は、たとえば
+以下のようになります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+Array
+(
+    [one] =&gt; 1
+    [five] =&gt; 5
+    [animal] =&gt; Dodo bird
+    [path] =&gt; /usr/local/bin
+    [URL] =&gt; http://www.example.com/~username
+)
+Array
+(
+    [first_section] =&gt; Array
+        (
+            [one] =&gt; 1
+            [five] =&gt; 5
+            [animal] = Dodo bird
+        )
+
+    [second_section] =&gt; Array
+        (
+            [path] =&gt; /usr/local/bin
+            [URL] =&gt; http://www.example.com/~username
+        )
+
+)
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    この関数は、<var class="filename">php.ini</var> ファイルには何もしません。
+    このファイルはスクリプトを実行している時には既に処理されています。
+    この関数は、アプリケーション個有の設定ファイルを読み込む際に使用可能です。
+   <br />
+  </p></blockquote>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    ini ファイル上の値に英数字ではないものがある場合、
+    ダブルクォート(&quot;)で囲う必要があります。
+   <br />
+  </p></blockquote>
+  <blockquote><p><b class="note">注意</b>: 
+   <span class="simpara">
+    ini ファイル上でキーとして使ってはいけない単語があります。
+    それらは null, yes, no, true, false などが含まれます。
+    null, no および false は &quot;&quot; となり、yes および true は &quot;1&quot; となります。
+    次の文字 <i class="literal">{}|&amp;~![()&quot;</i> は、キーで使ってはいけません。
+    また、値の中で特別な意味を持ちます。
+   </span>
+  </p></blockquote>
+ </div>
+
+ 
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.move-uploaded-file.html">move_uploaded_file</a></div>
+ <div class="next" style="float: right;"><a href="function.pathinfo.html">pathinfo</a></div>
+ <div class="up"><a href="ref.filesystem.html">ファイルシステム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

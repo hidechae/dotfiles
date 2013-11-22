@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>直近の SQL ステートメントによって作用した行数を返す</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.PDOStatement-nextRowset.html">PDOStatement->nextRowset()</a></div>
+ <div class="next" style="float: right;"><a href="function.PDOStatement-setAttribute.html">PDOStatement->setAttribute()</a></div>
+ <div class="up"><a href="ref.pdo.html">PDO</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.PDOStatement-rowCount" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">PDOStatement-&gt;rowCount()</h1>
+  <p class="verinfo">(PHP 5 &gt;= 5.1.0, PECL pdo:0.1-1.0.3)</p><p class="refpurpose">PDOStatement->rowCount() ― 
+   直近の SQL ステートメントによって作用した行数を返す
+  </p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="classsynopsis">
+   <div class="ooclass"><b class="classname">PDOStatement</b></div>
+   <div class="methodsynopsis">
+    <span class="type">int</span> <span class="methodname"><b><b>rowCount</b></b></span>
+     ( <span class="methodparam">void</span>
+    )</div>
+
+  </div>
+
+  <p class="para">
+   <a href="function.PDOStatement-rowCount.html" class="xref">PDOStatement->rowCount()</a> は
+   相当する <i class="literal">PDOStatement</i> オブジェクトによって実行された
+   直近の DELETE, INSERT, UPDATE 文によって作用した行数を返します。
+  </p>
+  <p class="para">
+   関連する <i class="literal">PDOStatement</i> によって実行された直近の
+   SQL ステートメントが
+   SELECT 文の場合、いくつかのデータベースは文によって返された
+   行数を返すかも知れません。しかしながら、
+   この振る舞いは全てのデータベースで保証されていません。
+   さまざまな場所で使用するアプリケーションでは、
+   これに頼ってはいけません。
+  </p>
+ </div>
+
+ 
+  <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   行の数を返します。
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 削除された行数を返す</b></p>
+    <div class="example-contents"><p>
+     <a href="function.PDOStatement-rowCount.html" class="xref">PDOStatement->rowCount()</a> は
+     DELETE, INSERT, UPDATE 文によって作用した行数を返します。
+    </p></div>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/*&nbsp;FRUIT&nbsp;テーブルから全ての行を削除する&nbsp;*/<br /></span><span style="color: #0000BB">$del&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$dbh</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">prepare</span><span style="color: #007700">(</span><span style="color: #DD0000">'DELETE&nbsp;FROM&nbsp;fruit'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$del</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">execute</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">/*&nbsp;削除された行数を返す&nbsp;*/<br /></span><span style="color: #007700">print(</span><span style="color: #DD0000">"Return&nbsp;number&nbsp;of&nbsp;rows&nbsp;that&nbsp;were&nbsp;deleted:\n"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$count&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$del</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">rowCount</span><span style="color: #007700">();<br />print(</span><span style="color: #DD0000">"Deleted&nbsp;$count&nbsp;rows.\n"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+Deleted 9 rows.
+</pre></div>
+    </pre></div>
+   </div>
+   <div class="example">
+    <p><b>Example#2 SELECT 文によって返された行をカウントする</b></p>
+    <div class="example-contents"><p>
+     ほとんどのデータベースでは、<a href="function.PDOStatement-rowCount.html" class="xref">PDOStatement->rowCount()</a>
+     は SELECT 文によって作用した行数を返しません。代わりに、
+     <a href="function.PDO-query.html" class="xref">PDO->query()</a> を使って
+     意図する SELECT 文として同様の述部を持つ SELECT COUNT(*)
+     文を発行し、<a href="function.PDOStatement-fetchColumn.html" class="xref">PDOStatement->fetchColumn()</a>
+     を使って返される行数を取得することができます。
+     そうすることで、アプリケーションは正しい動作をすることができます。
+    </p></div>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$sql&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"SELECT&nbsp;COUNT(*)&nbsp;FROM&nbsp;fruit&nbsp;WHERE&nbsp;calories&nbsp;&gt;&nbsp;100"</span><span style="color: #007700">;<br />if&nbsp;(</span><span style="color: #0000BB">$res&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$conn</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #0000BB">$sql</span><span style="color: #007700">))&nbsp;{<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;SELECT&nbsp;文にマッチする行数をチェックする&nbsp;*/<br />&nbsp;&nbsp;</span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">$res</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetchColumn</span><span style="color: #007700">()&nbsp;&gt;&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">)&nbsp;{<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;実際の&nbsp;SELECT&nbsp;文を発行し、結果を処理する&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$sql&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"SELECT&nbsp;name&nbsp;FROM&nbsp;fruit&nbsp;WHERE&nbsp;calories&nbsp;&gt;&nbsp;100"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #0000BB">$sql</span><span style="color: #007700">)&nbsp;as&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;</span><span style="color: #DD0000">"Name:&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">'NAME'</span><span style="color: #007700">]&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;行がマッチしなかった場合&nbsp;--&nbsp;他に何かをする&nbsp;*/<br />&nbsp;&nbsp;</span><span style="color: #007700">else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;</span><span style="color: #DD0000">"No&nbsp;rows&nbsp;matched&nbsp;the&nbsp;query."</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br /></span><span style="color: #0000BB">$res&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$conn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+apple
+banana
+orange
+pear
+</pre></div>
+    </pre></div>
+   </div>
+
+  </p>
+ </div>
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.PDOStatement-columnCount.html" class="xref">PDOStatement->columnCount()</a></li>
+    <li class="member"><a href="function.PDOStatement-fetchColumn.html" class="xref">PDOStatement->fetchColumn()</a></li>
+    <li class="member"><a href="function.PDO-query.html" class="xref">PDO->query()</a></li>
+   </ul>
+  </p>
+
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.PDOStatement-nextRowset.html">PDOStatement->nextRowset()</a></div>
+ <div class="next" style="float: right;"><a href="function.PDOStatement-setAttribute.html">PDOStatement->setAttribute()</a></div>
+ <div class="up"><a href="ref.pdo.html">PDO</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

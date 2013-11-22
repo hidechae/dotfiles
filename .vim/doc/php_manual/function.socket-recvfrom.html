@@ -1,0 +1,309 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>接続しているかどうかによらず、ソケットからデータを受信する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.socket-recv.html">socket_recv</a></div>
+ <div class="next" style="float: right;"><a href="function.socket-select.html">socket_select</a></div>
+ <div class="up"><a href="ref.sockets.html">ソケット</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.socket-recvfrom" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">socket_recvfrom</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.0.7, PHP 5)</p><p class="refpurpose">socket_recvfrom ― 接続しているかどうかによらず、ソケットからデータを受信する</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">int</span> <span class="methodname"><b><b>socket_recvfrom</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$socket</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter reference">&$buf</tt></span>
+   , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$len</tt></span>
+   , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$flags</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter reference">&$name</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter reference">&$port</tt></span>
+  ] )</div>
+
+  <p class="para">
+   <b>socket_recvfrom()</b> 関数は、
+   ポート <i><tt class="parameter">port</tt></i>
+ (<b><tt>AF_UNIX</tt></b>
+   型のソケットである場合を除く) 上の <i><tt class="parameter">name</tt></i>
+
+   から受信した <i><tt class="parameter">len</tt></i>
+ バイトのデータを
+   <i><tt class="parameter">buf</tt></i>
+ に格納します。
+   <b>socket_recvfrom()</b> は、
+   接続済みのソケットだけでなく接続していないソケットに対しても使用可能です。
+   さらに、フラグを指定することでこの関数の挙動を設定できます。
+  </p>
+  <p class="para">
+   <i><tt class="parameter">name</tt></i>
+ と <i><tt class="parameter">port</tt></i>
+
+   は参照渡しとしなければなりません。接続していないソケットの場合は、
+   <i><tt class="parameter">name</tt></i>
+ はリモートホストの IP アドレスか
+   UNIX ソケットへのパスとなります。接続済みのソケットの場合は、
+   <i><tt class="parameter">name</tt></i>
+ は <b><tt>NULL</tt></b> とします。
+   また、<b><tt>AF_INET</tt></b> あるいは
+   <b><tt>AF_INET6</tt></b> 形式のまだ接続していないソケットの場合、
+   <i><tt class="parameter">port</tt></i>
+ にはリモートホストのポート番号を指定します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">socket</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">socket</tt></i>
+ には、
+       socket_create() で作成したソケットリソースを指定します。
+      </p>
+     </dd>
+
+    </dt>
+
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">buf</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       受信したデータが
+       <i><tt class="parameter">buf</tt></i>
+ に格納されます。
+      </p>
+     </dd>
+
+    </dt>
+
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">len</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       最大 <i><tt class="parameter">len</tt></i>
+ バイトまでのデータをリモートホストから取得します。
+      </p>
+     </dd>
+
+    </dt>
+
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">flags</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">flags</tt></i>
+ の値は、以下のフラグの任意の組み合わせを
+       論理 OR 演算子 (<i class="literal">|</i>) で連結したものとなります。
+      </p>
+      
+      <table border="5">
+       <caption><b><i><tt class="parameter">flags</tt></i>
+ に使用できる値</b></caption>
+       <colgroup>
+
+        <thead valign="middle">
+         <tr valign="middle">
+          <th colspan="1">フラグ</th>
+          <th colspan="1">説明</th>
+         </tr>
+
+        </thead>
+
+        <tbody valign="middle">
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left"><b><tt>MSG_OOB</tt></b></td>
+          <td colspan="1" rowspan="1" align="left">
+           帯域外 (out-of-band) のデータを処理する。
+          </td>
+         </tr>
+
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left"><b><tt>MSG_PEEK</tt></b></td>
+          <td colspan="1" rowspan="1" align="left">
+           受信キューの先頭にあるデータを受信し、
+           そのデータをそのままキューに残しておく。
+          </td>
+         </tr>
+
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left"><b><tt>MSG_WAITALL</tt></b></td>
+          <td colspan="1" rowspan="1" align="left">
+           少なくとも <i><tt class="parameter">len</tt></i>
+ バイト受信するまではブロックする。
+           しかし、もし何らかのシグナルを受信したりリモートホストとの接続が切断された場合は
+           これより少ないバイト数を返す可能性がある。
+          </td>
+         </tr>
+
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left"><b><tt>MSG_DONTWAIT</tt></b></td>
+          <td colspan="1" rowspan="1" align="left">
+           通常はブロックする場面であってもそのまま return する。
+          </td>
+         </tr>
+
+        </tbody>
+       </colgroup>
+
+      </table>
+
+     </dd>
+
+    </dt>
+
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">name</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <b><tt>AF_UNIX</tt></b> 型のソケットの場合は、
+       <i><tt class="parameter">name</tt></i>
+ はファイルへのパスとなります。
+       それ以外の場合は、未接続のソケットの場合には
+       <i><tt class="parameter">name</tt></i>
+ はリモートホストの IP アドレスとなります。
+       接続済みソケットの場合は <b><tt>NULL</tt></b> となります。
+      </p>
+     </dd>
+
+    </dt>
+
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">port</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       この引数は <b><tt>AF_INET</tt></b> 型あるいは
+       <b><tt>AF_INET6</tt></b> 型のソケットに対してのみ適用され、
+       データを受信するリモートホストのポートを指定します。
+       接続済みソケットの場合は
+       <i><tt class="parameter">port</tt></i>
+ は <b><tt>NULL</tt></b> となります。
+      </p>
+     </dd>
+
+    </dt>
+
+    
+   </dl>
+
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   <b>socket_recvfrom()</b> は、受信したバイト数を返します。
+   あるいはエラー時には -1 を返します。
+   エラーコードを取得するには <a href="function.socket-last-error.html" class="function">socket_last_error()</a>
+   をコールします。取得したエラーコードを
+   <a href="function.socket-strerror.html" class="function">socket_strerror()</a> に渡すと、
+   そのエラーについての説明を得ることができます。
+  </p>
+ </div>
+
+                     
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>socket_recvfrom()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />error_reporting</span><span style="color: #007700">(</span><span style="color: #0000BB">E_ALL&nbsp;</span><span style="color: #007700">|&nbsp;</span><span style="color: #0000BB">E_STRICT</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$socket&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">socket_create</span><span style="color: #007700">(</span><span style="color: #0000BB">AF_INET</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">SOCK_DGRAM</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">SOL_UDP</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">socket_bind</span><span style="color: #007700">(</span><span style="color: #0000BB">$socket</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'127.0.0.1'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1223</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$from&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">""</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$port&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">socket_recvfrom</span><span style="color: #007700">(</span><span style="color: #0000BB">$socket</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$buf</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">12</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$from</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$port</span><span style="color: #007700">);<br /><br />echo&nbsp;</span><span style="color: #DD0000">"リモートアドレス&nbsp;$from&nbsp;のポート&nbsp;$port&nbsp;から&nbsp;$buf&nbsp;を受信しました"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">PHP_EOL</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>
+     この例は、127.0.0.1 のポート 1223
+     との UDP ソケットを確立し、受信したデータを最大 12 バイトまで表示します。
+    </p></div>
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">4.3.0</td>
+       <td colspan="1" rowspan="1" align="left">
+        <b>socket_recvfrom()</b> はバイナリセーフとなりました。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.socket-recv.html" class="function">socket_recv()</a></li>
+    <li class="member"><a href="function.socket-send.html" class="function">socket_send()</a></li>
+    <li class="member"><a href="function.socket-sendto.html" class="function">socket_sendto()</a></li>
+    <li class="member"><a href="function.socket-create.html" class="function">socket_create()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.socket-recv.html">socket_recv</a></div>
+ <div class="next" style="float: right;"><a href="function.socket-select.html">socket_select</a></div>
+ <div class="up"><a href="ref.sockets.html">ソケット</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

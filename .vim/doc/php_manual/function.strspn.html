@@ -1,0 +1,197 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>マスクに一致する最初のセグメントの長さを返す</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.strrpos.html">strrpos</a></div>
+ <div class="next" style="float: right;"><a href="function.strstr.html">strstr</a></div>
+ <div class="up"><a href="ref.strings.html">Strings</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.strspn" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">strspn</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">strspn ― マスクに一致する最初のセグメントの長さを返す</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">int</span> <span class="methodname"><b><b>strspn</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$str1</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$str2</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$start</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$length</tt></span>
+  ]] )</div>
+
+  <p class="para">
+   マスクに一致する最初のセグメントの長さを求めます。
+  </p>
+  <p class="para">
+   たとえば、
+   <div class="informalexample">
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$var&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">strspn</span><span style="color: #007700">(</span><span style="color: #DD0000">"42&nbsp;is&nbsp;the&nbsp;answer,&nbsp;what&nbsp;is&nbsp;the&nbsp;question&nbsp;..."</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"1234567890"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+   このコードは、<var class="varname">$var</var> に 2 を代入します。これは、
+   &quot;1234567890&quot; からの文字を含む最長の部分が &quot;42&quot; であるためです。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">str1</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       最初の文字列。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">str2</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       次の文字列。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">start</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       調べ始める位置。
+       負の値を指定すると、文字列の末尾から数えた位置となります。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">length</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       調べる文字列の長さ。
+       負の値を指定すると、文字列の末尾からの長さとなります。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   <i><tt class="parameter">str1</tt></i>
+ の中で、全て
+   <i><tt class="parameter">str2</tt></i>
+ の中の文字からなる最初のセグメントの長さを返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">4.3.0</td>
+       <td colspan="1" rowspan="1" align="left">
+        <i><tt class="parameter">start</tt></i>
+ および <i><tt class="parameter">length</tt></i>
+
+        が追加されました。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>strspn()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">strspn</span><span style="color: #007700">(</span><span style="color: #DD0000">"foo"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"o"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;2<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <blockquote><p><b class="note">注意</b>: <span class="simpara">この関数はバイナリデータに対応しています。
+</span></p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.strcspn.html" class="function">strcspn()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.strrpos.html">strrpos</a></div>
+ <div class="next" style="float: right;"><a href="function.strstr.html">strstr</a></div>
+ <div class="up"><a href="ref.strings.html">Strings</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

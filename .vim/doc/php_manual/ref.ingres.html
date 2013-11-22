@@ -1,0 +1,867 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>Ingres II 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.pdo-informix.connection.html">PDO_INFORMIX DSN</a></div>
+ <div class="next" style="float: right;"><a href="function.ingres-autocommit.html">ingres_autocommit</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">Ingres II 関数</h1>
+  
+  
+  <div class="partintro">
+   <div id="ingres.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     以下の関数により、Ingres II データベースサーバにアクセスできるように
+     なります。
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      既に他のデータベースサーバにアクセスするための PHP 拡張モジュールを
+      使用している場合、Ingres は同一のコネクションについて複数のクエリや
+      トランザクションの並列実行ができない、つまり、この拡張モジュールに
+      おいて結果およびトランザクションのハンドルを得ることができないことに
+      注意する必要があります。クエリの結果は、別のクエリを送信する前に
+      処理する必要があり、トランザクションは別のトランザクションを
+      オープンする前にコミットまたはロールバックする必要があります
+      （これは、最初のクエリを送信する際に自動的に行われます）。
+     <br />
+    </p></blockquote>
+  </div>
+   
+  <div id="ingres.requirements" class="section">
+   <h2 class="title">要件</h2>
+   <p class="para">
+    Ingres サポートを有効にして PHP をコンパイルするには、
+    Ingres OpenAPI ライブラリとヘッダファイルが必要です。
+    </p>
+   </div>
+
+   
+
+
+
+<div id="ingres.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  この <a href="http://pecl.php.net/" class="link external">&raquo; PECL</a> 拡張
+モジュールは PHP にバンドルされていません。
+  この PECL 拡張モジュールをインストールする方法は、
+マニュアルの <a href="install.pecl.html" class="link">
+PECL 拡張モジュールのインストール</a> という章にあります。
+新規リリース・ダウンロード・ソースファイル・管理者情報・CHANGELOG
+といった関連する情報については、次の場所にあります。
+  <a href="http://pecl.php.net/package/ingres" class="link external">&raquo; http://pecl.php.net/package/ingres</a>.
+ </p>
+ <p class="para">
+  これらの関数を利用可能とするには、オプション
+  <span class="option">--with-ingres[=DIR]</span> を付け、 Ingres
+  サポートを有効にして PHP をコンパイルする必要があります。ただし、DIR は
+  Ingres ベースディレクトリで、<var class="filename">/II/ingres</var> が
+  デフォルトです。環境変数 II_SYSTEM が正しく設定されていない場合、
+  Ingres をインストールしたディレクトリを指定するために
+  <span class="option">--with-ingres=DIR</span> を使用することが
+  必要となる可能性があります。
+ </p>
+ <p class="para">
+  この拡張モジュールを Apache で使用する際に Apache が起動せず、 
+  &quot;PHP Fatal error:  Unable to start
+  ingres_ii module in Unknown on line 0&quot; というエラーが発生する場合、
+  環境変数 II_SYSTEM が正確に設定されているかどうかを確認してください。
+  &quot;export II_SYSTEM=&quot;/home/ingres/II&quot; を Apache を開始するスクリプトに
+  追加してください。この後に httpd を起動すればうまくいくはずです。
+ </p>
+</div>
+
+
+
+   
+   
+
+
+
+<div id="ingres.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+  <table border="5">
+   <caption><b>Ingres 設定オプション</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">名前</th>
+      <th colspan="1">デフォルト</th>
+      <th colspan="1">変更の可否</th>
+      <th colspan="1">変更履歴</th>
+    </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">ingres.allow_persistent</td>
+      <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.0.2 以降で使用可能です。PHP 5.1.0 で削除されました。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">ingres.max_persistent</td>
+     <td colspan="1" rowspan="1" align="left">&quot;-1&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.0.2 以降で使用可能です。PHP 5.1.0 で削除されました。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">ingres.max_links</td>
+      <td colspan="1" rowspan="1" align="left">&quot;-1&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.0.2 以降で使用可能です。PHP 5.1.0 で削除されました。</td>
+     </tr>
+
+     <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">ingres.default_database</td>
+      <td colspan="1" rowspan="1" align="left">NULL</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.0.2 以降で使用可能です。PHP 5.1.0 で削除されました。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">ingres.default_user</td>
+      <td colspan="1" rowspan="1" align="left">NULL</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.0.2 以降で使用可能です。PHP 5.1.0 で削除されました。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">ingres.default_password</td>
+      <td colspan="1" rowspan="1" align="left">NULL</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.0.2 以降で使用可能です。PHP 5.1.0 で削除されました。</td>
+     </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">ingres.report_db_warnings</td>
+     <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">ingres 1.1 以降で使用可能です。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">ingres.cursor_mode</td>
+     <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">ingres 1.1 以降で使用可能です。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">ingres.blob_segment_length</td>
+     <td colspan="1" rowspan="1" align="left">&quot;4096&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">ingres 1.2.0 以降で使用可能です。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">ingres.trace_connect</td>
+     <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">ingres 1.2.1 以降で使用可能です。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">ingres.timeout</td>
+     <td colspan="1" rowspan="1" align="left">&quot;-1&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">ingres 1.4.0 以降で使用可能です。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">ingres.array_index_start</td>
+     <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">ingres 1.4.0 以降で使用可能です。</td>
+    </tr>
+
+   </tbody>
+  </colgroup>
+
+ </table>
+
+ PHP_INI_* 定数の詳細および定義については
+<a href="ini.html" class="xref">php.ini ディレクティブ</a> を参照してください。
+ </p>
+</div>
+
+
+
+
+
+   <div id="ingres.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">
+     <a href="function.ingres-connect.html" class="function">ingres_connect()</a> および
+     <a href="function.ingres-pconnect.html" class="function">ingres_pconnect()</a> は Ingres II リンク ID を返します。
+    </p>
+   </div>
+
+   
+
+
+
+<div id="ingres.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <dl>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INGRES_ASSOC</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     フィールド名をキーとする配列でカラムデータを返します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INGRES_NUM</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     数値添字の配列でカラムデータを返します。
+     結果の最初のフィールドの添字は 1 となります。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INGRES_BOTH</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     数値添字・フィールド名キーの両方の形式でカラムデータを返します。
+    </span>
+   </dd>
+
+  </dt>
+
+    <dt>
+
+   <span class="term">
+    <b><tt>INGRES_EXT_VERSION</tt></b> 
+    (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     Ingres 拡張モジュールのバージョンを表します。
+     PECL 拡張モジュールのバージョン 1.2.0 以降で使用可能です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INGRES_API_VERSION</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     この拡張モジュールがビルドされた際の Ingres OpenAPI のバージョンを表します。
+     PECL 拡張モジュールのバージョン 1.2.0 以降で使用可能です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INGRES_CURSOR_READONLY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     Ingres カーソルが &#039;readonly&#039; モードでオープンされていることを表します。
+     PECL 拡張モジュールのバージョン 1.2.0 以降で使用可能です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INGRES_CURSOR_UPDATE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     Ingres カーソルが &#039;update&#039; モードでオープンされていることを表します。
+     PECL 拡張モジュールのバージョン 1.2.0 以降で使用可能です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INGRES_DATE_MULTINATIONAL</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     II_DATE_FORMAT の設定 MULTINATIONAL と等価です。
+     PECL 拡張モジュールのバージョン 1.2.0 以降で使用可能です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INGRES_DATE_MULTINATIONAL4</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     II_DATE_FORMAT の設定 MULTINATIONAL4 と等価です。
+     PECL 拡張モジュールのバージョン 1.2.0 以降で使用可能です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INGRES_DATE_FINNISH</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     II_DATE_FORMAT の設定 FINNISH と等価です。
+     PECL 拡張モジュールのバージョン 1.2.0 以降で使用可能です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INGRES_DATE_ISO</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     II_DATE_FORMAT の設定 ISO と等価です。
+     PECL 拡張モジュールのバージョン 1.2.0 以降で使用可能です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INGRES_DATE_ISO4</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     II_DATE_FORMAT の設定 ISO4 と等価です。
+     PECL 拡張モジュールのバージョン 1.2.0 以降で使用可能です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INGRES_DATE_GERMAN</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     II_DATE_FORMAT の設定 GERMAN と等価です。
+     PECL 拡張モジュールのバージョン 1.2.0 以降で使用可能です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INGRES_DATE_MDY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     II_DATE_FORMAT の設定 MDY と等価です。
+     PECL 拡張モジュールのバージョン 1.2.0 以降で使用可能です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INGRES_DATE_DMY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     II_DATE_FORMAT の設定 DMY と等価です。
+     PECL 拡張モジュールのバージョン 1.2.0 以降で使用可能です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INGRES_DATE_YMD</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     II_DATE_FORMAT の設定 YMD と等価です。
+     PECL 拡張モジュールのバージョン 1.2.0 以降で使用可能です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INGRES_MONEY_LEADING</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     金額の値の先頭に表示する文字を表します。
+     II_MONEY_FORMAT の設定 &#039;L:&#039; と等価です。
+     PECL 拡張モジュールのバージョン 1.2.0 以降で使用可能です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INGRES_MONEY_TRAILING</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     金額の値の最後に表示する文字を表します。
+     II_MONEY_FORMAT の設定 &#039;T:&#039; と等価です。
+     PECL 拡張モジュールのバージョン 1.2.0 以降で使用可能です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INGRES_STRUCTURE_BTREE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     デフォルトのテーブル構造あるいはインデックス構造を BTREE に設定します。
+     これは、接続時のオプション table_structure あるいは index_structure
+     と組み合わせて使用します。
+     PECL 拡張モジュールのバージョン 1.4.0 以降で使用可能です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INGRES_STRUCTURE_CBTREE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     デフォルトのテーブル構造あるいはインデックス構造を COMPRESSED BTREE に設定します。
+     これは、接続時のオプション table_structure あるいは index_structure
+     と組み合わせて使用します。
+     PECL 拡張モジュールのバージョン 1.4.0 以降で使用可能です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INGRES_STRUCTURE_HASH</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     デフォルトのテーブル構造あるいはインデックス構造を HASH に設定します。
+     これは、接続時のオプション table_structure あるいは index_structure
+     と組み合わせて使用します。
+     PECL 拡張モジュールのバージョン 1.4.0 以降で使用可能です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INGRES_STRUCTURE_CHASH</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     デフォルトのテーブル構造あるいはインデックス構造を COMPRESSED HASH に設定します。
+     これは、接続時のオプション table_structure あるいは index_structure
+     と組み合わせて使用します。
+     PECL 拡張モジュールのバージョン 1.4.0 以降で使用可能です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INGRES_STRUCTURE_HEAP</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     デフォルトのテーブル構造あるいはインデックス構造を HEAP に設定します。
+     これは、接続時のオプション table_structure あるいは index_structure
+     と組み合わせて使用します。
+     PECL 拡張モジュールのバージョン 1.4.0 以降で使用可能です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INGRES_STRUCTURE_CHEAP</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     デフォルトのテーブル構造あるいはインデックス構造を COMPRESSED HEAP に設定します。
+     これは、接続時のオプション table_structure あるいは index_structure
+     と組み合わせて使用します。
+     PECL 拡張モジュールのバージョン 1.4.0 以降で使用可能です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INGRES_STRUCTURE_ISAM</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     デフォルトのテーブル構造あるいはインデックス構造を ISAM に設定します。
+     これは、接続時のオプション table_structure あるいは index_structure
+     と組み合わせて使用します。
+     PECL 拡張モジュールのバージョン 1.4.0 以降で使用可能です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>INGRES_STRUCTURE_CISAM</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     デフォルトのテーブル構造あるいはインデックス構造を COMPRESSED ISAM に設定します。
+     これは、接続時のオプション table_structure あるいは index_structure
+     と組み合わせて使用します。
+     PECL 拡張モジュールのバージョン 1.4.0 以降で使用可能です。
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+</div>
+
+
+
+
+   <div id="ingres.examples" class="section">
+   <h2 class="title">例</h2>
+    <p class="para">
+     この例では、Ingres データベースに対する接続、クエリの実行、
+     結果の表示および接続解除の方法を説明します。
+     <div class="example">
+      <p><b>Example#1 シンプルな Ingres の例</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;接続し、データベースを選択します<br /></span><span style="color: #0000BB">$link&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">ingres_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'database'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'user'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'password'</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;or&nbsp;die(</span><span style="color: #DD0000">'接続できなせんでした:&nbsp;'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">ingres_error</span><span style="color: #007700">(</span><span style="color: #0000BB">$link</span><span style="color: #007700">));<br />echo&nbsp;</span><span style="color: #DD0000">'接続に成功しました'</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">//&nbsp;すべての&nbsp;Ingres&nbsp;データベース内に存在するテーブルから&nbsp;select&nbsp;します<br /></span><span style="color: #0000BB">$query&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'SELECT&nbsp;*&nbsp;FROM&nbsp;iirelation'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$returncode&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">ingres_query</span><span style="color: #007700">(</span><span style="color: #0000BB">$query</span><span style="color: #007700">,</span><span style="color: #0000BB">$link</span><span style="color: #007700">)&nbsp;or&nbsp;die(</span><span style="color: #DD0000">'問い合わせに失敗しました:&nbsp;'&nbsp;</span><span style="color: #007700">.<br /></span><span style="color: #0000BB">ingres_error</span><span style="color: #007700">(</span><span style="color: #0000BB">$link</span><span style="color: #007700">));<br /><br /></span><span style="color: #FF8000">//&nbsp;結果を&nbsp;HTML&nbsp;で出力します<br />//&nbsp;relid&nbsp;-&nbsp;テーブル名<br />//&nbsp;relowner&nbsp;-&nbsp;テーブルの所有者<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"&lt;table&gt;\n"</span><span style="color: #007700">;<br />while&nbsp;(</span><span style="color: #0000BB">$iirelation&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">ingres_fetch_object</span><span style="color: #007700">(</span><span style="color: #0000BB">INGRES_BOTH</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$link</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"\t&lt;tr&gt;\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"\t\t&lt;td&gt;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$iirelation</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">relid&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"&lt;/td&gt;\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"\t\t&lt;td&gt;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$iirelation</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">relowner&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"&lt;/td&gt;\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"\t&lt;/tr&gt;\n"</span><span style="color: #007700">;<br />}<br />echo&nbsp;</span><span style="color: #DD0000">"&lt;/table&gt;\n"</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">//&nbsp;トランザクションをコミットします<br /></span><span style="color: #0000BB">ingres_commit</span><span style="color: #007700">(</span><span style="color: #0000BB">$link</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">//&nbsp;接続を閉じます<br /></span><span style="color: #0000BB">ingres_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$link</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+   </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.ingres-autocommit.html">ingres_autocommit</a> ― autocommit をオンまたはオフに切替える</li><li><a href="function.ingres-close.html">ingres_close</a> ― Ingres II データベース接続を閉じる</li><li><a href="function.ingres-commit.html">ingres_commit</a> ― トランザクションをコミットする</li><li><a href="function.ingres-connect.html">ingres_connect</a> ― Ingres データベースへの接続をオープンする</li><li><a href="function.ingres-cursor.html">ingres_cursor</a> ― 指定したリンクリソースのカーソル名を取得する</li><li><a href="function.ingres-errno.html">ingres_errno</a> ― 直近に発生した ingres エラー番号を取得する</li><li><a href="function.ingres-error.html">ingres_error</a> ― 直近に発生したエラーのエラーメッセージを取得する</li><li><a href="function.ingres-errsqlstate.html">ingres_errsqlstate</a> ― 直近に発生した SQLSTATE エラーコードを取得する</li><li><a href="function.ingres-fetch-array.html">ingres_fetch_array</a> ― 1 行分の結果を配列に取得する</li><li><a href="function.ingres-fetch-object.html">ingres_fetch_object</a> ― 1 行分の結果をオブジェクトとして取得する</li><li><a href="function.ingres-fetch-row.html">ingres_fetch_row</a> ― 1 行分の結果を数値添字配列として取得する</li><li><a href="function.ingres-field-length.html">ingres_field_length</a> ― フィールド長を得る</li><li><a href="function.ingres-field-name.html">ingres_field_name</a> ― クエリ結果においてフィールド名を得る</li><li><a href="function.ingres-field-nullable.html">ingres_field_nullable</a> ― フィールドに NULL 値を設定可能かどうか調べる</li><li><a href="function.ingres-field-precision.html">ingres_field_precision</a> ― フィールドの精度を得る</li><li><a href="function.ingres-field-scale.html">ingres_field_scale</a> ― フィールドのスケールを得る</li><li><a href="function.ingres-field-type.html">ingres_field_type</a> ― クエリ結果においてフィールドの型を得る</li><li><a href="function.ingres-num-fields.html">ingres_num_fields</a> ― 直近のクエリにより返されたフィールドの数を得る</li><li><a href="function.ingres-num-rows.html">ingres_num_rows</a> ― 直近のクエリで作用されたレコードの数を取得し、返す</li><li><a href="function.ingres-pconnect.html">ingres_pconnect</a> ― Ingres II データベースへの持続的接続をオープンする</li><li><a href="function.ingres-query.html">ingres_query</a> ― Ingres II に SQL クエリを送信する</li><li><a href="function.ingres-rollback.html">ingres_rollback</a> ― トランザクションをロールバックする</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.pdo-informix.connection.html">PDO_INFORMIX DSN</a></div>
+ <div class="next" style="float: right;"><a href="function.ingres-autocommit.html">ingres_autocommit</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

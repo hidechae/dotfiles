@@ -1,0 +1,932 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>Informix 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.imap-utf8.html">imap_utf8</a></div>
+ <div class="next" style="float: right;"><a href="function.ifx-affected-rows.html">ifx_affected_rows</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">Informix 関数</h1>
+  
+
+  <div class="partintro">
+   <div id="ifx.intro" class="section">
+   <h2 class="title">導入</h2>
+    <p class="para">
+     Informix (IDS) 7.x, SE 7.x, Universal Server (IUS) 9.x ,IDS 2000 
+     用の Informix ドライバは、informix 拡張機能用ディレクトリの &quot;ifx.ec&quot;
+     および &quot;php3_ifx.h&quot; に実装されています。 
+     IDS 7.x のサポートは BYTE および TEXT カラムを完全にサポートしており、
+     完成度はかなり高いです。
+     IUS 9.x のサポートは部分的に完成しています。つまり、
+     新しいデータ型はサポートされていますが、SLOB および CLOB
+     のサポートについてはまだ作業中です。
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      
+この拡張モジュールは <a href="http://pecl.php.net/" class="link external">&raquo; PECL</a> レポジトリに移動
+されており、以下のバージョン以降 PHP にバンドルされなくなっています。 PHP 5.2.1.
+     <br />
+    </p></blockquote>
+   </div>
+
+   <div id="ifx.requirements" class="section">
+    <h2 class="title">要件</h2>
+     <blockquote><p><b class="note">注意</b>: 
+     <b>設定に関する注意</b>
+      
+       PHP Informix ドライバをコンパイルするには、ESQL/C が必要です。
+       7.2x 以降のバージョンに付属する ESQL/C は問題なく使用できます。
+       現在では、ESQL/C は Informix クライアント SDK に含まれています。
+      <br />
+      
+       &quot;configure&quot; スクリプトを実行する前に、必ず &quot;INFORMIXDIR&quot; 変数を
+       設定し、PATH に $INFORMIXDIR/bin を設定しておいてください。
+      <br />
+     </p></blockquote>
+   </div>
+
+   
+
+
+<div id="ifx.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  このモジュールで定義した関数を使用可能とするには、configure に
+  <span class="option">--with_informix[=DIR]</span> を指定して
+  PHP インタプリタをコンパイルする必要があります。ただし、DIR は
+  Informix のベースインストールディレクトリで、デフォルトはありません。
+ </p>
+</div>
+
+
+
+
+   
+
+
+<div id="ifx.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <blockquote><p><b class="note">注意</b>: 
+  
+   Informix 用環境変数 INFORMIXDIR および INFORMIXSERVER が PHP ifx
+   ドライバで利用可能であり、INFORMIX のバイナリがあるディレクトリに
+   パスが通っていることを確認してください。テストを始める前に
+   <a href="function.phpinfo.html" class="function">phpinfo()</a> と書いたスクリプトを実行し、
+   これを確認してください。
+   <a href="function.phpinfo.html" class="function">phpinfo()</a> があるスクリプトは、これらの環境変数の
+   一覧を出力します。これは、CGI 版の PHP および Apache mod_php で
+   共に行われます。これらの環境変数は Apache のスタートアップスクリプトで
+   設定する必要があります。
+  <br />
+  
+   また、Informix 共有ライブラリがローダーで利用可能である必要があります
+   (LD_LINBRARY_PATH または ld.so.conf/ldconfig を確認してください)。
+  <br />
+ </p></blockquote>
+ <blockquote><p><b class="note">注意</b>: 
+  <b>
+   BLOB (TEXT および BYTE カラム)の使用に関する注意
+  </b>
+  
+   通常、BLOB は BLOB ID により指定されます。
+   select クエリは、BYTE および TEXT カラム毎に &quot;blob id&quot; を返します。
+   (&quot;ifx_blobinfile(0);&quot; により) メモリー上で BLOB を得ることを選択した場合、
+   &quot;string_var = ifx_get_blob($blob_id);&quot; で内容を得ることができます。
+   BLOB カラムの内容をファイルに取得したい場合、
+   &quot;ifx_blobinfile(1);&quot; を使用してください。
+   &quot;ifx_get_blob($blob_id);&quot; によりファイル名を得ることができます。
+   BLOB の内容を得る際には、通常のファイル入出力を行ってください。
+  <br />
+  
+   insert/update クエリーに関しては、
+   &quot;<a href="function.ifx-create-blob.html" class="function">ifx_create_blob()</a>;&quot; により自分で 
+   &quot;blob id&quot; を作成する必要があります。
+   その後、blob id を配列に代入し、
+   クエリー文字列の中の blob カラムを疑問符 (?) で置換します。
+   updates/inserts の場合、<a href="function.ifx-update-blob.html" class="function">ifx_update_blob()</a> で blob
+   の内容を設定するのが便利でしょう。
+  <br />
+  
+   BLOB カラムの動作は、設定用変数で変更することができます。
+   これらの変数は、実行時にも設定可能です。
+  <br />
+  
+   設定変数 : ifx.textasvarchar
+  <br />
+  
+   設定変数 : ifx.byteasvarchar
+  <br />
+  
+   ランタイム関数 :
+  <br />
+  
+   ifx_textasvarchar(0) : TEXT カラムを有する select クエリーに blob
+     id を使用する
+  <br />
+  
+   ifx_byteasvarchar(0) : BYTE カラムを有する select クエリーに blob
+     id を使用する
+  <br />
+  
+   ifx_textasvarchar(1) : TEXT カラムを VARCHAR カラムとして返します。
+   このため、select クエリにおいて blob id を使用する必要はありません。
+  <br />
+  
+   ifx_byteasvarchar(1) : BYTE カラムを VARCHAR カラムとして返します。
+   このため、select クエリにおいて blob id を使用する必要はありません。
+  <br />
+  
+   設定変数 : ifx.blobinfile
+  <br />
+  
+   ランタイム関数 :
+  <br />
+  
+   ifx_blobinfile_mode(0) : メモリに BYTE カラムを返し、blob id
+   によりその内容を取り出す
+  <br />
+  
+   ifx_blobinfile_mode(1) : メモリに BYTE カラムを返し、blob id
+   によりそのファイル名を取り出す
+  <br />
+  
+   ifx_text/byteasvarchar を 1 に設定した場合、
+   通常の(しかしやや長い) VARCHAR フィールドのように
+   select クエリーで TEXT や BYTE カラムを使用することが可能です。
+   全ての文字列は、PHP で &quot;数えられる&quot; ので、これにより、
+   &quot;バイナリ・セーフ&quot;が維持されます。
+   これを正しく処理するのはあなた次第です。
+   返されるデータには何でも含むことができますが、その内容について
+   責任を負うことになります。
+  <br />
+  
+   ifx_blobinfile を 1 に設定した場合、blob の内容を得るために
+   ifx_get_blob(..) により返されたファイル名を使用してください。
+   この場合、行を取得する際に「Informix により作成された
+   テンポラリファイルを削除する」責任があります。
+   取得された新規の行は、BYTE カラム毎に新規のテンポラリファイルを
+   作成します。
+  <br />
+  
+   テンポラリファイルの位置は、環境変数 &quot;blobdir&quot; により設定することが
+   できます。デフォルトは、&quot;.&quot; (カレントディレクトリ)です。
+   putenv(blobdir=&quot;tmpblob&quot;); のようにすることにより、誤って残って
+   しまったテンポラリファイルを削除することが容易になります
+   (テンポラリファイルの名前は &quot;blb&quot; で始まります)。
+  <br />
+ </p></blockquote>
+ <blockquote><p><b class="note">注意</b>: 
+  <b>自動的に &quot;char&quot; (SQLCHAR および SQLNCHAR) データを取り去る</b>
+  
+   これは、次の設定変数により設定することが可能です。
+  <br />
+  
+   ifx.charasvarchar : 最後尾のスペースを何らかの削除処理を行わずに
+   自動的に取り去る場合に 1 に設定します。
+  <br />
+ </p></blockquote>
+ <blockquote><p><b class="note">注意</b>: 
+  <b><b><tt>NULL</tt></b> 値</b>
+  
+   設定変数 ifx.nullformat (およびランタイム関数
+   <a href="function.ifx-nullformat.html" class="function">ifx_nullformat()</a>) を <b><tt>TRUE</tt></b> に設定した場合、文字列
+   &quot;<b><tt>NULL</tt></b>&quot; として <b><tt>NULL</tt></b> カラムを返します。<b><tt>FALSE</tt></b> に設定した場合は
+   空文字列を返します。これにより、<b><tt>NULL</tt></b> カラムと空のカラムを識別することが
+   可能となります。
+  <br />
+ </p></blockquote>
+
+ <p class="para">
+ <table border="5">
+  <caption><b>Informix 設定オプション</b></caption>
+  <colgroup>
+
+   <thead valign="middle">
+    <tr valign="middle">
+     <th colspan="1">名前</th>
+     <th colspan="1">デフォルト</th>
+     <th colspan="1">変更の可否</th>
+     <th colspan="1">変更履歴</th>
+    </tr>
+
+   </thead>
+
+   <tbody valign="middle">
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">ifx.allow_persistent</td>
+     <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+     <td colspan="1" rowspan="1" align="left">PHP 5.2.1 で削除。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">ifx.max_persistent</td>
+     <td colspan="1" rowspan="1" align="left">&quot;-1&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+     <td colspan="1" rowspan="1" align="left">PHP 5.2.1 で削除。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">ifx.max_links</td>
+     <td colspan="1" rowspan="1" align="left">&quot;-1&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+     <td colspan="1" rowspan="1" align="left">PHP 5.2.1 で削除。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">ifx.default_host</td>
+     <td colspan="1" rowspan="1" align="left">NULL</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+     <td colspan="1" rowspan="1" align="left">PHP 5.2.1 で削除。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">ifx.default_user</td>
+     <td colspan="1" rowspan="1" align="left">NULL</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+     <td colspan="1" rowspan="1" align="left">PHP 5.2.1 で削除。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">ifx.default_password</td>
+     <td colspan="1" rowspan="1" align="left">NULL</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_SYSTEM</td>
+     <td colspan="1" rowspan="1" align="left">PHP 5.2.1 で削除。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">ifx.blobinfile</td>
+     <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 5.2.1 で削除。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">ifx.textasvarchar</td>
+     <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 5.2.1 で削除。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">ifx.byteasvarchar</td>
+     <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 5.2.1 で削除。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">ifx.charasvarchar</td>
+     <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 5.2.1 で削除。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">ifx.nullformat</td>
+     <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 5.2.1 で削除。</td>
+    </tr>
+
+   </tbody>
+  </colgroup>
+
+ </table>
+
+ PHP_INI_* 定数の詳細および定義については
+<a href="ini.html" class="xref">php.ini ディレクティブ</a> を参照してください。
+ </p>
+ 
+ <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+ 
+ <p class="para">
+ <dl>
+
+  <dt id="ini.ifx.allow-persistent">
+   <span class="term">
+    <i><tt class="parameter">ifx.allow_persistent</tt></i>
+
+    <a href="language.types.boolean.html" class="type boolean">boolean</a>
+   </span>
+   <dd>
+
+    <p class="para">
+     持続的な Informix 接続を可能とするかどうか。
+    </p>
+   </dd>
+
+  </dt>
+
+  
+  <dt id="ini.ifx.max-persistent">
+   <span class="term">
+    <i><tt class="parameter">ifx.max_persistent</tt></i>
+
+    <a href="language.types.integer.html" class="type integer">integer</a>
+   </span>
+   <dd>
+
+    <p class="para">
+     プロセス毎の持続的 Informix 接続の最大数。
+    </p>
+   </dd>
+
+  </dt>
+
+  
+  <dt id="ini.ifx.max-links">
+   <span class="term">
+    <i><tt class="parameter">ifx.max_links</tt></i>
+
+    <a href="language.types.integer.html" class="type integer">integer</a>
+   </span>
+   <dd>
+
+    <p class="para">
+     持続的接続を含むプロセス毎の Informix 接続の最大数。
+    </p>
+   </dd>
+
+  </dt>
+
+   <dt id="ini.ifx.default-host">
+   <span class="term">
+    <i><tt class="parameter">ifx.default_host</tt></i>
+
+    <a href="language.types.string.html" class="type string">string</a>
+   </span>
+   <dd>
+
+    <p class="para">
+     <a href="function.ifx-connect.html" class="function">ifx_connect()</a> または
+     <a href="function.ifx-pconnect.html" class="function">ifx_pconnect()</a> において、ホストが指定されない
+     場合のデフォルトのホスト。
+     <a href="features.safe-mode.html#ini.safe-mode" class="link">セーフモード</a> では適用されません。
+    </p>
+   </dd>
+
+  </dt>
+
+   <dt id="ini.ifx.default-user">
+   <span class="term">
+    <i><tt class="parameter">ifx.default_user</tt></i>
+
+    <a href="language.types.string.html" class="type string">string</a>
+   </span>
+   <dd>
+
+    <p class="para">
+     <a href="function.ifx-connect.html" class="function">ifx_connect()</a> または
+     <a href="function.ifx-pconnect.html" class="function">ifx_pconnect()</a> において、
+     ユーザが指定されない場合のデフォルトのユーザ。
+     <a href="features.safe-mode.html#ini.safe-mode" class="link">セーフモード</a> では適用されません。
+    </p>
+   </dd>
+
+  </dt>
+
+   <dt id="ini.ifx.default-password">
+   <span class="term">
+    <i><tt class="parameter">ifx.default_password</tt></i>
+
+    <a href="language.types.string.html" class="type string">string</a>
+   </span>
+   <dd>
+
+    <p class="para">
+     <a href="function.ifx-connect.html" class="function">ifx_connect()</a> または
+     <a href="function.ifx-pconnect.html" class="function">ifx_pconnect()</a> において、
+     パスワードが指定されない場合のデフォルトのパスワード。
+     <a href="features.safe-mode.html#ini.safe-mode" class="link">セーフモード</a> では適用されません。
+    </p>
+   </dd>
+
+  </dt>
+
+   <dt id="ini.ifx.blobinfile">
+   <span class="term">
+    <i><tt class="parameter">ifx.blobinfile</tt></i>
+
+    <a href="language.types.boolean.html" class="type boolean">boolean</a>
+   </span>
+   <dd>
+
+    <p class="para">
+     blob カラムをファイルに返したい場合には <b><tt>TRUE</tt></b> を指定します。
+     メモリ内に返したい場合には <b><tt>FALSE</tt></b> を指定します。
+     <a href="function.ifx-blobinfile-mode.html" class="function">ifx_blobinfile_mode()</a> により、実行時にこの設定を
+     上書きすることができます。
+    </p>
+   </dd>
+
+  </dt>
+
+   <dt id="ini.ifx.textasvarchar">
+   <span class="term">
+    <i><tt class="parameter">ifx.textasvarchar</tt></i>
+
+    <a href="language.types.boolean.html" class="type boolean">boolean</a>
+   </span>
+   <dd>
+
+    <p class="para">
+     select 文において TEXT カラムを通常の文字列として返したい場合は
+     <b><tt>TRUE</tt></b> を指定し、blob id パラメータを使用したい場合は <b><tt>FALSE</tt></b>
+     を指定します。
+     <a href="function.ifx-textasvarchar.html" class="function">ifx_textasvarchar()</a> により、実行時にこの設定を
+     上書きすることができます。
+    </p>
+   </dd>
+
+  </dt>
+
+   <dt id="ini.ifx.byteasvarchar">
+   <span class="term">
+    <i><tt class="parameter">ifx.byteasvarchar</tt></i>
+
+    <a href="language.types.boolean.html" class="type boolean">boolean</a>
+   </span>
+   <dd>
+
+    <p class="para">
+     select 文において BYTE カラムを通常の文字列として返したい場合は
+     <b><tt>TRUE</tt></b> を指定し、blob id パラメータを使用したい場合は <b><tt>FALSE</tt></b>
+     を指定します。
+     <a href="function.ifx-byteasvarchar.html" class="function">ifx_byteasvarchar()</a> により、実行時にこの設定を
+     上書きすることができます。
+    </p>
+   </dd>
+
+  </dt>
+
+   <dt id="ini.ifx.charasvarchar">
+   <span class="term">
+    <i><tt class="parameter">ifx.charasvarchar</tt></i>
+
+    <a href="language.types.boolean.html" class="type boolean">boolean</a>
+   </span>
+   <dd>
+
+    <p class="para">
+     取得時に CHAR カラムから末尾の空白を取り除きたい場合に <b><tt>TRUE</tt></b>
+     を指定してください。
+    </p>
+   </dd>
+
+  </dt>
+
+   <dt id="ini.ifx.nullformat">
+   <span class="term">
+    <i><tt class="parameter">ifx.nullformat</tt></i>
+
+    <a href="language.types.boolean.html" class="type boolean">boolean</a>
+   </span>
+   <dd>
+
+    <p class="para">
+     リテラル文字列 &quot;<b><tt>NULL</tt></b>&quot; として <b><tt>NULL</tt></b> カラムを返したい場合に <b><tt>TRUE</tt></b>、
+     空の文字列として返したい場合は <b><tt>FALSE</tt></b> を指定してください。
+     <a href="function.ifx-nullformat.html" class="function">ifx_nullformat()</a> により、実行時にこの設定を
+     上書きすることができます。
+    </p>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+ </p>
+</div>
+
+
+
+
+
+   <div id="ifx.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">
+    </p>
+   </div>
+
+   
+
+
+<div id="ifx.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <dl>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IFX_SCROLL</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IFX_HOLD</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IFX_LO_RDONLY</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IFX_LO_WRONLY</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IFX_LO_APPEND</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IFX_LO_RDWR</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IFX_LO_BUFFER</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>IFX_LO_NOBUFFER</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+</div>
+
+
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.ifx-affected-rows.html">ifx_affected_rows</a> ― クエリで変更された行の数を得る</li><li><a href="function.ifx-blobinfile-mode.html">ifx_blobinfile_mode</a> ― 全ての select クエリに関するデフォルトの BLOB モードを設定する</li><li><a href="function.ifx-byteasvarchar.html">ifx_byteasvarchar</a> ― デフォルトのバイトモードを設定する</li><li><a href="function.ifx-close.html">ifx_close</a> ― Informix 接続を閉じる</li><li><a href="function.ifx-connect.html">ifx_connect</a> ― Informix サーバへの接続をオープンする</li><li><a href="function.ifx-copy-blob.html">ifx_copy_blob</a> ― 指定した BLOB オブジェクトを二重化する</li><li><a href="function.ifx-create-blob.html">ifx_create_blob</a> ― BLOB オブジェクトを作成する</li><li><a href="function.ifx-create-char.html">ifx_create_char</a> ― 文字オブジェクトを作成する</li><li><a href="function.ifx-do.html">ifx_do</a> ― 事前に準備された SQL 文を実行する</li><li><a href="function.ifx-error.html">ifx_error</a> ― 直近の Informix コールのエラーコードを返す</li><li><a href="function.ifx-errormsg.html">ifx_errormsg</a> ― 直近の Informix コールのエラーメッセージを返す</li><li><a href="function.ifx-fetch-row.html">ifx_fetch_row</a> ― 行を連想配列として取得する</li><li><a href="function.ifx-fieldproperties.html">ifx_fieldproperties</a> ― SQL フィールドプロパティのリスト</li><li><a href="function.ifx-fieldtypes.html">ifx_fieldtypes</a> ― Informix SQL フィールドのリスト</li><li><a href="function.ifx-free-blob.html">ifx_free_blob</a> ― BLOB オブジェクトを削除する</li><li><a href="function.ifx-free-char.html">ifx_free_char</a> ― 文字オブジェクトを削除する</li><li><a href="function.ifx-free-result.html">ifx_free_result</a> ― クエリに関するリソースを解放する</li><li><a href="function.ifx-get-blob.html">ifx_get_blob</a> ― BLOB オブジェクトの内容を返す</li><li><a href="function.ifx-get-char.html">ifx_get_char</a> ― 文字オブジェクトの内容を返す</li><li><a href="function.ifx-getsqlca.html">ifx_getsqlca</a> ― クエリ実行後、sqlca.sqlerrd[0..5] の値を得る</li><li><a href="function.ifx-htmltbl-result.html">ifx_htmltbl_result</a> ― クエリ結果の全行を HTML テーブルにフォーマットする</li><li><a href="function.ifx-nullformat.html">ifx_nullformat</a> ― 取得する行のデフォルトの返り値を設定する</li><li><a href="function.ifx-num-fields.html">ifx_num_fields</a> ― クエリのカラム数を返す</li><li><a href="function.ifx-num-rows.html">ifx_num_rows</a> ― クエリから既に取得された行の数を数える</li><li><a href="function.ifx-pconnect.html">ifx_pconnect</a> ― 持続的 Informix 接続をオープンする</li><li><a href="function.ifx-prepare.html">ifx_prepare</a> ― SQL 文を実行用に準備する</li><li><a href="function.ifx-query.html">ifx_query</a> ― Informix クエリを送信する</li><li><a href="function.ifx-textasvarchar.html">ifx_textasvarchar</a> ― デフォルトのテキストモードを設定する</li><li><a href="function.ifx-update-blob.html">ifx_update_blob</a> ― BLOB オブジェクトの内容を更新する</li><li><a href="function.ifx-update-char.html">ifx_update_char</a> ― 文字オブジェクトの内容を更新する</li><li><a href="function.ifxus-close-slob.html">ifxus_close_slob</a> ― SLOB オブジェクトを削除する</li><li><a href="function.ifxus-create-slob.html">ifxus_create_slob</a> ― SLOB オブジェクトを作成し、オープンする</li><li><a href="function.ifxus-free-slob.html">ifxus_free_slob</a> ― SLOB オブジェクトを削除する</li><li><a href="function.ifxus-open-slob.html">ifxus_open_slob</a> ― SLOB オブジェクトをオープンする</li><li><a href="function.ifxus-read-slob.html">ifxus_read_slob</a> ― SLOB オブジェクトから n バイト読みこむ</li><li><a href="function.ifxus-seek-slob.html">ifxus_seek_slob</a> ― 現在のファイル位置またはシーク位置を返す</li><li><a href="function.ifxus-tell-slob.html">ifxus_tell_slob</a> ― 現在のファイルまたはシーク位置を返す</li><li><a href="function.ifxus-write-slob.html">ifxus_write_slob</a> ― SLOB オブジェクトに文字列を書きこむ</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.imap-utf8.html">imap_utf8</a></div>
+ <div class="next" style="float: right;"><a href="function.ifx-affected-rows.html">ifx_affected_rows</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

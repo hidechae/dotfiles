@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>プリペアドステートメントを実行する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.odbc-exec.html">odbc_exec</a></div>
+ <div class="next" style="float: right;"><a href="function.odbc-fetch-array.html">odbc_fetch_array</a></div>
+ <div class="up"><a href="ref.uodbc.html">ODBC</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.odbc-execute" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">odbc_execute</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">odbc_execute ― プリペアドステートメントを実行する</p>
+
+ </div>
+ <div class="refsect1 u">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>odbc_execute</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$result_id</tt></span>
+   [, <span class="methodparam"><span class="type">array</span> <tt class="parameter">$parameters_array</tt></span>
+  ] )</div>
+
+  <p class="para">
+   <a href="function.odbc-prepare.html" class="function">odbc_prepare()</a> で準備された命令を実行します。
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。 配列
+   <i><tt class="parameter">parameters_array</tt></i>
+ は、
+   命令の中にパラメータを有する場合にのみ指定する必要があります。
+  </p>
+  <p class="para">
+   プリペアドステートメントの中のプレースホルダが、
+   <i><tt class="parameter">parameter_array</tt></i>
+ 内のパラメータで順に置き換えられます。
+   この関数をコールした際に、配列の要素は文字列に変換されます。
+  </p>
+  <p class="para">
+   <i><tt class="parameter">parameter_array</tt></i>
+ の中でシングルクォートで括られたデータがある場合、
+   それはファイル名と解釈されます。そのファイルの内容が、
+   該当するプレースホルダのデータとしてデータベースサーバに送信されます。
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    PHP 4.1.1 以降、
+    このファイル読み込み機能には以下のような制限が加えられるようになりました。
+    <ul class="itemizedlist">
+     <li class="listitem">
+      <span class="simpara">
+       ファイルの読み込み機能は、
+       <a href="features.safe-mode.html#ini.safe-mode" class="link">セーフモード</a> や <a href="features.safe-mode.html#ini.open-basedir" class="link">open-basedir</a>
+       による制限を<em class="emphasis">一切</em>受けていませんでした。
+       これは PHP 4.2.0 で修正されました。
+      </span>
+     </li>
+     <li class="listitem">
+      <span class="simpara">
+       <a href="features.remote-files.html" class="link">リモートファイル</a>
+       はサポートされません。
+      </span>
+     </li>
+     <li class="listitem">
+      <span class="simpara">
+       シングルクォートで括られたデータを純粋に文字列として使用したい場合は、
+       空白などの別の文字を前後に付加する必要があります。
+       それにより、パラメータがファイル名とみなされることがなくなります
+       (もしこのオプションが不要なら、別の仕組み、たとえば
+       <a href="function.odbc-exec.html" class="function">odbc_exec()</a>
+       で直接クエリを実行するなどを使用する必要があります)。
+      </span>
+     </li>
+    </ul>
+   <br />
+  </p></blockquote>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.odbc-exec.html">odbc_exec</a></div>
+ <div class="next" style="float: right;"><a href="function.odbc-fetch-array.html">odbc_fetch_array</a></div>
+ <div class="up"><a href="ref.uodbc.html">ODBC</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

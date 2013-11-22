@@ -1,0 +1,2047 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>е▐еые┴е╨еде╚╩╕╗·╬є┤╪┐Ї (mbstring)</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.msql.html">msql</a></div>
+ <div class="next" style="float: right;"><a href="function.mb-check-encoding.html">mb_check_encoding</a></div>
+ <div class="up"><a href="funcref.html">┤╪┐Їеъе╒ебеьеєе╣</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">е▐еые┴е╨еде╚╩╕╗·╬є┤╪┐Ї (mbstring)</h1> 
+  
+  <div class="partintro">
+   
+   <div id="mbstring.intro" class="section">
+    <h2 class="title">╞│╞■</h2>
+    <p class="para">
+     ┴┤д╞д╬╩╕╗·дЄе╖еєе░еые╨еде╚д╟░ь┬╨░ь╔╜╕╜▓─╟╜д╩╕└╕ьд╧┐Ї┬┐дпдвдъд▐д╣дмбв
+     ╩╕╗·╔╜╕╜д╦├▒░ье╨еде╚д╦дшды╔╜╕╜╚╧░╧дЄ▒█дидыд█д╔┬┐дпд╬╩╕╗·дЄ╔м═╫д╚д╣ды╕└╕ьдт┬┐дпдвдъд▐д╣
+     (1 е╨еде╚д╧ 8 е╙е├е╚длдщ╣╜└од╡дьд▐д╣бг│╞е╙е├е╚д╦д╧бв1 двдыддд╧ 0 д╬
+     2 ╝я╬рд╬├═д╖дл╩▌╗¤д╟днд▐д╗дєбгд╜д╬д┐дсбв├▒░ьд╬е╨еде╚д╟╔╜д╣д│д╚д╬д╟днды├═д╧
+     256 (2 д╬ 8 ╛ш) ╝я╬рд▐д╟д╚д╩дъд▐д╣)бг
+     е▐еые┴е╨еде╚╩╕╗·д╬еиеєе│б╝е╟егеєе░╦бд╧бв
+     256 дЄ▒█диды╩╕╗·дЄ─╠╛яд╬е╙е├е╚├▒░╠д╬╔ф╣ц▓╜е╖е╣е╞ерд╟╔╜╕╜д╣дыд┐дсд╦│л╚пд╡дьд▐д╖д┐бг
+    </p>
+    <p class="para">
+     е▐еые┴е╨еде╚еиеєе│б╝е╟егеєе░д╟╔ф╣ц▓╜д╡дьд┐╩╕╗·╬єдЄ (trim, split, splice д╩д╔д╟)
+     ╜ш═¤д╣ды║▌бвд│джд╖д┐еиеєе│б╝е╟егеєе░д╟д╧╞єд─░╩╛хд╬╧в┬│д╣дые╨еде╚дм
+     ░ьд─д╬╩╕╗·дЄ╔╜д╣▓─╟╜└ндмдвдыд┐дсбв╞├╩╠д╩┤╪┐ЇдЄ╗╚═╤д╣ды╔м═╫дмдвдъд▐д╣бг
+     е▐еые┴е╨еде╚д╦┬╨▒■д╖д╩дд╩╕╗·╬є┤╪┐ЇдЄ╩╕╗·╬єд╦┼м═╤д╖д┐╛ь╣чбв
+     е▐еые┴е╨еде╚╩╕╗·д╬└ш╞ме╨еде╚д▐д┐д╧╜к╬╗е╨еде╚дЄ╕б╜╨д╟днд║д╦╩╕╗·╬єдЄ▓їд╖бв
+     ┬┐дпд╬╛ь╣чд╦д╧╕╡д╬░╒╠гдЄ╝║дяд╗д╞д╖д▐дж▓─╟╜└ндмдвдъд▐д╣бг
+    </p>
+    <p class="para">
+     <i class="literal">mbstring</i> д╧е▐еые┴е╨еде╚┬╨▒■д╬╩╕╗·╬є┤╪┐ЇдЄ─є╢бд╖бв
+     PHP д╟е▐еые┴е╨еде╚еиеєе│б╝е╟егеєе░дЄ╜ш═¤д╣дыд│д╚дЄ═╞░╫д╦д╖д▐д╣бг
+     д╜дьд╦▓├дид╞бв<i class="literal">mbstring</i> д╧бв
+     ▓─╟╜д╩╚╧░╧д╟д╬╩╕╗·еиеєе│б╝е╟егеєе░д╬╩╤┤╣дЄ╜ш═¤д╖д▐д╣бг
+     <i class="literal">mbstring</i> д╧ UTF-8 дф UCS-2 д╬дшджд╩ Unicode
+     д╦┤Ёд┼дпеиеєе│б╝е╟егеєе░дф┬┐дпд╬е╖еєе░еые╨еде╚еиеєе│б╝е╟егеєе░дЄ╜ш═¤д╣дыд╬д╦╩╪═°д╟д╣
+     (┬╨▒■д╣дыеиеєе│б╝е╟егеєе░дЄ░╩▓╝д╦╝ид╖д▐д╣)бг
+    </p>
+
+    <div id="mbstring.php4.req" class="section">
+     <h2 class="title">PHP д╬╩╕╗·еиеєе│б╝е╟егеєе░д╦┤╪д╣ды═╫╖я</h2>
+     <p class="para">
+      ░╩▓╝д╬╖┐д╬еиеєе│б╝е╟егеєе░дмбвPHP д╟░┬┴┤д╦╗╚═╤д╣дыд│д╚дмд╟днд▐д╣бг
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para">
+         е╖еєе░еые╨еде╚еиеєе│б╝е╟егеєе░д╟бв
+         <ul class="itemizedlist">
+          <li class="listitem">
+           <span class="simpara">
+            <i class="literal">00h</i> длдщ <i class="literal">7fh</i> д╬╚╧░╧д╬╩╕╗·д╦┤╪д╖д╞бв
+            ASCII ╕▀┤╣ (ISO646 ╕▀┤╣) д╬е▐е├е╘еєе░дЄ═нд╣дыбг
+           </span>
+          </li>
+         </ul>
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         е▐еые┴е╨еде╚еиеєе│б╝е╟егеєе░д╟бв
+         <ul class="itemizedlist">
+          <li class="listitem">
+           <span class="simpara">
+            <i class="literal">00h</i> длдщ <i class="literal">7fh</i> д╬╚╧░╧д╬╩╕╗·д╟д╧бв
+            ASCII ╕▀┤╣д╬е▐е├е╘еєе░дЄ═нд╣дыбг
+           </span>
+          </li>
+          <li class="listitem">
+           <span class="simpara">
+            ISO2022 еие╣е▒б╝е╫е╖б╝е▒еєе╣дЄ╗╚═╤д╖д╩ддбг
+           </span>
+          </li>
+          <li class="listitem">
+           <span class="simpara">
+            ├▒░ьд╬╩╕╗·дЄ╔╜д╣╩г┐Їе╨еде╚д╬ддд║дьд╦дкддд╞дт
+            <i class="literal">00h</i> длдщ <i class="literal">7fh</i>
+            д╬├═дЄ╗╚═╤д╖д╩ддбг
+           </span>
+          </li>
+         </ul>  
+        </p>
+       </li>
+      </ul>
+     </p>
+     <p class="para">
+      PHP д╟╞░║юд╖д╩ддд╚╗╫дядьды╩╕╗·еиеєе│б╝е╟егеєе░д╬╬удЄ░╩▓╝д╦╝ид╖д▐д╣бг
+      <div class="informalexample">
+       <div class="example-contents">
+<div class="cdata"><pre>
+JIS, SJIS, ISO-2022-JP, BIG-5
+</pre></div>
+       </div>
+
+      </div>
+     </p>
+     <p class="para">
+      д│дьдщд╬еиеєе│б╝е╟егеєе░д╟╜ёдлдьд┐ PHP е╣епеъе╫е╚д╧бв
+      ╞├д╦╔ф╣ц▓╜д╡дьд┐╩╕╗·╬єдме╣епеъе╫е╚д╟╡н╜╥╗╥дфеъе╞ещеыд╦╗╚═╤д╡дьды╛ь╣чд╦д╧бв
+      ╞░║юд╖д╩дд▓─╟╜└ндмдвдъд▐д╣дмбв╞■╬╧д╡дьды HTTP епеиеъд╦┤╪д╖д╞
+      <i class="literal">mbstring</i> д╬╞й▓с┼кд╩еиеєе│б╝е╟егеєе░е╒егеые┐дЄ
+      └▀─ъд╣дыд│д╚д╟д│дьдщд╬еиеєе│б╝е╟егеєе░дЄд█д╚дєд╔╗╚═╤д╖д╩дддшджд╦д╣дыд│д╚дмд╟днд▐д╣бг
+     </p>
+     <blockquote><p><b class="note">├э░╒</b>: 
+      
+       SJIS, BIG5, CP936, CP949, GB18030 д╧бв╞╔╝╘дме╤б╝е╡/е│еєе╤едещбв
+       ╩╕╗·еиеєе│б╝е╟егеєе░д╚╩╕╗·еиеєе│б╝е╟егеєе░д╬╠ф┬ъ┼└д╦д─ддд╞└║─╠д╖д╞ддд╩дд╕┬дъ
+       ╞т╔Їеиеєе│б╝е╟егеєе░д╚д╖д╞╗╚═╤д╣дыд┘днд╟д╧двдъд▐д╗дєбг
+      <br />
+     </p></blockquote>
+     <blockquote><p><b class="note">├э░╒</b>: 
+      
+       PHP д╟е╟б╝е┐е┘б╝е╣д╦└▄┬│д╣ды╛ь╣чбв└н╟╜дЄ╕■╛хд╡д╗дыд┐дсд╦е╟б╝е┐е┘б╝е╣д╚ PHP
+       д╬╞т╔Їеиеєе│б╝е╟егеєе░д╦д─ддд╞╞▒д╕╩╕╗·еиеєе│б╝е╟егеєе░дЄ╗╚═╤д╣дыд│д╚дЄ┐ф╛йд╖д▐д╣бг
+      <br />
+      
+       PostgreSQL дЄ╗╚═╤д╖д╞ддды╛ь╣чбв
+       е╨е├епеиеєе╔д╬╩╕╗·еиеєе│б╝е╟егеєе░д╚░█д╩ды╩╕╗·еиеєе│б╝е╟егеєе░дЄ╗╚═╤д╣дыд│д╚дм▓─╟╜д╟д╣бг
+       ╛▄║┘д╦д─ддд╞д╧бвPostgreSQL д╬е▐е╦ехевеыдЄ╗▓╛╚дпд└д╡ддбг
+      <br />
+     </p></blockquote>
+    </div>
+   </div>
+
+   
+
+
+
+<div id="mbstring.installation" class="section">
+  <h2 class="title">едеєе╣е╚б╝еы╝ъ╜ч</h2>
+  <p class="para">
+   <i class="literal">mbstring</i> д╧│╚─еете╕ехб╝еыд╟д╣бгд─д▐дъбве╟е╒ейеые╚д╟д╧
+   ═н╕·д╦д╩дщд╩ддд╚ддджд│д╚д╟д╣бг
+   <i class="literal">configure</i> е╣епеъе╫е╚д╟ете╕ехб╝еыдЄ═н╕·д╦д╣ды╔м═╫дм
+   двдъд▐д╣бг╛▄║┘д╧бв<a href="install.html" class="link">едеєе╣е╚б╝еы</a>д╬
+   └сдЄ╗▓╛╚д╖д╞дпд└д╡ддбг
+  </p>
+  <p class="simpara">
+   <i class="literal">mbstring</i> ете╕ехб╝еыд╦┤╪╖╕д╣ды└▀─ъеке╫е╖ечеєд╧
+   ░╩▓╝д╬д╚дкдъд╟д╣бг
+  </p>
+  <p class="para">
+  <ul class="itemizedlist">
+   <li class="listitem">
+    <p class="para">
+     <span class="option">--enable-mbstring</span>:
+     <i class="literal">mbstring</i> ┤╪┐ЇдЄ═н╕·д╦д╖д▐д╣бгд│д╬еке╫е╖ечеєд╧бв
+     <i class="literal">mbstring</i> ┤╪┐ЇдЄ═°═╤д╣дыд┐дсд╦╔м═╫д╟д╣бг
+    </p>
+    <p class="para">
+     <i class="literal">mbstring</i> │╚─еете╕ехб╝еыдЄ╗╚═╤д╣дыд┐дсд╦д╧бв
+     <span class="productname">libmbfl</span>ещеде╓ещеъдм╔м═╫д╟д╣бг
+     <span class="productname">libmbfl</span>д╧бв<i class="literal">mbstring</i> 
+     │╚─еете╕ехб╝еыд╦е╨еєе╔еыд╡дьд╞ддд▐д╣бге╖е╣е╞ерд╦едеєе╣е╚б╝еыд╡дьд╞ддды
+     <span class="productname">libmbfl</span> дЄ═°═╤д╣ды╛ь╣чбв
+     <span class="option">--with-libmbfl[=DIR]</span> дЄ╗╪─ъд╖д▐д╣бг
+    </p>
+    <p class="para">
+     PHP 4.3.0 ░╩╣▀бв<i class="literal">mbstring</i> │╚─еете╕ехб╝еыд╧
+     ╞№╦▄╕ьд╬д█длд╦├ц╣ё╕ь (┤╩┬╬╗·)бж├ц╣ё╕ь (╚╦┬╬╗·)бж
+     ┤┌╣ё╕ьбжеэе╖ев╕ьдЄе╡е▌б╝е╚д╣дыдшджд╦╡б╟╜│╚─ед╡дьд▐д╖д┐бг
+    </p>
+    <p class="para">
+     PHP 4.3.4░╩┴░д╬е╨б╝е╕ечеєд╬╛ь╣чбв
+     д│д╬╡б╟╜дЄ╗╚═╤д╣дыд╦д╧бв<span class="option">--enable-mbstring=LANG</span>д╬
+     <i class="literal">LANG</i> е╤ещесб╝е┐д╦
+     ░╩▓╝д╬еке╫е╖ечеєд╬ддд║дьдлдЄ─╔▓├д╣ды╔м═╫дмдвдъд▐д╣бг
+     <span class="option">--enable-mbstring=cn</span> дЄ
+     ╗╚═╤д╖д┐╛ь╣чбв┤╩┬╬╗·├ц╣ё╕ьд╬еиеєе│б╝е╟егеєе░дме╡е▌б╝е╚д╡дьд▐д╣бг
+     <span class="option">--enable-mbstring=tw</span> дЄ
+     ╗╚═╤д╖д┐╛ь╣чбв╚╦┬╬╗·├ц╣ё╕ьд╬еиеєе│б╝е╟егеєе░дме╡е▌б╝е╚д╡дьд▐д╣бг
+     <span class="option">--enable-mbstring=kr</span> дЄ
+     ╗╚═╤д╖д┐╛ь╣чбв┤┌╣ё╕ьд╬еиеєе│б╝е╟егеєе░дме╡е▌б╝е╚д╡дьд▐д╣бг
+     <span class="option">--enable-mbstring=ru</span> дЄ
+     ╗╚═╤д╖д┐╛ь╣чбвеэе╖ев╕ьд╬еиеєе│б╝е╟егеєе░дме╡е▌б╝е╚д╡дьд▐д╣бгд╜д╖д╞бв
+     <span class="option">--enable-mbstring=ja</span> (е╟е╒ейеые╚)дЄ
+     ╗╚═╤д╖д┐╛ь╣чбв╞№╦▄╕ьд╬еиеєе│б╝е╟егеєе░дме╡е▌б╝е╚д╡дьд▐д╣бг
+     <span class="option">--enable-mbstring=all</span>
+     дЄ╗╪─ъд╖д┐╛ь╣чбве╡е▌б╝е╚д╡дьдыд╣д┘д╞д╬╩╕╗·еиеєе│б╝е╟егеєе░дм═н╕·д╚д╩дъд▐д╣бг
+     ░╩┴░д╬е╨б╝е╕ечеєд╚д╬╕▀┤╣└нд╬д┐дсбв▓┐дтеке╫е╖ечеєдЄ╗╪─ъд╗д║д╦
+     <span class="option">--enable-mbstring</span> дЄ╗╚═╤д╖д┐╛ь╣чд╧
+     ╞№╦▄╕ьд╬еиеєе│б╝е╟егеєе░дме╡е▌б╝е╚д╡дьд▐д╣бг
+    </p>
+    <blockquote><p><b class="note">├э░╒</b>: 
+     
+      PHP 4.3.4░╩╣▀д╟д╧бв<span class="option">--enable-mbstring</span>д╦дшдъбв
+      <span class="productname">libmbfl</span>д╟е╡е▌б╝е╚д╡дьд╞ддды┴┤д╞д╬еиеєе│б╝е╟егеєе░дм═н╕·д╚д╩дыдшдж
+      д╦д╩д├д╞ддд▐д╣бг
+     <br />
+    </p></blockquote>
+   </li>
+    <li class="listitem">
+     <p class="para">
+      <span class="option">--enable-mbstr-enc-trans</span> :
+      <i class="literal">mbstring</i> ╩╤┤╣еиеєе╕еєдЄ╗╚═╤д╖д┐бвHTTP ╞■╬╧д╬
+      ╩╕╗·еиеєе│б╝е╟егеєе░╩╤┤╣дЄ═н╕·д╦д╖д▐д╣бгд│д╬╡б╟╜дм═н╕·д╬╛ь╣чбв
+      HTTP ╞■╬╧╩╕╗·еиеєе│б╝е╟егеєе░д╧бв╝л╞░┼кд╦
+      <i class="literal">mbstring.internal_encoding</i> д╦╩╤┤╣д╡дьд▐д╣бг
+     </p>
+     <blockquote><p><b class="note">├э░╒</b>: 
+      
+       PHP 4.3.0 ░╩╣▀бвд│д╬еке╫е╖ечеє
+       <span class="option">--enable-mbstr-enc-trans</span>
+       д╧╟╤╗▀д╡дьбв╝┬╣╘╗■д╬└▀─ъ 
+       <i class="literal">mbstring.encoding_translation</i>
+       д╦╩╤╣╣д╚д╩дъд▐д╣бгHTTP ╞■╬╧╩╕╗·еиеєе│б╝е╟егеєе░╩╤┤╣д╧бв
+       д│д╬еке╫е╖ечеєдЄ <i class="literal">On</i> д╦└▀─ъд╖д┐╛ь╣чд╬д▀
+       ═н╕·д╚д╩дъд▐д╣
+       (е╟е╒ейеые╚д╧ <i class="literal">Off</i>д╟д╣)бг
+      <br />
+     </p></blockquote>
+    </li>
+    <li class="listitem">
+     <p class="para">
+      <span class="option">--disable-mbregex</span> :
+      е▐еые┴е╨еде╚┬╨▒■д╬└╡╡м╔╜╕╜┤╪┐ЇдЄ╠╡╕·д╦д╖д▐д╣бг
+     </p>
+    </li>
+   </ul>
+  </p>
+</div>
+
+
+
+   
+   
+
+
+
+<div id="mbstring.configuration" class="section">
+ <h2 class="title">╝┬╣╘╗■└▀─ъ</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> д╬└▀─ъд╦дшдъ╞░║юдм╩╤▓╜д╖д▐д╣бг
+</p>
+ <p class="para">
+ <table border="5">
+  <caption><b>mbstring └▀─ъеке╫е╖ечеє</b></caption>
+  <colgroup>
+
+   <thead valign="middle">
+    <tr valign="middle">
+     <th colspan="1">╠╛┴░</th>
+     <th colspan="1">е╟е╒ейеые╚</th>
+     <th colspan="1">╩╤╣╣▓─╟╜д╩╚╧░╧</th>
+     <th colspan="1">╩╤╣╣═·╬Є</th>
+    </tr>
+
+   </thead>
+
+   <tbody valign="middle">
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">mbstring.language</td>
+     <td colspan="1" rowspan="1" align="left">&quot;neutral&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_PERDIR</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.3.0 длдщ═°═╤▓─╟╜д╟д╣бг</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">mbstring.detect_order</td>
+     <td colspan="1" rowspan="1" align="left">NULL</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.0.6 длдщ═°═╤▓─╟╜д╟д╣бг</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">mbstring.http_input</td>
+     <td colspan="1" rowspan="1" align="left">&quot;pass&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.0.6 длдщ═°═╤▓─╟╜д╟д╣бг</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">mbstring.http_output</td>
+     <td colspan="1" rowspan="1" align="left">&quot;pass&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.0.6 длдщ═°═╤▓─╟╜д╟д╣бг</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">mbstring.internal_encoding</td>
+     <td colspan="1" rowspan="1" align="left">NULL</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.0.6 длдщ═°═╤▓─╟╜д╟д╣бг</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">mbstring.script_encoding</td>
+     <td colspan="1" rowspan="1" align="left">NULL</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.3.0 длдщ═°═╤▓─╟╜д╟д╣бг</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">mbstring.substitute_character</td>
+     <td colspan="1" rowspan="1" align="left">NULL</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.0.6 длдщ═°═╤▓─╟╜д╟д╣бг</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">mbstring.func_overload</td>
+     <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_PERDIR</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.2.0 длдщ═°═╤▓─╟╜д╟бвPHP &lt;= 4.2.3 д╧ PHP_INI_SYSTEM д╟д╣бг</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">mbstring.encoding_translation</td>
+     <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_PERDIR</td>
+     <td colspan="1" rowspan="1" align="left">PHP 4.3.0 длдщ═°═╤▓─╟╜д╟д╣бг</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">mbstring.strict_detection</td>
+     <td colspan="1" rowspan="1" align="left">&quot;0&quot;</td>
+     <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+     <td colspan="1" rowspan="1" align="left">PHP 5.1.2 длдщ═°═╤▓─╟╜д╟д╣бг</td>
+    </tr>
+
+   </tbody>
+  </colgroup>
+
+ </table>
+
+  PHP_INI_* ─ъ┐Їд╬╛▄║┘╡┌д╙─ъ╡┴д╦д─ддд╞д╧бв<a href="function.ini-set.html" class="function">ini_set()</a>
+  дЄ╗▓╛╚д╖д╞дпд└д╡ддбг
+ </p>
+
+ <p class="para">░╩▓╝д╦└▀─ъе╟егеьепе╞еге╓д╦┤╪д╣ды
+┤╩├▒д╩└т╠└дЄ╝ид╖д▐д╣бг</p>
+
+ <p class="para">
+  <dl>
+
+   <dt id="ini.mbstring.language">
+    <span class="term">
+     <i><tt class="parameter">mbstring.language</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      mbstring д╟╗╚═╤д╡дьды╕└╕ь└▀─ъ(NLS)д╬е╟е╒ейеые╚├═бг
+      д│д╬└▀─ъд╧ <i class="literal">mbstring.internal_encoding</i> дЄ─ъ╡┴д╣дыд┐дсбв
+      <var class="filename">php.ini</var> д╬├цд╟ <i class="literal">mbstring.internal_encoding</i> д╧бв
+      <i class="literal">mbstring.language</i> д╬╕хд╦├╓дп╔м═╫дмдвдыд│д╚д╦├э░╒д╖д╞дпд└д╡ддбг
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt id="ini.mbstring.encoding-translation">
+    <span class="term">
+     <i><tt class="parameter">mbstring.encoding_translation</tt></i>
+
+     <a href="language.types.boolean.html" class="type boolean">boolean</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      ╞■╬╧д╡дьды HTTP епеиеъд╦┤╪д╖д╞бв
+      ╩╕╗·еиеєе│б╝е╟егеєе░╕б╜╨дкдшд╙╞т╔Ї╩╕╗·еиеєе│б╝е╟егеєе░д╪д╬╩╤┤╣дЄ╣╘дж
+      ╞й▓с┼кд╩╩╕╗·еиеєе│б╝е╟егеєе░е╒егеые┐дЄ═н╕·д╦д╖д▐д╣бг
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt id="ini.mbstring.internal-encoding">
+    <span class="term">
+     <i><tt class="parameter">mbstring.internal_encoding</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      ╞т╔Ї╩╕╗·еиеєе│б╝е╟егеєе░д╬е╟е╒ейеые╚├═дЄ─ъ╡┴д╖д▐д╣бг
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt id="ini.mbstring.http-input">
+    <span class="term">
+     <i><tt class="parameter">mbstring.http_input</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      HTTP ╞■╬╧╩╕╗·еиеєе│б╝е╟егеєе░д╬е╟е╒ейеые╚├═дЄ─ъ╡┴д╖д▐д╣бг
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt id="ini.mbstring.http-output">
+    <span class="term">
+     <i><tt class="parameter">mbstring.http_output</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      HTTP ╜╨╬╧╩╕╗·еиеєе│б╝е╟егеєе░д╬е╟е╒ейеые╚├═дЄ─ъ╡┴д╖д▐д╣бг
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt id="ini.mbstring.detect-order">
+    <span class="term">
+     <i><tt class="parameter">mbstring.detect_order</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      ╩╕╗·е│б╝е╔╕б╜╨д╬е╟е╒ейеые╚├═дЄ─ъ╡┴д╖д▐д╣бг
+      <a href="function.mb-detect-order.html" class="function">mb_detect_order()</a>дт╗▓╛╚дпд└д╡ддбг
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt id="ini.mbstring.substitute-character">
+    <span class="term">
+     <i><tt class="parameter">mbstring.substitute_character</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      ╠╡╕·д╩╩╕╗·дЄ┬х┬╪д╣ды╩╕╗·дЄ─ъ╡┴д╖д▐д╣бг
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt id="ini.mbstring.func-overload">
+    <span class="term">
+     <i><tt class="parameter">mbstring.func_overload</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      е╖еєе░еые╨еде╚┬╨▒■д╬┤╪┐ЇдЄ mbstring ┤╪┐Їд╬┬╨▒■д╣ды┤╪┐Їд╟екб╝е╨б╝еэб╝е╔
+      (├╓┤╣)д╖д▐д╣бг╛▄║┘д╧бв
+      <a href="ref.mbstring.html#mbstring.overload" class="link">┤╪┐Їд╬екб╝е╨б╝еэб╝е╔</a>
+      дЄ╗▓╛╚д╖д╞дпд└д╡ддбг
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt id="ini.mbstring.strict-detection">
+    <span class="term">
+     <i><tt class="parameter">mbstring.strict_detection</tt></i>
+
+     <a href="language.types.boolean.html" class="type boolean">boolean</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      ╕╖╠йд╩еиеєе│б╝е╟егеєе░╕б╜╨дЄ╣╘ддд▐д╣бг
+     </p>
+    </dd>
+
+   </dt>
+
+  </dl>
+
+ </p>
+
+ <p class="para">
+  <a href="http://www.w3.org/TR/REC-html40/interact/forms.html#adef-accept-charset" class="link external">&raquo; HTML 4.01д╬╡м╠є</a>
+  д╦дшдыд╚бвWeb е╓ещеже╢д╧бв
+  е╒ейб╝ерд╬е╟б╝е┐дЄ┼ъ╣╞д╣ды║▌д╦е┌б╝е╕д╟╗╚═╤д╡дьды╩╕╗·еиеєе│б╝е╟егеєе░д╚
+  ░█д╩дыеиеєе│б╝е╟егеєе░дЄ╗╚═╤д╣дыд│д╚дмд╟днд▐д╣бг
+  е╓ещеже╢д╟╗╚═╤д╡дьды╩╕╗·еиеєе│б╝е╟егеєе░дЄ╕б╜╨д╣дыд╦д╧бв
+  <a href="function.mb-http-input.html" class="function">mb_http_input()</a>
+  дЄ╗▓╛╚дпд└д╡ддбг
+ </p>
+ <p class="para">
+  ░ь╚╠┼кд╦╗╚═╤д╡дьдые╓ещеже╢д╟д╧бв
+  ╗╪─ъд╖д┐HTML╩╕╜ёд╬╩╕╗·еиеєе│б╝е╟егеєе░дЄдлд╩дъ└╡│╬д╦┐ф─ъд╣дыд│д╚дмд╟днд▐д╣дмбв
+  <a href="function.header.html" class="function">header()</a> д▐д┐д╧└▀─ъе╤ещесб╝е┐
+  <a href="ini.core.html#ini.sect.data-handling" class="link">default_charset</a> д╦дшдъбв
+  <i class="literal">Content-Type</i> HTTP е╪е├е└д╟ <i class="literal">charset</i>
+  дЄ└▀─ъд╣ды╩¤дмдшдъ╬╔ддд╟д╖дчджбг
+ </p>
+ <p class="para">
+  <div class="example">
+  <p><b>Example#1 <var class="filename">php.ini</var> └▀─ъд╬╬у</b></p>
+   <div class="example-contents">
+<div class="cdata"><pre>
+; е╟е╒ейеые╚д╬╕└╕ьдЄ└▀─ъ
+mbstring.language        = neutral; е╟е╒ейеые╚╕└╕ьдЄ├ц╬й(UTF-8)д╦└▀─ъ (е╟е╒ейеые╚)
+mbstring.language        = English; е╟е╒ейеые╚╕└╕ьдЄ▒╤╕ьд╦└▀─ъ
+mbstring.language        = Japanese; е╟е╒ейеые╚╕└╕ьдЄ╞№╦▄╕ьд╦└▀─ъ
+
+;; е╟е╒ейеые╚д╬╞т╔Їеиеєе│б╝е╟егеєе░дЄ└▀─ъ
+;; ├э░╒: PHPд╟╞░║юд╣ды╩╕╗·еиеєе│б╝е╟егеєе░дЄ╗╚═╤д╣дыд│д╚
+mbstring.internal_encoding    = UTF-8  ; ╞т╔Їеиеєе│б╝е╟егеєе░дЄ UTF-8 д╦└▀─ъ
+
+;; HTTP╞■╬╧еиеєе│б╝е╟егеєе░╩╤┤╣дЄ═н╕·д╦д╣ды
+mbstring.encoding_translation = On
+
+;; е╟е╒ейеые╚д╬HTTP╞■╬╧╩╕╗·еиеєе│б╝е╟егеєе░дЄ└▀─ъ
+;; ├э░╒: е╣епеъе╫е╚д╟д╧http_inputд╬└▀─ъд╧╩╤╣╣д╟днд▐д╗дєбг
+mbstring.http_input           = pass    ; ╩╤┤╣д╖д╩ддбг
+mbstring.http_input           = auto    ; HTTP ╞■╬╧дЄ auto д╦└▀─ъ
+	                                    ; б╓autoб╫д╧бвб╓ASCII,JIS,UTF-8,
+                                        ; EUC-JP,SJISб╫д╦┼╕│лд╡дьд▐д╣бг
+mbstring.http_input           = SJIS    ; HTTP╞■╬╧дЄSJISд╦└▀─ъ
+mbstring.http_input           = UTF-8,SJIS,EUC-JP ; ╜ч╚╓дЄ╗╪─ъ
+
+;; е╟е╒ейеые╚д╬HTTP╜╨╬╧╩╕╗·еиеєе│б╝е╟егеєе░дЄ└▀─ъ
+mbstring.http_output          = pass    ; ╩╤┤╣д╖д╩дд
+mbstring.http_output          = UTF-8   ; HTTP╜╨╬╧еиеєе│б╝е╟егеєе░дЄ
+                                        ;  UTF-8 д╦╗╪─ъ
+
+;; е╟е╒ейеые╚д╬╩╕╗·еиеєе│б╝е╟егеєе░╕б╜╨╜ч╜°дЄ└▀─ъ
+mbstring.detect_order         = auto    ; е╟е╒ейеые╚д╬╜ч╚╓дЄ auto д╦└▀─ъ
+mbstring.detect_order         = ASCII,JIS,UTF-8,SJIS,EUC-JP ; ╜ч╚╓дЄ╗╪─ъ
+
+;; ┬х┬╪╩╕╗·д╬е╟е╒ейеые╚├═дЄ└▀─ъ
+mbstring.substitute_character = 12307   ; Unicode ├═дЄ╗╪─ъ
+mbstring.substitute_character = none    ; ╩╕╗·дЄ╜╨╬╧д╖д╩дд
+mbstring.substitute_character = long    ; long д╬╬у: U+3000,JIS+7E7E
+</pre></div>
+   </div>
+
+  </div>
+ </p>
+ <p class="para">
+  <div class="example">
+   <p><b>Example#2 <i class="literal">EUC-JP</i> ецб╝е╢═╤д╬ <var class="filename">php.ini</var> д╬└▀─ъ</b></p>
+   <div class="example-contents">
+<div class="cdata"><pre>
+;; ╜╨╬╧е╨е├е╒ебеъеєе░дЄ╠╡╕·д╦д╣ды
+output_buffering      = Off
+
+;; HTTP charsetе╪е├е└дЄ└▀─ъ
+default_charset       = EUC-JP    
+
+;; е╟е╒ейеые╚д╬╕└╕ьдЄ╞№╦▄╕ьд╦д╣ды
+mbstring.language = Japanese
+
+;; HTTP ╞■╬╧╩╤┤╣дЄ═н╕·д╦д╣ды
+mbstring.encoding_translation = On
+
+;; HTTP ╞■╬╧еиеєе│б╝е╟егеєе░╩╤┤╣дЄ auto д╦└▀─ъ
+mbstring.http_input   = auto 
+
+;; HTTP ╜╨╬╧дЄ EUC-JP д╦└▀─ъ
+mbstring.http_output  = EUC-JP    
+
+;; ╞т╔Їеиеєе│б╝е╟егеєе░дЄ EUC-JP д╦└▀─ъ
+mbstring.internal_encoding = EUC-JP    
+
+;; ╠╡╕·д╩╩╕╗·дЄ╜╨╬╧д╖д╩дд
+mbstring.substitute_character = none
+</pre></div>
+   </div>
+
+  </div>
+ </p>
+ <p class="para">
+  <div class="example">
+   <p><b>Example#3 <i class="literal">SJIS</i> ецб╝е╢═╤д╬ <var class="filename">php.ini</var>д╬ └▀─ъ</b></p>
+   <div class="example-contents">
+<div class="cdata"><pre>
+;; ╜╨╬╧д╬е╨е├е╒ебеъеєе░дЄ═н╕·д╦
+output_buffering     = On
+
+;; ╜╨╬╧д╬╩╤┤╣дЄ═н╕·д╦д╣дыд┐дсд╦ mb_output_handler дЄ└▀─ъ
+output_handler       = mb_output_handler
+
+;; HTTPе╪е├е└ charset дЄ└▀─ъ
+default_charset      = Shift_JIS
+
+;; е╟е╒ейеые╚д╬╕└╕ьдЄ╞№╦▄╕ьд╦└▀─ъ
+mbstring.language = Japanese
+
+;; HTTP ╞■╬╧╩╤┤╣дЄ═н╕·д╦д╣ды
+mbstring.encoding_translation = On
+
+;; HTTP ╞■╬╧еиеєе│б╝е╟егеєе░╩╤┤╣дЄ auto д╦└▀─ъ
+mbstring.http_input  = auto 
+
+;; SJIS д╦╩╤┤╣
+mbstring.http_output = SJIS    
+
+;; ╞т╔Їеиеєе│б╝е╟егеєе░дЄ EUC-JP д╦└▀─ъ
+mbstring.internal_encoding = EUC-JP    
+
+;; ╠╡╕·д╩╩╕╗·дЄ╜╨╬╧д╖д╩дд
+mbstring.substitute_character = none
+
+</pre></div>
+   </div>
+
+  </div>
+ </p>
+
+</div>
+
+
+
+
+   
+   <div id="mbstring.resources" class="section">
+    <h2 class="title">еъе╜б╝е╣╖┐</h2>
+    <p class="para">еъе╜б╝е╣╖┐д╧─ъ╡┴д╡дьд╞ддд▐д╗дєбг</p>
+   </div>
+   
+   
+
+
+<div id="mbstring.constants" class="section">
+ <h2 class="title">─ъ╡┴║╤д▀─ъ┐Ї</h2>
+ <p class="simpara">
+░╩▓╝д╬─ъ┐Їдм─ъ╡┴д╡дьд╞ддд▐д╣бг
+д│д╬┤╪┐Їд╬│╚─еете╕ехб╝еыдм PHP ┴╚д▀╣■д▀д╟е│еєе╤едеыд╡дьд╞дддыдлбв
+╝┬╣╘╗■д╦╞░┼кд╦еэб╝е╔д╡дьд╞ддды╛ь╣чд╬д▀╗╚═╤▓─╟╜д╟д╣бг
+</p>
+ <dl>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MB_OVERLOAD_MAIL</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MB_OVERLOAD_STRING</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MB_OVERLOAD_REGEX</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MB_CASE_UPPER</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MB_CASE_LOWER</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MB_CASE_TITLE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+</div>
+
+
+
+   
+   <div id="mbstring.http" class="section">
+    <h2 class="title">HTTP ╞■╜╨╬╧</h2>
+    <p class="para">
+     HTTP ╞■╜╨╬╧д╬╩╕╗·еиеєе│б╝е╟егеєе░╩╤┤╣д╧е╨еде╩еъе╟б╝е┐дт╩╤┤╣д╖д╞
+     д╖д▐ддд▐д╣бгHTTP ╞■╜╨╬╧д╦е╨еде╩еъе╟б╝е┐дм╗╚═╤д╡дьды╛ь╣чбвецб╝е╢д╧бв
+     ╩╕╗·еиеєе│б╝е╟егеєе░╩╤┤╣дЄ└й╕цд╣ды╔м═╫дмдвдъд▐д╣бг
+    </p>
+    <blockquote><p><b class="note">├э░╒</b>: 
+     
+      PHP 4.3.2 дкдшд╙д╜дь░╩┴░д╬е╨б╝е╕ечеєд╬╛ь╣чбв
+      HTML е╒ейб╝ерд╬<i class="literal">enctype</i> дм
+      <i class="literal">multipart/form-data</i> д╦└▀─ъд╡дьд┐╛ь╣чбв
+      <i class="literal">mbstring</i> д╧бвPOST е╟б╝е┐д╬╩╕╗·еиеєе│б╝е╟егеєе░дЄ╩╤┤╣д╖д▐д╗дєбг
+      д│д╬╛ь╣чбв╩╕╗·╬єдЄ╞т╔Ї╩╕╗·еиеєе│б╝е╟егеєе░д╦╩╤┤╣д╖д╞дфды╔м═╫дмдвдъд▐д╣бг
+     <br />
+    </p></blockquote>
+    <blockquote><p><b class="note">├э░╒</b>: 
+     
+      PHP 4.3.3 ░╩╣▀бвHTML е╒ейб╝ерд╬ <i class="literal">enctype</i> дм
+      <i class="literal">multipart/form-data</i> д╦└▀─ъд╡дьбвдлд─бв
+      <var class="filename">php.ini</var> д╦дкддд╞
+      <i class="literal">mbstring.encoding_translation</i> д╦ On
+      дм╗╪─ъд╡дьд╞ддды╛ь╣чбв
+      POST е╟б╝е┐д╬╩╤┐Їд╚еве├е╫еэб╝е╔д╡дьд┐е╒ебедеыд╬╠╛┴░д╬╩╕╗·еиеєе│б╝е╟егеєе░д╧бв
+      ╞т╔Ї╩╕╗·еиеєе│б╝е╟егеєе░д╦╩╤┤╣д╡дьд▐д╣бг
+      д┐д└д╖бвепеиеъенб╝д╦┤╪д╖д╞д╧бв╩╤┤╣д╡дьд▐д╗дєбг
+     <br />
+    </p></blockquote>
+     <p class="para">
+     <ul class="itemizedlist">
+      <li class="listitem">
+       <span class="simpara">
+        HTTP ╞■╬╧
+       </span>
+       <p class="para">
+        PHP е╣епеъе╫е╚д╟ HTTP ╞■╬╧╩╕╗·╩╤┤╣дЄ└й╕цд╣ды╝ъ├╩д╧двдъд▐д╗дєбг
+        HTTP ╞■╬╧╩╕╗·╩╤┤╣дЄ╠╡╕·д╦д╣дыд╦д╧бв<var class="filename">php.ini</var>
+        д╟╣╘дж╔м═╫дмдвдъд▐д╣бг
+        <div class="example">
+         <p><b>Example#4 <var class="filename">php.ini</var> д╟ HTTP ╞■╬╧╩╤┤╣дЄ╠╡╕·д╦д╣ды</b></p>
+         <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+;;&nbsp;HTTP&nbsp;╞■╬╧╩╤┤╣дЄ╠╡╕·д╦д╣ды<br />mbstring.http_input&nbsp;=&nbsp;pass<br />;;&nbsp;HTTP&nbsp;╞■╬╧╩╤┤╣дЄ╠╡╕·д╦д╣ды&nbsp;(PHP&nbsp;4.3.0&nbsp;░╩╣▀)<br />mbstring.encoding_translation&nbsp;=&nbsp;Off</span>
+</code></div>
+         </div>
+
+        </div>
+       </p>
+       <p class="para">
+        PHP дЄ Apache ете╕ехб╝еыд╟╗╚═╤д╣ды╛ь╣чбв<var class="filename">php.ini</var> д╬└▀─ъдЄ
+        <var class="filename">httpd.conf</var> д╦дшдъ▓╛┴█е█е╣е╚├▒░╠д╟бвд▐д┐д╧
+        <var class="filename">.htaccess</var> д╦дшдъе╟егеьепе╚еъ├▒░╠д╟╛х╜ёднд╣дыд│д╚дм▓─╟╜д╟д╣бг
+        ╛▄║┘д╧бв<a href="configuration.html" class="link">└▀─ъ</a>д╬└сдкдшд╙
+        Apache е▐е╦ехевеыдЄ╗▓╛╚дпд└д╡ддбг
+       </p>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        HTTP ╜╨╬╧
+       </span>
+       <p class="para">
+        ╜╨╬╧д╬╩╕╗·еиеєе│б╝е╟егеєе░╩╤┤╣дЄ═н╕·д╦д╣ды╩¤╦бд╧╩г┐Їдвдъд▐д╣бг
+        д▐д║ <var class="filename">php.ini</var>бвдтджд╥д╚д─д╧
+        <a href="function.ob-start.html" class="function">ob_start()</a> д╟ <i class="literal">ob_start</i>
+        д╬е│б╝еые╨е├еп┤╪┐Їд╚д╖д╞
+        <a href="function.mb-output-handler.html" class="function">mb_output_handler()</a> дЄ╗╪─ъд╣дыдтд╬д╟д╣бг
+       </p>
+       <blockquote><p><b class="note">├э░╒</b>: 
+        
+         PHP3-i18n д╬ецб╝е╢д╦д╚д├д╞д╧бв<i class="literal">mbstring</i>
+         д╬╜╨╬╧╩╤┤╣д╧бвPHP3-i18n д╚д╧░█д╩д├д╞ддд▐д╣бг╩╕╗·еиеєе│б╝е╟егеєе░д╧бв
+         ╜╨╬╧д╬е╨е├е╒ебеъеєе░╡б╟╜дЄ╗╚═╤д╖д╞╩╤┤╣д╡дьд▐д╣бг
+        <br />
+       </p></blockquote>
+       </li>
+     </ul>
+    </p>
+    <p class="para">
+     <div class="example">
+      <p><b>Example#5 <var class="filename">php.ini</var> д╬└▀─ъ╬у</b></p>
+      <div class="example-contents">
+<div class="cdata"><pre>
+;; ┴┤д╞д╬ PHP е┌б╝е╕д╟╜╨╬╧д╬╩╕╗·еиеєе│б╝е╟егеєе░╩╤┤╣дЄ═н╕·д╦д╣ды
+
+;; ╜╨╬╧е╨е├е╒ебеъеєе░дЄ═н╕·д╦д╣ды
+output_buffering    = On
+
+;; mb_output_handler д╦дшды╜╨╬╧╩╤┤╣дЄ═н╕·д╦д╣ды
+output_handler      = mb_output_handler
+</pre></div>
+      </div>
+
+     </div>
+    </p>
+    <p class="para">
+     <div class="example">
+      <p><b>Example#6 е╣епеъе╫е╚д╬╬у</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">//&nbsp;д│д╬е┌б╝е╕д╟д╬д▀╜╨╬╧д╬╩╕╗·еиеєе│б╝е╟егеєе░╩╤┤╣дЄ═н╕·д╦д╣ды<br /><br />//&nbsp;HTTP&nbsp;╜╨╬╧╩╕╗·еиеєе│б╝е╟егеєе░дЄSJISд╦└▀─ъд╣ды<br /></span><span style="color: #0000BB">mb_http_output</span><span style="color: #007700">(</span><span style="color: #DD0000">'SJIS'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;╜╨╬╧д╬е╨е├е╒ебеъеєе░дЄ│л╗╧д╖бве│б╝еые╨е├еп┤╪┐Їд╚д╖д╞"mb_output_handler"<br />//&nbsp;дЄ╗╪─ъд╣ды<br /></span><span style="color: #0000BB">ob_start</span><span style="color: #007700">(</span><span style="color: #DD0000">'mb_output_handler'</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+   </div>
+   
+   <div id="mbstring.supported-encodings" class="section">
+    <h2 class="title">е╡е▌б╝е╚д╡дьды╩╕╗·еиеєе│б╝е╟егеєе░</h2>
+    <p class="simpara">
+     ╕╜║▀бв░╩▓╝д╬╩╕╗·еиеєе│б╝е╟егеєе░дм <i class="literal">mbstring</i>
+     ете╕ехб╝еыд╦дшдъе╡е▌б╝е╚д╡дьд╞ддд▐д╣бг╩╕╗·еиеєе│б╝е╟егеєе░д╧бв
+     <i class="literal">mbstring</i> ┤╪┐Їд╬ <i class="literal">encoding</i>
+     е╤ещесб╝е┐д╟╗╪─ъд╣дыд│д╚дм▓─╟╜д╟д╣бг
+    </p>
+    <p class="para">
+     ░╩▓╝д╬╩╕╗·еиеєе│б╝е╟егеєе░дмд│д╬ PHP │╚─еете╕ехб╝еыд╟е╡е▌б╝е╚д╡дьд╞ддд▐д╣бг
+    </p>
+    <ul class="itemizedlist">
+     <li class="listitem"><span class="simpara">UCS-4</span></li>
+     <li class="listitem"><span class="simpara">UCS-4BE</span></li>
+     <li class="listitem"><span class="simpara">UCS-4LE</span></li>
+     <li class="listitem"><span class="simpara">UCS-2</span></li>
+     <li class="listitem"><span class="simpara">UCS-2BE</span></li>
+     <li class="listitem"><span class="simpara">UCS-2LE</span></li>
+     <li class="listitem"><span class="simpara">UTF-32</span></li>
+     <li class="listitem"><span class="simpara">UTF-32BE</span></li>
+     <li class="listitem"><span class="simpara">UTF-32LE</span></li>
+     <li class="listitem"><span class="simpara">UTF-16</span></li>
+     <li class="listitem"><span class="simpara">UTF-16BE</span></li>
+     <li class="listitem"><span class="simpara">UTF-16LE</span></li>
+     <li class="listitem"><span class="simpara">UTF-7</span></li>
+     <li class="listitem"><span class="simpara">UTF7-IMAP</span></li>
+     <li class="listitem"><span class="simpara">UTF-8</span></li>
+     <li class="listitem"><span class="simpara">ASCII</span></li>
+     <li class="listitem"><span class="simpara">EUC-JP</span></li>
+     <li class="listitem"><span class="simpara">SJIS</span></li>
+     <li class="listitem"><span class="simpara">eucJP-win</span></li>
+     <li class="listitem"><span class="simpara">SJIS-win</span></li>
+     <li class="listitem"><span class="simpara">ISO-2022-JP</span></li>
+     <li class="listitem"><span class="simpara">JIS</span></li>
+     <li class="listitem"><span class="simpara">ISO-8859-1</span></li>
+     <li class="listitem"><span class="simpara">ISO-8859-2</span></li>
+     <li class="listitem"><span class="simpara">ISO-8859-3</span></li>
+     <li class="listitem"><span class="simpara">ISO-8859-4</span></li>
+     <li class="listitem"><span class="simpara">ISO-8859-5</span></li>
+     <li class="listitem"><span class="simpara">ISO-8859-6</span></li>
+     <li class="listitem"><span class="simpara">ISO-8859-7</span></li>
+     <li class="listitem"><span class="simpara">ISO-8859-8</span></li>
+     <li class="listitem"><span class="simpara">ISO-8859-9</span></li>
+     <li class="listitem"><span class="simpara">ISO-8859-10</span></li>
+     <li class="listitem"><span class="simpara">ISO-8859-13</span></li>
+     <li class="listitem"><span class="simpara">ISO-8859-14</span></li>
+     <li class="listitem"><span class="simpara">ISO-8859-15</span></li>
+     <li class="listitem"><span class="simpara">byte2be</span></li>
+     <li class="listitem"><span class="simpara">byte2le</span></li>
+     <li class="listitem"><span class="simpara">byte4be</span></li>
+     <li class="listitem"><span class="simpara">byte4le</span></li>
+     <li class="listitem"><span class="simpara">BASE64</span></li>
+     <li class="listitem"><span class="simpara">HTML-ENTITIES</span></li>
+     <li class="listitem"><span class="simpara">7bit</span></li>
+     <li class="listitem"><span class="simpara">8bit</span></li>
+     <li class="listitem"><span class="simpara">EUC-CN</span></li>
+     <li class="listitem"><span class="simpara">CP936</span></li>
+     <li class="listitem"><span class="simpara">HZ</span></li>
+     <li class="listitem"><span class="simpara">EUC-TW</span></li>
+     <li class="listitem"><span class="simpara">CP950</span></li>
+     <li class="listitem"><span class="simpara">BIG-5</span></li>
+     <li class="listitem"><span class="simpara">EUC-KR</span></li>
+     <li class="listitem"><span class="simpara">UHC (CP949)</span></li>
+     <li class="listitem"><span class="simpara">ISO-2022-KR</span></li>
+     <li class="listitem"><span class="simpara">Windows-1251 (CP1251)</span></li>
+     <li class="listitem"><span class="simpara">Windows-1252 (CP1252)</span></li>
+     <li class="listitem"><span class="simpara">CP866 (IBM866)</span></li>
+     <li class="listitem"><span class="simpara">KOI8-R</span></li>
+    </ul>
+    <p class="para">
+     еиеєе│б╝е╟егеєе░╠╛дЄ╗╪─ъд╣ды <var class="filename">php.ini</var> еиеєе╚еъд╦д╧бв
+     &quot;<i class="literal">auto</i>&quot; дкдшд╙
+     &quot;<i class="literal">pass</i>&quot; дЄ╗╪─ъд╣дыд│д╚дтд╟днд▐д╣бг
+     еиеєе│б╝е╟егеєе░╠╛дЄ╗╪─ъд╣ды <i class="literal">mbstring</i>
+     ┤╪┐Їд╦дтбв&quot;<i class="literal">auto</i>&quot; дЄ╗╪─ъд╣дыд│д╚дмд╟днд▐д╣бг
+    </p>
+    <p class="para">
+     &quot;<i class="literal">pass</i>&quot; дм╗╪─ъд╡дьд┐╛ь╣чбв
+     ╩╕╗·еиеєе│б╝е╟егеєе░д╬╩╤┤╣д╧╣╘дядьд▐д╗дєбг
+    </p>
+    <p class="para">
+     &quot;<i class="literal">auto</i>&quot; дм╗╪─ъд╡дьд┐╛ь╣чбвд│д╬╩╕╗·╬єд╧
+     &quot;<i class="literal">ASCII,JIS,UTF-8,EUC-JP,SJIS</i>&quot;
+     д╦╩╤┤╣д╡дьд▐д╣бг
+    </p>
+    <p class="para">
+     <a href="function.mb-detect-order.html" class="function">mb_detect_order()</a> дт╗▓╛╚дпд└д╡ддбг
+    </p>
+   </div>
+    
+   <div id="mbstring.overload" class="section">
+    <h2 class="title">е▐еые┴е╨еде╚┬╨▒■╚╟┤╪┐Їд╦дшды┤√┬╕┤╪┐Їд╬екб╝е╨б╝еэб╝е╔</h2>
+    <p class="para">
+     PHP еве╫еъе▒б╝е╖ечеєд╬┬┐дпд╧бв▒╤╕ь┼∙д╬е╖еєе░еые╨еде╚д╬╕└╕ь═╤д╦└▀╖╫д╡дьд╞дкдъбв
+     ╞№╦▄╕ьдЄ┤▐дре▐еые┴е╨еде╚╩╕╗·╬єдЄ░╖дж╛ь╣чд╦д╧╠ф┬ъдЄ└╕д╕ды╛ь╣чдмдвдъд▐д╣бг
+     <a href="function.substr.html" class="function">substr()</a> ┼∙д╬ PHP д╬╩╕╗·╬є┤╪┐Їд╬┬┐дпд╧бв
+     е▐еые┴е╨еде╚╩╕╗·╬єд╦┬╨▒■д╖д╞ддд▐д╗дєбг
+    </p>
+    <p class="para">
+     е▐еые┴е╨еде╚│╚─еете╕ехб╝еы (mbstring) д╟д╧бв╩╕╗·╬єдЄ╜ш═¤д╣ды PHP
+     ┤╪┐Їд╬е▐еые┴е╨еде╚┬╨▒■╚╟ (╬удид╨ <a href="function.substr.html" class="function">substr()</a> д╬╛ь╣чд╧
+     <a href="function.mb-substr.html" class="function">mb_substr()</a>) дЄе╡е▌б╝е╚д╖д╞ддд▐д╣бг
+    </p>
+    <p class="para">
+     PHP 4.2.0 ░╩╣▀д╬е▐еые┴е╨еде╚│╚─еете╕ехб╝еы (mbstring) д╟д╧бв
+     ┬╨▒■д╣дые▐еые┴е╨еде╚╩╕╗·┬╨▒■╚╟д╬┤╪┐Їд╟┤√┬╕д╬ PHP ┤╪┐ЇдЄ
+     екб╝е╨б╝еэб╝е╔д╣ды╡б╟╜дЄе╡е▌б╝е╚д╖д▐д╣бг┤╪┐Їд╬екб╝е╨б╝еэб╝е╔дЄ╣╘джд╚бв╬удид╨
+     <a href="function.substr.html" class="function">substr()</a> дЄ PHP е╣епеъе╫е╚д╟е│б╝еыд╖д┐╛ь╣чд╦бв
+     <a href="function.mb-substr.html" class="function">mb_substr()</a> дм┬хдядъд╦е│б╝еыд╡дьдыдшджд╦д╩дъд▐д╣бг
+     д│дьд╦дшдъбве▐еые┴е╨еде╚╩╕╗·д╦┬╨▒■д╖д╩ддеве╫еъе▒б╝е╖ечеєд╬░▄┐вдм═╞░╫д╚д╩дъд▐д╣бг
+    </p>
+    <p class="para">
+     ┤╪┐Їекб╝е╨б╝еэб╝е╔дЄ╗╚═╤д╣дыд╦д╧бв<var class="filename">php.ini</var> д╬
+     <i class="literal">mbstring.func_overload</i> е╟егеьепе╞еге╓д╦└╡д╬├═дЄ╗╪─ъд╖д▐д╣бг
+     д│дьд╧бвекб╝е╨б╝еэб╝е╔д╡дьды┤╪┐Їд╬╝я╬рдЄ╗╪─ъд╣дые╙е├е╚е▐е╣епд╬┴╚д▀╣чдяд╗д╚д╩дъд▐д╣бг
+     <a href="function.mail.html" class="function">mail()</a> ┤╪┐ЇдЄекб╝е╨б╝еэб╝е╔д╣дыд╦д╧ 1 дЄ╗╪─ъд╖д▐д╣бг
+     2 д╧╩╕╗·╬є┤╪┐Їбв4 д╧└╡╡м╔╜╕╜┤╪┐ЇдЄ╔╜д╖д▐д╣бгд─д▐дъбв╬удид╨
+     7 дЄ╗╪─ъд╣дыд╚бвесб╝еы┤╪┐Їбв╩╕╗·╬є┤╪┐Їдкдшд╙└╡╡м╔╜╕╜┤╪┐Їдм
+     екб╝е╨б╝еэб╝е╔д╡дьдыд│д╚д╦д╩дъд▐д╣бгекб╝е╨б╝еэб╝е╔д╡дьды┤╪┐Їд╬░ь═ўдЄ░╩▓╝д╦╝ид╖д▐д╣бг
+     <table border="5">
+      <caption><b>екб╝е╨б╝еэб╝е╔д╡дьды┤╪┐Ї</b></caption>
+      <colgroup>
+
+       <thead valign="middle">
+        <tr valign="middle">
+         <th colspan="1">mbstring.func_overload д╬├═</th>
+         <th colspan="1">╕╡д╬┤╪┐Ї</th>
+         <th colspan="1">екб╝е╨б╝еэб╝е╔д╣ды┤╪┐Ї</th>
+        </tr>
+
+       </thead>
+
+       <tbody valign="middle">
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">1</td>
+         <td colspan="1" rowspan="1" align="left"><a href="function.mail.html" class="function">mail()</a></td>
+         <td colspan="1" rowspan="1" align="left"><a href="function.mb-send-mail.html" class="function">mb_send_mail()</a></td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">2</td>
+         <td colspan="1" rowspan="1" align="left"><a href="function.strlen.html" class="function">strlen()</a></td>
+         <td colspan="1" rowspan="1" align="left"><a href="function.mb-strlen.html" class="function">mb_strlen()</a></td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">2</td>
+         <td colspan="1" rowspan="1" align="left"><a href="function.strpos.html" class="function">strpos()</a></td>
+         <td colspan="1" rowspan="1" align="left"><a href="function.mb-strpos.html" class="function">mb_strpos()</a></td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">2</td>
+         <td colspan="1" rowspan="1" align="left"><a href="function.strrpos.html" class="function">strrpos()</a></td>
+         <td colspan="1" rowspan="1" align="left"><a href="function.mb-strrpos.html" class="function">mb_strrpos()</a></td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">2</td>
+         <td colspan="1" rowspan="1" align="left"><a href="function.substr.html" class="function">substr()</a></td>
+         <td colspan="1" rowspan="1" align="left"><a href="function.mb-substr.html" class="function">mb_substr()</a></td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">4</td>
+          <td colspan="1" rowspan="1" align="left"><a href="function.ereg.html" class="function">ereg()</a></td>
+         <td colspan="1" rowspan="1" align="left"><a href="function.mb-ereg.html" class="function">mb_ereg()</a></td>
+        </tr>
+
+         <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">4</td>
+         <td colspan="1" rowspan="1" align="left"><a href="function.eregi.html" class="function">eregi()</a></td>
+         <td colspan="1" rowspan="1" align="left"><a href="function.mb-eregi.html" class="function">mb_eregi()</a></td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">4</td>
+         <td colspan="1" rowspan="1" align="left"><a href="function.ereg-replace.html" class="function">ereg_replace()</a></td>
+         <td colspan="1" rowspan="1" align="left"><a href="function.mb-ereg-replace.html" class="function">mb_ereg_replace()</a></td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">4</td>
+         <td colspan="1" rowspan="1" align="left"><a href="function.eregi-replace.html" class="function">eregi_replace()</a></td>
+         <td colspan="1" rowspan="1" align="left"><a href="function.mb-eregi-replace.html" class="function">mb_eregi_replace()</a></td>
+        </tr>
+
+        <tr valign="middle">
+         <td colspan="1" rowspan="1" align="left">4</td>
+         <td colspan="1" rowspan="1" align="left"><a href="function.split.html" class="function">split()</a></td>
+         <td colspan="1" rowspan="1" align="left"><a href="function.mb-split.html" class="function">mb_split()</a></td>
+        </tr>
+
+       </tbody>
+      </colgroup>
+
+     </table>
+
+    </p>
+    <blockquote><p><b class="note">├э░╒</b>: 
+     
+      е╟егеьепе╚еъ├▒░╠д╬└▀─ъд╟д│д╬еке╫е╖ечеєдЄ╗╚═╤д╣дыд│д╚д╧┐ф╛йд╡дьд▐д╗дєбг
+      д│дьд╧бв╝┬║▌д╬▒┐═╤┤─╢нд╟д╧д▐д└░┬─ъ└ндм│╬╟зд╡дьд╞дкдщд║бв
+      ═╜┤№д╖д╩дд╖ы▓╠дЄдтд┐дщд╣▓─╟╜└ндмдвдыд┐дсд╟д╣бг
+     <br />
+    </p></blockquote>
+   </div>
+   
+   <div id="mbstring.ja-basic" class="section">
+    <h2 class="title">╞№╦▄╕ьд╬е▐еые┴е╨еде╚╩╕╗·д╦┤╪д╣ды┤Ё╦▄╗Ў╣р</h2>
+    <p class="para">
+     ╞№╦▄╕ьд╬╩╕╗·д╧бве▐еые┴е╨еде╚еиеєе│б╝е╟егеєе░дЄ╗╚═╤д╖д╩ддд╚╔╜д╗д▐д╗дєбг
+     д▐д┐бве╫еще├е╚е╒ейб╝ердф╗╚═╤╠▄┼кд╦дшд├д╞╩г┐Їд╬╔╕╜реиеєе│б╝е╟егеєе░дм
+     ╗╚дд╩мд▒дщдьд╞ддд▐д╣бгд╡дщд╦░нддд│д╚д╦бв
+     д│дьдщд╬╩г┐Їд╬╔╕╜реиеєе│б╝е╟егеєе░д╧д╜дьд╛дь╚∙╠пд╦░█д╩дъд▐д╣бг
+     ╞№╦▄╕ь┤─╢нд╟╗╚═╤д╖дфд╣ддежезе╓еве╫еъе▒б╝е╖ечеєдЄ║ю└од╣дыд╦д╧бв
+     д│дьдщд╬╩г╗ид╩╠ф┬ъдЄ╣═╬╕д╖д┐╛хд╟
+     ┼м└┌д╩╩╕╗·еиеєе│б╝е╟егеєе░дЄ╗╚═╤д╖д╩д▒дьд╨д╩дъд▐д╗дєбг
+    </p>
+    <p class="para">
+     <ul class="itemizedlist">
+      <li class="listitem">
+       <span class="simpara">
+        1 ╩╕╗·д╧║╟┬ч 6 е╨еде╚д╦д╩ды
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        д█д╚дєд╔д╬╞№╦▄╕ье▐еые┴е╨еде╚╩╕╗·д╧бве╖еєе░еые╨еде╚╩╕╗·д╬
+        2 ╟▄д╬╔¤д╚д╩дъд▐д╣бгд│дьдщд╬╩╕╗·д╬д│д╚дЄбв╞№╦▄╕ьд╟д╧
+        &quot;┴┤│╤ (zen-kaku)&quot; д╚╕╞д╙д▐д╣бгд│дьд╧бв
+        &quot;full width&quot; д╚дддж░╒╠гд╟д╣бг░ь╩¤бв╔¤д╬╢╣дд╩╕╗·д╬д│д╚д╧
+        &quot;╚╛│╤ (han-kaku)&quot; д╚╕╞д╙д▐д╣бгд│дьд╧бв
+        &quot;half width&quot; д╚дддж░╒╠гд╟д╣бгд╖длд╖д╩дмдщбв
+        ╩╕╗·д╬╕лд┐╠▄д╧бвд╜дьдЄ╔╜╝ид╣ды║▌д╦╗╚═╤д╣дые┐еде╫е╒езеде╣д╦░═┬╕д╖д▐д╣бг
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        дддпд─длд╬╩╕╗·еиеєе│б╝е╟егеєе░д╟д╧бвISO-2022 д╟─ъ╡┴д╡дьд┐е╖е╒е╚
+        (еие╣е▒б╝е╫) е╖б╝е▒еєе╣дЄ╗╚═╤д╖д╞бв╞├─ъд╬е│б╝е╔╚╧░╧
+        (<i class="literal">00h</i> длдщ <i class="literal">7fh</i> д▐д╟)
+        д╬е│б╝е╔е▐е├е╫дЄ└┌дъ┬╪дид▐д╣бг
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        SMTP/NNTPд╟д╧бвISO-2022-JP дЄ╗╚═╤д╣ды╔м═╫дмдвдъбве╪е├е└д╚еиеєе╞еге╞егд╧
+        │╞ RFC д╬╡м─ъд╦┤Ёд┼дн║╞┼┘╔ф╣ц▓╜д╡дьды╔м═╫дмдвдъд▐д╣бг
+        д│дьдщд╧╔м┐▄д╬дтд╬д╟д╧двдъд▐д╗дєдмбв┬┐дпд╬░ь╚╠┼кд╩ецб╝е╢б╝еиб╝е╕езеєе╚д╧бв
+        ┬╛д╬╔ф╣ц▓╜╝ъ╦бдЄ╟з╝▒д╟днд╩ддд┐дсбв╣╘д├д╞дкдп╩¤дм╬╔ддд╟д╖дчджбг
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        <a href="http://www.nttdocomo.com/corebiz/services/imode/" class="link external">&raquo; i-mode</a>,
+        <a href="http://www.vodafone.jp/english/live/" class="link external">&raquo; Vodafone live!</a>, д▐д┐д╧
+        <a href="http://www.au.kddi.com/english/ezweb/" class="link external">&raquo; EZweb</a>
+        д╬дшджд╩╖╚┬╙┼┼╧├е╡б╝е╙е╣═╤д╦║ю└од╡дьд┐ Web е┌б╝е╕д╧бв
+        Shift_JIS дЄ╗╚═╤д╣дыд│д╚д╦д╩дъд▐д╣бг
+       </span>
+      </li>
+     </ul>
+    </p>
+   </div>
+   
+   <div id="mbstring.ref" class="section">
+    <h2 class="title">еъе╒ебеьеєе╣</h2>
+    <p class="para">
+     е▐еые┴е╨еде╚╩╕╗·еиеєе│б╝е╟егеєе░дкдшд╙д╜дьд╦┤╪╧вд╣ды╠ф┬ъд╧╚є╛яд╦╩г╗ид╟бв
+     д│д╬е╔енехесеєе╚д╬╚╧░╧дЄ─╢дид╞ддд▐д╣бгд│дьдщд╬╠ф┬ъд╦┤╪╧вд╣дыдшдъ╛▄║┘д╩╛Ё╩єд╧бв
+     ░╩▓╝д╬ URL дфд╜д╬┬╛д╬еъе╜б╝е╣дЄ╗▓╛╚дпд└д╡ддбг
+     <ul class="itemizedlist">
+      <li class="listitem">
+       <p class="para">
+        Unicode д╦д─ддд╞
+       </p>
+       <p class="para">
+        <a href="http://www.unicode.org/" class="link external">&raquo; http://www.unicode.org/</a>
+       </p>
+      </li>
+      <li class="listitem">
+       <p class="para">
+        ╞№╦▄╕ь/┤┌╣ё╕ь/├ц╣ё╕ь╩╕╗·д╦┤╪д╣ды╛Ё╩є
+       </p>
+       <p class="para">
+        <i class="literal">
+         <a href="http://examples.oreilly.com/cjkvinfo/doc/cjk.inf" class="link external">&raquo; http://examples.oreilly.com/cjkvinfo/doc/cjk.inf</a>
+        </i>
+       </p>
+      </li>
+     </ul>
+     </p>
+   </div>
+   
+
+
+
+<div id="mbstring.encodings" class="section">
+ <h2 class="title">е╡е▌б╝е╚д╡дьдыеиеєе│б╝е╟егеєе░д╬│╡═╫</h2>
+ <div class="segmentedlist">
+  <strong class="title">е╡е▌б╝е╚д╡дьдыеиеєе│б╝е╟егеєе░д╬│╡═╫</strong>
+  
+  
+  
+  
+  <div class="seglistitem">
+   <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>ISO-10646-UCS-4</div>
+   <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>ISO 10646</div>
+   <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    31 е╙е├е╚е│б╝е╔╢ї┤╓дЄ╗╚═╤д╣дыеце╦е╨б╝е╡еы╩╕╗·е╗е├е╚д╟бв
+    ISO/IEC 10646 д╦дшд├д╞ UCS-4 д╚д╖д╞╔╕╜р▓╜д╡дьд╞ддд▐д╣бг
+    ║╟┐╖╚╟д╬ Unicode е│б╝е╔е▐е├е╫д╚╧в╞░д╖д╞ддд▐д╣бг
+   </div>
+   <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+    д│д╬╠╛┴░дЄеиеєе│б╝е╟егеєе░╩╤┤╣д╬║▌д╦╗╚═╤д╣дыд╚бв
+    └ш╞мд╬ BOM (е╨еде╚екб╝е└б╝е▐б╝еп)
+    д╦дтд╚д┼ддд╞д╜дь░╩╣▀д╬е╨еде╚╬єд╬еиеєе╟егевеєдЄ╝▒╩╠д╖д▐д╣бг
+   </div>
+  </div>
+  <div class="seglistitem">
+   <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>ISO-10646-UCS-4</div>
+   <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>UCS-4</div>
+   <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    ╛хдЄ╗▓╛╚дпд└д╡ддбг
+   </div>
+   <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+    <i class="literal">UCS-4</i> д╚д╧┬╨╛▌┼кд╦бв
+    ╩╕╗·╬єдм╛яд╦е╙е├е░еиеєе╟егевеє╖┴╝░д╚д▀д╩д╡дьд▐д╣бг
+   </div>
+  </div>
+  <div class="seglistitem">
+   <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>ISO-10646-UCS-4</div>
+   <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>UCS-4</div>
+   <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    ╛хдЄ╗▓╛╚дпд└д╡ддбг
+   </div>
+   <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+    <i class="literal">UCS-4</i> д╚д╧┬╨╛▌┼кд╦бв
+    ╩╕╗·╬єдм╛яд╦еъе╚еыеиеєе╟егевеє╖┴╝░д╚д▀д╩д╡дьд▐д╣бг
+   </div>
+  </div>
+  <div class="seglistitem">
+   <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>ISO-10646-UCS-2</div>
+   <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>UCS-2</div>
+   <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    16 е╙е├е╚е│б╝е╔╢ї┤╓дЄ╗╚═╤д╣дыеце╦е╨б╝е╡еы╩╕╗·е╗е├е╚д╟бв
+    ISO/IEC 10646 д╦дшд├д╞ UCS-2 д╚д╖д╞╔╕╜р▓╜д╡дьд╞ддд▐д╣бг
+    ║╟┐╖╚╟д╬ Unicode е│б╝е╔е▐е├е╫д╚╧в╞░д╖д╞ддд▐д╣бг
+   </div>
+   <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+    д│д╬╠╛┴░дЄеиеєе│б╝е╟егеєе░╩╤┤╣д╬║▌д╦╗╚═╤д╣дыд╚бв
+    └ш╞мд╬ BOM (е╨еде╚екб╝е└б╝е▐б╝еп)
+    д╦дтд╚д┼ддд╞д╜дь░╩╣▀д╬е╨еде╚╬єд╬еиеєе╟егевеєдЄ╝▒╩╠д╖д▐д╣бг
+   </div>
+  </div>
+  <div class="seglistitem">
+   <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>ISO-10646-UCS-2</div>
+   <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>UCS-2</div>
+   <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    ╛хдЄ╗▓╛╚дпд└д╡ддбг
+   </div>
+   <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+    <i class="literal">UCS-2</i> д╚д╧┬╨╛▌┼кд╦бв
+    ╩╕╗·╬єдм╛яд╦е╙е├е░еиеєе╟егевеє╖┴╝░д╚д▀д╩д╡дьд▐д╣бг
+   </div>
+  </div>
+  <div class="seglistitem">
+   <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>ISO-10646-UCS-2</div>
+   <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>UCS-2</div>
+   <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    ╛хдЄ╗▓╛╚дпд└д╡ддбг
+   </div>
+   <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+    <i class="literal">UCS-2</i> д╚д╧┬╨╛▌┼кд╦бв
+    ╩╕╗·╬єдм╛яд╦еъе╚еыеиеєе╟егевеє╖┴╝░д╚д▀д╩д╡дьд▐д╣бг
+   </div>
+  </div>
+  <div class="seglistitem">
+   <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>UTF-32</div>
+   <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>Unicode</div>
+   <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    32 е╙е├е╚╔¤д╬ Unicode ╩╤┤╣е╒ейб╝е▐е├е╚д╟бв
+    д╜д╬еиеєе│б╝е╟егеєе░╢ї┤╓д╧ Unicode д╬е│б╝е╔е╗е├е╚╔╕╜рдЄ╗▓╛╚д╖д▐д╣бг
+    д│д╬еиеєе│б╝е╟егеєе░┬╬╖╧д╧ UCS-4 д╚д╧░█д╩дъд▐д╣бг
+    д╩д╝д╩дщбвUnicode д╬е│б╝е╔╢ї┤╓д╧ 21 е╙е├е╚д▐д╟д╦└й╕┬д╡дьдыдлдщд╟д╣бг
+   </div>
+   <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+    д│д╬╠╛┴░дЄеиеєе│б╝е╟егеєе░╩╤┤╣д╬║▌д╦╗╚═╤д╣дыд╚бв
+    └ш╞мд╬ BOM (е╨еде╚екб╝е└б╝е▐б╝еп)
+    д╦дтд╚д┼ддд╞д╜дь░╩╣▀д╬е╨еде╚╬єд╬еиеєе╟егевеєдЄ╝▒╩╠д╖д▐д╣бг
+   </div>
+  </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>UTF-32BE</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>Unicode</div>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>╛хдЄ╗▓╛╚дпд└д╡ддбг</div>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+     <i class="literal">UTF-32</i> д╚д╧┬╨╛▌┼кд╦бв
+     ╩╕╗·╬єдм╛яд╦е╙е├е░еиеєе╟егевеє╖┴╝░д╚д▀д╩д╡дьд▐д╣бг
+    </div>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>UTF-32LE</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>Unicode</div>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>╛хдЄ╗▓╛╚дпд└д╡ддбг</div>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+     <i class="literal">UTF-32</i> д╚д╧┬╨╛▌┼кд╦бв
+     ╩╕╗·╬єдм╛яд╦еъе╚еыеиеєе╟егевеє╖┴╝░д╚д▀д╩д╡дьд▐д╣бг
+    </div>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>UTF-16</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>Unicode</div>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+     16 е╙е├е╚╔¤д╬ Unicode ╩╤┤╣е╒ейб╝е▐е├е╚д╟д╣бг
+     ├э░╒д╣д┘дн┼└д╧бвUTF-16 д╬╗┼══дм UCS-2 д╚д╧░█д╩дыд│д╚д╟д╣бг
+     д╩д╝д╩дщбвUnicode 2.0 дшдъ╞│╞■д╡дьд┐е╡еэе▓б╝е╚╡б╟╜д╦дшдъбв
+     UTF-16 д╧╕╜║▀ 21 е╙е├е╚е│б╝е╔╢ї┤╓дЄ╗▓╛╚д╖д╞дддыдлдщд╟д╣бг
+    </div>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+     д│д╬╠╛┴░дЄеиеєе│б╝е╟егеєе░╩╤┤╣д╬║▌д╦╗╚═╤д╣дыд╚бв
+     └ш╞мд╬ BOM (е╨еде╚екб╝е└б╝е▐б╝еп)
+     д╦дтд╚д┼ддд╞д╜дь░╩╣▀д╬е╨еде╚╬єд╬еиеєе╟егевеєдЄ╝▒╩╠д╖д▐д╣бг
+    </div>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>UTF-16BE</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>Unicode</div>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+     ╛хдЄ╗▓╛╚дпд└д╡ддбг
+    </div>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+     <i class="literal">UTF-16</i> д╚д╧┬╨╛▌┼кд╦бв
+     ╩╕╗·╬єдм╛яд╦е╙е├е░еиеєе╟егевеє╖┴╝░д╚д▀д╩д╡дьд▐д╣бг
+    </div>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>UTF-16LE</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>Unicode</div>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+     ╛хдЄ╗▓╛╚дпд└д╡ддбг
+    </div>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+     <i class="literal">UTF-16</i> д╚д╧┬╨╛▌┼кд╦бв
+     ╩╕╗·╬єдм╛яд╦еъе╚еыеиеєе╟егевеє╖┴╝░д╚д▀д╩д╡дьд▐д╣бг
+    </div>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>UTF-8</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>Unicode / UCS</div>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+     8 е╙е├е╚╔¤д╬ Unicode ╩╤┤╣е╒ейб╝е▐е├е╚д╟д╣бг
+    </div>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>none</div>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>UTF-7</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>Unicode</div>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+     есб╝еыд╟░┬┴┤д╦╗╚═╤д╟днды Unicode ╩╤┤╣е╒ейб╝е▐е├е╚д╟д╣бг
+     <a href="http://www.faqs.org/rfcs/rfc2152" class="link external">&raquo; RFC2152</a> д╟─ъ╡┴д╡дьд╞ддд▐д╣бг
+    </div>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>none</div>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>(none)</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>Unicode</div>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+     UTF-7 д╬╩╤▓╜╖┴д╟д╣бг
+     <a href="http://www.faqs.org/rfcs/rfc3501" class="link external">&raquo; IMAP е╫еэе╚е│еы</a>
+     д╟д╬╗╚═╤д╦╞├▓╜д╖д╞ддд▐д╣бг
+    </div>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>none</div>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>
+     US-ASCII (┐ф╛йд╡дьды MIME ╠╛) / iso-ir-6 / ANSI_X3.4-1986 /
+     ISO_646.irv:1991 / ASCII / ISO646-US / us / IBM367 / CP367 / csASCII
+    </div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>ASCII / ISO 646</div>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+     American Standard Code for Information Interchange 
+     д╧бв░ь╚╠┼кд╦╗╚═╤д╡дьды 7 е╙е├е╚еиеєе│б╝е╟егеєе░д╟д╣бг
+     ╣ё║▌╔╕╜р╡м│╩ ISO 646 д╚д╖д╞╔╕╜р▓╜д╡дьд╞ддд▐д╣бг
+    </div>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>(none)</div>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>
+     EUC-JP (┐ф╛йд╡дьды MIME ╠╛) /
+     Extended_UNIX_Code_Packed_Format_for_Japanese / csEUCPkdFmtJapanese
+    </div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+     US-ASCII / JIS X0201:1997 (╚╛│╤еле╩д╬╔Ї╩м) /
+     JIS X0208:1990 / JIS X0212:1990 дЄ╣ч└од╖д┐дтд╬
+    </div>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+     д│д╬╠╛┴░дм Extended UNIX Code Packed Format for Japanese
+     дЄ├╗╜╠д╖д┐дтд╬д╟двдыд│д╚длдщдядлдыдшджд╦бв
+     ░ь╚╠┼кд╦ UNIX ╖╧д╬е╫еще├е╚е╒ейб╝ерд╟═╤дддщдьд▐д╣бг
+     дтд╚д╚д╩дыеиеєе│б╝е╟егеєе░╩¤╝░д╟двды Extended UNIX Code
+     д╧бвISO 2022 д╦дтд╚д┼ддд╞└▀╖╫д╡дьд╞ддд▐д╣бг
+    </div>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+     EUC-JP дм╗▓╛╚д╖д╞ддды╩╕╗·е╗е├е╚д╧ IBM932 / CP932 д╬дтд╬д╚д╧░█д╩дъд▐д╣бг
+     д│дьдщд╧д╜дьд╛дь OS/2А дкдшд╙ MicrosoftА WindowsА
+     д╟═╤дддщдьд╞ддд▐д╣бгд│дьдщд╬е╫еще├е╚е╒ейб╝ерд╚д╬┤╓д╟╛Ё╩єдЄдфдъ╝шдъд╣ды╛ь╣чд╧бв
+     ┬хдядъд╦ EUCJP-WIN дЄ╗╚═╤д╖д╞дпд└д╡ддбг
+    </div>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>Shift_JIS (┐ф╛йд╡дьды MIME ╠╛) / MS_Kanji / csShift_JIS</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>JIS X0201:1997 / JIS X0208:1997 дЄ╣ч└од╖д┐дтд╬</div>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+     Shift_JIS дм│л╚пд╡дьд┐д╬д╧ 80 ╟п┬х╜щ┤№д╟д╣бг
+     ┼Ў╗■д╧╞№╦▄╕ьеяб╝е╫еэдм╔с╡┌д╖д╞ддд┐д┐дсбв
+     ╡ь═шд╬еиеєе│б╝е╟егеєе░╩¤╝░д╟двды JIS X 0201:1976
+     д╚д╬╕▀┤╣└ндЄ╩▌д─д┐дсд╦│л╚пд╡дьд▐д╖д┐бг
+     IANA д╬─ъ╡┴д╦дшдыд╚бвShift_JIS д╬е│б╝е╔е╗е├е╚д╧
+     IBM932 / CP932 д╚д╧╚∙╠пд╦░█д╩дъд▐д╣бг
+     д╖длд╖бв&quot;SJIS&quot; / &quot;Shift_JIS&quot; д╚дддж╠╛┴░д╧бв
+     д│дьдщд╬е│б╝е╔е╗е├е╚дЄ╔╜д╣дтд╬д╚д╖д╞д╖д╨д╖д╨╕э═╤д╡дьд╞ддд▐д╣бг
+    </div>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>CP932 е│б╝е╔е▐е├е╫дЄ╗╚═╤д╣дыд╦д╧бв┬хдядъд╦ SJIS-WIN дЄ╗╚═╤д╖д╞дпд└д╡ддбг</div>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>(none)</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+     JIS X0201:1997 / JIS X0208:1997 / IBM │╚─е╩╕╗· / NEC │╚─е╩╕╗·
+     дЄ╣ч└од╖д┐дтд╬
+    </div>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+     д│д╬ &quot;еиеєе│б╝е╟егеєе░&quot; д╧ EUC-JP
+     д╚╞▒д╕еиеєе│б╝е╟егеєе░╩¤╝░дЄ╗╚═╤д╖д▐д╣дмбв
+     дтд╚д╚д╩ды╩╕╗·е╗е├е╚дм░█д╩дъд▐д╣бг
+     д─д▐дъбвEUC-JP д╚д╧░█д╩ды╩╕╗·д╦┬╨▒■д╣дые│б╝е╔е▌едеєе╚дмдвдыд╚ддджд│д╚д╟д╣бг
+    </div>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>none</div>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>Windows-31J / csWindows31J</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+     JIS X0201:1997 / JIS X0208:1997 / IBM │╚─е╩╕╗· / NEC │╚─е╩╕╗·
+     дЄ╣ч└од╖д┐дтд╬
+    </div>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+     д│д╬ &quot;еиеєе│б╝е╟егеєе░&quot; д╧ Shift_JIS
+     д╚╞▒д╕еиеєе│б╝е╟егеєе░╩¤╝░дЄ╗╚═╤д╖д▐д╣дмбв
+     дтд╚д╚д╩ды╩╕╗·е╗е├е╚дм░█д╩дъд▐д╣бг
+     д─д▐дъбвShift_JIS д╚д╧░█д╩ды╩╕╗·д╦┬╨▒■д╣дые│б╝е╔е▌едеєе╚дмдвдыд╚ддджд│д╚д╟д╣бг
+    </div>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>(none)</div>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>ISO-2022-JP (┐ф╛йд╡дьды MIME ╠╛) / csISO2022JP</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+     US-ASCII / JIS X0201:1976 / JIS X0208:1978 / JIS X0208:1983
+    </div>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong><a href="http://www.faqs.org/rfcs/rfc1468" class="link external">&raquo; RFC1468</a></div>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>(none)</div>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>JIS</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>ISO-8859-1</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>ISO-8859-2</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>ISO-8859-3</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>ISO-8859-4</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>ISO-8859-5</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>ISO-8859-6</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>ISO-8859-7</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>ISO-8859-8</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>ISO-8859-9</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>ISO-8859-10</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>ISO-8859-13</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>ISO-8859-14</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>ISO-8859-15</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>byte2be</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>byte2le</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>byte4be</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>byte4le</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>BASE64</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>HTML-ENTITIES</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>7bit</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>8bit</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>EUC-CN</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>CP936</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>HZ</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>EUC-TW</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>CP950</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>BIG-5</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>EUC-KR</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>UHC (CP949)</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>ISO-2022-KR</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>Windows-1251 (CP1251)</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>Windows-1252 (CP1252)</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>CP866 (IBM866)</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+   <div class="seglistitem">
+    <div class="seg"><strong><span class="segtitle">IANA ╩╕╗·е╗е├е╚┼╨╧┐╠╛:</span></strong>KOI8-R</div>
+    <div class="seg"><strong><span class="segtitle">░═┬╕д╣ды╩╕╗·╜╕╣ч:</span></strong>
+    <div class="seg"><strong><span class="segtitle">└т╠└:</span></strong>
+    <div class="seg"><strong><span class="segtitle">├э╡н:</span></strong>
+   </div>
+  </div>
+ </div>
+
+
+
+    
+  </div>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>╠▄╝б</h2><ul class="chunklist chunklist_reference"><li><a href="function.mb-check-encoding.html">mb_check_encoding</a> б╜ ╩╕╗·╬єдмбв╗╪─ъд╖д┐еиеєе│б╝е╟егеєе░д╟═н╕·д╩дтд╬длд╔дждлдЄ─┤д┘ды</li><li><a href="function.mb-convert-case.html">mb_convert_case</a> б╜ ╩╕╗·╬єд╦┬╨д╖д╞е▒б╝е╣е╒ейеые╟егеєе░дЄ╣╘дж</li><li><a href="function.mb-convert-encoding.html">mb_convert_encoding</a> б╜ ╩╕╗·еиеєе│б╝е╟егеєе░дЄ╩╤┤╣д╣ды</li><li><a href="function.mb-convert-kana.html">mb_convert_kana</a> б╜ еле╩дЄ("┴┤│╤длд╩"бв"╚╛│╤длд╩"┼∙д╦)╩╤┤╣д╣ды</li><li><a href="function.mb-convert-variables.html">mb_convert_variables</a> б╜ ╩╤┐Їд╬╩╕╗·е│б╝е╔дЄ╩╤┤╣д╣ды</li><li><a href="function.mb-decode-mimeheader.html">mb_decode_mimeheader</a> б╜ MIME е╪е├е└е╒егб╝еые╔д╬╩╕╗·╬єдЄе╟е│б╝е╔д╣ды</li><li><a href="function.mb-decode-numericentity.html">mb_decode_numericentity</a> б╜ HTML ┐Ї├═еиеєе╞еге╞егдЄ╩╕╗·д╦е╟е│б╝е╔д╣ды</li><li><a href="function.mb-detect-encoding.html">mb_detect_encoding</a> б╜ ╩╕╗·еиеєе│б╝е╟егеєе░дЄ╕б╜╨д╣ды</li><li><a href="function.mb-detect-order.html">mb_detect_order</a> б╜ ╩╕╗·еиеєе│б╝е╟егеєе░╕б╜╨╜ч╜°дЄ└▀─ъдвдыддд╧╝ш╞└д╣ды</li><li><a href="function.mb-encode-mimeheader.html">mb_encode_mimeheader</a> б╜ MIMEе╪е├е└д╬╩╕╗·╬єдЄеиеєе│б╝е╔д╣ды</li><li><a href="function.mb-encode-numericentity.html">mb_encode_numericentity</a> б╜ ╩╕╗·дЄ HTML ┐Ї├═еиеєе╞еге╞егд╦еиеєе│б╝е╔д╣ды</li><li><a href="function.mb-ereg-match.html">mb_ereg_match</a> б╜ е▐еые┴е╨еде╚╩╕╗·╬єдм└╡╡м╔╜╕╜д╦░ь├╫д╣дыдл─┤д┘ды</li><li><a href="function.mb-ereg-replace.html">mb_ereg_replace</a> б╜ е▐еые┴е╨еде╚╩╕╗·╬єд╦└╡╡м╔╜╕╜д╦дшды├╓┤╣дЄ╣╘дж</li><li><a href="function.mb-ereg-search-getpos.html">mb_ereg_search_getpos</a> б╜ ╝бд╬└╡╡м╔╜╕╜╕б║ўдЄ│л╗╧д╣ды░╠├╓дЄ╝ш╞└д╣ды</li><li><a href="function.mb-ereg-search-getregs.html">mb_ereg_search_getregs</a> б╜ е▐еые┴е╨еде╚╩╕╗·╬єдм└╡╡м╔╜╕╜д╦░ь├╫д╣ды╔Ї╩мдмдвдыдл─┤д┘ды</li><li><a href="function.mb-ereg-search-init.html">mb_ereg_search_init</a> б╜ е▐еые┴е╨еде╚└╡╡м╔╜╕╜╕б║ў═╤д╬╩╕╗·╬єд╚└╡╡м╔╜╕╜дЄ└▀─ъд╣ды</li><li><a href="function.mb-ereg-search-pos.html">mb_ereg_search_pos</a> б╜ ╗╪─ъд╖д┐е▐еые┴е╨еде╚╩╕╗·╬єдм└╡╡м╔╜╕╜д╦░ь├╫д╣ды╔Ї╩мд╬░╠├╓д╚─╣д╡дЄ╩╓д╣</li><li><a href="function.mb-ereg-search-regs.html">mb_ereg_search_regs</a> б╜ ╗╪─ъд╖д┐е▐еые┴е╨еде╚╩╕╗·╬єдм└╡╡м╔╜╕╜д╦░ь├╫д╣ды╔Ї╩мдЄ╝ш╞└д╣ды</li><li><a href="function.mb-ereg-search-setpos.html">mb_ereg_search_setpos</a> б╜ ╝бд╬└╡╡м╔╜╕╜╕б║ўдЄ│л╗╧д╣ды░╠├╓дЄ└▀─ъд╣ды</li><li><a href="function.mb-ereg-search.html">mb_ereg_search</a> б╜ ╗╪─ъд╖д┐е▐еые┴е╨еде╚╩╕╗·╬єдм└╡╡м╔╜╕╜д╦░ь├╫д╣дыдл─┤д┘ды</li><li><a href="function.mb-ereg.html">mb_ereg</a> б╜ е▐еые┴е╨еде╚╩╕╗·╬єд╦└╡╡м╔╜╕╜е▐е├е┴дЄ╣╘дж</li><li><a href="function.mb-eregi-replace.html">mb_eregi_replace</a> б╜ е▐еые┴е╨еде╚╩╕╗·╬єд╦┬ч╩╕╗·╛о╩╕╗·дЄ╢ш╩╠д╗д║д╦└╡╡м╔╜╕╜д╦дшды├╓┤╣дЄ╣╘дж</li><li><a href="function.mb-eregi.html">mb_eregi</a> б╜ е▐еые┴е╨еде╚╩╕╗·╬єд╦┬ч╩╕╗·╛о╩╕╗·дЄ╢ш╩╠д╖д╩дд└╡╡м╔╜╕╜е▐е├е┴дЄ╣╘дж</li><li><a href="function.mb-get-info.html">mb_get_info</a> б╜ mbstring д╬╞т╔Ї└▀─ъ├═дЄ╝ш╞└д╣ды</li><li><a href="function.mb-http-input.html">mb_http_input</a> б╜ HTTP ╞■╬╧╩╕╗·еиеєе│б╝е╟егеєе░дЄ╕б╜╨д╣ды</li><li><a href="function.mb-http-output.html">mb_http_output</a> б╜ HTTP ╜╨╬╧╩╕╗·еиеєе│б╝е╟егеєе░дЄ└▀─ъдвдыддд╧╝ш╞└д╣ды</li><li><a href="function.mb-internal-encoding.html">mb_internal_encoding</a> б╜ ╞т╔Ї╩╕╗·еиеєе│б╝е╟егеєе░дЄ└▀─ъдвдыддд╧╝ш╞└д╣ды</li><li><a href="function.mb-language.html">mb_language</a> б╜ ╕╜║▀д╬╕└╕ьдЄ└▀─ъдвдыддд╧╝ш╞└д╣ды</li><li><a href="function.mb-output-handler.html">mb_output_handler</a> б╜ ╜╨╬╧е╨е├е╒еб╞тд╟╩╕╗·еиеєе│б╝е╟егеєе░дЄ╩╤┤╣д╣дые│б╝еые╨е├еп┤╪┐Ї</li><li><a href="function.mb-parse-str.html">mb_parse_str</a> б╜ GET/POST/COOKIEе╟б╝е┐дЄе╤б╝е╣д╖бве░еэб╝е╨еы╩╤┐ЇдЄ└▀─ъд╣ды</li><li><a href="function.mb-preferred-mime-name.html">mb_preferred_mime_name</a> б╜ MIME ╩╕╗·└▀─ъдЄ╩╕╗·╬єд╟╞└ды</li><li><a href="function.mb-regex-encoding.html">mb_regex_encoding</a> б╜ ╕╜║▀д╬└╡╡м╔╜╕╜═╤д╬еиеєе│б╝е╟егеєе░дЄ╩╕╗·╬єд╚д╖д╞╩╓д╣</li><li><a href="function.mb-regex-set-options.html">mb_regex_set_options</a> б╜ е▐еые┴е╨еде╚└╡╡м╔╜╕╜┤╪┐Їд╬е╟е╒ейеые╚еке╫е╖ечеєдЄ╝ш╞└д▐д┐д╧└▀─ъд╣ды</li><li><a href="function.mb-send-mail.html">mb_send_mail</a> б╜ еиеєе│б╝е╔╩╤┤╣дЄ╣╘д├д╞есб╝еыдЄ┴ў┐од╣ды</li><li><a href="function.mb-split.html">mb_split</a> б╜ е▐еые┴е╨еде╚╩╕╗·╬єдЄ└╡╡м╔╜╕╜д╦дшдъ╩м│фд╣ды</li><li><a href="function.mb-strcut.html">mb_strcut</a> б╜ ╩╕╗·╬єд╬░ь╔ЇдЄ╞└ды</li><li><a href="function.mb-strimwidth.html">mb_strimwidth</a> б╜ ╗╪─ъд╖д┐╔¤д╟╩╕╗·╬єдЄ┤▌дсды</li><li><a href="function.mb-stripos.html">mb_stripos</a> б╜ ┬ч╩╕╗·╛о╩╕╗·дЄ╢ш╩╠д╗д║бв
+   ╩╕╗·╬єд╬├цд╟╗╪─ъд╖д┐╩╕╗·╬єдм║╟╜щд╦╕╜дьды░╠├╓дЄ├╡д╣</li><li><a href="function.mb-stristr.html">mb_stristr</a> б╜ ┬ч╩╕╗·╛о╩╕╗·дЄ╢ш╩╠д╗д║бв
+   ╩╕╗·╬єд╬├цд╟╗╪─ъд╖д┐╩╕╗·╬єдм║╟╜щд╦╕╜дьды░╠├╓дЄ├╡д╣</li><li><a href="function.mb-strlen.html">mb_strlen</a> б╜ ╩╕╗·╬єд╬─╣д╡дЄ╞└ды</li><li><a href="function.mb-strpos.html">mb_strpos</a> б╜ ╩╕╗·╬єд╬├цд╦╗╪─ъд╖д┐╩╕╗·╬єдм║╟╜щд╦╕╜дьды░╠├╓дЄ╕лд─д▒ды</li><li><a href="function.mb-strrchr.html">mb_strrchr</a> б╜ ╩╠д╬╩╕╗·╬єд╬├цд╟бвдвды╩╕╗·дм║╟╕хд╦╕╜дьды╛ь╜ъдЄ╕лд─д▒ды</li><li><a href="function.mb-strrichr.html">mb_strrichr</a> б╜ ┬ч╩╕╗·╛о╩╕╗·дЄ╢ш╩╠д╗д║бв
+   ╩╠д╬╩╕╗·╬єд╬├цд╟двды╩╕╗·дм║╟╕хд╦╕╜дьды╛ь╜ъдЄ├╡д╣</li><li><a href="function.mb-strripos.html">mb_strripos</a> б╜ ┬ч╩╕╗·╛о╩╕╗·дЄ╢ш╩╠д╗д║бв
+   ╩╕╗·╬єд╬├цд╟╗╪─ъд╖д┐╩╕╗·╬єдм║╟╕хд╦╕╜дьды░╠├╓дЄ├╡д╣</li><li><a href="function.mb-strrpos.html">mb_strrpos</a> б╜ ╩╕╗·╬єд╬├цд╦╗╪─ъд╖д┐╩╕╗·╬єдм║╟╕хд╦╕╜дьды░╠├╓дЄ╕лд─д▒ды</li><li><a href="function.mb-strstr.html">mb_strstr</a> б╜ ╩╕╗·╬єд╬├цд╟бв╗╪─ъд╖д┐╩╕╗·╬єдм║╟╜щд╦╕╜дьды░╠├╓дЄ╕лд─д▒ды</li><li><a href="function.mb-strtolower.html">mb_strtolower</a> б╜ ╩╕╗·╬єдЄ╛о╩╕╗·д╦д╣ды</li><li><a href="function.mb-strtoupper.html">mb_strtoupper</a> б╜ ╩╕╗·╬єдЄ┬ч╩╕╗·д╦д╣ды</li><li><a href="function.mb-strwidth.html">mb_strwidth</a> б╜ ╩╕╗·╬єд╬╔¤дЄ╩╓д╣</li><li><a href="function.mb-substitute-character.html">mb_substitute_character</a> б╜ ├╓┤╣╩╕╗·дЄ└▀─ъдвдыддд╧╝ш╞└д╣ды</li><li><a href="function.mb-substr-count.html">mb_substr_count</a> б╜ ╔Ї╩м╩╕╗·╬єд╬╜╨╕╜▓є┐ЇдЄ┐Їдиды</li><li><a href="function.mb-substr.html">mb_substr</a> б╜ ╩╕╗·╬єд╬░ь╔ЇдЄ╞└ды</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.msql.html">msql</a></div>
+ <div class="next" style="float: right;"><a href="function.mb-check-encoding.html">mb_check_encoding</a></div>
+ <div class="up"><a href="funcref.html">┤╪┐Їеъе╒ебеьеєе╣</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

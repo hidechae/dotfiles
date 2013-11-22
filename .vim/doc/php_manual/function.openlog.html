@@ -1,0 +1,266 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>システムのロガーへの接続をオープンする</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.long2ip.html">long2ip</a></div>
+ <div class="next" style="float: right;"><a href="function.pfsockopen.html">pfsockopen</a></div>
+ <div class="up"><a href="ref.network.html">ネットワーク</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.openlog" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">openlog</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">openlog ― システムのロガーへの接続をオープンする</p>
+ 
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>openlog</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$ident</tt></span>
+   , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$option</tt></span>
+   , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$facility</tt></span>
+   )</div>
+
+  <p class="para">
+   <b>openlog()</b> は、プログラムによるシステムロガーへの接続をオープンします。
+  </p>
+  <p class="para"> 
+   <b>openlog()</b> の使用は必須ではありません。この関数は、
+   必要に応じて <a href="function.syslog.html" class="function">syslog()</a> により自動的に呼び出されます。
+   この場合、<i><tt class="parameter">ident</tt></i>
+ のデフォルト値は
+   <b><tt>FALSE</tt></b> となります。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">ident</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       文字列 <i><tt class="parameter">ident</tt></i>
+ が、各メッセージに追加されます。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">option</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">option</tt></i>
+ 引数は、
+       ログメッセージの生成時に使用されるロギング用オプションを指定します。
+       <table border="5">
+        <caption><b><b>openlog()</b> のオプション</b></caption>
+        <colgroup>
+
+         <thead valign="middle">
+          <tr valign="middle">
+           <th colspan="1">定数</th>
+           <th colspan="1">説明</th>
+          </tr>
+
+         </thead>
+
+         <tbody valign="middle">
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><b><tt>LOG_CONS</tt></b></td>
+           <td colspan="1" rowspan="1" align="left">
+            システムロガーにデータが送信される間にエラーが発生した場合、
+            直接、システムコンソールに書き込まれます。
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><b><tt>LOG_NDELAY</tt></b></td>
+           <td colspan="1" rowspan="1" align="left">
+            直ちにロガーへの接続をオープンします。
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><b><tt>LOG_ODELAY</tt></b></td>
+           <td colspan="1" rowspan="1" align="left">
+            (デフォルト) 最初のメッセージがロギングされるまで接続のオープンを遅延します。
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><b><tt>LOG_PERROR</tt></b></td>
+           <td colspan="1" rowspan="1" align="left">標準エラー出力にもログメッセージを出力します。</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><b><tt>LOG_PID</tt></b></td>
+           <td colspan="1" rowspan="1" align="left">各メッセージに PID も含めます。</td>
+          </tr>
+
+         </tbody>
+        </colgroup>
+
+       </table>
+
+       このオプションを一つまたは複数設定することが可能です。
+       複数のオプションを使用する場合、その論理和を指定します。
+       つまり、直ちに接続をオープンし、コンソールに書き込み、
+       各メッセージに PID を含めるには、
+       <i class="literal">LOG_CONS | LOG_NDELAY | LOG_PID</i>
+       とします。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">facility</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       引数 <i><tt class="parameter">facility</tt></i>
+ には、
+       ロギングを行う際のメッセージ型を指定します。これにより、
+       (使用するシステムの syslog の設定に関して) 異なった facility 
+       を有するメッセージをどのように処理するかを指定できるようになります。
+       <table border="5">
+        <caption><b><b>openlog()</b> の機能</b></caption>
+        <colgroup>
+
+         <thead valign="middle">
+          <tr valign="middle">
+           <th colspan="1">定数</th>
+           <th colspan="1">説明</th>
+          </tr>
+
+         </thead>
+
+         <tbody valign="middle">
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><b><tt>LOG_AUTH</tt></b></td>
+           <td colspan="1" rowspan="1" align="left">
+            セキュリティ/認証用メッセージ
+            (定数 <b><tt>LOG_AUTHPRIV</tt></b>
+            が定義されているシステムでは、代わりにそれを使用してください)
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><b><tt>LOG_AUTHPRIV</tt></b></td>
+           <td colspan="1" rowspan="1" align="left">セキュリティ/認証 メッセージ (プライベート)</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><b><tt>LOG_CRON</tt></b></td>
+           <td colspan="1" rowspan="1" align="left">クロックデーモン (cron や at)</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><b><tt>LOG_DAEMON</tt></b></td>
+           <td colspan="1" rowspan="1" align="left">他のシステムデーモン</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><b><tt>LOG_KERN</tt></b></td>
+           <td colspan="1" rowspan="1" align="left">カーネルメッセージ</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><b><tt>LOG_LOCAL0</tt></b> ... <b><tt>LOG_LOCAL7</tt></b></td>
+           <td colspan="1" rowspan="1" align="left">ローカルでの使用のために確保されているもので、Windows では使用できません</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><b><tt>LOG_LPR</tt></b></td>
+           <td colspan="1" rowspan="1" align="left">ラインプリンタサブシステム</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><b><tt>LOG_MAIL</tt></b></td>
+           <td colspan="1" rowspan="1" align="left">メールサブシステム</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><b><tt>LOG_NEWS</tt></b></td>
+           <td colspan="1" rowspan="1" align="left">USENET ニュース サブシステム</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><b><tt>LOG_SYSLOG</tt></b></td>
+           <td colspan="1" rowspan="1" align="left">syslogd で内部的に生成されたメッセージ</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><b><tt>LOG_USER</tt></b></td>
+           <td colspan="1" rowspan="1" align="left">一般的なユーザレベルのメッセージ</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><b><tt>LOG_UUCP</tt></b></td>
+           <td colspan="1" rowspan="1" align="left">UUCP サブシステム</td>
+          </tr>
+
+         </tbody>
+        </colgroup>
+
+       </table>
+
+      </p>
+      <blockquote><p><b class="note">注意</b>: 
+       
+        Windows 環境で使用できるのは <i class="literal">LOG_USER</i> だけです。
+       <br />
+      </p></blockquote>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.define-syslog-variables.html" class="function">define_syslog_variables()</a></li>
+    <li class="member"><a href="function.syslog.html" class="function">syslog()</a></li>
+    <li class="member"><a href="function.closelog.html" class="function">closelog()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.long2ip.html">long2ip</a></div>
+ <div class="next" style="float: right;"><a href="function.pfsockopen.html">pfsockopen</a></div>
+ <div class="up"><a href="ref.network.html">ネットワーク</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

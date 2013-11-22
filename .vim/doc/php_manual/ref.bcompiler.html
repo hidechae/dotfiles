@@ -1,0 +1,287 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>PHP バイトコードコンパイラ (bcompiler)</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.bcsub.html">bcsub</a></div>
+ <div class="next" style="float: right;"><a href="function.bcompiler-load-exe.html">bcompiler_load_exe</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">PHP バイトコードコンパイラ (bcompiler)</h1>
+  
+
+  <div class="partintro">
+   <div id="bcompiler.intro" class="section">
+   <h2 class="title">導入</h2>
+   <div class="warning"><b class="warning">警告</b><p class="simpara">この拡張モジュールは、
+<em class="emphasis">実験的</em> なものです。この拡張モジュールの動作・
+関数名・その他ドキュメントに書かれている事項は、予告なく、将来的な PHP
+のリリースにおいて変更される可能性があります。
+このモジュールは自己責任で使用してください。</p></div>
+    <p class="para">
+     Bcompiler は、以下のような目的で作成されました。
+     <ul class="simplelist">
+      <li class="member">
+       プロプライエタリな PHP アプリケーションのスクリプト全体を
+       エンコードするため
+      </li>
+      <li class="member">
+       プロプライエタリな PHP アプリケーションの一部のクラスや関数を
+       エンコードするため
+      </li>
+      <li class="member">
+       クライアントのデスクトップで動作する php-gtk アプリケーションを、
+       php.exe を用いずに実行させるため
+      </li>
+      <li class="member">PHP から C へのコンバータの実現可能性を調べるため</li>
+     </ul>
+     最初の目的は
+     <a href="function.bcompiler-write-header.html" class="function">bcompiler_write_header()</a>、
+     <a href="function.bcompiler-write-file.html" class="function">bcompiler_write_file()</a> および
+     <a href="function.bcompiler-write-footer.html" class="function">bcompiler_write_footer()</a> を使用することで
+     実現できます。バイトコードのファイルが、圧縮されていないか
+     あるいはプレーンな形式で書き出されます。
+     出来上がったバイトコードは、単純に include や require を用いる
+     ことで使用可能です。
+    </p>
+    <p class="para">
+     2 番目の目的を実現するには
+     <a href="function.bcompiler-write-header.html" class="function">bcompiler_write_header()</a>、
+     <a href="function.bcompiler-write-class.html" class="function">bcompiler_write_class()</a>、
+     <a href="function.bcompiler-write-footer.html" class="function">bcompiler_write_footer()</a>、
+     <a href="function.bcompiler-read.html" class="function">bcompiler_read()</a>
+     および <a href="function.bcompiler-load.html" class="function">bcompiler_load()</a> 関数を使用します。
+     バイトコードのファイルが、圧縮されていないか
+     あるいはプレーンな形式で書き出されます。
+     <a href="function.bcompiler-load.html" class="function">bcompiler_load()</a> は、bzip で圧縮された
+     バイトコードファイルを読み込みます。これは元のファイルに比べて
+     1/3 程度の大きさになります。
+    </p>
+    <p class="para">
+     EXE 形式のファイルを作成するには、修正された sapi ファイルか
+     共有ライブラリとしてコンパイルされた PHP とともに bcompiler
+     を使用する必要があります。この場合、bcompiler は
+     圧縮されたバイトコードを exe ファイルの後ろから読み込みます。
+    </p>
+    <p class="para">
+     圧縮しないバイトコードのみで使用した場合、bcompiler によって
+     処理速度を約 30% 向上させることが可能です。しかし、圧縮しない
+     バイトコードは元のソースコードに比べて 5 倍程度の大きさに
+     なることに気をつけてください。バイトコードを圧縮することで
+     容量を節約することが可能ですが、圧縮ファイルを展開するのには
+     ソースコードをパースするよりはるかに長い時間がかかります。
+     bcompiler はバイトコードに対する最適化を一切行いません。
+     これは将来のバージョンで対応する予定です…。
+    </p>
+    <p class="para">
+     コードの保護という点に関しては、もとのソースコードやコメントを
+     復元することは不可能であると考えて間違いありません。bcompiler
+     のバイトコードをもとにしてコードを復元し、クラスに手を加える
+     といったことは無意味です。しかし、bcompiler で作成した
+     バイトコードファイルからデータを取り出すことは可能です。
+     個人的なパスワードなどの情報をバイトコードの中に含めないでください。
+    </p>
+   </div>
+
+   
+
+
+<div id="bcompiler.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  簡単なインストール手順
+  <ul class="itemizedlist">
+   <li class="listitem">
+    <span class="simpara">圧縮機能を動作させるには、少なくとも PHP 4.3.0 が必要です。</span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     PHP 4.3.0 以降のバージョンに Unix コマンドプロンプト上で
+     インストールするには、<strong class="command">pear install bcompiler</strong>
+     とタイプします。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     Windows 上でインストールする場合、バイナリパッケージを配布する
+     仕組みが整うまでは、pear-general メーリングリストのアーカイブから
+     ビルド済みパッケージを探してください (あるいは、もし見つからなければ
+     メーリングリストにメールを送ってください)。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     古いバージョンにインストールするには、ビルドするために
+     多少手を加える必要があります。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     <var class="filename">bcompiler.tgz</var> アーカイブを
+     <var class="filename">php4/ext</var> に展開します
+     (これは、PECL <a href="http://pecl.php.net/get/bcompiler" class="link external">&raquo; 
+     http://pecl.php.net/get/bcompiler</a> から取得可能です)。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     新しく作成されたディレクトリが bcompiler-0.x のような名前に
+     なっていれば、それを bcompiler という名前に変更します
+     (単に PHP モジュールのみをビルドしたいのであれば、これは不要です)。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     PHP 4.3.0 より前のバージョンを使用している場合は、
+     <var class="filename">Makefile.in.old</var> を <var class="filename">Makefile.in</var>
+     に、そして <var class="filename">config.m4.old</var> を <var class="filename">config.m4</var>
+     にそれぞれコピーする必要があります。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     <var class="filename">ext/bcompiler</var> で
+     <strong class="command">phpize</strong> を実行します。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     <var class="filename">php4</var> で
+     <strong class="command">./buildconf</strong> を実行します。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     <span class="option">--enable-bcompiler</span>
+     (およびその他のオプション) を指定して
+     <strong class="command">configure</strong> を実行します。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     <strong class="command">make; make install</strong>
+    </span>
+   </li>
+   <li class="listitem"><span class="simpara">これで終わりです。</span></li>
+  </ul>
+ </p>
+</div>
+
+
+
+
+   <div id="bcompiler.contact" class="section">
+   <h2 class="title">連絡先</h2>
+    <p class="para">
+     コメント・バグ修正・機能拡張の提案や、
+     開発を手伝ってくださるという方は、<a href="mailto:alan_k@php.net" class="link external">&raquo; alan_k@php.net</a>
+     までメールをください。お待ちしています。
+    </p>
+   </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.bcompiler-load-exe.html">bcompiler_load_exe</a> ― bcompiler の exe ファイルを読み込み、クラスを生成する</li><li><a href="function.bcompiler-load.html">bcompiler_load</a> ― bz 圧縮されたファイルを読み込み、クラスを生成する</li><li><a href="function.bcompiler-parse-class.html">bcompiler_parse_class</a> ― クラスのバイトコードを読み込み、ユーザ関数をコールする</li><li><a href="function.bcompiler-read.html">bcompiler_read</a> ― ファイルハンドルを読み込み、クラスを生成する</li><li><a href="function.bcompiler-write-class.html">bcompiler_write_class</a> ― 定義したクラスをバイトコードとして書き込む</li><li><a href="function.bcompiler-write-constant.html">bcompiler_write_constant</a> ― 定義した定数をバイトコードとして書き込む</li><li><a href="function.bcompiler-write-exe-footer.html">bcompiler_write_exe_footer</a> ― 開始位置および exe 形式ファイルのフッタを書き込む</li><li><a href="function.bcompiler-write-file.html">bcompiler_write_file</a> ― php ソースファイルをバイトコードとして書き込む</li><li><a href="function.bcompiler-write-footer.html">bcompiler_write_footer</a> ― コンパイルされたデータの終了を示す文字 \x00 を書き込む</li><li><a href="function.bcompiler-write-function.html">bcompiler_write_function</a> ― 定義した関数をバイトコードとして書き込む</li><li><a href="function.bcompiler-write-functions-from-file.html">bcompiler_write_functions_from_file</a> ― ファイル内で定義されているすべての関数をバイトコードとして書き込む</li><li><a href="function.bcompiler-write-header.html">bcompiler_write_header</a> ― bcompiler のヘッダを書き込む</li><li><a href="function.bcompiler-write-included-filename.html">bcompiler_write_included_filename</a> ― インクルードされたファイルをバイトコードとして書き込む</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.bcsub.html">bcsub</a></div>
+ <div class="next" style="float: right;"><a href="function.bcompiler-load-exe.html">bcompiler_load_exe</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

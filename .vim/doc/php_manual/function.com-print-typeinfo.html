@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>ディスパッチインターフェースのために、PHP のクラス定義を出力する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.com-message-pump.html">com_message_pump</a></div>
+ <div class="next" style="float: right;"><a href="function.com-propget.html">com_propget</a></div>
+ <div class="up"><a href="ref.com.html">COM</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.com-print-typeinfo" class="refentry">
+   <div class="refnamediv">
+    <h1 class="refname">com_print_typeinfo</h1>
+    <p class="verinfo">(PHP 4 &gt;= 4.2.0, PHP 5)</p><p class="refpurpose">com_print_typeinfo ― 
+     ディスパッチインターフェースのために、PHP のクラス定義を出力する
+    </p>
+
+   </div>
+   <div class="refsect1 u">
+    <h3 class="title">説明</h3>
+
+    <div class="methodsynopsis">
+     <span class="type">bool</span> <span class="methodname"><b><b>com_print_typeinfo</b></b></span>
+      ( <span class="methodparam"><span class="type">object</span> <tt class="parameter">$comobject</tt></span>
+     [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$dispinterface</tt></span>
+     [, <span class="methodparam"><span class="type">bool</span> <tt class="parameter">$wantsink</tt></span>
+    ]] )</div>
+
+
+    <p class="para">
+     この関数の目的は、イベントシンクに使用するスケルトンクラスの作成を
+     支援することです。
+     You may also use it to generate a dump of any COM
+     object, provided that it supports enough of the introspection
+     interfaces, and that you know the name of the interface you want to
+     display.
+    </p>
+
+    <p class="para">
+     <i><tt class="parameter">comobject</tt></i>
+ は、COM オブジェクトのインスタンスか
+     あるいはタイプライブラリの名前 (<a href="function.com-load-typelib.html" class="function">com_load_typelib()</a>
+     の規則にしたがって名前解決されます) のいずれかです。
+     <i><tt class="parameter">dispinterface</tt></i>
+ は、結果を表示したい
+     インターフェースで、このインターフェースは IDispatch を
+     継承したものです。<i><tt class="parameter">wantsink</tt></i>
+ が <b><tt>TRUE</tt></b>
+     の場合、対応するシンクインターフェースが代わりに表示されます。
+    </p>
+
+    <p class="para">
+     <a href="function.com-event-sink.html" class="function">com_event_sink()</a>、
+     <a href="function.com-load-typelib.html" class="function">com_load_typelib()</a> も参照ください。
+    </p>
+
+   </div>
+
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.com-message-pump.html">com_message_pump</a></div>
+ <div class="next" style="float: right;"><a href="function.com-propget.html">com_propget</a></div>
+ <div class="up"><a href="ref.com.html">COM</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

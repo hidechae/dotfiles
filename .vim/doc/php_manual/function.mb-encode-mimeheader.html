@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>MIMEヘッダの文字列をエンコードする</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mb-detect-order.html">mb_detect_order</a></div>
+ <div class="next" style="float: right;"><a href="function.mb-encode-numericentity.html">mb_encode_numericentity</a></div>
+ <div class="up"><a href="ref.mbstring.html">マルチバイト文字列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mb-encode-mimeheader" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mb_encode_mimeheader</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.0.6, PHP 5)</p><p class="refpurpose">mb_encode_mimeheader ― MIMEヘッダの文字列をエンコードする</p>
+
+ </div>
+   
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">string</span> <span class="methodname"><b><b>mb_encode_mimeheader</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$str</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$charset</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$transfer_encoding</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$linefeed</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$indent</tt></span>
+  ]]]] )</div>
+
+  <p class="para">
+   <b>mb_encode_mimeheader()</b> は、MIME ヘッダ
+   エンコーディング方式によって文字列 <i><tt class="parameter">str</tt></i>
+
+   をエンコードします。この関数は、ASCII 表現の文字列を返します。
+  </p>
+  <p class="para">
+   <i><tt class="parameter">charset</tt></i>
+ は、<i><tt class="parameter">str</tt></i>
+
+   の文字セット名です。デフォルトは、現在の NLS 設定
+   （<i class="literal">mbstring.language</i>）によって決まります。
+  </p>
+  <p class="para">
+   <i><tt class="parameter">transfer_encoding</tt></i>
+ は MIME エンコーディングの
+   方式を指定します。<i class="literal">&quot;B&quot;</i> (Base64) または
+   <i class="literal">&quot;Q&quot;</i> (Quoted-Printable) のどちらかでなければなりません。
+   デフォルトは <i class="literal">&quot;B&quot;</i> です。
+  </p>
+  <p class="para">
+   <i><tt class="parameter">linefeed</tt></i>
+ は EOL（行末）のマーカで、
+   <b>mb_encode_mimeheader()</b> が行を折りたたむ
+   （<a href="http://www.faqs.org/rfcs/rfc2822" class="link external">&raquo; RFC</a> 用語で、
+   ある一定より長い行を複数行に分割することを言います。
+   分割する長さは、現在 74 文字に固定されています）際に利用します。
+   デフォルトは <i class="literal">&quot;\r\n&quot;</i> (CRLF) です。
+  </p>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>mb_encode_mimeheader()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$name&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"太郎"</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;漢字<br /></span><span style="color: #0000BB">$mbox&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"kru"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$doma&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"gtinn.mon"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$addr&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mb_encode_mimeheader</span><span style="color: #007700">(</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"UTF-7"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"Q"</span><span style="color: #007700">)&nbsp;.&nbsp;</span><span style="color: #DD0000">"&nbsp;&lt;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$mbox&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"@"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$doma&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"&gt;"</span><span style="color: #007700">;<br />echo&nbsp;</span><span style="color: #0000BB">$addr</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    この関数は、行を分割する際に特別な配慮（単語の区切りなど）を行いません。
+    このせいで、もとの文字列に予期せぬ空白が入ってしまう可能性があります。
+   <br />
+  </p></blockquote>
+  <p class="para">
+   <i><tt class="parameter">indent</tt></i>
+ は PHP 5 で追加されました。
+  </p>
+  <p class="para">
+   <a href="function.mb-decode-mimeheader.html" class="function">mb_decode_mimeheader()</a>も参照ください。
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mb-detect-order.html">mb_detect_order</a></div>
+ <div class="next" style="float: right;"><a href="function.mb-encode-numericentity.html">mb_encode_numericentity</a></div>
+ <div class="up"><a href="ref.mbstring.html">マルチバイト文字列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

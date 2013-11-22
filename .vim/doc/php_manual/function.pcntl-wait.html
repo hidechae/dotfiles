@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>待つかフォークした子プロセスのステータスを返す</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.pcntl-signal.html">pcntl_signal</a></div>
+ <div class="next" style="float: right;"><a href="function.pcntl-waitpid.html">pcntl_waitpid</a></div>
+ <div class="up"><a href="ref.pcntl.html">PCNTL</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.pcntl-wait" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">pcntl_wait</h1>
+  <p class="verinfo">(PHP 5)</p><p class="refpurpose">pcntl_wait ― 待つかフォークした子プロセスのステータスを返す</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">int</span> <span class="methodname"><b><b>pcntl_wait</b></b></span>
+    ( <span class="methodparam"><span class="type">int</span> <tt class="parameter reference">&$status</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$options</tt></span>
+  ] )</div>
+
+  <p class="para">
+   この関数は、子プロセスが終了する・
+   カレントのプロセスを終了させるシグナルが送信される・シグナル処理関数を
+   コールするシグナルが送信される
+   のいずれかが発生するまでカレントのプロセスの実行を中断します。
+   子プロセスが、 コール時に
+   既に終了している場合(&quot;ゾンビ&quot;プロセスと呼ばれます)、この関数は
+   直ちに処理を返します。子プロセスにより使用される全てのシステム
+   リソースは、解放されます。waitpid のシステムでの動作に関する詳細は、
+   システムの wait(2) についての man ページを参照ください。
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    この関数は、<i><tt class="parameter">pid</tt></i>
+ に <i class="literal">-1</i>
+    を指定し、<i><tt class="parameter">options</tt></i>
+ を何も設定せずに
+    <a href="function.pcntl-waitpid.html" class="function">pcntl_waitpid()</a> をコールするのと等価です。
+   <br />
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">status</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <b>pcntl_wait()</b> は、パラメータ
+       <i><tt class="parameter">status</tt></i>
+ の中にステータス情報を保存します。
+       このステータスは、次の関数を用いて評価可能です。
+       <a href="function.pcntl-wifexited.html" class="function">pcntl_wifexited()</a>、
+       <a href="function.pcntl-wifstopped.html" class="function">pcntl_wifstopped()</a>、
+       <a href="function.pcntl-wifsignaled.html" class="function">pcntl_wifsignaled()</a>、
+       <a href="function.pcntl-wexitstatus.html" class="function">pcntl_wexitstatus()</a>、
+       <a href="function.pcntl-wtermsig.html" class="function">pcntl_wtermsig()</a> および
+       <a href="function.pcntl-wstopsig.html" class="function">pcntl_wstopsig()</a> 。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">options</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       システム上で wait3 が使用可能な場合 (ほとんどの BSD 系システムが
+       該当します)、オプションのパラメータ <i><tt class="parameter">options</tt></i>
+
+       を使用可能です。このパラメータが指定されない場合、wait はシステムコールに
+       対して使用されます。wait3 が使用できない場合、<i><tt class="parameter">options
+       </tt></i>
+ に値を設定しても何の影響も及ぼしません。
+       <i><tt class="parameter">options</tt></i>
+ の値は、次の 2 つのグローバル定数の
+       ゼロまたはそれ以上の論理和です。
+       <table border="5">
+        <caption><b><i><tt class="parameter">options</tt></i>
+ のとりうる値</b></caption>
+        <colgroup>
+
+         <tbody valign="middle">
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><i class="literal">WNOHANG</i></td>
+           <td colspan="1" rowspan="1" align="left">
+            子プロセスが終了していない場合に直ちに処理を返します。
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><i class="literal">WUNTRACED</i></td>
+           <td colspan="1" rowspan="1" align="left">
+            停止した子プロセスの場合に処理を返します。
+            そして、ステータスは報告されません。
+           </td>
+          </tr>
+
+         </tbody>
+        </colgroup>
+
+       </table>
+
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   <b>pcntl_wait()</b> は、終了した子プロセスの
+   プロセス ID を返します。エラーの場合は -1、(wait3 が使用可能なシステムで)
+   WNOHANG が使用され、子プロセスが利用できない場合に 0 を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.pcntl-fork.html" class="function">pcntl_fork()</a></li>
+    <li class="member"><a href="function.pcntl-signal.html" class="function">pcntl_signal()</a></li>
+    <li class="member"><a href="function.pcntl-wifexited.html" class="function">pcntl_wifexited()</a></li>
+    <li class="member"><a href="function.pcntl-wifstopped.html" class="function">pcntl_wifstopped()</a></li>
+    <li class="member"><a href="function.pcntl-wifsignaled.html" class="function">pcntl_wifsignaled()</a></li>
+    <li class="member"><a href="function.pcntl-wexitstatus.html" class="function">pcntl_wexitstatus()</a></li>
+    <li class="member"><a href="function.pcntl-wtermsig.html" class="function">pcntl_wtermsig()</a></li>
+    <li class="member"><a href="function.pcntl-wstopsig.html" class="function">pcntl_wstopsig()</a></li>
+    <li class="member"><a href="function.pcntl-waitpid.html" class="function">pcntl_waitpid()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.pcntl-signal.html">pcntl_signal</a></div>
+ <div class="next" style="float: right;"><a href="function.pcntl-waitpid.html">pcntl_waitpid</a></div>
+ <div class="up"><a href="ref.pcntl.html">PCNTL</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

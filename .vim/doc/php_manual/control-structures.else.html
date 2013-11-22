@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>else</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="control-structures.if.html">if</a></div>
+ <div class="next" style="float: right;"><a href="control-structures.elseif.html">elseif</a></div>
+ <div class="up"><a href="language.control-structures.html">制御構造</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="control-structures.else" class="sect1">
+   <h2 class="title"><i class="literal">else</i></h2>
+   <p class="para">
+    ある条件が満たされている場合にある文を実行し、
+    その条件が満たされていない場合に別の文を実行したいと考えた
+    ことが度々あるかと思います。
+    このために<i class="literal">else</i>があります。
+    <i class="literal">else</i>は、<i class="literal">if</i>文における式の値が
+    <b><tt>FALSE</tt></b>の場合にある文を
+    実行するように<i class="literal">if</i>文を拡張します。
+    例えば、次のコードは、<var class="varname">$a</var>が
+    <var class="varname">$b</var>よりも大きい場合に
+    <span class="computeroutput">aはbより大きい</span>と表示し、
+    そうでない場合に、
+    <span class="computeroutput">aはbよりも大きくない</span>と表示します。
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+if&nbsp;($a&nbsp;&gt;&nbsp;$b)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"aはbよりも大きい";<br />}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"aはbよりも大きくない";<br />}</span>
+</code></div>
+     </div>
+
+    </div>
+
+    <i class="literal">else</i> 文は、<i class="literal">if</i>式が
+    <b><tt>FALSE</tt></b>と評価された場合のみ実行されます。
+    また、<i class="literal">elseif</i>式がある場合には、それも
+    <b><tt>FALSE</tt></b>と評価された場合にのみ実行されます。
+    (<a href="control-structures.elseif.html" class="link">elseif</a>参照)
+
+   </p>
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="control-structures.if.html">if</a></div>
+ <div class="next" style="float: right;"><a href="control-structures.elseif.html">elseif</a></div>
+ <div class="up"><a href="language.control-structures.html">制御構造</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

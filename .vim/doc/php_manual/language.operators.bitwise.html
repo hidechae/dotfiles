@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>ビット演算子</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="language.operators.assignment.html">代入演算子</a></div>
+ <div class="next" style="float: right;"><a href="language.operators.comparison.html">比較演算子</a></div>
+ <div class="up"><a href="language.operators.html">演算子</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="language.operators.bitwise" class="sect1">
+   <h2 class="title">ビット演算子</h2>
+   <p class="simpara">
+    ビット演算子は、整数における特定のビットをオンまたはオフにすることを
+    可能にします。もし左辺値と右辺値共に文字列であった場合にはビット演算子は
+    文字の ASCII 値に対して作用します。
+   </p>
+   <p class="para">
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">12&nbsp;</span><span style="color: #007700">^&nbsp;</span><span style="color: #0000BB">9</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;'5'を出力します<br /><br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"12"&nbsp;</span><span style="color: #007700">^&nbsp;</span><span style="color: #DD0000">"9"</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;バックスペース文字を出力します(ascii&nbsp;8)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;('1'&nbsp;(ascii&nbsp;49))&nbsp;^&nbsp;('9'&nbsp;(ascii&nbsp;57))&nbsp;=&nbsp;#8<br /><br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"hallo"&nbsp;</span><span style="color: #007700">^&nbsp;</span><span style="color: #DD0000">"hello"</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;ascii値の&nbsp;#0&nbsp;#4&nbsp;#0&nbsp;#0&nbsp;#0&nbsp;を出力します<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;'a'&nbsp;^&nbsp;'e'&nbsp;=&nbsp;#4<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+
+   <table border="5">
+    <caption><b>ビット演算子</b></caption>
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">例</th>
+       <th colspan="1">名前</th>
+       <th colspan="1">結果</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">$a &amp; $b</td>
+       <td colspan="1" rowspan="1" align="left">ビット積</td>
+       <td colspan="1" rowspan="1" align="left">
+    $a および $b の両方にセットされているビット
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">$a | $b</td>
+        <td colspan="1" rowspan="1" align="left">ビット和</td>
+       <td colspan="1" rowspan="1" align="left">
+    $a または $b のどちらかにセットされているビット
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">$a ^ $b</td>
+       <td colspan="1" rowspan="1" align="left">排他的論理和</td>
+       <td colspan="1" rowspan="1" align="left">
+    $a または $b にセットされており、両方にセットされていないビット
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">~ $a</td>
+       <td colspan="1" rowspan="1" align="left">否定</td>
+       <td colspan="1" rowspan="1" align="left">
+    $a にセットされているビットはセットせず、そうでないものは逆にする
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">$a &lt;&lt; $b</td>
+       <td colspan="1" rowspan="1" align="left">左シフト</td>
+       <td colspan="1" rowspan="1" align="left">
+    $a のビットを左に $b ビットシフトする(各シフトは &quot;2をかける&quot;
+    ことを意味します)
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">$a &gt;&gt; $b</td>
+       <td colspan="1" rowspan="1" align="left">右シフト</td>
+       <td colspan="1" rowspan="1" align="left">
+    $a のビットを右に $b ビットシフトします (各シフトは &quot;2で割る&quot;
+    ことを意味します)
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+
+   <div class="warning"><b class="warning">警告</b>
+    <p class="para">
+     32 ビットシステムでは 32 ビット以上の右シフトは行わないでください。
+     また、結果が 32 ビットを超えてしまうような左シフトも行わないでください。
+    </p>
+   </div>
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="language.operators.assignment.html">代入演算子</a></div>
+ <div class="next" style="float: right;"><a href="language.operators.comparison.html">比較演算子</a></div>
+ <div class="up"><a href="language.operators.html">演算子</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

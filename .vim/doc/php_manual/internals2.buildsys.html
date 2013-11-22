@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>PHP 5 ビルドシステム</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="internals2.html">PHP のコア: Zend Engine ハッカーの手引き</a></div>
+ <div class="next" style="float: right;"><a href="internals2.buildsys.skeleton.html">ext_skel スクリプト</a></div>
+ <div class="up"><a href="internals2.html">PHP のコア: Zend Engine ハッカーの手引き</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  
+  <h1>PHP 5 ビルドシステム</h1>
+<h2>目次</h2><ul class="chunklist chunklist_chapter"><li><a href="internals2.buildsys.skeleton.html">ext_skel スクリプト</a></li><li><a href="internals2.buildsys.configunix.html">UNIX 用のビルドシステム: config.m4</a></li><li><a href="internals2.buildsys.configwin.html">Windows 用のビルドシステム: config.w32</a></li></ul>
+
+
+  <p class="para">
+   PHP 5 のさまざまな機能と柔軟性を考えると、それが何千ものファイルの
+   何百万行というコードから出来上がっていると聞いても驚かないことでしょう。
+   また、そのようなデータを管理するには
+   何らかのビルドシステムが必要となるのも無理もないことです。
+   このセクションでは、拡張モジュール開発用に PHP をセットアップする方法や
+   PHP ソースツリー内における拡張モジュールの配置、
+   そして拡張モジュールをビルドする方法を説明します。
+  </p>
+
+  
+
+
+ <div id="internals2.buildsys.environment" class="sect1">
+  <h2 class="title">拡張モジュール開発用に PHP をビルドする方法</h2>
+  <p class="para">
+   PHP を普通にインストールすると、
+   デバッグ機能よりもパフォーマンスの向上に主眼を置いて最適化された設定になります。
+   実際に運用することを考えると、これは妥当な選択でしょう。
+   しかし、拡張モジュールを開発する環境としてはあまりよくありません。
+   何か問題がおこったときに、どこが悪いのかを調べやすくするように
+   PHP をビルドする必要があります。
+  </p>
+  
+  <p class="para">
+   Zend Engine ではメモリマネージャが提供されており、
+   拡張モジュール内で発生したメモリリークを追跡することができます。
+   また、詳細なデバッグ情報を取得することもできます。
+   しかし、この機能はデフォルトでは無効になっており、
+   スレッドセーフであることを優先しています。
+   この機能を使うには、<var class="filename">configure</var> のオプションに
+   <span class="option">--enable-debug</span> と
+   <i class="literal">--enable-maintainer-zts</i> を追加します。
+   PHP をソースからビルドする方法については
+   <a href="install.general.html" class="xref">インストールにあたっての一般的な注意事項</a>
+   の説明を参照ください。典型的な
+   <var class="filename">configure</var> の設定は次のようになります。
+   <div class="example-contents">
+<div class="cdata"><pre>
+$ ./configure --prefix=/where/to/install/php --enable-debug --enable-maintainer-zts --enable-cgi --enable-cli --with-mysql=/path/to/mysql
+</pre></div>
+   </div>
+
+  </p>
+ </div>
+
+
+
+
+
+  
+
+
+ 
+
+
+
+  
+
+
+ 
+
+
+
+  
+
+
+ 
+
+
+
+  
+ </div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="internals2.html">PHP のコア: Zend Engine ハッカーの手引き</a></div>
+ <div class="next" style="float: right;"><a href="internals2.buildsys.skeleton.html">ext_skel スクリプト</a></div>
+ <div class="up"><a href="internals2.html">PHP のコア: Zend Engine ハッカーの手引き</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

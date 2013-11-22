@@ -1,0 +1,194 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>Payflow Pro でトランザクションを処理する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.pfpro-process-raw.html">pfpro_process_raw</a></div>
+ <div class="next" style="float: right;"><a href="function.pfpro-version.html">pfpro_version</a></div>
+ <div class="up"><a href="ref.pfpro.html">Verisign Payflow Pro</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.pfpro-process" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">pfpro_process</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.0.2, PHP 5 &lt;= 5.0.5)</p><p class="refpurpose">pfpro_process ― Payflow Pro でトランザクションを処理する</p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">array</span> <span class="methodname"><b><b>pfpro_process</b></b></span>
+    ( <span class="methodparam"><span class="type">array</span> <tt class="parameter">$parameters</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$address</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$port</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$timeout</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$proxy_address</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$proxy_port</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$proxy_logon</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$proxy_password</tt></span>
+  ]]]]]]] )</div>
+
+  <p class="para">
+   <b>pfpro_process()</b> は、Payflow Pro
+   でトランザクションを処理します。
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    必要なパラメータの詳細については、Payflow Pro Developers Guide
+    を参照ください。
+   <br />
+  </p></blockquote>
+ </div>
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">parameters</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       エンコードされてプロセッサに渡されたキーおよび値を有する連想配列です。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">address</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       接続するホストを指定します。
+       デフォルトでは、この値は &quot;test.signio.com&quot; になっており、
+       実際のトランザクションを処理するためには &quot;connect.signio.com&quot;
+       に変更したいと思うことでしょう。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">port</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       接続するポートを指定します。デフォルトは
+       443、つまり標準 SSL ポートです。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">timeout</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       使用されるタイムアウトを秒数で指定します。
+       この値のデフォルトは 30 秒です。タイムアウトは、プロセッサへの
+       リンクが確立されてから計測が開始されるので、DNS またはネットワークの
+       問題によりスクリプトが非常に長い時間実行されたままになる
+       可能性があることに注意してください。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">proxy_address</tt></i>
+</span>
+     <dd>
+
+      <p class="para">   
+       必要に応じて、SSL プロキシのホスト名を指定します。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">proxy_port</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       必要に応じて、SSL プロキシのポート番号を指定します。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">proxy_logon</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       必要に応じて、SSL プロキシにログオンする際の ID を指定します。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">proxy_password</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       必要に応じて、SSL プロキシにログオンする際のパスワードを指定します。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   レスポンスのキーおよび値を含む連想配列を返します。
+  </p>
+ </div>
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 Payflow Pro の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />pfpro_init</span><span style="color: #007700">();<br /><br /></span><span style="color: #0000BB">$transaction&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #DD0000">'USER'&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'mylogin'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'PWD'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'mypassword'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'PARTNER'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'VeriSign'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'TRXTYPE'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'S'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'TENDER'&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'C'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'AMT'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">1.50</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'ACCT'&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'4111111111111111'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'EXPDATE'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'0909'<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$response&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">pfpro_process</span><span style="color: #007700">(</span><span style="color: #0000BB">$transaction</span><span style="color: #007700">);<br /><br />if&nbsp;(!</span><span style="color: #0000BB">$response</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;die(</span><span style="color: #DD0000">"Couldn't&nbsp;establish&nbsp;link&nbsp;to&nbsp;Verisign.\n"</span><span style="color: #007700">);<br />}<br /><br />echo&nbsp;</span><span style="color: #DD0000">"Verisign&nbsp;response&nbsp;code&nbsp;was&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$response</span><span style="color: #007700">[</span><span style="color: #DD0000">'RESULT'</span><span style="color: #007700">];<br />echo&nbsp;</span><span style="color: #DD0000">",&nbsp;which&nbsp;means:&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$response</span><span style="color: #007700">[</span><span style="color: #DD0000">'RESPMSG'</span><span style="color: #007700">]&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br /><br />echo&nbsp;</span><span style="color: #DD0000">"\nThe&nbsp;transaction&nbsp;request:&nbsp;"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$transaction</span><span style="color: #007700">);<br /><br />echo&nbsp;</span><span style="color: #DD0000">"\nThe&nbsp;response:&nbsp;"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$response</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">pfpro_cleanup</span><span style="color: #007700">();<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.pfpro-process-raw.html">pfpro_process_raw</a></div>
+ <div class="next" style="float: right;"><a href="function.pfpro-version.html">pfpro_version</a></div>
+ <div class="up"><a href="ref.pfpro.html">Verisign Payflow Pro</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>文字列の一部を得る</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.mbstring.html">マルチバイト文字列</a></div>
+ <div class="next" style="float: right;"><a href="ref.muscat.html">muscat</a></div>
+ <div class="up"><a href="ref.mbstring.html">マルチバイト文字列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mb-substr" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mb_substr</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.0.6, PHP 5)</p><p class="refpurpose">mb_substr ― 文字列の一部を得る</p>
+
+ </div>
+   
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">string</span> <span class="methodname"><b><b>mb_substr</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$str</tt></span>
+   , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$start</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$length</tt></span>
+   [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$encoding</tt></span>
+  ]] )</div>
+
+  <p class="para">
+   <b>mb_substr()</b> は、<i><tt class="parameter">start</tt></i>
+
+   および <i><tt class="parameter">length</tt></i>
+ パラメータで指定した
+   <i><tt class="parameter">str</tt></i>
+ の一部を返します。
+  </p>
+  <p class="para">
+   <b>mb_substr()</b> は文字数に基づきマルチバイト対応の
+   <a href="function.substr.html" class="function">substr()</a> 処理を行います。位置は、
+   <i><tt class="parameter">str</tt></i>
+ の始めから数えられます。
+   最初の文字の位置は 0、2 番目の文字の位置は 1、といったようになります。
+  </p>
+  <p class="para">
+   <i><tt class="parameter">encoding</tt></i>
+ を省略した場合は、
+   内部エンコーディングを使用します。
+  </p>
+  <p class="para">
+   <i><tt class="parameter">encoding</tt></i>
+ は文字エンコーディング名です。
+   省略された場合は、内部文字エンコーディングが使用されます。
+  </p>
+  <p class="para">
+   <a href="function.mb-strcut.html" class="function">mb_strcut()</a>、
+   <a href="function.mb-internal-encoding.html" class="function">mb_internal_encoding()</a> も参照ください。
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.mbstring.html">マルチバイト文字列</a></div>
+ <div class="next" style="float: right;"><a href="ref.muscat.html">muscat</a></div>
+ <div class="up"><a href="ref.mbstring.html">マルチバイト文字列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

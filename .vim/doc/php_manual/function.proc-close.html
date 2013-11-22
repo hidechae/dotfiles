@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>proc_open で開かれたプロセスを閉じ、
+  そのプロセスの終了コードを返す</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.passthru.html">passthru</a></div>
+ <div class="next" style="float: right;"><a href="function.proc-get-status.html">proc_get_status</a></div>
+ <div class="up"><a href="ref.exec.html">プログラム実行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.proc-close" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">proc_close</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.3.0, PHP 5)</p><p class="refpurpose">proc_close ― <a href="function.proc-open.html" class="function">proc_open()</a> で開かれたプロセスを閉じ、
+  そのプロセスの終了コードを返す</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">int</span> <span class="methodname"><b><b>proc_close</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$process</tt></span>
+   )</div>
+
+  <p class="para">
+   <b>proc_close()</b> は <a href="function.pclose.html" class="function">pclose()</a>
+   と似ていますが、<a href="function.proc-open.html" class="function">proc_open()</a>
+   で開かれたプロセスに対してのみ機能するという点で異なります。
+   <b>proc_close()</b> は、プロセスが終了するまで待った後で、
+   終了コードを返します。もし、そのプロセスに対してパイプが開かれていた場合は、
+   デッドロックを避けるため、<a href="function.fclose.html" class="function">fclose()</a> 関数で、
+   この関数を呼び出す前にそれらを閉じておかなくてはなりません -
+   パイプが開いている間、子プロセスは終了できないからです。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">process</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       閉じられる <a href="function.proc-open.html" class="function">proc_open()</a> <span class="type リソース">リソース</span>
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   実行していたプロセスの終了状態を返します。
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.passthru.html">passthru</a></div>
+ <div class="next" style="float: right;"><a href="function.proc-get-status.html">proc_get_status</a></div>
+ <div class="up"><a href="ref.exec.html">プログラム実行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

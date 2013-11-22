@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>MIME ¥Ø¥Ã¥ÀÍ×ÁÇ¤ò¥Ç¥³¡¼¥É¤¹¤ë</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.imap-mailboxmsginfo.html">imap_mailboxmsginfo</a></div>
+ <div class="next" style="float: right;"><a href="function.imap-msgno.html">imap_msgno</a></div>
+ <div class="up"><a href="ref.imap.html">IMAP</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.imap-mime-header-decode" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">imap_mime_header_decode</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">imap_mime_header_decode ¡½ MIME ¥Ø¥Ã¥ÀÍ×ÁÇ¤ò¥Ç¥³¡¼¥É¤¹¤ë</p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">ÀâÌÀ</h3>
+  <div class="methodsynopsis">
+   <span class="type">array</span> <span class="methodname"><b><b>imap_mime_header_decode</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$text</tt></span>
+   )</div>
+
+  <p class="para">
+   Èó ASCII ¥Æ¥­¥¹¥È¤Î MIME ¥á¥Ã¥»¡¼¥¸¥Ø¥Ã¥À¥¨¥¯¥¹¥Æ¥ó¥·¥ç¥ó¤ò¥Ç¥³¡¼¥É¤·¤Þ¤¹
+   (<a href="http://www.faqs.org/rfcs/rfc2047" class="link external">&raquo; RFC2047</a> ¤ò»²¾È¤¯¤À¤µ¤¤)¡£
+  </p>
+ </div>
+
+ <div class="refsect1 parameters">
+  <h3 class="title">¥Ñ¥é¥á¡¼¥¿</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">text</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       MIME ¥Æ¥­¥¹¥È¡£
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">ÊÖ¤êÃÍ</h3>
+  <p class="para">
+   ¥Ç¥³¡¼¥É¤µ¤ì¤¿Í×ÁÇ¤Ï¡¢¥ª¥Ö¥¸¥§¥¯¥È¤ÎÇÛÎó¤ÇÊÖ¤µ¤ì¤Þ¤¹¡£
+   ³Æ¥ª¥Ö¥¸¥§¥¯¥È¤Ï¡¢Æó¤Ä¤Î¥×¥í¥Ñ¥Æ¥£ <i class="literal">charset</i>
+   ¤È <i class="literal">text</i> ¤òÍ­¤·¤Æ¤¤¤Þ¤¹¡£
+  </p>
+  <p class="para">
+   Í×ÁÇ¤¬¥¨¥ó¥³¡¼¥É¤µ¤ì¤Æ¤¤¤Ê¤¤¾ì¹ç¡¢¸À¤¤ÂØ¤¨¤ë¤È¥×¥ì¡¼¥ó¤Ê US-ASCII ¤Î¾ì¹ç¤Ï
+   ¤³¤ÎÍ×ÁÇ¤Î <i class="literal">charset</i> ¥×¥í¥Ñ¥Æ¥£¤Ï
+   <i class="literal">default</i> ¤ËÀßÄê¤µ¤ì¤Þ¤¹¡£
+  </p>
+ </div>
+
+ <div class="refsect1 examples">
+  <h3 class="title">Îã</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>imap_mime_header_decode()</b> ¤ÎÎã</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$text&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"Keld Jn Simonsen&nbsp;&lt;keld@example.com&gt;"</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$elements&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">imap_mime_header_decode</span><span style="color: #007700">(</span><span style="color: #0000BB">$text</span><span style="color: #007700">);<br />for&nbsp;(</span><span style="color: #0000BB">$i</span><span style="color: #007700">=</span><span style="color: #0000BB">0</span><span style="color: #007700">;&nbsp;</span><span style="color: #0000BB">$i</span><span style="color: #007700">&lt;</span><span style="color: #0000BB">count</span><span style="color: #007700">(</span><span style="color: #0000BB">$elements</span><span style="color: #007700">);&nbsp;</span><span style="color: #0000BB">$i</span><span style="color: #007700">++)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Charset:&nbsp;{$elements[$i]-&gt;charset}\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Text:&nbsp;{$elements[$i]-&gt;text}\n\n"</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>¾å¤ÎÎã¤Î½ÐÎÏ¤Ï°Ê²¼¤È¤Ê¤ê¤Þ¤¹¡£</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+Charset: ISO-8859-1
+Text: Keld JÀrn Simonsen
+
+Charset: default
+Text:  &lt;keld@example.com&gt;
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+  <p class="para">
+   ¾å¤ÎÎã¤Ë¤ÏÆó¤Ä¤ÎÍ×ÁÇ¤¬¤¢¤ê¤Þ¤¹¡£ºÇ½é¤ÎÍ×ÁÇ¤Ï ISO-8859-1¡¢
+   2 ÈÖÌÜ¤ÎÍ×ÁÇ¤Ï¥×¥ì¡¼¥ó¤Ê US-ASCII ¤Ç»öÁ°¤Ë¥¨¥ó¥³¡¼¥É¤µ¤ì¤Æ¤¤¤Þ¤¹¡£
+  </p>
+ </div>
+
+ <div class="refsect1 seealso">
+  <h3 class="title">»²¹Í</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.imap-utf8.html" class="function">imap_utf8()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.imap-mailboxmsginfo.html">imap_mailboxmsginfo</a></div>
+ <div class="next" style="float: right;"><a href="function.imap-msgno.html">imap_msgno</a></div>
+ <div class="up"><a href="ref.imap.html">IMAP</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

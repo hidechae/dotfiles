@@ -1,0 +1,647 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>gnupg 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.gmp-xor.html">gmp_xor</a></div>
+ <div class="next" style="float: right;"><a href="function.gnupg-adddecryptkey.html">gnupg_adddecryptkey</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+ <h1 class="title">gnupg 関数</h1>
+ 
+
+ <div class="partintro">
+  <div id="gnupg.intro" class="section">
+   <h2 class="title">導入</h2>
+   <p class="para">
+    このモジュールにより、<a href="http://www.gnupg.org/" class="link external">&raquo; gnupg</a> を扱うことが可能となります。
+   </p>
+  </div>
+
+  <div id="gnupg.requirements" class="section">
+   <h2 class="title">要件</h2>
+   <p class="para">
+    gnupg 拡張モジュールは PHP 4.3 以降を必要とします。
+    この拡張モジュールをオブジェクト指向形式で使用するには、PHP 5 が必要です。
+   </p>
+   <p class="para">
+    この拡張モジュールは <a href="http://www.gnupg.org/(en)/download/index.html#gpgme" class="link external">&raquo; gpgme
+    ライブラリ</a>を必要とします。
+   </p>
+  </div>
+
+  
+
+
+<div id="gnupg.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  gnupg 拡張モジュールは PHP にバンドルされていません。これは <a href="http://pecl.php.net/" class="link external">&raquo; PECL</a> 拡張モジュールであり、
+  <a href="http://pecl.php.net/package/gnupg" class="link external">&raquo; http://pecl.php.net/package/gnupg</a>
+  にあります。
+ </p>
+</div>
+
+
+
+
+
+  
+
+
+<div id="gnupg.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <dl>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GNUPG_SIG_MODE_NORMAL</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GNUPG_SIG_MODE_DETACH</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GNUPG_SIG_MODE_CLEAR</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GNUPG_VALIDITY_UNKNOWN</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GNUPG_VALIDITY_UNDEFINED</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GNUPG_VALIDITY_NEVER</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GNUPG_VALIDITY_MARGINAL</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GNUPG_VALIDITY_FULL</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GNUPG_VALIDITY_ULTIMATE</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GNUPG_PROTOCOL_OpenPGP</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GNUPG_PROTOCOL_CMS</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GNUPG_SIGSUM_VALID</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GNUPG_SIGSUM_GREEN</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GNUPG_SIGSUM_RED</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GNUPG_SIGSUM_KEY_REVOKED</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GNUPG_SIGSUM_KEY_EXPIRED</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GNUPG_SIGSUM_KEY_MISSING</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GNUPG_SIGSUM_SIG_EXPIRED</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GNUPG_SIGSUM_CRL_MISSING</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GNUPG_SIGSUM_CRL_TOO_OLD</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GNUPG_SIGSUM_BAD_POLICY</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GNUPG_SIGSUM_SYS_ERROR</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GNUPG_ERROR_WARNING</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GNUPG_ERROR_EXCEPTION</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>GNUPG_ERROR_SILENT</tt></b>
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+</div>
+
+
+
+
+  <div id="gnupg.notes" class="section">
+   <h2 class="title">注意</h2>
+   <p class="para">
+    この拡張モジュールは、現在のユーザのキーリングを使用します。キーリングは、
+    通常は ~./.gnupg/ にあります。別の場所を指定するには、環境変数
+    GNUPGHOME にキーリングへのパスを格納します。その詳細な方法については
+    <a href="function.putenv.html" class="link">putenv</a> を参照ください。
+   </p>
+   <p class="para">
+    キーを特定する設定項目を必要とする関数も存在します。この設定項目は、何らかの
+    ユニークなキー (ユーザ ID、キー ID、フィンガープリント、…) を参照します。
+    このドキュメントでは、すべての例でフィンガープリントを使用しています。
+   </p>
+  </div>
+
+  <div id="gnupg.keylistiterator" class="section">
+   <h2 class="title">keylistiterator</h2>
+   <p class="para">
+    この拡張モジュールでは、キーリングの内容を繰り返し処理することも可能です。
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;'example'&nbsp;にマッチするキーを抜き出して繰り返し処理をするイテレータを生成します<br /></span><span style="color: #0000BB">$iterator&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">gnupg_keylistiterator</span><span style="color: #007700">(</span><span style="color: #DD0000">"example"</span><span style="color: #007700">);<br />foreach(</span><span style="color: #0000BB">$iterator&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$fingerprint&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$userid</span><span style="color: #007700">){<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$fingerprint</span><span style="color: #007700">.</span><span style="color: #DD0000">"&nbsp;-&gt;&nbsp;"</span><span style="color: #007700">.</span><span style="color: #0000BB">$userid</span><span style="color: #007700">.</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+  
+   </p>
+  </div>
+
+  <div id="gnupg.examples" class="section">
+   <h2 class="title">例</h2>
+   <p class="para">
+    この例は、指定したテキストに署名をします。
+   </p>
+   <div class="example">
+    <p><b>Example#1 gnupg での署名の例 (手続き型)</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;gnupg&nbsp;を初期化します<br /></span><span style="color: #0000BB">$res&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">gnupg_init</span><span style="color: #007700">();<br /></span><span style="color: #FF8000">//&nbsp;必須ではありません。Clearsign&nbsp;はデフォルト値です<br /></span><span style="color: #0000BB">gnupg_setsignmode</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">,</span><span style="color: #0000BB">GNUPG_SIG_MODE_CLEAR</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">//&nbsp;署名のためのキーを、パスフレーズ&nbsp;'test'&nbsp;で追加します<br /></span><span style="color: #0000BB">gnupg_addsignkey</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">,</span><span style="color: #DD0000">"8660281B6051D071D94B5B230549F9DC851566DC"</span><span style="color: #007700">,</span><span style="color: #DD0000">"test"</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">//&nbsp;署名します<br /></span><span style="color: #0000BB">$signed&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">gnupg_sign</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">,</span><span style="color: #DD0000">"just&nbsp;a&nbsp;test"</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #0000BB">$signed</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+   <div class="example">
+    <p><b>Example#2 gnupg での署名の例 (オブジェクト指向)</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;新しいクラス<br /></span><span style="color: #0000BB">$gnupg&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">gnupg</span><span style="color: #007700">();<br /></span><span style="color: #FF8000">//&nbsp;必須ではありません。Clearsign&nbsp;はデフォルト値です<br /></span><span style="color: #0000BB">$gnupg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setsignmode</span><span style="color: #007700">(</span><span style="color: #0000BB">gnupg</span><span style="color: #007700">::</span><span style="color: #0000BB">SIG_MODE_CLEAR</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">//&nbsp;署名のためのキーを、パスフレーズ&nbsp;'test'&nbsp;で追加します<br /></span><span style="color: #0000BB">$gnupg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">addsignkey</span><span style="color: #007700">(</span><span style="color: #DD0000">"8660281B6051D071D94B5B230549F9DC851566DC"</span><span style="color: #007700">,</span><span style="color: #DD0000">"test"</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">//&nbsp;署名します<br /></span><span style="color: #0000BB">$signed&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$gnupg</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">sign</span><span style="color: #007700">(</span><span style="color: #DD0000">"just&nbsp;a&nbsp;test"</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #0000BB">$signed</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </div>
+ </div>
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.gnupg-adddecryptkey.html">gnupg_adddecryptkey</a> ― 復号のためのキーを追加する</li><li><a href="function.gnupg-addencryptkey.html">gnupg_addencryptkey</a> ― 暗号化のためのキーを追加する</li><li><a href="function.gnupg-addsignkey.html">gnupg_addsignkey</a> ― 署名のためのキーを追加する</li><li><a href="function.gnupg-cleardecryptkeys.html">gnupg_cleardecryptkeys</a> ― 事前に復号のために設定されたすべてのキーを削除する</li><li><a href="function.gnupg-clearencryptkeys.html">gnupg_clearencryptkeys</a> ― 事前に暗号化のために設定されたすべてのキーを削除する</li><li><a href="function.gnupg-clearsignkeys.html">gnupg_clearsignkeys</a> ― 事前に署名のために設定されたすべてのキーを削除する</li><li><a href="function.gnupg-decrypt.html">gnupg_decrypt</a> ― 指定されたテキストを復号する</li><li><a href="function.gnupg-decryptverify.html">gnupg_decryptverify</a> ― 指定されたテキストを復号し、検証する</li><li><a href="function.gnupg-encrypt.html">gnupg_encrypt</a> ― 指定したテキストを暗号化する</li><li><a href="function.gnupg-encryptsign.html">gnupg_encryptsign</a> ― 指定したテキストを暗号化し、署名する</li><li><a href="function.gnupg-export.html">gnupg_export</a> ― キーをエクスポートする</li><li><a href="function.gnupg-geterror.html">gnupg_geterror</a> ― 関数が失敗した場合にエラー文字列を返す</li><li><a href="function.gnupg-getprotocol.html">gnupg_getprotocol</a> ― すべての操作で現在アクティブなプロトコルを返す</li><li><a href="function.gnupg-import.html">gnupg_import</a> ― キーをインポートする</li><li><a href="function.gnupg-keyinfo.html">gnupg_keyinfo</a> ― 指定したパターンに一致するすべてのキーについての情報を配列で返す</li><li><a href="function.gnupg-setarmor.html">gnupg_setarmor</a> ― armor 形式を切り替える</li><li><a href="function.gnupg-seterrormode.html">gnupg_seterrormode</a> ― エラー報告モードを設定する</li><li><a href="function.gnupg-setsignmode.html">gnupg_setsignmode</a> ― 署名方式を設定する</li><li><a href="function.gnupg-sign.html">gnupg_sign</a> ― 指定したテキストに署名する</li><li><a href="function.gnupg-verify.html">gnupg_verify</a> ― 署名済みテキストを検証する</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.gmp-xor.html">gmp_xor</a></div>
+ <div class="next" style="float: right;"><a href="function.gnupg-adddecryptkey.html">gnupg_adddecryptkey</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,1267 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>Phar アーカイブストリームおよびクラス</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.PDOStatement-setFetchMode.html">PDOStatement->setFetchMode()</a></div>
+ <div class="next" style="float: right;"><a href="function.phar-apiversion.html">Phar::apiVersion</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">Phar アーカイブストリームおよびクラス</h1>
+  
+  <div class="partintro">
+   <div id="phar.intro" class="section">
+     <h2 class="title">導入</h2>
+   <p class="para">
+    phar 拡張モジュールは、
+    <i class="literal">phar</i> ストリームラッパーおよび
+    <span class="classname">Phar</span> クラスを提供し、
+    PHP アーカイブ (phar) ファイルを操作することができます。
+    Phar クラスを使用すると、phar ファイルの作成や展開、
+    そしてその中身を順に処理することなどができます。
+   </p>
+   <p class="para">
+    PHP アーカイブファイル (Phar) は複数のファイルをまとめたもので、
+    外部からその中のファイルを透過的に実行することができます。
+    Java の jar アーカイブファイルと似たものです。
+    phar アーカイブを使用すると、
+    PHP アプリケーションをひとつのファイルにまとめて配布できるようになります。
+    このファイルは、変更したり展開したりすることなくそのまま外部から実行できます。
+    phar アーカイブは、tar や zip のアーカイブと同様に、
+    ファイルを保存するために使用することもできます。
+    Phar は圧縮もサポートしています。
+    <a href="ref.zlib.html" class="link">zlib</a> 拡張モジュールが存在する場合には
+    gzip を、そして
+    <a href="ref.bzip2.html" class="link">bz2</a> 拡張モジュールが存在する場合には
+    bzip2 を使用します。
+    さらに、<a href="ref.spl.html" class="link">SPL</a>
+    拡張モジュールが存在する場合には、
+    順次処理やその他の機能が使用可能となります。
+    md5 や sha1 による Phar の署名の検証は
+    ネイティブでサポートされており、アーカイブの整合性を確かめることができます。
+   </p>
+   <p class="para">
+    Phar アーカイブのネイティブな実装は PEAR パッケージ
+    <a href="http://pear.php.net/PHP_Archive" class="link external">&raquo; PHP_Archive</a>
+    であり、この拡張モジュールの実装はこれと非常によく似ています。
+    しかし Phar 拡張モジュールのほうが、より多くの機能をサポートしています。
+    PHP_Archive はより柔軟に Phar を作成することができます。また
+    <span class="classname">PHP_Archive_Manager</span>
+    クラスのような便利なデバッグツールも用意されています。
+    一方 Phar 拡張モジュールは、Phar の中身の順次処理や
+    配列形式でのアクセス、そして中身の変更などが
+    シンプルなインターフェイスでできるようになります。
+    PHP_Archive は、Phar 拡張モジュールあるいは PHP_Archive
+    のいずれかでシームレスに処理できる Phar アーカイブの作成をサポートしています。
+    一方、Phar 拡張モジュールは、
+    Phar 拡張モジュールで動作するアーカイブを作成するよう設計されています。
+    さらに Phar 拡張モジュールは、INI 設定
+    <a href="ref.filesystem.html#ini.allow-url-include" class="link">allow_url_include</a> あるいは
+    <a href="ref.filesystem.html#ini.allow-url-fopen" class="link">allow_url_fopen</a>
+    が無効になっていても動作します。一方 PHP_Archive
+    で (Phar 拡張モジュールを使用せずに) 作成したアーカイブは動作しません。
+   </p>
+  </div>
+  <div id="phar.requirements" class="section">
+   <h2 class="title">要件</h2>
+   <p class="para">
+    Phar を使用するには PHP 5.2.0 以降が必要です。また、
+    Phar ファイルの中身に対して配列形式でアクセスしたり順に処理したりするには
+    <a href="ref.spl.html" class="link">SPL</a>
+    拡張モジュールが PHP に組み込まれている必要があります。
+    <i class="literal">phar</i> ストリームを使用するには、
+    これは不要です。
+   </p>
+   <p class="para">
+    オプションとして、<a href="ref.zlib.html" class="link">zlib</a> 拡張モジュールおよび
+    <a href="ref.bzip2.html" class="link">bzip2</a> 拡張モジュールを有効にしておくと、
+    圧縮された phar をサポートすることができます。
+   </p>
+  </div>
+   
+
+
+
+<div id="phar.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="simpara">
+  <em class="emphasis">Windows</em> 用のバイナリは
+  <a href="http://snaps.php.net/" class="link external">&raquo; http://snaps.php.net/</a>
+  にあります。インストールするには、php_phar.dll
+  をダウンロードして、php.ini の <i class="literal">extension_dir</i>
+  ディレクティブで指定されたフォルダに配置します。
+  その後、php.ini に <i class="literal">extension=php_phar.dll</i>
+  を追加してこれを有効にし、ウェブサーバを再起動します。
+ </p>
+
+ <div class="example-contents"><pre>
+<div class="cdata"><pre>
+extension_dir=c:/php5/exts/
+extension=php_phar.dll
+</pre></div>
+ </pre></div>
+
+ <p class="simpara">
+  <em class="emphasis">Linux、BSD その他 *nix 系</em>
+  の場合は、次の手順でコンパイルします。
+ </p>
+
+ <ul class="itemizedlist">
+
+  <li class="listitem">
+   <span class="simpara">
+    次の手順か、
+   </span>
+   <p class="para">
+    <ul class="itemizedlist">
+     <li class="listitem">
+      <span class="simpara">
+       <i class="literal">pecl install phar</i> で、PECL/phar のインストーラを実行します。
+      </span>
+     </li>
+
+     <li class="listitem">
+      <span class="simpara">
+       <i class="literal">phar.so</i> を、ビルド時に表示されたディレクトリから
+       php.ini の <i class="literal">extension_dir</i> ディレクトリにコピーします。
+      </span>
+     </li>
+
+     <li class="listitem">
+      <span class="simpara">
+       <i class="literal">extension=phar.so</i> を php.ini に追加します。
+      </span>
+     </li>
+    </ul>
+   </p>
+   <span class="simpara">
+    あるいはこちらの手順を実行します。
+   </span>
+   <p class="para">
+    <ul class="itemizedlist">
+     <li class="listitem">
+      <span class="simpara">
+       次のようにして、php.ini へのパスを設定します。
+      </span>
+      <span class="simpara">
+       <i class="literal">pecl config-set php_ini /path/to/php.ini</i>
+      </span>
+     </li>
+
+     <li class="listitem">
+      <span class="simpara">
+       <i class="literal">pecl install phar</i> で、PECL/phar のインストーラを実行します。
+      </span>
+     </li>
+    </ul>
+   </p>
+  </li>
+
+  <li class="listitem">
+   <span class="simpara">
+    ウェブサーバを再起動し、php.ini の設定を読み込ませます。
+   </span>
+  </li>
+
+ </ul>
+
+ <blockquote><p><b class="note">注意</b>: 
+  <b>開発バージョン</b>
+  <span class="simpara">
+   現在は、PECL/phar の <i class="literal">安定版</i> はまだありません。
+   <i class="literal">アルファ版</i> の PECL/phar をインストールするには
+   <i class="literal">pecl install phar-</i><em class="emphasis">alpha</em>
+   を実行します。
+  </span>
+ </p></blockquote>
+
+ <div class="tip"><b class="tip">ヒント</b>
+  <h1 class="title">PEAR コマンドを使用しない PECL/phar のコンパイル</h1>
+  <p class="simpara">
+   <i class="literal">pecl install phar</i> を使用すると、
+   PECL/phar を自動的にダウンロードし、インストールします。しかし、
+   tar ボールを <a href="http://pecl.php.net/package/phar" class="link external">&raquo; PECL</a>
+   からダウンロードすることもできます。tar ボールを展開したルートディレクトリで
+   <i class="literal">phpize &amp;&amp; ./configure --enable-phar &amp;&amp; make</i>
+   を実行すると <i class="literal">phar.so</i> が出来上がります。
+   ビルドしたものを、上のようにしてインストールします。
+  </p>
+ </div>
+
+ <p class="simpara">
+  この PECL 拡張モジュールをインストールする方法は、
+マニュアルの <a href="install.pecl.html" class="link">
+PECL 拡張モジュールのインストール</a> という章にあります。
+新規リリース・ダウンロード・ソースファイル・管理者情報・CHANGELOG
+といった関連する情報については、次の場所にあります。
+  <a href="http://pecl.php.net/package/phar" class="link external">&raquo; http://pecl.php.net/package/phar</a>.
+ </p>
+</div>
+
+
+   
+   
+   
+   
+
+
+<div id="phar.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+  <table border="5">
+   <caption><b>ファイルシステムおよびストリームの設定オプション</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">名前</th>
+      <th colspan="1">デフォルト</th>
+      <th colspan="1">変更の可否</th>
+      <th colspan="1">変更履歴</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">phar.readonly</td>
+      <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">phar.require_hash</td>
+      <td colspan="1" rowspan="1" align="left">&quot;1&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">phar.extract_list</td>
+      <td colspan="1" rowspan="1" align="left">&quot;&quot;</td>
+      <td colspan="1" rowspan="1" align="left">PHP_INI_ALL</td>
+      <td colspan="1" rowspan="1" align="left">phar 1.0.0 以降で使用可能</td>
+     </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+ </p>
+ 
+ <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+ 
+ <p class="para">
+  <dl>
+
+   <dt id="ini.phar.readonly">
+    <span class="term">
+     <i><tt class="parameter">phar.readonly</tt></i>
+
+     <a href="language.types.boolean.html" class="type boolean">boolean</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      このオプションを使用すると、<i class="literal">phar</i>
+      ストリームや <span class="classname">Phar</span>
+      オブジェクトによる Phar アーカイブの作成や変更ができなくなります。
+      この設定は、実運用環境では常に有効にしておくべきです。
+      phar 拡張モジュールのこの機能は、
+      サーバ上に他のセキュリティ上の脆弱性があった場合に
+      php ベースのウィルスを直接作成されてしまうことにつながります。
+     </p>
+     <blockquote><p><b class="note">注意</b>: 
+      
+       この設定は、セキュリティ上の理由により
+       php.ini でしか解除できません。
+       <i class="literal">phar.readonly</i> を php.ini で無効にした場合は、
+       ユーザがスクリプト内で <i class="literal">phar.readonly</i>
+       の有効/無効を切りかえることができます。
+       <i class="literal">phar.readonly</i> を php.ini で有効にした場合は、
+       スクリプト内でこれを &quot;再度有効にする&quot;
+       ことはできますが、無効にすることはできません。
+      <br />
+     </p></blockquote>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.phar.require-hash">
+    <span class="term">
+     <i><tt class="parameter">phar.require_hash</tt></i>
+
+     <a href="language.types.boolean.html" class="type boolean">boolean</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      このオプションを使用すると、署名つき
+      (現在サポートしているのは MD5 および SHA1)
+      の Phar アーカイブのみをオープンするようになります。
+      署名を含まない Phar アーカイブの処理はできません。
+     </p>
+     <blockquote><p><b class="note">注意</b>: 
+      
+       この設定は、セキュリティ上の理由により
+       php.ini でしか解除できません。
+       <i class="literal">phar.require_hash</i> を php.ini で無効にした場合は、
+       ユーザがスクリプト内で <i class="literal">phar.require_hash</i>
+       の有効/無効を切りかえることができます。
+       <i class="literal">phar.require_hash</i> を php.ini で有効にした場合は、
+       スクリプト内でこれを &quot;再度有効にする&quot;
+       ことはできますが、無効にすることはできません。
+      <br />
+     </p></blockquote>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.phar.extract-list">
+    <span class="term">
+     <i><tt class="parameter">phar.extract_list</tt></i>
+
+     <a href="language.types.string.html" class="type string">string</a>
+    </span>
+    <dd>
+
+     <p class="para">
+      phar アーカイブへのフルパスあるいはそのエイリアスと、
+      展開されたファイルの場所との関連付けを行います。
+      パラメータの書式は <i class="literal">name=archive,name2=archive2</i>
+      のようになります。
+      phar ファイルをディスクに展開して、
+      展開したファイル群へのマッパーとして phar を扱えるようになります。
+      これを行うのは、たとえばパフォーマンスを向上させたい場合や
+      phar のデバッグを行いたい場合などです。
+      <div class="example">
+       <p><b>Example#1 phar.extract_list の使用例</b></p>
+       <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+php.ini&nbsp;で、次のように記述します<br />phar.extract_list&nbsp;=&nbsp;archive=/full/path/to/archive/,arch2=/full/path/to/arch2<br /><span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">include&nbsp;</span><span style="color: #DD0000">"phar://archive/content.php"</span><span style="color: #007700">;<br />include&nbsp;</span><span style="color: #DD0000">"phar://arch2/foo.php"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+       </div>
+
+      </div>
+     </p>
+    </dd>
+
+   </dt>
+
+  </dl>
+
+ </p>
+</div>
+
+
+
+  <div id="phar.resources" class="section">
+   <h2 class="title">リソース型</h2>
+   <p class="para">
+    Phar 拡張モジュールで使用するリソースは <i class="literal">phar</i>
+    ストリームで、これにより、phar 内のファイルへの透過的なアクセスが可能となります。
+    Phar ファイルのフォーマットについては
+    <a href="ref.phar.html#phar.fileformat" class="link">ここ</a>
+    で説明されています。
+   </p>
+    <p class="para">リソース型は定義されていません。</p>
+  </div>
+  <div class="section">
+    <h2 class="title">定義済みクラス</h2>
+    <ul class="simplelist">
+     <li class="member">
+      <span class="classname">Phar</span>
+     </li>
+     <li class="member">
+      <span class="classname">PharFileInfo</span>
+     </li>
+     <li class="member">
+      <span class="classname">PharException</span>
+     </li>
+   </ul>
+  </div>
+  
+
+
+<div id="phar.using.basics" class="section">
+ <h2 class="title">Phar アーカイブの使用法: 導入</h2>
+ <p class="para">
+  Phar アーカイブは Java の JAR アーカイブと似た概念のものですが、
+  PHP アプリケーションで使用する際に必要な機能をより柔軟に使用できるよう改良しています。
+  Phar アーカイブを使用すると、PHP アプリケーションやライブラリを
+  ひとつのファイルにまとめて配布できるようになります。
+  Java における JAR アーカイブの実装とは異なり、
+  PHP の Phar アーカイブを処理したり実行したりするには外部のツールは不要です。
+  Phar アーカイブ形式のアプリケーションは、その他の PHP
+  アプリケーションとまったく同様に扱えます。
+ </p>
+ <div class="example-contents"><pre>
+  <div class="cdata"><pre>
+php coolapplication.phar
+  </pre></div>
+ </pre></div>
+ <p class="para">
+  Phar アーカイブ形式のライブラリを使用する方法も、
+  その他の通常の PHP ライブラリとまったく同じです。
+ </p>
+ <p class="para">
+  <div class="informalexample">
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">include&nbsp;</span><span style="color: #DD0000">'coollibrary.phar'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+ </p>
+ <p class="para">
+  Phar アーカイブを非常に便利なものとしている機能が
+  <i class="literal">phar</i> ストリームラッパーです。
+  詳細については <a href="ref.phar.html#phar.using.stream" class="link">こちら</a>
+  で説明します。このストリームラッパーを使用すると、
+  phar 内の個々のファイルに対して、
+  まるで通常のファイルシステム上にあるのと同じような感覚でアクセスできます。
+  <i class="literal">phar</i> ストリームラッパーは、
+  ファイルに対する読み書きや、ディレクトリに対する
+  <a href="function.opendir.html" class="function">opendir()</a> をすべてサポートしています。
+ </p>
+ <p class="para">
+  <div class="informalexample">
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">include&nbsp;</span><span style="color: #DD0000">'phar://coollibrary.phar/internal/file.php'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">'Content-type:&nbsp;image/jpeg'</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">//&nbsp;phar&nbsp;にアクセスするには、フルパスあるいはエイリアスを使用します<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">file_get_contents</span><span style="color: #007700">(</span><span style="color: #DD0000">'phar:///fullpath/to/coollibrary.phar/images/wow.jpg'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+ </p>
+ <p class="para">
+  Phar 拡張モジュールで提供されているもうひとつの機能が
+  <span class="classname">Phar</span> クラスです。
+  これにより、Phar アーカイブ内のファイルに対して
+  まるでそれが連想配列であるかのようにアクセスできるようになります。
+  またその他の機能も用意されています。Phar クラスについての説明は
+  <a href="ref.phar.html#phar.using.object" class="link">こちら</a> をご覧ください。
+ </p>
+ <p class="para">
+  <div class="informalexample">
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">try&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;既存の&nbsp;phar&nbsp;をオープンします<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$p&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Phar</span><span style="color: #007700">(</span><span style="color: #DD0000">'coollibrary.phar'</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;(</span><span style="color: #0000BB">$p&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$file</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;$file&nbsp;は&nbsp;PharFileInfo&nbsp;クラスで、これは&nbsp;SplFileInfo&nbsp;を継承しています<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">$file</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getFileName</span><span style="color: #007700">()&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$file&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;内容を表示します<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">}<br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(isset(</span><span style="color: #0000BB">$p</span><span style="color: #007700">[</span><span style="color: #DD0000">'internal/file.php'</span><span style="color: #007700">]))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$p</span><span style="color: #007700">[</span><span style="color: #DD0000">'internal/file.php'</span><span style="color: #007700">]-&gt;</span><span style="color: #0000BB">getMetaData</span><span style="color: #007700">());<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;新しい&nbsp;phar&nbsp;の作成&nbsp;-&nbsp;php.ini&nbsp;で&nbsp;phar.readonly&nbsp;を&nbsp;0&nbsp;にしておく必要があります。<br />&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;phar.readonly&nbsp;は、セキュリティ上の理由によってデフォルトで有効になっています。<br />&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;実際の運用サーバでは、決して&nbsp;Phar&nbsp;を作成する必要はないはずで、<br />&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;単に実行できるだけでよいはずです。<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">Phar</span><span style="color: #007700">::</span><span style="color: #0000BB">canWrite</span><span style="color: #007700">())&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$p&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Phar</span><span style="color: #007700">(</span><span style="color: #0000BB">dirname</span><span style="color: #007700">(</span><span style="color: #0000BB">__FILE__</span><span style="color: #007700">)&nbsp;.&nbsp;</span><span style="color: #DD0000">'/newphar.phar'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'newphar.phar'</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;トランザクションを作成します&nbsp;-&nbsp;commit()&nbsp;がコールされるまで、<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;newphar.phar&nbsp;には何も書き込まれません。しかし一時ストレージが必要となります<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$p</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">begin</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;新しいファイルを追加し、その内容を設定します<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$p</span><span style="color: #007700">[</span><span style="color: #DD0000">'file1.txt'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #DD0000">'Information'</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$fp&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">'hugefile.dat'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'rb'</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;ストリームからコピーします<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$p</span><span style="color: #007700">[</span><span style="color: #DD0000">'data/hugefile.dat'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">$fp</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">Phar</span><span style="color: #007700">::</span><span style="color: #0000BB">canCompress</span><span style="color: #007700">())&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$p</span><span style="color: #007700">[</span><span style="color: #DD0000">'data/hugefile.dat'</span><span style="color: #007700">]-&gt;</span><span style="color: #0000BB">setCompressedGZ</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$p</span><span style="color: #007700">[</span><span style="color: #DD0000">'images/wow.jpg'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">file_get_contents</span><span style="color: #007700">(</span><span style="color: #DD0000">'images/wow.jpg'</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;ファイル固有のメタデータとして、任意のデータを保存できます<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$p</span><span style="color: #007700">[</span><span style="color: #DD0000">'images/wow.jpg'</span><span style="color: #007700">]-&gt;</span><span style="color: #0000BB">setMetaData</span><span style="color: #007700">(array(</span><span style="color: #DD0000">'mime-type'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'image/jpeg'</span><span style="color: #007700">));<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$p</span><span style="color: #007700">[</span><span style="color: #DD0000">'index.php'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">file_get_contents</span><span style="color: #007700">(</span><span style="color: #DD0000">'index.php'</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$p</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setMetaData</span><span style="color: #007700">(array(</span><span style="color: #DD0000">'bootstrap'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'index.php'</span><span style="color: #007700">));<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;ローダースタブを設定します<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$p</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setStub</span><span style="color: #007700">(</span><span style="color: #DD0000">'&lt;?php<br />$p&nbsp;=&nbsp;new&nbsp;Phar(__FILE__);<br />$m&nbsp;=&nbsp;$p-&gt;getMetaData();<br />require&nbsp;"phar://"&nbsp;.&nbsp;__FILE__&nbsp;.&nbsp;"/"&nbsp;.&nbsp;$m["bootstrap"];<br />__HALT_COMPILER();'</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;phar&nbsp;アーカイブをディスクに保存します<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$p</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">commit</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}&nbsp;catch&nbsp;(</span><span style="color: #0000BB">Exception&nbsp;$e</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">'Phar&nbsp;をオープンできません:&nbsp;'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$e</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+ </p>
+</div>
+<div id="phar.using.stream" class="section">
+ <h2 class="title">Phar アーカイブの使用法: phar ストリームラッパー</h2>
+ <p class="para">
+  Phar ストリームラッパーは、<a href="function.fopen.html" class="function">fopen()</a> による読み込みや
+  書き込みそして追記、<a href="function.unlink.html" class="function">unlink()</a>、<a href="function.stat.html" class="function">stat()</a>、
+  <a href="function.fstat.html" class="function">fstat()</a>、<a href="function.fseek.html" class="function">fseek()</a>、<a href="function.rename.html" class="function">rename()</a>
+  そしてディレクトリに対する <a href="function.opendir.html" class="function">opendir()</a>
+  といった機能に完全に対応しています。
+  Phar ストリームラッパーはディレクトリの作成や削除には対応していません。
+  ファイルは単なるファイルとしてしか格納されず、
+  ディレクトリを抽象化した概念は存在しないからです。
+ </p>
+ <p class="para">
+  Phar アーカイブ内の各ファイルの圧縮やファイル単位のメタデータの操作も、
+  ストリーム上で可能です。
+ </p>
+ <p class="para">
+  <div class="informalexample">
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$context&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">stream_context_create</span><span style="color: #007700">(array(</span><span style="color: #DD0000">'phar'&nbsp;</span><span style="color: #007700">=&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: #DD0000">'compression'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">Phar</span><span style="color: #007700">::</span><span style="color: #0000BB">GZ</span><span style="color: #007700">)),<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: #DD0000">'metadata'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(</span><span style="color: #DD0000">'user'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'cellog'</span><span style="color: #007700">)));<br /></span><span style="color: #0000BB">file_put_contents</span><span style="color: #007700">(</span><span style="color: #DD0000">'phar://my.phar/somefile.php'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$context</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+ </p>
+ <p class="para">
+  <i class="literal">phar</i> ストリームラッパーは、
+  リモートファイルを操作することはできません。つまり、INI 設定
+  <a href="ref.filesystem.html#ini.allow-url-fopen" class="link">allow_url_fopen</a> および
+  <a href="ref.filesystem.html#ini.allow-url-include" class="link">allow_url_include</a>
+  が無効になっている場合でも使用できます。
+ </p>
+ <p class="para">
+  ストリーム操作だけで新しい phar アーカイブをゼロから作成することも可能ですが、
+  そんな場合は Phar クラスの組み込み機能を使用するほうが便利です。
+  ストリームラッパーが有用なのは、読み込み操作を行う場合です。
+ </p>
+</div>
+<div id="phar.using.object" class="section">
+ <h2 class="title">Phar アーカイブの使用法: Phar クラス</h2>
+ <p class="para">
+  <span class="classname">Phar</span> クラスは Phar アーカイブの読み込みや操作をサポートしています。
+  また
+  <a href="http://www.php.net/~helly/php/ext/spl/classRecursiveDirectoryIterator.html" class="link external">&raquo; <span class="classname">RecursiveDirectoryIterator</span></a>
+  クラスを継承しているため、順次処理も可能です。
+  <span class="interfacename">ArrayAccess</span> インターフェイスをサポートしているので、
+  Phar アーカイブ内のファイルに対して、
+  それがまるで連想配列であるかのようにアクセスすることができます。
+ </p>
+ <p class="para">
+  注意すべき点は、Phar アーカイブを作成する際には
+  <span class="classname">Phar</span> のコンストラクタに
+  フルパスを渡さなければならないということです。
+  相対パスでは初期化に失敗します。
+ </p>
+ <p class="para">
+  <i class="literal">$p</i> が、次のように作成した Phar オブジェクトであるとしましょう。
+ </p>
+ <p class="para">
+  <div class="informalexample">
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$p&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Phar</span><span style="color: #007700">(</span><span style="color: #DD0000">'/path/to/myphar.phar'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'myphar.phar'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+ </p>
+ <p class="para">
+  空の Phar アーカイブが <i class="literal">/path/to/myphar.phar</i>
+  に作成されます。もし <i class="literal">/path/to/myphar.phar</i>
+  が既に存在する場合は、それを再度オープンします。
+  リテラル <i class="literal">myphar.phar</i> は、エイリアスを表します。
+  これを用いると、URL で <i class="literal">/path/to/myphar.phar</i>
+  を参照する際に次のようにできます。
+ </p>
+ <p class="para">
+  <div class="informalexample">
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;これらのふたつの&nbsp;file_get_contents()&nbsp;コールが同等となるのは、<br />//&nbsp;/path/to/myphar.phar&nbsp;のマニフェストでエイリアス&nbsp;"myphar.phar"<br />//&nbsp;が明示的に指定されている場合か、先ほどの例のように<br />//&nbsp;Phar&nbsp;オブジェクトを初期化した場合です。<br /></span><span style="color: #0000BB">$f&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">file_get_contents</span><span style="color: #007700">(</span><span style="color: #DD0000">'phar:///path/to/myphar.phar/whatever.txt'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$f&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">file_get_contents</span><span style="color: #007700">(</span><span style="color: #DD0000">'phar://myphar.phar/whatever.txt'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+ </p>
+ <p class="para">
+  新しく作成した <span class="classname">Phar</span> オブジェクト
+  <i class="literal">$p</i> に対して、次のような処理が可能となります。
+  <ul class="itemizedlist">
+   <li class="listitem">
+    <span class="simpara">
+     <i class="literal">$a = $p[&#039;file.php&#039;]</i> とすると、
+     <i class="literal">phar://myphar.phar/file.php</i> の中身を参照する
+     <span class="classname">PharFileInfo</span> クラスが作成されます。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     <i class="literal">$p[&#039;file.php&#039;] = $v</i> とすると、
+     <i class="literal">myphar.phar</i> の中に新しいファイル
+     (<i class="literal">phar://myphar.phar/file.php</i>)
+     を作成するか、あるいは同名のファイルを上書きします。
+     <i class="literal">$v</i> には、文字列あるいはファイルポインタのいずれかを指定できます。
+     ファイルポインタを指定した場合は、その中身全体をもとにして新しいファイルを作成します。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     <i class="literal">isset($p[&#039;file.php&#039;])</i>
+     とすると、<i class="literal">phar://myphar.phar/file.php</i> が
+     <i class="literal">myphar.phar</i> の中に存在するかどうかがわかります。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     <i class="literal">unset($p[&#039;file.php&#039;])</i> とすると、
+     <i class="literal">phar://myphar.phar/file.php</i> を
+     <i class="literal">myphar.phar</i> から削除します。
+    </span>
+   </li>
+  </ul>
+ </p>
+ <p class="para">
+  さらに、Phar 固有のメタデータにアクセスするためには
+  <span class="classname">Phar</span> オブジェクトを使用することが唯一の方法となります。そのためには
+  <a href="function.phar-getmetadata.html" class="link"><a href="function.phar-getmetadata.html" class="function">Phar->getMetaData()</a></a>
+  を使用します。また、Phar アーカイブの PHP ローダスタブを設定したり取得したりするための唯一の方法が
+  <a href="function.phar-getstub.html" class="link"><a href="function.phar-getstub.html" class="function">Phar->getStub()</a></a> および
+  <a href="function.phar-setstub.html" class="link"><a href="function.phar-setstub.html" class="function">Phar->setStub()</a></a> です。
+  また、Phar アーカイブ全体の圧縮を行うには
+  <span class="classname">Phar</span> クラスが必要となります。
+ </p>
+ <p class="para">
+  <span class="classname">Phar</span> オブジェクトの全機能の一覧については、以下で説明します。
+ </p>
+ <p class="para">
+  <span class="classname">PharFileInfo</span> クラスは
+  <a href="http://www.php.net/~helly/php/ext/spl/classSplFileInfo.html" class="link external">&raquo; <span class="classname">SplFileInfo</span></a>
+  クラスを継承しており、Phar 内のファイルについての Phar
+  固有の情報 (圧縮情報やメタデータなど) を扱うためのメソッドが追加されています。
+ </p>
+</div>
+
+
+
+  
+
+
+
+<div id="phar.fileformat" class="section">
+ <h2 class="title">Phar ファイルフォーマット</h2>
+ <p class="para">
+  Phar ファイルは、三つあるいは四つの部分から構成されています。
+  <ol class="orderedlist">
+   <li class="listitem">
+    <p class="para">スタブ</p>
+   </li>
+   <li class="listitem">
+    <p class="para">内容を説明するマニフェスト</p>
+   </li>
+   <li class="listitem">
+    <p class="para">ファイルの内容</p>
+   </li>
+   <li class="listitem">
+    <p class="para">[オプション] Phar の整合性を検証するためのシグネチャ</p>
+   </li>
+  </ol>
+ </p>
+</div>
+<div class="section">
+ <h2 class="title">Phar ファイルのスタブ</h2>
+ <p class="para">
+  Phar のスタブは、単純な PHP ファイルです。必要最小限のスタブは、次のようになります。
+ </p>
+ <p class="para">
+  <div class="example-contents">
+   <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php&nbsp;</span><span style="color: #007700">__HALT_COMPILER();</span>
+</span>
+</code></div>
+  </div>
+
+ </p>
+ <p class="para">
+  スタブには、少なくとも <i class="literal">__HALT_COMPILER();</i> トークンが必要です。
+  典型的なスタブは、次のように読み込み機能を含んでいます。
+ </p>
+ <p class="para">
+  <div class="example-contents">
+   <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />Phar</span><span style="color: #007700">::</span><span style="color: #0000BB">mapPhar</span><span style="color: #007700">();<br />include&nbsp;</span><span style="color: #DD0000">'phar://myphar.phar/index.php'</span><span style="color: #007700">;<br />__HALT_COMPILER();</span>
+</span>
+</code></div>
+  </div>
+
+ </p>
+ <p class="para">
+  Phar スタブの内容には特に制限はありません。唯一の制約は、最後が
+  <i class="literal">__HALT_COMPILER();</i> でなければならないということです。
+  PHP の終了タグ <i class="literal"><div class="cdata"><pre>?&gt;</pre></div></i> は含めても含めなくてもかまいません。
+  しかし、<i class="literal">;</i> と終了タグ
+  <i class="literal"><div class="cdata"><pre>?&gt;</pre></div></i> の間にはひとつ以上の空白を含めてはいけません。
+  もしそうしてしまうと、phar 拡張モジュールは
+  その Phar アーカイブのマニフェストを処理できなくなります。
+ </p>
+</div>
+<div class="section">
+ <h2 class="title">Phar マニフェストの書式</h2>
+ <p class="para">
+  Phar マニフェストは高度に最適化された書式で、
+  ファイル単位で圧縮やパーミッションの情報を指定することができ、
+  さらにファイルのユーザやグループなど、独自に定義したメタデータも含めることができます。
+  1 バイトをこえる大きさの値はリトルエンディアン形式のバイト順で保存されます。
+  ただし API バージョンだけは例外です。これは 3 ニブルのデータですが、
+  歴史的な理由によりビッグエンディアン形式のバイト順で保存されます。
+ </p>
+ <p class="para">
+  未使用のフラグはすべて将来の使用に備えて予約されています。
+  したがって、独自の情報を保存するためにそれを使用してはいけません。
+  特定のファイルについて独自の情報を保存するには、
+  ファイル単位のメタデータ機能を使用します。
+ </p>
+ <p class="para">
+  Phar アーカイブマニフェストの基本的なファイルフォーマットは、次のようになります。
+ </p>
+ <p class="para">
+ <table border="5">
+  <caption><b>グローバル Phar マニフェスト書式</b></caption>
+  <colgroup>
+
+   <thead valign="middle">
+    <tr valign="middle">
+     <th colspan="1">バイト数</th>
+     <th colspan="1">説明</th>
+    </tr>
+
+   </thead>
+
+   <tbody valign="middle">
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">4 バイト</td>
+     <td colspan="1" rowspan="1" align="left">マニフェスト全体のバイト長 (最大 1 MB)。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">4 バイト</td>
+     <td colspan="1" rowspan="1" align="left">Phar 内のファイル数。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">2 バイト</td>
+     <td colspan="1" rowspan="1" align="left">Phar マニフェストの API バージョン (現在は 1.0.0)。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">4 バイト</td>
+     <td colspan="1" rowspan="1" align="left">グローバルな Phar ビットマップフラグ。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">4 バイト</td>
+     <td colspan="1" rowspan="1" align="left">Phar のエイリアスの長さ。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">??</td>
+     <td colspan="1" rowspan="1" align="left">Phar のエイリアス (先ほどの長さに基づきます)。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">4 バイト</td>
+     <td colspan="1" rowspan="1" align="left">Phar のメタデータの長さ (存在しない場合は <i class="literal">0</i>)。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">??</td>
+     <td colspan="1" rowspan="1" align="left">シリアライズ化された Phar メタデータ。<a href="function.serialize.html" class="function">serialize()</a> 形式で格納される。</td>
+    </tr>
+
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left">最低でも 24 * エントリ数ぶんのバイト</td>
+     <td colspan="1" rowspan="1" align="left">各ファイルのエントリ</td>
+    </tr>
+
+   </tbody>
+  </colgroup>
+
+ </table>
+
+ </p>
+</div>
+<div class="section">
+ <h2 class="title">グローバルな Phar ビットマップフラグ</h2>
+ <p class="para">
+  これが、Phar 拡張モジュールが現在 Phar フラットビットマップとして認識するフラグです。
+ </p>
+ <p class="para">
+  <table border="5">
+   <caption><b>認識するビットマップ値</b></caption>
+   <colgroup>
+
+   <thead valign="middle">
+    <tr valign="middle">
+     <th colspan="1">値</th>
+     <th colspan="1">説明</th>
+    </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+    <tr valign="middle">
+     <td colspan="1" rowspan="1" align="left"><i class="literal">0x00010000</i></td>
+      <td colspan="1" rowspan="1" align="left">設定されている場合、この Phar には検証用シグネチャが含まれます。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><i class="literal">0x00001000</i></td>
+      <td colspan="1" rowspan="1" align="left">
+       設定されている場合、この Phar には
+       zlib 圧縮されたファイルが少なくともひとつ含まれます。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><i class="literal">0x00002000</i></td>
+      <td colspan="1" rowspan="1" align="left">
+       設定されている場合、この Phar には
+       bzip 圧縮されたファイルが少なくともひとつ含まれます。
+      </td>
+     </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+ </p>
+</div>
+<div class="section">
+ <h2 class="title">Phar マニフェストのファイルエントリの定義</h2>
+ <p class="para">
+  マニフェスト内の各ファイルについて、次のような情報が含まれます。
+ </p>
+ <p class="para">
+  <table border="5">
+   <caption><b>Phar マニフェストのファイルエントリ</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">バイト数</th>
+      <th colspan="1">説明</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">4 バイト</td>
+      <td colspan="1" rowspan="1" align="left">ファイル名の長さを表すバイト数。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">??</td>
+      <td colspan="1" rowspan="1" align="left">ファイル名 (先ほど指定した長さになります)。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">4 バイト</td>
+      <td colspan="1" rowspan="1" align="left">圧縮前のファイルサイズを表すバイト数。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">4 バイト</td>
+      <td colspan="1" rowspan="1" align="left">ファイルの Unix タイムスタンプ。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">4 バイト</td>
+      <td colspan="1" rowspan="1" align="left">圧縮後のファイルサイズを表すバイト数。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">4 バイト</td>
+      <td colspan="1" rowspan="1" align="left">圧縮前のファイルの CRC32 チェックサム。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">4 バイト</td>
+      <td colspan="1" rowspan="1" align="left">ファイル固有のビットマップフラグ。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">4 バイト</td>
+      <td colspan="1" rowspan="1" align="left">シリアライズされたファイルのメタデータの長さ (存在しない場合は <i class="literal">0</i>)。</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">??</td>
+      <td colspan="1" rowspan="1" align="left">シリアライズされたファイルのメタデータ。<a href="function.serialize.html" class="function">serialize()</a> の形式で格納される。</td>
+     </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+ </p>
+ <p class="para">
+  ファイル固有のビットマップ値として認識される値は次のとおりです。
+ </p>
+ <p class="para">
+  <table border="5">
+   <caption><b>認識されるビットマップ値</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">値</th>
+      <th colspan="1">説明</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><i class="literal">0x000001FF</i></td>
+      <td colspan="1" rowspan="1" align="left">
+       これらのビットは、ファイルの特定のパーミッションを定義するために予約されています。
+       このパーミッションは <a href="function.fstat.html" class="function">fstat()</a> で用いられ、
+       ファイルを展開する際に特定のパーミッションを指定することができます。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><i class="literal">0x00001000</i></td>
+      <td colspan="1" rowspan="1" align="left">
+       設定されている場合、このファイルは
+       zlib で圧縮されています。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><i class="literal">0x00002000</i></td>
+      <td colspan="1" rowspan="1" align="left">
+       設定されている場合、このファイルは
+       bzip で圧縮されています。
+      </td>
+     </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+ </p>
+</div>
+<div class="section">
+ <h2 class="title">Phar のシグネチャの書式</h2>
+ <p class="para">
+  シグネチャを含む Phar は、常にシグネチャを保持しています。
+  シグネチャの場所は、
+  ローダ、マニフェスト、実際のファイルの内容に続く
+  Phar アーカイブの最後の部分です。
+  現在サポートしているシグネチャのフォーマットは
+  MD5 および SHA1 の二種類です。
+ </p>
+ <p class="para">
+  <table border="5">
+   <caption><b>シグネチャのフォーマット</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">バイト長</th>
+      <th colspan="1">説明</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">16 あるいは 20 バイト</td>
+      <td colspan="1" rowspan="1" align="left">
+       実際のシグネチャ。SHA1 の場合は 20 バイト、
+       MD5 の場合は 16 バイトとなります。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">4 バイト</td>
+      <td colspan="1" rowspan="1" align="left">
+       シグネチャのフラグ。<i class="literal">0x0001</i> は
+       MD5 シグネチャ、そして <i class="literal">0x0002</i> は
+       SHA1 シグネチャを表します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">4 バイト</td>
+      <td colspan="1" rowspan="1" align="left">
+       <i class="literal">GBMB</i> という固定値で、
+       シグネチャが存在することを表します。
+      </td>
+     </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+ </p>
+</div>
+
+
+  </div>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.phar-apiversion.html">Phar::apiVersion</a> ― API のバージョンを返す</li><li><a href="function.phar-cancompress.html">Phar::canCompress</a> ― phar 拡張モジュールが zlib あるいは bzip2 による圧縮をサポートしているかどうかを返す</li><li><a href="function.phar-canwrite.html">Phar::canWrite</a> ― phar 拡張モジュールが phar の書き込みや作成をサポートしているかどうかを返す</li><li><a href="function.phar-compressallfilesbzip2.html">Phar->compressAllFilesBZIP2</a> ― 現在の Phar アーカイブ内のすべてのファイルを Bzip2 で圧縮する</li><li><a href="function.phar-compressallfilesgz.html">Phar->compressAllFilesGZ</a> ― 現在の Phar アーカイブ内のすべてのファイルを Gzip で圧縮する</li><li><a href="function.phar-construct.html">Phar::__construct</a> ― Phar アーカイブオブジェクトを作成する</li><li><a href="function.phar-count.html">Phar->count</a> ― Phar アーカイブ内のエントリ (ファイル) の数を返す</li><li><a href="function.phar-getmetadata.html">Phar->getMetaData</a> ― phar アーカイブのメタデータを返す</li><li><a href="function.phar-getmodified.html">Phar->getModified</a> ― phar が変更されているかどうかを返す</li><li><a href="function.phar-getsignature.html">Phar->getSignature</a> ― Phar アーカイブの MD5/SHA1 シグネチャを返す</li><li><a href="function.phar-getstub.html">Phar->getStub</a> ― Phar アーカイブの PHP ローダーあるいは起動スタブを返す</li><li><a href="function.phar-getversion.html">Phar->getVersion</a> ― Phar アーカイブのバージョン情報を返す</li><li><a href="function.phar-isbuffering.html">Phar->isBuffering</a> ― Phar の書き込み操作がバッファリングされるか、あるいは直接ディスクに書き込まれるかを調べる</li><li><a href="function.phar-loadphar.html">Phar::loadPhar</a> ― 任意の phar アーカイブを、エイリアスを指定して読み込む</li><li><a href="function.phar-mapphar.html">Phar::mapPhar</a> ― 現在実行されている (phar 形式の) ファイルを読み込み、その内容を登録する</li><li><a href="function.phar-offsetexists.html">Phar::offsetExists</a> ― ファイルが phar 内に存在するかどうかを調べる</li><li><a href="function.phar-offsetget.html">Phar::offsetGet</a> ― 指定したファイルの PharFileInfo オブジェクトを取得する</li><li><a href="function.phar-offsetset.html">Phar::offsetSet</a> ― 内部ファイルに、外部ファイルの内容を設定する</li><li><a href="function.phar-offsetunset.html">Phar::offsetUnset</a> ― ファイルを phar から削除する</li><li><a href="function.phar-setmetadata.html">Phar->setMetaData</a> ― phar アーカイブのメタデータを設定する</li><li><a href="function.phar-setstub.html">Phar->setStub</a> ― Phar アーカイブの PHP ローダ (あるいは起動スタブ) を設定する</li><li><a href="function.phar-startbuffering.html">Phar->startBuffering</a> ― Phar の書き込み操作のバッファリングを開始するが、ディスク上の Phar オブジェクトは変更しない</li><li><a href="function.phar-stopbuffering.html">Phar->stopBuffering</a> ― Phar アーカイブへの書き込みリクエストのバッファリングを終了し、変更内容をディスクに書き込む</li><li><a href="function.phar-uncompressallfiles.html">Phar->uncompressAllFiles</a> ― 現在の Phar アーカイブ内のすべてのファイルを展開する</li><li><a href="function.pharfileinfo-chmod.html">PharFileInfo->chmod</a> ― ファイル固有のパーミッションビットを設定する</li><li><a href="function.pharfileinfo-construct.html">PharFileInfo::__construct</a> ― Phar エントリオブジェクトを作成する</li><li><a href="function.pharfileinfo-getcompressedsize.html">PharFileInfo->getCompressedSize</a> ― Phar アーカイブ内での実際のファイルの大きさ (圧縮された状態) を返す</li><li><a href="function.pharfileinfo-getcrc32.html">PharFileInfo->getCRC32</a> ― CRC32 コードを返すか、CRC がチェックできない場合に例外をスローする</li><li><a href="function.pharfileinfo-getmetadata.html">PharFileInfo->getMetaData</a> ― ファイルとともに保存されている、ファイル固有のメタデータを返す</li><li><a href="function.pharfileinfo-getPharFlags.html">PharFileInfo->getPharFlags</a> ― Phar ファイルエントリのフラグを返す</li><li><a href="function.pharfileinfo-iscompressed.html">PharFileInfo->isCompressed</a> ― エントリが圧縮されているかどうかを調べる</li><li><a href="function.pharfileinfo-iscompressedbzip2.html">PharFileInfo->isCompressedBZIP2</a> ― エントリが bzip2 で圧縮されているかどうかを調べる</li><li><a href="function.pharfileinfo-iscompressedgz.html">PharFileInfo->isCompressedGZ</a> ― エントリが gz で圧縮されているかどうかを調べる</li><li><a href="function.pharfileinfo-iscrcchecked.html">PharFileInfo->isCRCChecked</a> ― ファイルエントリの CRC が検証されているかどうかを調べる</li><li><a href="function.pharfileinfo-setcompressedbzip2.html">PharFileInfo->setCompressedBZIP2</a> ― phar 内の現在の Phar エントリを、Bzip2 で圧縮する</li><li><a href="function.pharfileinfo-setcompressedgz.html">PharFileInfo->setCompressedGZ</a> ― phar 内の現在の Phar エントリを、gz で圧縮する</li><li><a href="function.pharfileinfo-setmetadata.html">PharFileInfo->setMetaData</a> ― ファイルとともに保存する、ファイル固有のメタデータを設定する</li><li><a href="function.pharfileinfo-setuncompressed.html">PharFileInfo->setUncompressed</a> ― phar 内の現在の Phar エントリが圧縮されている場合に、それを展開する</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.PDOStatement-setFetchMode.html">PDOStatement->setFetchMode()</a></div>
+ <div class="next" style="float: right;"><a href="function.phar-apiversion.html">Phar::apiVersion</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

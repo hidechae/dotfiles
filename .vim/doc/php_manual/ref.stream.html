@@ -1,0 +1,943 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>ストリーム関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.stats-variance.html">stats_variance</a></div>
+ <div class="next" style="float: right;"><a href="function.stream-bucket-append.html">stream_bucket_append</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">ストリーム関数</h1>
+  
+
+  <div class="partintro">
+
+   <div id="stream.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="simpara">
+     ストリームは、PHP 4.3.0 に、
+     ファイル、ネットワーク、データ圧縮などに関する、
+     共通した一連の関数群と利用法を持つ操作の一般化の手法として
+     導入されました。もっとも単純な定義では、<i class="literal">ストリーム</i>
+     というのは、ストリーミング可能な動作を体現する <i class="literal">resource</i>
+     オブジェクトといえます。つまり、ストリームには線的に読み出したり、
+     あるいは書き込んだりすることが可能で、かつ、
+     ストリーム上の任意の場所に <a href="function.fseek.html" class="function">fseek()</a> できる場合も
+     あります。
+    </p>
+    <p class="simpara">
+     <i class="literal">ラッパー</i> というのは、ストリームにおいてどのように特定の
+     プロトコル/エンコーディングを扱うかを扱うかを指示する付加的なコード
+     です。たとえば、<i class="literal">http</i> ラッパーは、どのようにして
+     URL を、リモートサーバのファイルに対する <i class="literal">HTTP/1.0</i>
+     リクエストに転換するかを知っています。PHP
+     には、デフォルトで組み込まれているラッパーが多数存在しますが
+     (<a href="wrappers.html" class="xref">サポートされるプロトコル/ラッパー</a> を参照ください)、
+     それに加え、カスタムラッパーを<a href="function.stream-wrapper-register.html" class="function">stream_wrapper_register()</a>
+     を利用して PHP スクリプトの内部から、あるいはストリーム API を用いて、
+     直接拡張モジュールの内部から追加できます。 (ストリーム API については
+     <a href="internals2.streams.html" class="xref">ストリームの作成</a> を参照ください)
+     あらゆる種類のラッパーが PHP に追加できるので、
+     特にラッパーでできることの限界はありません。
+     現在登録されているラッパーの種類を知るには、
+     <a href="function.stream-get-wrappers.html" class="function">stream_get_wrappers()</a> を使います。
+    </p>
+    <p class="para">
+     リソースは次のような形でストリームとして参照されます: <i><tt class="parameter">scheme</tt></i>
+://<i><tt class="parameter">target</tt></i>
+
+     <ul class="itemizedlist">
+      <li class="listitem">
+       <span class="simpara">
+        <i><tt class="parameter">scheme</tt></i>
+(string) -
+        使用されるラッパの名称です。例として、
+        <i class="literal">file</i>, <i class="literal">http</i>, <i class="literal">https</i>,
+        <i class="literal">ftp</i>, <i class="literal">ftps</i>,
+        <i class="literal">compress.zlib</i>, <i class="literal">compress.bz2</i>,
+        <i class="literal">php</i> などが含まれます。
+        PHP 組み込みのラッパについては、<a href="wrappers.html" class="xref">サポートされるプロトコル/ラッパー</a>
+        を参照ください。もしラッパが指定されていない場合は、使用している関数の
+        デフォルトが利用されます(通常は <i class="literal">file</i>://)。
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        <i><tt class="parameter">target</tt></i>
+ -
+        使用するラッパによって解釈が異なります。
+        ファイルシステムに関連したストリームの場合、
+        一般的にこのパラメータは対象となるファイルの
+        ファイル名とパスを表します。
+        ネットワークに関連したストリームの場合、一般的に
+        このパラメータはホスト名と、(多くの場合付加されるはずの) パス名です。
+        PHP 組み込みのラッパに、どのようにターゲットが解釈されるかは、
+        <a href="wrappers.html" class="xref">サポートされるプロトコル/ラッパー</a> を参照ください。
+       </span>
+      </li>
+     </ul>
+    </p>
+   </div>
+
+   <div id="stream.filters" class="section">
+    <h2 class="title">ストリームフィルタ</h2>
+    <p class="simpara">
+     <i class="literal">フィルタ</i> は、ストリームから読み込まれたり、
+     あるいは、ストリームから書き込まれたするデータに対して何らかの
+     操作を行う、最終段階にあるコードです。
+     PHP スクリプトの内部で、
+     <a href="function.stream-filter-register.html" class="function">stream_filter_register()</a> を使って、
+     あるいは拡張モジュールの内部で <a href="internals2.streams.html" class="xref">ストリームの作成</a> に示された
+     関連する API を使って、カスタムフィルタを作成することができます。
+     現在登録されているフィルタの一覧を取得するには、
+     <a href="function.stream-get-filters.html" class="function">stream_get_filters()</a> をお使いください。
+    </p>
+   </div>
+
+   <div id="stream.contexts" class="section">
+    <h2 class="title">ストリームコンテキスト</h2>
+    <p class="simpara">
+     <i class="literal">コンテキスト</i> は、ストリームの挙動を変えたり、
+     拡張したりすることのできる <i class="literal">パラメータ</i> と
+     ラッパ固有の <i class="literal">オプション</i> の集合です。
+     <i class="literal">コンテキスト</i> は、
+     <a href="function.stream-context-create.html" class="function">stream_context_create()</a> を使って生成しますが、
+     これは、ほとんどのファイルシステム関連のストリーム生成関数に
+     渡すことができます。(例えば <a href="function.fopen.html" class="function">fopen()</a>,
+     <a href="function.file.html" class="function">file()</a>, <a href="function.file-get-contents.html" class="function">file_get_contents()</a> など)
+    </p>
+    <p class="simpara">
+     <i class="literal">オプション</i> は、
+     <a href="function.stream-context-create.html" class="function">stream_context_create()</a> の呼び出し時に指定しますが、
+     後で <a href="function.stream-context-set-option.html" class="function">stream_context_set_option()</a> を使って
+     指定することもできます。
+
+     ラッパ固有の <i class="literal">オプション</i> については、
+     組み込みラッパの一覧に説明があります。
+     (<a href="wrappers.html" class="xref">サポートされるプロトコル/ラッパー</a> を参照ください)
+    </p>
+    <p class="simpara">
+     さらに、<a href="function.stream-context-set-params.html" class="function">stream_context_set_params()</a> を使うことで、
+     <i class="literal">パラメータ</i> を、<i class="literal">コンテキスト</i>
+     に対し指定することができます。なお、現在のところ、PHP
+     にサポートされている<i class="literal">コンテキストパラメータ</i> は、
+     <i class="literal">notification</i> のみです。このパラメータの値は、
+     ストリームに発生した何らかのイベントを通知するために呼び出される関数の
+     名前でなくてはなりません。
+     通知関数は次のような 6 個のパラメータを取ります:
+    </p>
+    <div class="methodsynopsis">
+     <span class="type">void</span> <span class="methodname"><b><b>my_notifier</b></b></span>
+      ( <span class="methodparam"><span class="type">int</span> <tt class="parameter">$notification_code</tt></span>
+     , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$severity</tt></span>
+     , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$message</tt></span>
+     , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$message_code</tt></span>
+     , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$bytes_transferred</tt></span>
+     , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$bytes_max</tt></span>
+     )</div>
+
+    <p class="simpara">
+     <i><tt class="parameter">notification_code</tt></i>
+ と <i><tt class="parameter">severity</tt></i>
+
+     は、下記の <b><tt>STREAM_NOTIFY_*</tt></b> 定数に該当する数値です。
+
+     もし、通知内容についての詳細メッセージがある場合、
+     <i><tt class="parameter">message</tt></i>
+ と <i><tt class="parameter">message_code</tt></i>
+
+     に適切な値が入ります。なお、これらの値の意味するところは使われている
+     ラッパによって異なります。
+
+     <i><tt class="parameter">bytes_transferred</tt></i>
+ と <i><tt class="parameter">bytes_max</tt></i>
+
+     には、場合に応じて値が埋められます。
+    </p>
+   </div>
+
+   <div id="stream.installation" class="section">
+    <h2 class="title">インストール手順</h2>
+    <p class="para">
+     ストリームは、バージョン 4.3.0 より、PHP の一部として
+     統合されています。有効にするために特別な手順を踏む必要はありません。
+    </p>
+   </div>
+
+   <div id="stream.resources" class="section">
+    <h2 class="title">ストリームのクラス</h2>
+    <p class="simpara">
+     ユーザ定義のラッパは、<a href="function.stream-wrapper-register.html" class="function">stream_wrapper_register()</a>
+     で、同関数の説明ページに記載されたクラス定義を使うことで、
+     登録することができます。
+    </p>
+    <p class="simpara">
+     ユーザ定義のフィルタ用に、<i class="literal">class</i> php_user_filter が、
+     ベースとなる抽象クラスとしてあらかじめ定義されています。
+     ユーザ定義のフィルタの実装に関する詳細は、
+     <a href="function.stream-filter-register.html" class="function">stream_filter_register()</a> を参照ください。
+    </p>
+   </div>
+
+   
+
+
+
+<div id="stream.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <p class="para">
+  <table class="informaltable">
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">定数</th>
+      <th colspan="1">説明</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_FILTER_READ</tt></b> *</td>
+      <td colspan="1" rowspan="1" align="left">
+       <a href="function.stream-filter-append.html" class="function">stream_filter_append()</a> または
+       <a href="function.stream-filter-prepend.html" class="function">stream_filter_prepend()</a> と共に使われます。
+       指定されたフィルタが <em class="emphasis">読み込みのときのみ</em>
+       適用されることを示します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_FILTER_WRITE</tt></b> *</td>
+      <td colspan="1" rowspan="1" align="left">
+       <a href="function.stream-filter-append.html" class="function">stream_filter_append()</a> または
+       <a href="function.stream-filter-prepend.html" class="function">stream_filter_prepend()</a> と共に使われます。
+       指定されたフィルタが <em class="emphasis">書き込みのときのみ</em>
+       適用されることを示します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_FILTER_ALL</tt></b> *</td>
+      <td colspan="1" rowspan="1" align="left">
+       この定数は右の値と等価です:
+       <i class="literal">STREAM_FILTER_READ |
+       STREAM_FILTER_WRITE</i>
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>PSFS_PASS_ON</tt></b> *</td>
+      <td colspan="1" rowspan="1" align="left"><i class="literal">返値</i>: ユーザ空間のフィルタが
+      バケットを <i><tt class="parameter">$out</tt></i>
+ に返したことを
+      示します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>PSFS_FEED_ME</tt></b> *</td>
+      <td colspan="1" rowspan="1" align="left"><i class="literal">返値</i>: ユーザ空間のフィルタが
+       <i><tt class="parameter">$out</tt></i>
+ にバケットを返さなかったことを
+       示します。(つまり、変換されたデータを返す用意ができていないという
+       ことです。)
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>PSFS_ERR_FATAL</tt></b> *</td>
+      <td colspan="1" rowspan="1" align="left"><i class="literal">返値</i>: ユーザ空間のフィルタにおいて、
+       復旧不可能なエラーが発生したことを示します。
+       (つまり、不正なデータを受け取ったということです。)
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_USE_PATH</tt></b></td>
+      <td colspan="1" rowspan="1" align="left"><i class="literal">フラグ</i>: <i class="literal">stream</i> が
+      include_path を使ったかどうかを示します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_REPORT_ERRORS</tt></b></td>
+      <td colspan="1" rowspan="1" align="left"><i class="literal">フラグ</i>: ストリームを開く際に、
+      ユーザ空間にある <i class="literal">wrapper</i> の側で、
+      <a href="function.trigger-error.html" class="function">trigger_error()</a> を使ってエラーを発生させるかどうかを
+      示します。もし、このフラグがセットされていない場合は、
+      ユーザの側でエラーを投げてはいけません。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_CLIENT_ASYNC_CONNECT</tt></b> *</td>
+      <td colspan="1" rowspan="1" align="left">非同期的にソケットを開きます。このオプションは、
+       <b><tt>STREAM_CLIENT_CONNECT</tt></b> フラグとともに使用する
+       必要があります。
+      <a href="function.stream-socket-client.html" class="function">stream_socket_client()</a> と共に使われます。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_CLIENT_CONNECT</tt></b> *</td>
+      <td colspan="1" rowspan="1" align="left">クライアントソケット接続を開きます。クライアントソケットは
+       常にこのフラグを含んでいる必要があります。
+       <a href="function.stream-socket-client.html" class="function">stream_socket_client()</a> と共に使われます。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_CLIENT_PERSISTENT</tt></b> *</td>
+      <td colspan="1" rowspan="1" align="left"><a href="function.stream-socket-client.html" class="function">stream_socket_client()</a>を使って
+      開かれたソケットが、セッションをまたいでも保持されるよう
+      指示します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_SERVER_BIND</tt></b> *</td>
+      <td colspan="1" rowspan="1" align="left"><a href="function.stream-socket-server.html" class="function">stream_socket_server()</a> で開かれたソケットが
+      特定のターゲットに関連付けられることを示します。
+      サーバーソケットには常にこのフラグが与えられているはずです。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_SERVER_LISTEN</tt></b> *</td>
+      <td colspan="1" rowspan="1" align="left"><a href="function.stream-socket-server.html" class="function">stream_socket_server()</a> で開かれ、
+      <b><tt>STREAM_SERVER_BIND</tt></b> によってターゲットに
+      関連付けられたストリームに、ソケットに対して接続待ちを開始するよう
+      指示します。
+       接続指向の転送（TCP のような）はこのフラグを使用する必要があります。
+       それ以外の場合はサーバソケットが有効になりません。
+       このフラグを非接続指向の転送（UDP のような）に使用するとエラーになります。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_NOTIFY_RESOLVE</tt></b> *</td>
+      <td colspan="1" rowspan="1" align="left">
+       該当するストリームにおいて、リクエストされたリモートのドメイン名の
+       解決に成功したか、失敗したことを示します。
+       このとき、何が起こっているかについては、
+       <i><tt class="parameter">severity</tt></i>
+ を参照ください。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_NOTIFY_CONNECT</tt></b></td>
+      <td colspan="1" rowspan="1" align="left">
+       外部のリソースへの接続が確立されたことを示します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_NOTIFY_AUTH_REQUIRED</tt></b></td>
+      <td colspan="1" rowspan="1" align="left">
+       指定されたリソースにアクセスするためには、さらに認証情報が必要です。
+       通常に、<b><tt>STREAM_NOTIFY_SEVERITY_ERR</tt></b> の
+       <i><tt class="parameter">severity</tt></i>
+ (深刻度) と共に通知されます。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_NOTIFY_MIME_TYPE_IS</tt></b></td>
+      <td colspan="1" rowspan="1" align="left">
+       リソースの <i class="literal">mime タイプ</i> が確認されました。
+       どのタイプと判定されたかについては、<i><tt class="parameter">message</tt></i>
+
+       を見てください。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_NOTIFY_FILE_SIZE_IS</tt></b></td>
+      <td colspan="1" rowspan="1" align="left">
+       確認されたリソースの<i class="literal">サイズ</i>を表します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_NOTIFY_REDIRECTED</tt></b></td>
+      <td colspan="1" rowspan="1" align="left">
+       外部リソースへのアクセスは、別の場所にリダイレクトされました。
+       詳細を知るには、<i><tt class="parameter">message</tt></i>
+ を調べてみてください。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_NOTIFY_PROGRESS</tt></b></td>
+      <td colspan="1" rowspan="1" align="left">
+       ストリームにおける転送の進捗が、
+       <i><tt class="parameter">bytes_transferred</tt></i>
+ または、場合によっては
+       <i><tt class="parameter">bytes_max</tt></i>
+ に現れていることを示します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_NOTIFY_COMPLETED</tt></b></td>
+      <td colspan="1" rowspan="1" align="left">
+       これ以上ストリームにデータがないことを示します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_NOTIFY_FAILURE</tt></b></td>
+      <td colspan="1" rowspan="1" align="left">
+       ストリームにおいて一般的なエラーが発生したことを示します。
+       エラーの詳細については、
+       <i><tt class="parameter">message</tt></i>
+ と <i><tt class="parameter">message_code</tt></i>
+
+       を調べてみてください。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_NOTIFY_AUTH_RESULT</tt></b></td>
+      <td colspan="1" rowspan="1" align="left">
+       認証が完了した(成功または失敗した)ことを示します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_NOTIFY_SEVERITY_INFO</tt></b></td>
+      <td colspan="1" rowspan="1" align="left">
+       正常な状態における、エラーでない通知があることを示します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_NOTIFY_SEVERITY_WARN</tt></b></td>
+      <td colspan="1" rowspan="1" align="left">
+       致命的でないエラーが発生したことを示します。処理は継続されます。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_NOTIFY_SEVERITY_ERR</tt></b></td>
+      <td colspan="1" rowspan="1" align="left">
+       致命的なエラーが発生したことを示します。処理は中断されます。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_IPPROTO_ICMP</tt></b> +</td>
+      <td colspan="1" rowspan="1" align="left">
+       ICMP ソケットを提供します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_IPPROTO_IP</tt></b> +</td>
+      <td colspan="1" rowspan="1" align="left">
+       IP ソケットを提供します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_IPPROTO_RAW</tt></b> +</td>
+      <td colspan="1" rowspan="1" align="left">
+       RAW ソケットを提供します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_IPPROTO_TCP</tt></b> +</td>
+      <td colspan="1" rowspan="1" align="left">
+       TCP ソケットを提供します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_IPPROTO_UDP</tt></b> +</td>
+      <td colspan="1" rowspan="1" align="left">
+       UDP ソケットを提供します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_PF_INET</tt></b> +</td>
+      <td colspan="1" rowspan="1" align="left">
+       Internet Protocol バージョン 4（IPv4）です。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_PF_INET6</tt></b> +</td>
+      <td colspan="1" rowspan="1" align="left">
+       Internet Protocol バージョン 6（IPv6）です。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_PF_UNIX</tt></b> +</td>
+      <td colspan="1" rowspan="1" align="left">
+       Unix システムの内部プロトコルです。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_SOCK_DGRAM</tt></b> +</td>
+      <td colspan="1" rowspan="1" align="left">
+       データグラムを提供します。これはコネクションレスのメッセージ
+       （例: UDP）です。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_SOCK_RAW</tt></b> +</td>
+      <td colspan="1" rowspan="1" align="left">
+       raw ソケットを提供します。これは内部のネットワークプロトコルや
+       インターフェースへのアクセス機能を提供します。通常、この形式の
+       ソケットは root ユーザが使用します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_SOCK_RDM</tt></b> +</td>
+      <td colspan="1" rowspan="1" align="left">
+       RDM（Reliably-delivered messages）ソケットを提供します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_SOCK_SEQPACKET</tt></b> +</td>
+      <td colspan="1" rowspan="1" align="left">
+       シーケンシャルパケットストリームソケットを提供します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_SOCK_STREAM</tt></b> +</td>
+      <td colspan="1" rowspan="1" align="left">
+       帯域外データを転送するための、シーケンシャルで双方向の
+       バイトストリーム（例: TCP）を提供します。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_SHUT_RD</tt></b></td>
+      <td colspan="1" rowspan="1" align="left">
+       <a href="function.stream-socket-shutdown.html" class="function">stream_socket_shutdown()</a> で使用し、
+	   それ以降の受信を無効にします。
+       PHP 5.2.1 で追加されました。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_SHUT_WR</tt></b></td>
+      <td colspan="1" rowspan="1" align="left">
+       <a href="function.stream-socket-shutdown.html" class="function">stream_socket_shutdown()</a> で使用し、
+	   それ以降の送信を無効にします。
+       PHP 5.2.1 で追加されました。
+      </td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left"><b><tt>STREAM_SHUT_RDWR</tt></b></td>
+      <td colspan="1" rowspan="1" align="left">
+       <a href="function.stream-socket-shutdown.html" class="function">stream_socket_shutdown()</a> で使用し、
+	   それ以降の送受信を無効にします。
+       PHP 5.2.1 で追加されました。
+      </td>
+     </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+ </p>
+ <blockquote><p><b class="note">注意</b>: 
+  <span class="simpara">
+   <i class="literal">*</i> がつけられている定数は
+   PHP 5.0.0 以降で使用可能です。
+  </span>
+ </p></blockquote>
+ <blockquote><p><b class="note">注意</b>: 
+  <span class="simpara">
+   <i class="literal">+</i> がつけられている定数は PHP 5.1.0 以降で使用可能で、
+   <a href="function.stream-socket-pair.html" class="function">stream_socket_pair()</a> とともに使用することが想定されています。
+   これらの定数の中にはあなたのシステムでは使用できないものがあるかもしれない
+   ことに注意してください。
+  </span>
+ </p></blockquote>
+</div>
+
+
+
+
+
+
+   <div id="stream.errors" class="section">
+    <h2 class="title">ストリームのエラー</h2>
+    <p class="para">
+     ファイルやソケット関連の関数で処理に失敗するのと同じように、
+     ストリームにおける操作も様々な予測できる理由で失敗することがあります。
+     (例: リモートホストに接続できない、ファイルが見つからない、等)
+     また、ストリーム関連の関数呼び出しは、
+     スクリプトの実行されるシステムにおいて、
+     利用しようとしているストリームが登録されていないことから失敗することも
+     あります。どのタイプのストリームがインストールされた
+     PHP でサポートされているかは、
+     <a href="function.stream-get-wrappers.html" class="function">stream_get_wrappers()</a> の返す配列の内容を参照
+     してください。なお、他の <i class="literal">PHP</i> の内部関数と同様、
+     <b><tt>E_WARNING</tt></b> メッセージがエラー時に出力され、
+     エラーの原因を報告します。
+    </p>
+   </div>
+
+   <div id="stream.examples" class="section">
+    <h2 class="title">例</h2>
+    <p class="para">
+     <div class="example">
+      <p><b>Example#1 <a href="function.file-get-contents.html" class="function">file_get_contents()</a> を使って
+      さまざまな場所からデータを取得する</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/*&nbsp;/home/bar&nbsp;にあるローカルファイルを読み出す&nbsp;*/<br /></span><span style="color: #0000BB">$localfile&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">file_get_contents</span><span style="color: #007700">(</span><span style="color: #DD0000">"/home/bar/foo.txt"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;上と同一だが、明示的に&nbsp;FILE&nbsp;スキームを指定している&nbsp;*/<br /></span><span style="color: #0000BB">$localfile&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">file_get_contents</span><span style="color: #007700">(</span><span style="color: #DD0000">"file:///home/bar/foo.txt"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;HTTP&nbsp;を利用し、www.example.com&nbsp;にあるリモートのファイルを読み出す&nbsp;*/<br /></span><span style="color: #0000BB">$httpfile&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">file_get_contents</span><span style="color: #007700">(</span><span style="color: #DD0000">"http://www.example.com/foo.txt"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;HTTPS&nbsp;を利用し、www.example.com&nbsp;にあるリモートのファイルを読み出す&nbsp;*/<br /></span><span style="color: #0000BB">$httpsfile&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">file_get_contents</span><span style="color: #007700">(</span><span style="color: #DD0000">"https://www.example.com/foo.txt"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;FTP&nbsp;を利用し、ftp.example.com&nbsp;にあるリモートのファイルを読み出す&nbsp;*/<br /></span><span style="color: #0000BB">$ftpfile&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">file_get_contents</span><span style="color: #007700">(</span><span style="color: #DD0000">"ftp://user:pass@ftp.example.com/foo.txt"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;FTPS&nbsp;を利用し、ftp.example.com&nbsp;にあるリモートのファイルを読み出す&nbsp;*/<br /></span><span style="color: #0000BB">$ftpsfile&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">file_get_contents</span><span style="color: #007700">(</span><span style="color: #DD0000">"ftps://user:pass@ftp.example.com/foo.txt"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+    <p class="para">
+     <div class="example">
+      <p><b>Example#2 https のサーバに対して POST リクエストを行う</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/*&nbsp;https://secure.example.com/form_action.php&nbsp;に対して&nbsp;POST&nbsp;リクエストを送信<br />&nbsp;*&nbsp;ダミー値を持つ&nbsp;"foo"&nbsp;と&nbsp;"bar"&nbsp;というフォーム要素が含まれます。<br />&nbsp;*/<br /><br /></span><span style="color: #0000BB">$sock&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fsockopen</span><span style="color: #007700">(</span><span style="color: #DD0000">"ssl://secure.example.com"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">443</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$errno</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$errstr</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">30</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$sock</span><span style="color: #007700">)&nbsp;die(</span><span style="color: #DD0000">"$errstr&nbsp;($errno)\n"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$data&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"foo="&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">urlencode</span><span style="color: #007700">(</span><span style="color: #DD0000">"Fooの値"</span><span style="color: #007700">)&nbsp;.&nbsp;</span><span style="color: #DD0000">"&amp;bar="&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">urlencode</span><span style="color: #007700">(</span><span style="color: #DD0000">"Barの値"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$sock</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"POST&nbsp;/form_action.php&nbsp;HTTP/1.0\r\n"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$sock</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"Host:&nbsp;secure.example.com\r\n"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$sock</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"Content-type:&nbsp;application/x-www-form-urlencoded\r\n"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$sock</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"Content-length:&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">strlen</span><span style="color: #007700">(</span><span style="color: #0000BB">$data</span><span style="color: #007700">)&nbsp;.&nbsp;</span><span style="color: #DD0000">"\r\n"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$sock</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"Accept:&nbsp;*/*\r\n"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$sock</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"\r\n"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$sock</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"$data\r\n"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$sock</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"\r\n"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$headers&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">""</span><span style="color: #007700">;<br />while&nbsp;(</span><span style="color: #0000BB">$str&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">trim</span><span style="color: #007700">(</span><span style="color: #0000BB">fgets</span><span style="color: #007700">(</span><span style="color: #0000BB">$sock</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">4096</span><span style="color: #007700">)))<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$headers&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #DD0000">"$str\n"</span><span style="color: #007700">;<br /><br />echo&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$body&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">""</span><span style="color: #007700">;<br />while&nbsp;(!</span><span style="color: #0000BB">feof</span><span style="color: #007700">(</span><span style="color: #0000BB">$sock</span><span style="color: #007700">))<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$body&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #0000BB">fgets</span><span style="color: #007700">(</span><span style="color: #0000BB">$sock</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">4096</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">fclose</span><span style="color: #007700">(</span><span style="color: #0000BB">$sock</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+    <p class="para">
+     <div class="example">
+      <p><b>Example#3 データを圧縮ファイルに書き込む</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/*&nbsp;任意の文字列を含む圧縮ファイルを作成<br />&nbsp;*&nbsp;ファイルは、compress.zlib&nbsp;ストリームを使っても、または単に<br />&nbsp;*&nbsp;コマンドラインで&nbsp;'gzip&nbsp;-d&nbsp;foo-bar.txt.gz'&nbsp;を使っても読み出せます。<br />&nbsp;*/<br /></span><span style="color: #0000BB">$fp&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">"compress.zlib://foo-bar.txt.gz"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"wb"</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$fp</span><span style="color: #007700">)&nbsp;die(</span><span style="color: #DD0000">"ファイルが作成できませぬ."</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"これはテストです.\n"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">fclose</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+   </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.stream-bucket-append.html">stream_bucket_append</a> ― bucket を brigade に追加する</li><li><a href="function.stream-bucket-make-writeable.html">stream_bucket_make_writeable</a> ― 操作する brigade から bucket オブジェクトを返す</li><li><a href="function.stream-bucket-new.html">stream_bucket_new</a> ― 現在のストリームで使用する新しい bucket を作成する</li><li><a href="function.stream-bucket-prepend.html">stream_bucket_prepend</a> ― bucket を brigade に追加する</li><li><a href="function.stream-context-create.html">stream_context_create</a> ― ストリームコンテキストを作成する</li><li><a href="function.stream-context-get-default.html">stream_context_get_default</a> ― デフォルトのストリームコンテキストを取得する</li><li><a href="function.stream-context-get-options.html">stream_context_get_options</a> ― ストリーム / ラッパ / コンテキストに設定されているオプションを取得する</li><li><a href="function.stream-context-set-option.html">stream_context_set_option</a> ― ストリーム / ラッパ / コンテキストのオプションを設定する</li><li><a href="function.stream-context-set-params.html">stream_context_set_params</a> ― ストリーム / ラッパ / コンテキストのパラメータを設定する</li><li><a href="function.stream-copy-to-stream.html">stream_copy_to_stream</a> ― データをあるストリームから別のストリームにコピーする</li><li><a href="function.stream-encoding.html">stream_encoding</a> ― ストリームのエンコード用の文字セットを設定する</li><li><a href="function.stream-filter-append.html">stream_filter_append</a> ― ストリームにフィルタを付加する</li><li><a href="function.stream-filter-prepend.html">stream_filter_prepend</a> ― フィルタをストリームに付加する</li><li><a href="function.stream-filter-register.html">stream_filter_register</a> ― php_user_filter に由来するクラスとして実装されたストリームフィルタを登録する</li><li><a href="function.stream-filter-remove.html">stream_filter_remove</a> ― ストリームからフィルタを取り除く</li><li><a href="function.stream-get-contents.html">stream_get_contents</a> ― 残りのストリームを文字列に読み込む</li><li><a href="function.stream-get-filters.html">stream_get_filters</a> ― 登録されているフィルタのリストを取得する</li><li><a href="function.stream-get-line.html">stream_get_line</a> ― 指定されたデリミタの位置までのデータを一行分としてストリームから読み込む</li><li><a href="function.stream-get-meta-data.html">stream_get_meta_data</a> ― ヘッダーあるいはメタデータをストリームまたはファイルポインタから取得する</li><li><a href="function.stream-get-transports.html">stream_get_transports</a> ― 登録されたソケットのトランスポートの一覧を取得する</li><li><a href="function.stream-get-wrappers.html">stream_get_wrappers</a> ― 登録されているストリームのラッパのリストを取得する</li><li><a href="function.stream-register-wrapper.html">stream_register_wrapper</a> ― stream_wrapper_register へのエイリアス</li><li><a href="function.stream-resolve-include-path.html">stream_resolve_include_path</a> ― fopen に相対パスを指定してコールされたときに、
+   どのファイルをオープンするかを決める</li><li><a href="function.stream-select.html">stream_select</a> ― select() システムコールと同等の操作を、
+     ストリームの配列に対して tv_sec と tv_usec で指定されたタイムアウト時間をもって行う</li><li><a href="function.stream-set-blocking.html">stream_set_blocking</a> ― ストリームのブロックモードを有効にする / 解除する</li><li><a href="function.stream-set-timeout.html">stream_set_timeout</a> ― ストリームにタイムアウトを設定する</li><li><a href="function.stream-set-write-buffer.html">stream_set_write_buffer</a> ― 指定されたストリームのファイルバッファリングを有効にする</li><li><a href="function.stream-socket-accept.html">stream_socket_accept</a> ― stream_socket_server で作られたソケットの接続を受け入れる</li><li><a href="function.stream-socket-client.html">stream_socket_client</a> ― インターネットドメインまたは Unix ドメインのソケット接続を開く</li><li><a href="function.stream-socket-enable-crypto.html">stream_socket_enable_crypto</a> ― 接続済みのソケットについて暗号化の on/off を切り替える</li><li><a href="function.stream-socket-get-name.html">stream_socket_get_name</a> ― ローカルまたはリモートのソケットの名前を取得する</li><li><a href="function.stream-socket-pair.html">stream_socket_pair</a> ― 接続された、区別できないソケットストリームの組を作成する</li><li><a href="function.stream-socket-recvfrom.html">stream_socket_recvfrom</a> ― 接続されているかどうかにかかわらず、ソケットからのデータを受信する</li><li><a href="function.stream-socket-sendto.html">stream_socket_sendto</a> ― 接続されているかどうかにかかわらず、ソケットにデータを送信する</li><li><a href="function.stream-socket-server.html">stream_socket_server</a> ― インターネットドメインまたは Unix ドメインのサーバソケットを作成する</li><li><a href="function.stream-socket-shutdown.html">stream_socket_shutdown</a> ― 全二重接続を終了する</li><li><a href="function.stream-wrapper-register.html">stream_wrapper_register</a> ― PHP のクラスとして実装された URL ラッパを登録する</li><li><a href="function.stream-wrapper-restore.html">stream_wrapper_restore</a> ― 事前に登録を解除された組み込みラッパを復元する</li><li><a href="function.stream-wrapper-unregister.html">stream_wrapper_unregister</a> ― URL ラッパの登録を解除する</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.stats-variance.html">stats_variance</a></div>
+ <div class="next" style="float: right;"><a href="function.stream-bucket-append.html">stream_bucket_append</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

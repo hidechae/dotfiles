@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>直近のクエリから結果セットを転送する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mysqli-stmt-store-result.html">mysqli_stmt_store_result</a></div>
+ <div class="next" style="float: right;"><a href="function.mysqli-thread-id.html">mysqli_thread_id</a></div>
+ <div class="up"><a href="ref.mysqli.html">mysqli</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mysqli-store-result" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mysqli_store_result</h1>
+  <h1 class="refname">mysqli-&gt;store_result()</h1>
+  <p class="verinfo">(PHP 5)</p><p class="refpurpose">mysqli->store_result() ― 直近のクエリから結果セットを転送する</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <p class="para">手続き型:</p>
+  <div class="methodsynopsis">
+   <span class="type">mysqli_result</span> <span class="methodname"><b><b>mysqli_store_result</b></b></span>
+    ( <span class="methodparam"><span class="type">mysqli</span> <tt class="parameter">$link</tt></span>
+   )</div>
+
+  <p class="para">オブジェクト指向型（メソッド）:</p>
+  <div class="classsynopsis">
+   <div class="ooclass"><b class="classname">mysqli</b></div>
+   <div class="methodsynopsis">
+    <span class="type">mysqli_result</span> <span class="methodname"><b><b>store_result</b></b></span>
+     ( <span class="methodparam">void</span>
+    )</div>
+
+  </div>
+  <p class="para">
+   <a href="function.mysqli-data-seek.html" class="function">mysqli_data_seek()</a> で使用される、
+   <i><tt class="parameter">link</tt></i>
+ で表されたデータベース接続の直近のクエリ
+   から結果セットを転送します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+<span class="term"><i><tt class="parameter">
+link</tt></i>
+</span><dd>
+<p class="para">手続き型のみ:
+<a href="function.mysqli-connect.html" class="function">mysqli_connect()</a> あるいは <a href="function.mysqli-init.html" class="function">mysqli_init()</a> が返すリンク ID。
+</p></dd>
+</dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   バッファに格納した結果オブジェクトを返します。エラー時には <b><tt>FALSE</tt></b> を返します。
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    <b>mysqli_store_result()</b> は、クエリが結果セットを
+    返さなかった場合（例えば、クエリが INSERT 文であった場合）に
+    <b><tt>FALSE</tt></b> を返します。また、結果セットの読み込みに失敗した場合にも
+    <b><tt>FALSE</tt></b> を返します。エラーが発生したかどうかを調べるには、
+    <a href="function.mysqli-error.html" class="function">mysqli_error()</a> が空文字列以外を返す・
+    <a href="function.mysqli-errno.html" class="function">mysqli_errno()</a> がゼロ以外の値を返す・あるいは
+    <a href="function.mysqli-field-count.html" class="function">mysqli_field_count()</a> がゼロ以外の値を返す
+    のいずれかを確認します。それ以外にこの関数が <b><tt>FALSE</tt></b> を返す理由としては
+    <a href="function.mysqli-query.html" class="function">mysqli_query()</a> のコールに成功して返された
+    結果セットが大きすぎる（メモリに割り当てられない）場合がありえます。
+    もし <a href="function.mysqli-field-count.html" class="function">mysqli_field_count()</a> がゼロ以外の値を
+    返した場合、文は空でない結果セットを生成しています。
+   <br />
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    クエリ結果が使用するメモリを <a href="function.mysqli-free-result.html" class="function">mysqli_free_result()</a>
+    関数で開放するのは、どんな場合でも大切です。しかし、大きい結果セットを
+    <b>mysqli_store_result()</b> で転送した際は、特にこれが
+    重要となります。
+   <br />
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   See <a href="function.mysqli-multi-query.html" class="function">mysqli_multi_query()</a>.
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.mysqli-real-query.html" class="function">mysqli_real_query()</a></li>
+    <li class="member"><a href="function.mysqli-use-result.html" class="function">mysqli_use_result()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mysqli-stmt-store-result.html">mysqli_stmt_store_result</a></div>
+ <div class="next" style="float: right;"><a href="function.mysqli-thread-id.html">mysqli_thread_id</a></div>
+ <div class="up"><a href="ref.mysqli.html">mysqli</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

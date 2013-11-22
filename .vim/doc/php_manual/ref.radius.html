@@ -1,0 +1,1372 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>Radius</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.qdom-tree.html">qdom_tree</a></div>
+ <div class="next" style="float: right;"><a href="function.radius-acct-open.html">radius_acct_open</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+ <h1 class="title">Radius</h1>
+ 
+
+ <div class="partintro">
+  <div id="radius.partintro" class="section">
+   <h2 class="title">導入</h2>
+   <p class="para">
+    このパッケージは、FreeBSD の libradius をもとにしたものです。
+    この PECL モジュールは、Radius 認証
+    (<a href="http://www.faqs.org/rfcs/rfc2865" class="link external">&raquo; RFC 2865</a>) および Radius 課金
+    (<a href="http://www.faqs.org/rfcs/rfc2866" class="link external">&raquo; RFC 2866</a>) を完全にサポートします。
+    このパッケージは、Unix (FreeBSD および Linux でテストしました)
+    および Windows で使用可能です。
+   </p>
+   <blockquote><p><b class="note">注意</b>: 
+    
+     libradius に関する正確な説明は<a href="http://www.freebsd.org/cgi/man.cgi?query=libradius" class="link external">&raquo; ここ</a>
+     にあります。設定ファイルについての詳細な説明は
+     <a href="url.libradius.conf" class="link external">&raquo; ここ</a>です。
+    <br />
+   </p></blockquote>
+  </div>
+
+  
+
+
+
+<div id="radius.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  どうやってインストールするの?
+  <ul class="itemizedlist">
+   <li class="listitem"><span class="simpara">tar パッケージを (通常は php4/ext に) 展開する</span></li>
+   <li class="listitem"><span class="simpara">radius-x.x の名前を radius に変更する</span></li>
+   <li class="listitem"><span class="simpara">php4 ディレクトリで ./buildconf を実行する</span></li>
+   <li class="listitem"><span class="simpara">./configure --enable-radius を実行する</span></li>
+   <li class="listitem"><span class="simpara">make; make install</span></li>
+  </ul>
+  あるいは、もし .so 形式にしたければ
+  <ul class="itemizedlist">
+   <li class="listitem"><span class="simpara">tar パッケージを展開する</span></li>
+   <li class="listitem"><span class="simpara">radius-x.x ディレクトリで phpize を実行する</span></li>
+   <li class="listitem"><span class="simpara">radius-x.x ディレクトリで ./configure を実行する</span></li>
+   <li class="listitem"><span class="simpara">make; make install</span></li>
+  </ul>
+ </p>
+ <p class="para">
+  Windows の場合は、
+  <a href="http://snaps.php.net/" class="link external">&raquo; http://snaps.php.net/</a>
+  から <var class="filename">php_radius.dll</var>
+  をダウンロードして使用することを推奨します。
+  バンドルされていない
+<acronym title="PHP Extension and Application Repository">PECL</acronym> 拡張モジュールは
+<a href="http://pecl4win.php.net/" class="link external">&raquo; http://pecl4win.php.net/</a> からダウンロードできます。
+ </p>
+</div>
+
+
+
+  
+
+
+<div id="radius.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <p class="para">
+  <dl>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_ACCESS_REQUEST</tt></b> 
+     ()
+    </span>
+    <dd>
+
+     <span class="simpara">
+      認証のリクエスト
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_ACCESS_ACCEPT</tt></b> 
+     ()
+    </span>
+    <dd>
+
+     <span class="simpara">
+      アクセスが許可されました
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_ACCESS_REJECT</tt></b> 
+     ()
+    </span>
+    <dd>
+
+     <span class="simpara">
+     アクセスが拒否されました
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_ACCOUNTING_REQUEST</tt></b> 
+     ()
+    </span>
+    <dd>
+
+     <span class="simpara">
+      課金のリクエスト
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_ACCOUNTING_RESPONSE</tt></b> 
+     ()
+    </span>
+    <dd>
+
+     <span class="simpara">
+      課金のレスポンス
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_ACCESS_CHALLENGE</tt></b> 
+     ()
+    </span>
+    <dd>
+
+     <span class="simpara">
+      アクセスチャレンジ
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_USER_NAME</tt></b> 
+     (<a href="language.types.string.html" class="type string">string</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      ユーザ名
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_USER_PASSWORD</tt></b> 
+     (<a href="language.types.string.html" class="type string">string</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+     パスワード
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_CHAP_PASSWORD</tt></b> 
+     (<a href="language.types.string.html" class="type string">string</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      Chap パスワード。 chappass = md5(ident + plaintextpass + challenge)
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_NAS_IP_ADDRESS</tt></b> 
+     (<a href="language.types.string.html" class="type string">string</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      NAS IP アドレス
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_NAS_PORT</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      NAS ポート
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_SERVICE_TYPE</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <p class="para">
+      サービスの型、以下のいずれか
+      <ul class="simplelist">
+       <li class="member"><b><tt>RADIUS_LOGIN</tt></b></li>
+       <li class="member"><b><tt>RADIUS_FRAMED</tt></b></li>
+       <li class="member"><b><tt>RADIUS_CALLBACK_LOGIN</tt></b></li>
+       <li class="member"><b><tt>RADIUS_CALLBACK_FRAMED</tt></b></li>
+       <li class="member"><b><tt>RADIUS_OUTBOUND</tt></b></li>
+       <li class="member"><b><tt>RADIUS_ADMINISTRATIVE</tt></b></li>
+       <li class="member"><b><tt>RADIUS_NAS_PROMPT</tt></b></li>
+       <li class="member"><b><tt>RADIUS_AUTHENTICATE_ONLY</tt></b></li>
+       <li class="member"><b><tt>RADIUS_CALLBACK_NAS_PROMPT</tt></b></li>
+      </ul>
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_FRAMED_PROTOCOL</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <p class="para">
+      フレームのプロトコル、以下のいずれか
+      <ul class="simplelist">
+       <li class="member"><b><tt>RADIUS_PPP</tt></b></li>
+       <li class="member"><b><tt>RADIUS_SLIP</tt></b></li>
+       <li class="member"><b><tt>RADIUS_ARAP</tt></b></li>
+       <li class="member"><b><tt>RADIUS_GANDALF</tt></b></li>
+       <li class="member"><b><tt>RADIUS_XYLOGICS</tt></b></li>
+      </ul>
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_FRAMED_IP_ADDRESS</tt></b> 
+     (<a href="language.types.string.html" class="type string">string</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      IP アドレス
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_FRAMED_IP_NETMASK</tt></b> 
+     (<a href="language.types.string.html" class="type string">string</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      ネットマスク
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_FRAMED_ROUTING</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      ルーティング
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_FILTER_ID</tt></b> 
+     (<a href="language.types.string.html" class="type string">string</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      フィルタ ID
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_FRAMED_MTU</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      MTU
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_FRAMED_COMPRESSION</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <p class="para">
+      圧縮、以下のいずれか
+      <ul class="simplelist">
+       <li class="member"><b><tt>RADIUS_COMP_NONE</tt></b></li>
+       <li class="member"><b><tt>RADIUS_COMP_VJ</tt></b></li>
+       <li class="member"><b><tt>RADIUS_COMP_IPXHDR</tt></b></li>
+      </ul>
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_LOGIN_IP_HOST</tt></b> 
+     (<a href="language.types.string.html" class="type string">string</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      ログイン IP ホスト
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_LOGIN_SERVICE</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      ログインサービス
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_LOGIN_TCP_PORT</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      ログイン TCP ポート
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_REPLY_MESSAGE</tt></b> 
+     (<a href="language.types.string.html" class="type string">string</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      応答メッセージ
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_CALLBACK_NUMBER</tt></b> 
+     (<a href="language.types.string.html" class="type string">string</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      コールバック番号
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_CALLBACK_ID</tt></b> 
+     (<a href="language.types.string.html" class="type string">string</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      コールバック ID
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_FRAMED_ROUTE</tt></b> 
+     (<a href="language.types.string.html" class="type string">string</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      フレームのルート
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_FRAMED_IPX_NETWORK</tt></b> 
+     (<a href="language.types.string.html" class="type string">string</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      フレームの IPX ネットワーク
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_STATE</tt></b> 
+     (<a href="language.types.string.html" class="type string">string</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      状態
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_CLASS</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      クラス
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_VENDOR_SPECIFIC</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      ベンダ固有の属性
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_SESSION_TIMEOUT</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      セッションタイムアウト
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_IDLE_TIMEOUT</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      アイドルタイムアウト
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_TERMINATION_ACTION</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      停止アクション
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_CALLED_STATION_ID</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      呼び出し先ステーション ID
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_CALLING_STATION_ID</tt></b> 
+     (<a href="language.types.string.html" class="type string">string</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      呼び出し元ステーション ID
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_NAS_IDENTIFIER</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      NAS ID
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_PROXY_STATE</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      Proxy の状態
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_LOGIN_LAT_SERVICE</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      ログイン LAT サービス
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_LOGIN_LAT_NODE</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      ログイン LAT ノード
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_LOGIN_LAT_GROUP</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      ログイン LAT グループ
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_FRAMED_APPLETALK_LINK</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      フレームの Appletalk リンク
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_FRAMED_APPLETALK_NETWORK</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      フレームの Appletalk ネットワーク
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_FRAMED_APPLETALK_ZONE</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      フレームの Appletalk ゾーン
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_CHAP_CHALLENGE</tt></b> 
+     (<a href="language.types.string.html" class="type string">string</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      チャレンジ
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_NAS_PORT_TYPE</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <p class="para">
+      NAS ポート型、以下のいずれか
+      <ul class="simplelist">
+       <li class="member"><b><tt>RADIUS_ASYNC</tt></b></li>
+       <li class="member"><b><tt>RADIUS_SYNC</tt></b></li>
+       <li class="member"><b><tt>RADIUS_ISDN_SYNC</tt></b></li>
+       <li class="member"><b><tt>RADIUS_ISDN_ASYNC_V120</tt></b></li>
+       <li class="member"><b><tt>RADIUS_ISDN_ASYNC_V110</tt></b></li>
+       <li class="member"><b><tt>RADIUS_VIRTUAL</tt></b></li>
+       <li class="member"><b><tt>RADIUS_PIAFS</tt></b></li>
+       <li class="member"><b><tt>RADIUS_HDLC_CLEAR_CHANNEL</tt></b></li>
+       <li class="member"><b><tt>RADIUS_X_25</tt></b></li>
+       <li class="member"><b><tt>RADIUS_X_75</tt></b></li>
+       <li class="member"><b><tt>RADIUS_G_3_FAX</tt></b></li>
+       <li class="member"><b><tt>RADIUS_SDSL</tt></b></li>
+       <li class="member"><b><tt>RADIUS_ADSL_CAP</tt></b></li>
+       <li class="member"><b><tt>RADIUS_ADSL_DMT</tt></b></li>
+       <li class="member"><b><tt>RADIUS_IDSL</tt></b></li>
+       <li class="member"><b><tt>RADIUS_ETHERNET</tt></b></li>
+       <li class="member"><b><tt>RADIUS_XDSL</tt></b></li>
+       <li class="member"><b><tt>RADIUS_CABLE</tt></b></li>
+       <li class="member"><b><tt>RADIUS_WIRELESS_OTHER</tt></b></li>
+       <li class="member"><b><tt>RADIUS_WIRELESS_IEEE_802_11</tt></b></li>
+      </ul>
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_PORT_LIMIT</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      ポートの限界
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_LOGIN_LAT_PORT</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      ログイン LAT ポート
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_CONNECT_INFO</tt></b> 
+     (<a href="language.types.string.html" class="type string">string</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      接続の情報
+     </span>
+    </dd>
+
+   </dt>
+
+    <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_ACCT_STATUS_TYPE</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <p class="para">
+      課金状態の型、以下のいずれか
+      <ul class="simplelist">
+       <li class="member"><b><tt>RADIUS_START</tt></b></li>
+       <li class="member"><b><tt>RADIUS_STOP</tt></b></li>
+       <li class="member"><b><tt>RADIUS_ACCOUNTING_ON</tt></b></li>
+       <li class="member"><b><tt>RADIUS_ACCOUNTING_OFF</tt></b></li>
+      </ul>
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_ACCT_DELAY_TIME</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      課金の遅延時間
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_ACCT_INPUT_OCTETS</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      課金の入力バイト数
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_ACCT_OUTPUT_OCTETS</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      課金の出力バイト数
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_ACCT_SESSION_ID</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      課金のセッション ID
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_ACCT_AUTHENTIC</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <p class="para">
+      課金認証、以下のいずれか
+      <ul class="simplelist">
+       <li class="member"><b><tt>RADIUS_AUTH_RADIUS</tt></b></li>
+       <li class="member"><b><tt>RADIUS_AUTH_LOCAL</tt></b></li>
+       <li class="member"><b><tt>RADIUS_AUTH_REMOTE</tt></b></li>
+      </ul>
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_ACCT_SESSION_TIME</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      課金のセッション時間
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_ACCT_INPUT_PACKETS</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      課金の入力パケット
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_ACCT_OUTPUT_PACKETS</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      課金の出力パケット
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_ACCT_TERMINATE_CAUSE</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <p class="para">
+      課金終了の原因、以下のいずれか
+      <ul class="simplelist">
+       <li class="member"><b><tt>RADIUS_TERM_USER_REQUEST</tt></b></li>
+       <li class="member"><b><tt>RADIUS_TERM_LOST_CARRIER</tt></b></li>
+       <li class="member"><b><tt>RADIUS_TERM_LOST_SERVICE</tt></b></li>
+       <li class="member"><b><tt>RADIUS_TERM_IDLE_TIMEOUT</tt></b></li>
+       <li class="member"><b><tt>RADIUS_TERM_SESSION_TIMEOUT</tt></b></li>
+       <li class="member"><b><tt>RADIUS_TERM_ADMIN_RESET</tt></b></li>
+       <li class="member"><b><tt>RADIUS_TERM_ADMIN_REBOOT</tt></b></li>
+       <li class="member"><b><tt>RADIUS_TERM_PORT_ERROR</tt></b></li>
+       <li class="member"><b><tt>RADIUS_TERM_NAS_ERROR</tt></b></li>
+       <li class="member"><b><tt>RADIUS_TERM_NAS_REQUEST</tt></b></li>
+       <li class="member"><b><tt>RADIUS_TERM_NAS_REBOOT</tt></b></li>
+       <li class="member"><b><tt>RADIUS_TERM_PORT_UNNEEDED</tt></b></li>
+       <li class="member"><b><tt>RADIUS_TERM_PORT_PREEMPTED</tt></b></li>
+       <li class="member"><b><tt>RADIUS_TERM_PORT_SUSPENDED</tt></b></li>
+       <li class="member"><b><tt>RADIUS_TERM_SERVICE_UNAVAILABLE</tt></b></li>
+       <li class="member"><b><tt>RADIUS_TERM_CALLBACK</tt></b></li>
+       <li class="member"><b><tt>RADIUS_TERM_USER_ERROR</tt></b></li>
+       <li class="member"><b><tt>RADIUS_TERM_HOST_REQUEST</tt></b></li>
+      </ul>
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_ACCT_MULTI_SESSION_ID</tt></b> 
+     (<a href="language.types.string.html" class="type string">string</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      課金のマルチセッション ID
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_ACCT_LINK_COUNT</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      課金のリンク数
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>RADIUS_VENDOR_MICROSOFT</tt></b> 
+     (<a href="language.types.integer.html" class="type int">int</a>)
+    </span>
+    <dd>
+
+     <p class="para">
+      Microsoft 固有のベンダ属性 (<a href="http://www.faqs.org/rfcs/rfc2548" class="link external">&raquo; RFC 2548</a>)、
+      以下のいずれか
+       <ul class="simplelist">
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_CHAP_RESPONSE</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_CHAP_ERROR</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_CHAP_PW_1</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_CHAP_PW_2</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_CHAP_LM_ENC_PW</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_CHAP_NT_ENC_PW</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_MPPE_ENCRYPTION_POLICY</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_MPPE_ENCRYPTION_TYPES</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_RAS_VENDOR</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_CHAP_DOMAIN</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_CHAP_CHALLENGE</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_CHAP_MPPE_KEYS</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_BAP_USAGE</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_LINK_UTILIZATION_THRESHOLD</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_LINK_DROP_TIME_LIMIT</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_MPPE_SEND_KEY</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_MPPE_RECV_KEY</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_RAS_VERSION</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_OLD_ARAP_PASSWORD</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_NEW_ARAP_PASSWORD</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_ARAP_PASSWORD_CHANGE_REASON</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_FILTER</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_ACCT_AUTH_TYPE</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_ACCT_EAP_TYPE</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_CHAP2_RESPONSE</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_CHAP2_SUCCESS</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_CHAP2_PW</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_PRIMARY_DNS_SERVER</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_SECONDARY_DNS_SERVER</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_PRIMARY_NBNS_SERVER</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_SECONDARY_NBNS_SERVER</tt></b></li>
+       <li class="member"><b><tt>RADIUS_MICROSOFT_MS_ARAP_CHALLENGE</tt></b></li>
+      </ul>
+     </p>
+    </dd>
+
+   </dt>
+
+  </dl>
+
+ </p>
+</div>
+
+
+
+
+  <div id="radius.howtostart" class="section">   
+   <h2 class="title">クイックスタート</h2>
+   <p class="para">
+    どのように使用するの?
+    <ul class="itemizedlist">
+     <li class="listitem"><span class="simpara">radius リソースを取得する</span></li>
+     <li class="listitem"><span class="simpara">ライブラリを設定する</span></li>
+     <li class="listitem"><span class="simpara">リクエストを作成する</span></li>      
+     <li class="listitem"><span class="simpara">属性を設定する</span></li>
+     <li class="listitem"><span class="simpara">リクエストを送信する</span></li>
+     <li class="listitem"><span class="simpara">属性を受け取る</span></li> 
+     <li class="listitem"><span class="simpara">radius リソースを閉じる (オプション)</span></li>
+    </ul>
+    パッケージに含まれている例もごらんください。
+   </p>
+   <p class="para">
+    このパッケージにはサンプル PHP スクリプトが含まれています。
+    このスクリプトでは、PAP あるいは CHAP (md5) を使用した radius 認証の
+    方法を説明しています。Microsoft Radius サーバを使用して認証を行う
+    場合は、CHAP (md5) を使用することはできません。Microsoft のサーバを
+    使用する場合は、MS-CHAPv1 あるいは MS-CHAPv2 を使用する必要があります。
+    しかし、正しいデータを生成するために md4、sha1 および des が必要となる
+    こともあり、これは複雑な手順となります。同梱されている例では
+    すべての認証方式を説明しており、そこには MS-CHAPv1 および MS-CHAPv2
+    も含まれています。MS-CHAP を動作させるためには、拡張モジュール
+    <a href="ref.mcrypt.html" class="link">mcrypt</a> および
+    <a href="ref.mhash.html" class="link">mhash</a> が必要となります。
+    バージョン 1.2 以降では、mcrypt 拡張モジュールは必要なくなりました。
+   </p>
+  </div>
+
+  <div id="radius.contact" class="section">
+     <h2 class="title">連絡先の情報</h2>
+     <p class="para">
+     コメント・バグフィックス・機能拡張・あるいは開発を手伝いたいなどの場合は、
+     メールを <a href="mailto:mbretter@php.net" class="link external">&raquo; mbretter@php.net</a>
+     に送ってください。Windows 用のバイナリは
+     <a href="http://www.bretterklieber.com/php" class="link external">&raquo; ここ</a>から
+     ダウンロードできます。
+     </p>
+   </div>
+ </div>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.radius-acct-open.html">radius_acct_open</a> ― 課金用の Radius ハンドルを作成する</li><li><a href="function.radius-add-server.html">radius_add_server</a> ― サーバを追加する</li><li><a href="function.radius-auth-open.html">radius_auth_open</a> ― 認証用の Radius ハンドルを作成する</li><li><a href="function.radius-close.html">radius_close</a> ― すべてのリソースを開放する</li><li><a href="function.radius-config.html">radius_config</a> ― 指定した設定ファイルをライブラリに読み込ませる</li><li><a href="function.radius-create-request.html">radius_create_request</a> ― 課金あるいは認証のリクエストを作成する</li><li><a href="function.radius-cvt-addr.html">radius_cvt_addr</a> ― 生データを IP アドレスに変換する</li><li><a href="function.radius-cvt-int.html">radius_cvt_int</a> ― 生データを整数に変換する</li><li><a href="function.radius-cvt-string.html">radius_cvt_string</a> ― 生データを文字列に変換する</li><li><a href="function.radius-demangle-mppe-key.html">radius_demangle_mppe_key</a> ― 変形されたデータから mppe キーを得る</li><li><a href="function.radius-demangle.html">radius_demangle</a> ― データを復元する</li><li><a href="function.radius-get-attr.html">radius_get_attr</a> ― 属性を取得する</li><li><a href="function.radius-get-vendor-attr.html">radius_get_vendor_attr</a> ― ベンダ固有の属性を取得する</li><li><a href="function.radius-put-addr.html">radius_put_addr</a> ― IP アドレス属性を設定する</li><li><a href="function.radius-put-attr.html">radius_put_attr</a> ― バイナリ属性を設定する</li><li><a href="function.radius-put-int.html">radius_put_int</a> ― 整数属性を設定する</li><li><a href="function.radius-put-string.html">radius_put_string</a> ― 文字列属性を設定する</li><li><a href="function.radius-put-vendor-addr.html">radius_put_vendor_addr</a> ― ベンダ固有の IP アドレス属性を設定する</li><li><a href="function.radius-put-vendor-attr.html">radius_put_vendor_attr</a> ― ベンダ固有のバイナリ属性を設定する</li><li><a href="function.radius-put-vendor-int.html">radius_put_vendor_int</a> ― ベンダ固有の整数属性を設定する</li><li><a href="function.radius-put-vendor-string.html">radius_put_vendor_string</a> ― ベンダ固有の文字列属性を設定する</li><li><a href="function.radius-request-authenticator.html">radius_request_authenticator</a> ― リクエスト認証子を返す</li><li><a href="function.radius-send-request.html">radius_send_request</a> ― リクエストを送信し、応答を待つ</li><li><a href="function.radius-server-secret.html">radius_server_secret</a> ― 共有秘密鍵を返す</li><li><a href="function.radius-strerror.html">radius_strerror</a> ― エラーメッセージを返す</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.qdom-tree.html">qdom_tree</a></div>
+ <div class="next" style="float: right;"><a href="function.radius-acct-open.html">radius_acct_open</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

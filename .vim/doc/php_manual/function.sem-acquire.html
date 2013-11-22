@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>セマフォを得る</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.msg-stat-queue.html">msg_stat_queue</a></div>
+ <div class="next" style="float: right;"><a href="function.sem-get.html">sem_get</a></div>
+ <div class="up"><a href="ref.sem.html">Semaphore</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.sem-acquire" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">sem_acquire</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">sem_acquire ― セマフォを得る</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>sem_acquire</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$sem_identifier</tt></span>
+   )</div>
+
+  <p class="para">
+   <b>sem_acquire()</b> は、(必要な場合)
+   セマフォが確保できるまでブロックします。
+   既に確保されているセマフォを得ようとするプロセスは、
+   セマフォの獲得により max_aquire 値を超える場合、
+   永久にブロックされます。
+  </p>
+  <p class="para">
+   リクエスト処理の後、プロセスにより獲得された全てのセマフォのうち、
+   明示的に開放されていないものが自動的に開放され、警告が表示されます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">sem_identifier</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">sem_identifier</tt></i>
+ はセマフォのリソースで、
+       <a href="function.sem-get.html" class="function">sem_get()</a> によって得られます。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.sem-get.html" class="function">sem_get()</a></li>
+    <li class="member"><a href="function.sem-release.html" class="function">sem_release()</a></li>
+   </ul>
+  </p>
+ </div>
+  
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.msg-stat-queue.html">msg_stat_queue</a></div>
+ <div class="next" style="float: right;"><a href="function.sem-get.html">sem_get</a></div>
+ <div class="up"><a href="ref.sem.html">Semaphore</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

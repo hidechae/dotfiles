@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>PECL 拡張モジュールをダウンロードする</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="install.pecl.html">PECL 拡張モジュールのインストール</a></div>
+ <div class="next" style="float: right;"><a href="install.pecl.windows.html">Windows で PECL を使用する</a></div>
+ <div class="up"><a href="install.pecl.html">PECL 拡張モジュールのインストール</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="install.pecl.downloads" class="sect1">
+   <h2 class="title">PECL 拡張モジュールをダウンロードする</h2>
+   <p class="simpara">
+    PECL 拡張モジュールをダウンロードするには、以下に示す通り、いくつかの方法があります。
+   </p>
+   <ul class="itemizedlist">
+    <li class="listitem">
+     <span class="simpara">
+      <a href="http://pecl.php.net/" class="link external">&raquo; http://pecl.php.net/</a>
+     </span>
+     <span class="simpara">
+      PECL のウェブサイトでは、PHP 開発チームが提供する
+      さまざまな拡張モジュールについての情報が公開されています。
+      ChangeLog やリリース情報、必要な要件、リビジョンといった情報が参照可能です。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <i class="literal">pecl download extname</i>
+     </span>
+     <span class="simpara">
+      PECL のウェブサイトで公開されている PECL 拡張モジュールは、
+      <a href="http://pear.php.net/manual/en/installation.cli.php" class="link external">&raquo; pecl コマンド</a>
+      を使ってソースファイルをダウンロードすることもできます。
+      特定のバージョンを指定可能です。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <acronym title="Concurrent Versions System">CVS</acronym>
+     </span>
+     <span class="simpara">
+      大半の PECL 拡張モジュールは <acronym title="Concurrent Versions System">CVS</acronym> にも収められています。
+      <a href="http://cvs.php.net/pecl/" class="link external">&raquo; http://cvs.php.net/pecl/</a> で、
+      ウェブから参照することができます。
+      <acronym title="Concurrent Versions System">CVS</acronym> から直接ダウンロードする場合は、
+      以下の一連のコマンドを使用します。
+      ユーザ <em class="emphasis">cvsread</em> のパスワードは
+      <em class="emphasis">phpfi</em> であることに注意しましょう。
+     </span>
+     <p class="para">
+      <div class="example-contents"><pre>
+$ cvs -d:pserver:cvsread@cvs.php.net:/repository login
+$ cvs -d:pserver:cvsread@cvs.php.net:/repository co pecl/extname
+      </pre></div>
+     </p>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      Windows ダウンロード
+     </span>
+     <span class="simpara">
+      Windows 用にコンパイルされた PECL バイナリを
+      <a href="http://www.php.net/downloads.php" class="link external">&raquo; PHP Downloads</a> ページの
+      <em class="emphasis">Collection of PECL modules</em>
+      のところからダウンロードできます。あるいは
+      <a href="http://snaps.php.net/" class="link external">&raquo; PECL のスナップショット</a>
+      からも取得できます。また、拡張モジュールの DLL は、
+      <a href="http://pecl4win.php.net/" class="link external">&raquo; PECL4WIN</a> で取得できます。
+      Windows での PHP のコンパイル方法については、
+      <a href="install.windows.building.html" class="link">こちらの章</a>
+      により適切な説明があります。
+     </span>
+    </li>
+   </ul>
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="install.pecl.html">PECL 拡張モジュールのインストール</a></div>
+ <div class="next" style="float: right;"><a href="install.pecl.windows.html">Windows で PECL を使用する</a></div>
+ <div class="up"><a href="install.pecl.html">PECL 拡張モジュールのインストール</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

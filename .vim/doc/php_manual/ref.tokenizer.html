@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>Tokenizer 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.tidynode-getparent.html">tidyNode::getParent</a></div>
+ <div class="next" style="float: right;"><a href="function.token-get-all.html">token_get_all</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">Tokenizer 関数</h1>
+  
+
+  <div class="partintro">
+   <div id="tokenizer.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     tokenizer 関数は、Zend Engine に組み込まれた PHP tokenizer への
+     インターフェイスを提供します。以下の関数により、
+     字句解析レベルの言語処理を行うことなく、PHP ソースを解析/修正する
+     ツールを作成することが可能となります。
+    </p>
+    <p class="para">
+     <a href="tokens.html" class="link">トークンに関する付録</a>も参照ください。
+    </p>
+   </div>
+
+   <div id="tokenizer.requirements" class="section">
+    <h2 class="title">要件</h2> 
+    <p class="para">外部ライブラリを必要としません。</p> 
+   </div> 
+
+   
+
+
+
+<div id="tokenizer.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  PHP 4.3.0 以降、以下の関数はデフォルトで有効となっています。
+  これ以前のバージョンの場合、
+  <span class="option">--enable-tokenizer</span> を指定して
+  PHP をコンパイルする必要があります。
+  <span class="option">--disable-tokenizer</span> を指定すること
+  により、tokenizer サポートを無効とすることができます。
+ </p>
+ <p class="simpara">Windows 版の <i class="literal">PHP</i> には
+この拡張モジュールのサポートが組み込まれています。これらの関数を使用
+するために拡張モジュールを追加でロードする必要はありません。</p>
+ <blockquote><p><b class="note">注意</b>: 
+  <span class="simpara">
+   tokenizer の組込みサポートは PHP 4.3.0 で利用可能となりました。
+  </span>
+ </p></blockquote>
+</div>
+
+
+
+
+
+   
+
+
+<div id="tokenizer.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="para">
+  この拡張モジュールを組み込んで PHP をコンパイルするか、あるいは実行時に
+  動的にモジュールを読み込むと、<a href="tokens.html" class="xref">パーサトークンの一覧</a> に挙げられている
+  トークンが定数として定義されます。
+ </p>
+</div>
+
+
+
+
+
+   <div id="tokenizer.examples" class="section">
+    <h2 class="title">例</h2>
+    <p class="para">
+     以下に tokenizer を用いた簡単な PHP スクリプトの例を示します。この例は、
+     PHP ファイルを読み込み、ソースから全てのコメントを削除し、コードのみを
+     出力するものです。
+    </p>
+    <div class="example">
+     <p><b>Example#1 tokenizer によりコメントを削除する</b></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/*<br />&nbsp;*&nbsp;T_ML_COMMENT&nbsp;は&nbsp;PHP&nbsp;5&nbsp;には存在しません。<br />&nbsp;*&nbsp;以下の&nbsp;3&nbsp;行で、古いバージョンとの互換性を確保するために<br />&nbsp;*&nbsp;これらを定義しています。<br />&nbsp;*<br />&nbsp;*&nbsp;その次の&nbsp;2&nbsp;行では、PHP&nbsp;5&nbsp;にのみ存在する&nbsp;T_DOC_COMMENT&nbsp;を定義しています。<br />&nbsp;*&nbsp;T_ML_COMMENT&nbsp;が存在するかどうかで&nbsp;PHP&nbsp;4&nbsp;かどうかを判断しています。<br />&nbsp;*/<br /></span><span style="color: #007700">if&nbsp;(!</span><span style="color: #0000BB">defined</span><span style="color: #007700">(</span><span style="color: #DD0000">'T_ML_COMMENT'</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">define</span><span style="color: #007700">(</span><span style="color: #DD0000">'T_ML_COMMENT'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">T_COMMENT</span><span style="color: #007700">);<br />}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">define</span><span style="color: #007700">(</span><span style="color: #DD0000">'T_DOC_COMMENT'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">T_ML_COMMENT</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #0000BB">$source&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">file_get_contents</span><span style="color: #007700">(</span><span style="color: #DD0000">'example.php'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$tokens&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">token_get_all</span><span style="color: #007700">(</span><span style="color: #0000BB">$source</span><span style="color: #007700">);<br /><br />foreach&nbsp;(</span><span style="color: #0000BB">$tokens&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$token</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">is_string</span><span style="color: #007700">(</span><span style="color: #0000BB">$token</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;簡単な1文字毎のトークン<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">$token</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;トークン配列<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">list(</span><span style="color: #0000BB">$id</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$text</span><span style="color: #007700">)&nbsp;=&nbsp;</span><span style="color: #0000BB">$token</span><span style="color: #007700">;<br />&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switch&nbsp;(</span><span style="color: #0000BB">$id</span><span style="color: #007700">)&nbsp;{&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;</span><span style="color: #0000BB">T_COMMENT</span><span style="color: #007700">:&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;</span><span style="color: #0000BB">T_ML_COMMENT</span><span style="color: #007700">:&nbsp;</span><span style="color: #FF8000">//&nbsp;we've&nbsp;defined&nbsp;this<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">case&nbsp;</span><span style="color: #0000BB">T_DOC_COMMENT</span><span style="color: #007700">:&nbsp;</span><span style="color: #FF8000">//&nbsp;and&nbsp;this<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;コメントの場合は何もしない<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">break;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default:<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;それ以外の場合&nbsp;-&gt;&nbsp;"そのまま"出力<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">$text</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>    
+   </div>
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.token-get-all.html">token_get_all</a> ― 指定したソースを PHP トークンに分割する</li><li><a href="function.token-name.html">token_name</a> ― 指定した PHP トークンのシンボル名を取得する</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.tidynode-getparent.html">tidyNode::getParent</a></div>
+ <div class="next" style="float: right;"><a href="function.token-get-all.html">token_get_all</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

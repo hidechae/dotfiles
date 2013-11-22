@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>プロセスへのファイルポインタをオープンする</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.pclose.html">pclose</a></div>
+ <div class="next" style="float: right;"><a href="function.readfile.html">readfile</a></div>
+ <div class="up"><a href="ref.filesystem.html">ファイルシステム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.popen" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">popen</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">popen ― プロセスへのファイルポインタをオープンする</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">resource</span> <span class="methodname"><b><b>popen</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$command</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$mode</tt></span>
+   )</div>
+
+  <p class="para">
+   command で指定したコマンドのフォークによってできたプロセスへのパイプをオープンします。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">command</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       コマンド。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">mode</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       モード。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   <a href="function.fopen.html" class="function">fopen()</a>
+   により返されたファイルポインタと同様のものを返しますが、
+   それは(読み書きのいずれか一方でのみ使われる)片方向ストリームであり、
+   <a href="function.pclose.html" class="function">pclose()</a>
+   によりクローズされなければならないところが異なります。
+   このポインタは、<a href="function.fgets.html" class="function">fgets()</a>、<a href="function.fgetss.html" class="function">fgetss()</a>
+   および <a href="function.fwrite.html" class="function">fwrite()</a> のいずれかで使うことができます。
+  </p>
+  <p class="para">
+   エラーが発生した場合は <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>popen()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$handle&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">popen</span><span style="color: #007700">(</span><span style="color: #DD0000">"/bin/ls"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"r"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+  <p class="para">
+   実行すべきコマンドが見つからない場合には、正常なリソースが返されます。
+   おかしなことと思われるかもしれませんが、これには意味があります。
+   これによってシェルから返されたエラーメッセージにアクセスすることができるのです。
+   <div class="example">
+    <p><b>Example#2 <b>popen()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />error_reporting</span><span style="color: #007700">(</span><span style="color: #0000BB">E_ALL</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;リダイレクトにより、標準エラー出力を取得します&nbsp;*/<br /></span><span style="color: #0000BB">$handle&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">popen</span><span style="color: #007700">(</span><span style="color: #DD0000">'/path/to/spooge&nbsp;2&gt;&amp;1'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'r'</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #DD0000">"'$handle';&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">gettype</span><span style="color: #007700">(</span><span style="color: #0000BB">$handle</span><span style="color: #007700">)&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$read&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fread</span><span style="color: #007700">(</span><span style="color: #0000BB">$handle</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">2096</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #0000BB">$read</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">pclose</span><span style="color: #007700">(</span><span style="color: #0000BB">$handle</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    双方向(two-way)のサポートを求めているのなら、
+    <a href="function.proc-open.html" class="function">proc_open()</a> を使用してください。
+   <br />
+  </p></blockquote>
+  <blockquote><p><b class="note">注意</b>: <span class="simpara"><a href="features.safe-mode.html" class="link">
+セーフモード</a> が有効な場合、<a href="features.safe-mode.html#ini.safe-mode-exec-dir" class="link">
+safe_mode_exec_dir</a>の中にある実行プログラムのみ実行可能です。
+実際的な理由により、現在、実行プログラムへのパスに <i class="literal">..</i>を
+含めることはできません。</span></p></blockquote>
+  <div class="warning"><b class="warning">警告</b><p class="simpara"><a href="features.safe-mode.html" class="link">
+セーフモード</a>が有効な場合、コマンド文字列は
+<a href="function.escapeshellcmd.html" class="function">escapeshellcmd()</a> でエスケープされます。
+つまり、<i class="literal">echo y | echo x</i> は、<i class="literal">echo y \| echo x</i>
+となります。</p></div>
+ </div>
+
+ 
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.pclose.html" class="function">pclose()</a></li>
+    <li class="member"><a href="function.fopen.html" class="function">fopen()</a></li>
+    <li class="member"><a href="function.proc-open.html" class="function">proc_open()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.pclose.html">pclose</a></div>
+ <div class="next" style="float: right;"><a href="function.readfile.html">readfile</a></div>
+ <div class="up"><a href="ref.filesystem.html">ファイルシステム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

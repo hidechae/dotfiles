@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>include_once</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="language.control-structures.html">制御構造</a></div>
+ <div class="next" style="float: right;"><a href="language.functions.html">関数</a></div>
+ <div class="up"><a href="language.control-structures.html">制御構造</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.include-once" class="sect1">
+   <h2 class="title"><a href="function.include-once.html" class="function">include_once()</a></h2>
+   <p class="para">
+    <a href="function.include-once.html" class="function">include_once()</a>命令は、スクリプトの実行時に指定
+    したファイルを読み込み評価します。この動作は、
+    <a href="function.include.html" class="function">include()</a>命令と似ていますが、ファイルからのコー
+    ドが既に読み込まれている場合は、再度読み込まれないという重要な違い
+    があります。その名が示す通り、ファイルは一度しか読み込まれません。
+   </p>
+   <p class="para">
+    <a href="function.include-once.html" class="function">include_once()</a>は、スクリプトの実行時に同じファイ
+    ルが複数回読み込まれ、評価される可能性がある場合に、関数の再定義や
+    変数値の再代入といった問題を回避するために一回だけ読み込ませるため
+    に使用します。
+   </p>
+   <p class="para">
+    <a href="function.require-once.html" class="function">require_once()</a>および
+    <a href="function.include-once.html" class="function">include_once()</a>の使用例に関する他の例については、
+    最新のPHPソースコード配布ファイルに含まれる
+    <a href="http://pear.php.net/" class="link external">&raquo; PEAR</a>のコードを参照ください。
+   </p>
+   <p class="para">
+    返り値は <a href="function.include.html" class="function">include()</a> と同じです。
+    ファイルが既に読み込まれている場合は、この関数は <b><tt>TRUE</tt></b> を返します。
+   </p>
+   <p class="para">
+     <a href="function.include-once.html" class="function">include_once()</a> は、PHP 4.0.1で追加されました。
+   </p>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    (Windowsのように)大文字小文字を区別しないオペレーティングシステムでは、
+    <a href="function.include-once.html" class="function">include_once()</a>および
+    <a href="function.require-once.html" class="function">require_once()</a>の動作が意図したものにならない
+    可能性があるので注意してください。
+    <div class="example">
+     <p><b>Example#1 
+      <a href="function.include-once.html" class="function">include_once()</a> はWindowsでは大文字小文字を区別しません
+     </b></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+include_once&nbsp;"a.php";&nbsp;//&nbsp;a.phpを読み込みます<br />include_once&nbsp;"A.php";&nbsp;//&nbsp;Windowsはこれもa.phpを読み込みます!&nbsp;(PHP&nbsp;4&nbsp;のみお)</span>
+</code></div>
+       </div>
+
+     </div>
+    <br />
+   </p></blockquote>
+   <div class="warning"><b class="warning">警告</b><p class="para">PHP 4.3.0 より前のバージョンの
+Windows 版 <i class="literal">PHP</i> は、現在この関数に関してリモートファイルアクセス機能を
+サポートしていません。これは、<a href="ref.filesystem.html#ini.allow-url-fopen" class="link">allow_url_fopen</a> を
+有効にした場合でも同様です。</p></div>
+   <p class="para">
+    <a href="function.include.html" class="function">include()</a>、<a href="function.require.html" class="function">require()</a>、
+    <a href="function.require-once.html" class="function">require_once()</a>、
+    <a href="function.get-required-files.html" class="function">get_required_files()</a>、
+    <a href="function.get-included-files.html" class="function">get_included_files()</a>、
+    <a href="function.readfile.html" class="function">readfile()</a>、<a href="function.virtual.html" class="function">virtual()</a>
+    も参照してください。
+   </p>
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="language.control-structures.html">制御構造</a></div>
+ <div class="next" style="float: right;"><a href="language.functions.html">関数</a></div>
+ <div class="up"><a href="language.control-structures.html">制御構造</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

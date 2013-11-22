@@ -1,0 +1,499 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>POSIX 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.zend-version.html">zend_version</a></div>
+ <div class="next" style="float: right;"><a href="function.posix-access.html">posix_access</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">POSIX 関数</h1>
+  
+
+  <div class="partintro">
+   <div id="posix.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     このモジュールは、IEEE 10003.1 (POSIX.1) 標準ドキュメントで
+     定義された関数へのインターフェースを有しています。
+     これらの関数は、他の手段からは利用できません。
+     POSIX.1 としては例えばかなり以前から PHP 3 の一部として
+     open(), read(), write() および close() 関数が定義されていました。
+     いくつかのよりシステム依存の関数は、以前は利用できませんでしたが、
+     このモジュールではこれらの関数に対する簡単なアクセス手段を提供する
+     ことにより、これらの問題を解決しようとしています。
+    </p>
+    <div class="warning"><b class="warning">警告</b>
+     <p class="para">
+      <a href="function.posix-getpwnam.html" class="function">posix_getpwnam()</a> のような POSIX 関数で重要な
+      データを取得することができます。
+      <a href="features.safe-mode.html#ini.safe-mode" class="link">safe mode</a> が有効な場合に、
+      POSIX関数のどれもアクセスチェックを行うことはできません。
+      このため、このような環境で処理を行うには、
+      (configure において <i class="literal">--disable-posix</i> を指定して)
+      POSIX 拡張モジュールを無効にしておくことを
+      <em class="emphasis">強く</em>推奨します。
+     </p>
+    </div>
+    <blockquote><p><b class="note">注意</b>: <span class="simpara">この拡張モジュールは Windows
+環境では利用できません。</span></p></blockquote>
+   </div>
+
+   
+
+
+<div id="posix.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  POSIX 関数は、デフォルトで有効となっています。POSIX 互換関数を
+  <span class="option">--disable-posix</span> により無効にする
+  ことができます。
+ </p>
+</div>
+
+
+
+   
+
+
+<div id="posix.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <dl>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>POSIX_F_OK</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     ファイルが存在するかどうかを調べます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>POSIX_R_OK</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     ファイルが存在し、読み込みが許可されているかどうかを調べます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>POSIX_W_OK</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     ファイルが存在し、書き込みが許可されているかどうかを調べます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>POSIX_X_OK</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     ファイルが存在し、実行が許可されているかどうかを調べます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>POSIX_S_IFBLK</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     ブロックスペシャルファイル。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>POSIX_S_IFCHR</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     キャラクタスペシャルファイル。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>POSIX_S_IFIFO</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     FIFO (名前つきパイプ) スペシャルファイル。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>POSIX_S_IFREG</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     通常のファイル。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>POSIX_S_IFSOCK</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     ソケット。
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+ <blockquote><p><b class="note">注意</b>: 
+  
+   これらの定数は PHP 5.1.0 以降で有効です。システムによっては
+   これらのうちのいくつかが使用できない場合があることにも注意してください。
+  <br />
+ </p></blockquote>
+</div>
+
+
+
+
+   <div id="posix.seealso" class="section">
+    <h2 class="title">参考</h2>
+    <p class="para">
+     <a href="ref.pcntl.html" class="link">プロセス制御関数</a>に関する節も
+     役に立つでしょう。
+    </p>
+   </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.posix-access.html">posix_access</a> ― ファイルのアクセス権限を判断する</li><li><a href="function.posix-ctermid.html">posix_ctermid</a> ― 制御する端末のパス名を得る</li><li><a href="function.posix-get-last-error.html">posix_get_last_error</a> ― 直近で失敗した posix 関数が設定したエラー番号を取得する</li><li><a href="function.posix-getcwd.html">posix_getcwd</a> ― 現在のディレクトリのパス名</li><li><a href="function.posix-getegid.html">posix_getegid</a> ― 現在のプロセスの有効なグループ ID を返す</li><li><a href="function.posix-geteuid.html">posix_geteuid</a> ― 現在のプロセスの有効なユーザ ID を返す</li><li><a href="function.posix-getgid.html">posix_getgid</a> ― 現在のプロセスの実際のグループ ID を返す</li><li><a href="function.posix-getgrgid.html">posix_getgrgid</a> ― 指定したグループ ID を有するグループに関する情報を返す</li><li><a href="function.posix-getgrnam.html">posix_getgrnam</a> ― 指定した名前のグループに関する情報を返す</li><li><a href="function.posix-getgroups.html">posix_getgroups</a> ― 現在のプロセスのグループセットを返す</li><li><a href="function.posix-getlogin.html">posix_getlogin</a> ― ログイン名を返す</li><li><a href="function.posix-getpgid.html">posix_getpgid</a> ― ジョブ制御のプロセスグループ ID を得る</li><li><a href="function.posix-getpgrp.html">posix_getpgrp</a> ― 現在のプロセスのグループ ID を返す</li><li><a href="function.posix-getpid.html">posix_getpid</a> ― 現在のプロセス ID を返す</li><li><a href="function.posix-getppid.html">posix_getppid</a> ― 親プロセスの ID を返す</li><li><a href="function.posix-getpwnam.html">posix_getpwnam</a> ― 指定した名前のユーザに関する情報を返す</li><li><a href="function.posix-getpwuid.html">posix_getpwuid</a> ― 指定 ID のユーザに関する情報を返す</li><li><a href="function.posix-getrlimit.html">posix_getrlimit</a> ― システムリソース制限に関する情報を返す</li><li><a href="function.posix-getsid.html">posix_getsid</a> ― プロセスの現在の sid を得る</li><li><a href="function.posix-getuid.html">posix_getuid</a> ― 現在のプロセスの実際のユーザ ID を返す</li><li><a href="function.posix-initgroups.html">posix_initgroups</a> ― グループアクセスリストを求める</li><li><a href="function.posix-isatty.html">posix_isatty</a> ― ファイル記述子が対話型端末であるかどうかを定義する</li><li><a href="function.posix-kill.html">posix_kill</a> ― プロセスにシグナルを送信する</li><li><a href="function.posix-mkfifo.html">posix_mkfifo</a> ― fifo スペシャルファイル(名前付きパイプ)を作成する</li><li><a href="function.posix-mknod.html">posix_mknod</a> ― スペシャルファイルあるいは通常のファイルを作成する (POSIX.1)</li><li><a href="function.posix-setegid.html">posix_setegid</a> ― 現在のプロセスの実効 GID を設定する</li><li><a href="function.posix-seteuid.html">posix_seteuid</a> ― 現在のプロセスの実効 UID を設定する</li><li><a href="function.posix-setgid.html">posix_setgid</a> ― 現在のプロセスの GID を設定する</li><li><a href="function.posix-setpgid.html">posix_setpgid</a> ― ジョブ制御のプロセスグループ ID を設定する</li><li><a href="function.posix-setsid.html">posix_setsid</a> ― 現在のプロセスをセッションリーダーにする</li><li><a href="function.posix-setuid.html">posix_setuid</a> ― 現在のプロセスの UID を設定する</li><li><a href="function.posix-strerror.html">posix_strerror</a> ― 指定したエラー番号に対応するシステムのエラーメッセージを取得する</li><li><a href="function.posix-times.html">posix_times</a> ― プロセス時間を得る</li><li><a href="function.posix-ttyname.html">posix_ttyname</a> ― 端末のデバイス名を調べる</li><li><a href="function.posix-uname.html">posix_uname</a> ― システム名を得る</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.zend-version.html">zend_version</a></div>
+ <div class="next" style="float: right;"><a href="function.posix-access.html">posix_access</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

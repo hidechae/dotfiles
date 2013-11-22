@@ -1,0 +1,242 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>1 件分のレコードを配列として取得する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.sesam-fetch-result.html">sesam_fetch_result</a></div>
+ <div class="next" style="float: right;"><a href="function.sesam-field-array.html">sesam_field_array</a></div>
+ <div class="up"><a href="ref.sesam.html">SESAM</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.sesam-fetch-row" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">sesam_fetch_row</h1>
+  <p class="verinfo">(No version information available, might be only in CVS)</p><p class="refpurpose">sesam_fetch_row ― 1 件分のレコードを配列として取得する</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">array</span> <span class="methodname"><b><b>sesam_fetch_row</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$result_id</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$whence</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$offset</tt></span>
+  ]] )</div>
+
+  <p class="para">
+   指定した結果 ID が指す
+   結果から 1 件分のレコードのデータを取得します。レコードは、(
+   <i class="literal">0</i> から <i class="literal">$array[&quot;count&quot;]-1</i> を
+   添字とした) 配列として返されます。フィールドは空である可能性が
+   あるため、PHP の <a href="function.isset.html" class="function">isset()</a> 関数を使用して
+   フィールドの存在を確認する必要があります。返されるフィールドの型は、
+   そのカラムを宣言した SQL 型に依存します (適用される変換については、
+   <a href="ref.sesam.html" class="link">SESAMの概要</a> を参照ください)。
+   SESAM &quot;複数フィールド&quot; は &quot;インライン化&quot; されており、連続する
+   カラムのように処理されます。
+  </p>
+  <p class="para">
+   結果集合のカラム数が連想配列の要素 $array[&quot;count&quot;] で返されます。
+   いくつかのカラムは空である可能性があるため、
+   <b>sesam_fetch_row()</b> により返された結果レコードに
+   対して <a href="function.count.html" class="function">count()</a> 関数を使用することはできません。
+  </p>
+  <p class="para">
+   <b>sesam_fetch_row()</b> を連けてコールした場合、
+   結果集合の次の (スクロール属性に応じて前または n 番目の前/後)
+   レコードまたはレコードがもうない場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">result_id</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <a href="function.sesam-query.html" class="function">sesam_query()</a> が返す結果 ID。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">whence</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">whence</tt></i>
+ は &quot;スクロール型&quot; カーソルで
+       取得処理を行うためのオプションパラメータで、次のような定義済みの
+       定数を設定することが可能です。
+       <table border="5">
+        <caption><b><i><tt class="parameter">&quot;whence&quot;</tt></i>
+ パラメータで有効な値</b></caption>
+        <colgroup>
+
+         <thead valign="middle">
+          <tr valign="middle">
+           <th colspan="1">値</th>
+           <th colspan="1">定数</th>
+           <th colspan="1">意味</th>
+          </tr>
+
+         </thead>
+
+         <tbody valign="middle">
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">0</td>
+           <td colspan="1" rowspan="1" align="left"><b><tt>SESAM_SEEK_NEXT</tt></b></td>
+           <td colspan="1" rowspan="1" align="left">
+            連続的に読み込む (取得後、内部デフォルト値は
+            <i class="literal">SESAM_SEEK_NEXT</i> に設定されます)。
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">1</td>
+           <td colspan="1" rowspan="1" align="left"><b><tt>SESAM_SEEK_PRIOR</tt></b></td>
+           <td colspan="1" rowspan="1" align="left">
+            連続的に後向きに読み込む (取得後、内部デフォルト値は
+            <i class="literal">SESAM_SEEK_PRIOR</i> に設定されます)。
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">2</td>
+           <td colspan="1" rowspan="1" align="left"><b><tt>SESAM_SEEK_FIRST</tt></b></td>
+           <td colspan="1" rowspan="1" align="left">
+            最初のレコードに移動する (取得後、デフォルト値は
+            <i class="literal">SESAM_SEEK_NEXT</i> に設定されます)。
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">3</td>
+           <td colspan="1" rowspan="1" align="left"><b><tt>SESAM_SEEK_LAST</tt></b></td>
+           <td colspan="1" rowspan="1" align="left">
+            最後のレコードに移動する (取得後、デフォルト値は
+            <i class="literal">SESAM_SEEK_PRIOR</i> に設定されます)。
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">4</td>
+           <td colspan="1" rowspan="1" align="left"><b><tt>SESAM_SEEK_ABSOLUTE</tt></b></td>
+           <td colspan="1" rowspan="1" align="left">
+            <i><tt class="parameter">offset</tt></i>
+ (0 が先頭。取得後、内部
+            デフォルト値は <i class="literal">SESAM_SEEK_ABSOLUTE</i>
+            に設定されます。内部のオフセット値は、自動的に増加します)
+            で指定した絶対レコード番号に移動します。
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">5</td>
+           <td colspan="1" rowspan="1" align="left"><b><tt>SESAM_SEEK_RELATIVE</tt></b></td>
+           <td colspan="1" rowspan="1" align="left">
+            カレントのスクロール位置に対して相対位置に移動します。ただし、
+            <i><tt class="parameter">offset</tt></i>
+ は正または負の値を指定可能です。
+           </td>
+          </tr>
+
+         </tbody>
+        </colgroup>
+
+       </table>
+
+       このパラメータは、&quot;スクロール型&quot; カーソルでのみ有効です。
+      </p>
+      <p class="para">
+       &quot;スクロール型&quot; カーソルを使用している場合、カーソルは結果集合を
+       自由に移動可能です。<i><tt class="parameter">whence</tt></i>
+ パラメータが
+       省略された場合、スクロールの型には、グローバルなデフォルト値
+       (<i class="literal">SESAM_SEEK_NEXT</i> に初期化されており、
+       <a href="function.sesam-seek-row.html" class="function">sesam_seek_row()</a> で設定可能です) が使用されます。
+       <i><tt class="parameter">whence</tt></i>
+ が指定された場合、その値は
+       グローバルデフォルト値に置換されます。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">offset</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">whence</tt></i>
+ が
+       <i class="literal">SESAM_SEEK_RELATIVE</i> または
+       <i class="literal">SESAM_SEEK_ABSOLUTE</i> のどちらかである場合にのみ
+       評価されます (そして必要とされます)。このパラメータは、
+       &quot;スクロール型&quot; カーソルでのみ有効です。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   取得したレコードを含む配列、
+   またはもうレコードがない場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <div class="example">
+   <p><b>Example#1 SESAM レコードを取得</b></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">sesam_query</span><span style="color: #007700">(</span><span style="color: #DD0000">"SELECT&nbsp;*&nbsp;FROM&nbsp;phone\n"&nbsp;</span><span style="color: #007700">.<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"&nbsp;&nbsp;WHERE&nbsp;LASTNAME='"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">strtoupper</span><span style="color: #007700">(</span><span style="color: #0000BB">$name</span><span style="color: #007700">)&nbsp;.&nbsp;</span><span style="color: #DD0000">"'\n"&nbsp;</span><span style="color: #007700">.<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"&nbsp;&nbsp;ORDER&nbsp;BY&nbsp;FIRSTNAME"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$result</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;...&nbsp;エラー&nbsp;...&nbsp;*/<br /></span><span style="color: #007700">}<br /></span><span style="color: #FF8000">//&nbsp;逆順にテーブルを出力する<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"&lt;table&nbsp;border=\"1\"&gt;\n"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">sesam_fetch_row</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">SESAM_SEEK_LAST</span><span style="color: #007700">);<br />while&nbsp;(</span><span style="color: #0000BB">is_array</span><span style="color: #007700">(</span><span style="color: #0000BB">$row</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"&lt;tr&gt;\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(</span><span style="color: #0000BB">$col&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">;&nbsp;</span><span style="color: #0000BB">$col&nbsp;</span><span style="color: #007700">&lt;&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">"count"</span><span style="color: #007700">];&nbsp;++</span><span style="color: #0000BB">$col</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"&lt;td&gt;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">htmlspecialchars</span><span style="color: #007700">(</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #0000BB">$col</span><span style="color: #007700">])&nbsp;.&nbsp;</span><span style="color: #DD0000">"&lt;/td&gt;\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"&lt;/tr&gt;\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;暗黙のうちに&nbsp;SESAM_SEEK_PRIOR&nbsp;が使用される<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">sesam_fetch_row</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">);<br />}<br />echo&nbsp;</span><span style="color: #DD0000">"&lt;/table&gt;\n"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">sesam_free_result</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.sesam-fetch-array.html" class="function">sesam_fetch_array()</a></li>
+    <li class="member"><a href="function.sesam-fetch-result.html" class="function">sesam_fetch_result()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.sesam-fetch-result.html">sesam_fetch_result</a></div>
+ <div class="next" style="float: right;"><a href="function.sesam-field-array.html">sesam_field_array</a></div>
+ <div class="up"><a href="ref.sesam.html">SESAM</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

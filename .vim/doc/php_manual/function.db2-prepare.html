@@ -1,0 +1,212 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>実行する SQL 文を準備する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.db2-pconnect.html">db2_pconnect</a></div>
+ <div class="next" style="float: right;"><a href="function.db2-primary-keys.html">db2_primary_keys</a></div>
+ <div class="up"><a href="ref.ibm-db2.html">ibm_db2</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.db2-prepare" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">db2_prepare</h1>
+  <p class="verinfo">(PECL ibm_db2:1.0-1.6.2)</p><p class="refpurpose">db2_prepare ― 
+   実行する SQL 文を準備する
+  </p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">resource</span> <span class="methodname"><b><b>db2_prepare</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$connection</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$statement</tt></span>
+   [, <span class="methodparam"><span class="type">array</span> <tt class="parameter">$options</tt></span>
+  ] )</div>
+
+
+
+  <p class="para">
+   <b>db2_prepare()</b> は、プリペアドステートメントを作成します。
+   このプリペアドステートメントには、入力パラメータ・出力パラメータ
+   あるいは入出力パラメータを表すパラメータマーカ (<i class="literal">?</i>)
+   を含めることができます。プリペアドステートメントにパラメータを渡すには
+   <a href="function.db2-bind-param.html" class="function">db2_bind_param()</a> を使用します。
+   入力パラメータの場合についてのみ、<a href="function.db2-execute.html" class="function">db2_execute()</a>
+   に渡す配列で指定することも可能です。
+  </p>
+  <p class="para">
+   アプリケーション内でプリペアドステートメントを使用する利点は、
+   以下の 3 つです。
+   application:
+   <ul class="itemizedlist">
+    <li class="listitem">
+     <p class="para">
+      <em class="emphasis">パフォーマンス</em>: 事前に文を準備しておくと、
+      その文によってデータを取得するための実行計画をデータベースサーバが
+      最適化します。その後 <a href="function.db2-execute.html" class="function">db2_execute()</a>
+      でプリペアドステートメントを実行する際にはこの実行計画が再利用され、
+      実行時に実行計画を毎回作成することによるオーバーヘッドを避けられます。
+     </p>
+    </li>
+    <li class="listitem">
+     <p class="para">
+      <em class="emphasis">セキュリティ</em>: 事前に文を準備する際に、
+      入力値にパラメータマーカを含めることができます。
+      入力値にプレースホルダを使用してプリペアドステートメントを実行すると、
+      入力値の型がカラム定義あるいはパラメータ定義と一致することを
+      データベースサーバがチェックします。
+     </p>
+    </li>
+    <li class="listitem">
+     <p class="para">
+      <em class="emphasis">高機能</em>: パラメータマーカの機能は、
+      単に入力値をプリペアドステートメントに渡すだけではありません。
+      <a href="function.db2-bind-param.html" class="function">db2_bind_param()</a> を使用すると、
+      ストアドプロシージャの OUT パラメータおよび INOUT パラメータから
+      値を取得することも可能です。
+     </p>
+    </li>
+   </ul>
+  </p>
+
+ </div>
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">connection</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <a href="function.db2-connect.html" class="function">db2_connect()</a> あるいは <a href="function.db2-pconnect.html" class="function">db2_pconnect()</a>
+       が返した有効なデータベース接続リソース。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">statement</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       ひとつ以上のパラメータマーカを含む SQL 文。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">options</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       文のオプションを含む連想配列。
+       データベースサーバがその機能をサポートしている場合に、
+       このパラメータを使用してスクロール可能なカーソルの使用を
+       要求することができます。
+       <dl>
+
+        <dt>
+
+         <span class="term"><i><tt class="parameter">cursor</tt></i>
+</span>
+         <dd>
+
+          <p class="para">
+           <i class="literal">DB2_FORWARD_ONLY</i> を渡すと、
+           この SQL 文で前進のみのカーソルを使用することを要求します。
+           これはデフォルトのカーソル型であり、すべてのデータベースサーバで
+           サポートされています。また、スクロール可能なカーソルに比べて
+           非常に高速になります。
+          </p>
+          <p class="para">
+           <i class="literal">DB2_SCROLLABLE</i> を渡すと、
+           この SQL 文でスクロール可能なカーソルを使用することを要求します。
+           このカーソル型を使用すると、データベースサーバから
+           行の並び順を気にせずにデータを取得できるようになります。
+           しかし、この型は DB2 サーバでしかサポートされておらず、
+           前進のみのカーソルに比べて非常に低速です。
+          </p>
+         </dd>
+
+        </dt>
+
+       </dl>
+
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   SQL 文のパースに成功し、データベースサーバ内で正しく準備された場合に
+   ステートメントリソースを返します。データベースサーバがエラーを返した場合に
+   <b><tt>FALSE</tt></b> を返します。返されたエラーの詳細を調べるには、
+   <a href="function.db2-stmt-error.html" class="function">db2_stmt_error()</a> あるいは <a href="function.db2-stmt-errormsg.html" class="function">db2_stmt_errormsg()</a>
+   をコールします。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 パラメータマーカを使用した SQL 文の準備と実行</b></p>
+    <div class="example-contents"><p>
+     以下の例では、4 つのパラメータマーカを含む INSERT 文を準備し、
+     入力値の配列を含む配列を順に処理しながら
+     <a href="function.db2-execute.html" class="function">db2_execute()</a> に値を渡します。
+    </p></div>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$animals&nbsp;</span><span style="color: #007700">=&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'cat'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'Pook'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">3.2</span><span style="color: #007700">),<br />&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'dog'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'Peaches'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">12.3</span><span style="color: #007700">),<br />&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: #0000BB">2</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'horse'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'Smarty'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">350.0</span><span style="color: #007700">),<br />);<br /><br /></span><span style="color: #0000BB">$insert&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'INSERT&nbsp;INTO&nbsp;animals&nbsp;(id,&nbsp;breed,&nbsp;name,&nbsp;weight)<br />&nbsp;&nbsp;&nbsp;&nbsp;VALUES&nbsp;(?,&nbsp;?,&nbsp;?,&nbsp;?)'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$stmt&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">db2_prepare</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$insert</span><span style="color: #007700">);<br />if&nbsp;(</span><span style="color: #0000BB">$stmt</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;(</span><span style="color: #0000BB">$animals&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$animal</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">db2_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$stmt</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$animal</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+   
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.db2-bind-param.html" class="function">db2_bind_param()</a></li>
+    <li class="member"><a href="function.db2-execute.html" class="function">db2_execute()</a></li>
+    <li class="member"><a href="function.db2-stmt-error.html" class="function">db2_stmt_error()</a></li>
+    <li class="member"><a href="function.db2-stmt-errormsg.html" class="function">db2_stmt_errormsg()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.db2-pconnect.html">db2_pconnect</a></div>
+ <div class="next" style="float: right;"><a href="function.db2-primary-keys.html">db2_primary_keys</a></div>
+ <div class="up"><a href="ref.ibm-db2.html">ibm_db2</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

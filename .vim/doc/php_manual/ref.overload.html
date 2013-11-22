@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>オブジェクトプロパティとメソッドコールのオーバーロード</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.deaggregate.html">deaggregate</a></div>
+ <div class="next" style="float: right;"><a href="function.overload.html">overload</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">オブジェクトプロパティとメソッドコールのオーバーロード</h1>
+  
+
+  <div class="partintro">
+
+   <div id="overload.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     この拡張モジュールの用途は、オブジェクトのプロパティへのアクセスと
+     メソッドのコールのオーバーロードを可能にすることです。この
+     拡張モジュールで定義されている関数は 1 つだけです。この関数、
+     <a href="function.overload.html" class="function">overload()</a> は、この機能を有効にするクラスの名前を
+     引数とします。名前を指定されたクラスでこの機能を使用したい場合は
+     以下の適当なメソッドを定義する必要があります。これらは、
+     <i class="literal">__get()</i>、<i class="literal">__set()</i>、
+     <i class="literal">__call()</i> で、それぞれプロパティを取得、
+     プロパティを設定、メソッドをコールするためのものです。
+     オーバーロード機能は選択可能です。これらのハンドラ関数の中で
+     オーバーロードを無効とすることができ、
+     この場合、オブジェクトのプロパティに普通にアクセスできます。
+    </p>
+    <div class="warning"><b class="warning">警告</b><p class="simpara">この拡張モジュールは、
+<em class="emphasis">実験的</em> なものです。この拡張モジュールの動作・
+関数名・その他ドキュメントに書かれている事項は、予告なく、将来的な PHP
+のリリースにおいて変更される可能性があります。
+このモジュールは自己責任で使用してください。</p></div>
+    <div class="warning"><b class="warning">警告</b>
+     <p class="para">
+      この拡張モジュールは PHP 5 には含まれていません。PHP 5 では
+      <i class="literal">__get()</i>、<i class="literal">__set()</i> および
+      <i class="literal">__call()</i> をネイティブにサポートしています。詳細は
+      <a href="language.oop5.overloading.html" class="link">PHP 5 のオーバーロード</a>
+      のページを参照ください。
+     </p>
+    </div>
+   </div>
+
+   <div id="overload.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">外部ライブラリを必要としません。</p>
+   </div>
+
+   
+
+
+
+<div id="overload.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  以下の関数を使用するには、オプション
+  <span class="option">--enable-overload</span> を指定して PHP を
+  コンパイルする必要があります。この拡張モジュールは、
+  PHP 4.3.0 ではデフォルトで有効になっています。
+  <span class="option">--disable--overload</span> により
+  オーバーロードのサポートを無効とすることができます。
+ </p>
+ <p class="simpara">Windows 版の <i class="literal">PHP</i> には
+この拡張モジュールのサポートが組み込まれています。これらの関数を使用
+するために拡張モジュールを追加でロードする必要はありません。</p>
+ <blockquote><p><b class="note">注意</b>: 
+  <span class="simpara">
+   オーバーロードの組み込みサポートは PHP 4.3.0 で利用可能となりました。
+  </span>
+ </p></blockquote>
+</div>
+
+
+
+
+
+   <div id="overload.configuration" class="section">
+    <h2 class="title">実行時設定</h2>
+    <p class="para">設定ディレクティブは定義されていません。</p>
+   </div>
+
+   <div id="overload.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">リソース型は定義されていません。</p>
+   </div>
+
+   <div id="overload.constants" class="section">
+    <h2 class="title">定義済み定数</h2>
+    <p class="para">定数は定義されていません。</p>
+   </div>
+
+   <div id="overload.examples" class="section">
+    <h2 class="title">例</h2>
+    <p class="para">
+     <a href="function.overload.html" class="function">overload()</a> 関数の簡単な使用例をいくつか示します。
+     <div class="example">
+      <p><b>Example#1 PHP クラスのオーバーロード</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">OO&nbsp;</span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;</span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">111</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;</span><span style="color: #0000BB">$elem&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #DD0000">'b'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">9</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'c'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">42</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;プロパティを取得するためのコールバックメソッド<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">__get</span><span style="color: #007700">(</span><span style="color: #0000BB">$prop_name</span><span style="color: #007700">,&nbsp;&amp;</span><span style="color: #0000BB">$prop_value</span><span style="color: #007700">)&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(isset(</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">elem</span><span style="color: #007700">[</span><span style="color: #0000BB">$prop_name</span><span style="color: #007700">]))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$prop_value&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">elem</span><span style="color: #007700">[</span><span style="color: #0000BB">$prop_name</span><span style="color: #007700">];<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;プロパティを設定するためのコールバックメソッド<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">__set</span><span style="color: #007700">(</span><span style="color: #0000BB">$prop_name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$prop_value</span><span style="color: #007700">)&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">elem</span><span style="color: #007700">[</span><span style="color: #0000BB">$prop_name</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">$prop_value</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;OO&nbsp;オブジェクトをオーバーロードします。<br /></span><span style="color: #0000BB">overload</span><span style="color: #007700">(</span><span style="color: #DD0000">'OO'</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$o&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">OO</span><span style="color: #007700">;<br />echo&nbsp;</span><span style="color: #DD0000">"\$o-&gt;a:&nbsp;$o-&gt;a\n"</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;出力:&nbsp;$o-&gt;a:&nbsp;111<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"\$o-&gt;b:&nbsp;$o-&gt;b\n"</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;出力:&nbsp;$o-&gt;b:&nbsp;9<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"\$o-&gt;c:&nbsp;$o-&gt;c\n"</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;出力:&nbsp;$o-&gt;c:&nbsp;42<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"\$o-&gt;d:&nbsp;$o-&gt;d\n"</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;出力:&nbsp;$o-&gt;d:<br /><br />//&nbsp;OO&nbsp;の&nbsp;$elem&nbsp;配列に新規アイテムを追加します。<br /></span><span style="color: #0000BB">$o</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">x&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">56</span><span style="color: #007700">;&nbsp;<br /><br /></span><span style="color: #FF8000">//&nbsp;(PHP&nbsp;4&nbsp;に組み込まれている)&nbsp;stdclass&nbsp;のインスタンスを生成します。<br />//&nbsp;$val&nbsp;はオーバーロードされていません!<br /></span><span style="color: #0000BB">$val&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">stdclass</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$val</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">prop&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">555</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">//&nbsp;$val&nbsp;オブジェクトを有する配列として&nbsp;"a"&nbsp;を設定します。<br />//&nbsp;しかし、__set()&nbsp;はこれを&nbsp;$elem&nbsp;配列に代入します。<br /></span><span style="color: #0000BB">$o</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">a&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #0000BB">$val</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$o</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">a</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">]-&gt;</span><span style="color: #0000BB">prop</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+   </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+ </div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.deaggregate.html">deaggregate</a></div>
+ <div class="next" style="float: right;"><a href="function.overload.html">overload</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

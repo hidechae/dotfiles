@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>クエリ実行後、sqlca.sqlerrd[0..5] の値を得る</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ifx-get-char.html">ifx_get_char</a></div>
+ <div class="next" style="float: right;"><a href="function.ifx-htmltbl-result.html">ifx_htmltbl_result</a></div>
+ <div class="up"><a href="ref.ifx.html">Informix</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.ifx-getsqlca" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ifx_getsqlca</h1>
+  <p class="verinfo">(No version information available, might be only in CVS)</p><p class="refpurpose">ifx_getsqlca ― クエリ実行後、sqlca.sqlerrd[0..5] の値を得る</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">array</span> <span class="methodname"><b><b>ifx_getsqlca</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$result_id</tt></span>
+   )</div>
+
+  <p class="para">
+   <i><tt class="parameter">result_id</tt></i>
+ に関連するクエリを実行した後の
+   sqlca.sqlerrd[0] から sqlca.sqlerrd[5] に関する擬似レコードを返します。
+  </p>
+  <p class="para">
+   insert、update、delete の場合、クエリが実行された後、サーバにより
+   設定される場合と同様にレコードの値が返されます。
+   これにより、作用を受けた行の数および連番の挿入値にアクセスすることが
+   可能となります。
+   <i class="literal">SELECT</i> の場合、この値は
+   <i class="literal">PREPARE</i> 文の後で保存された値となります。
+   この値から作用を受けた行の数の&quot;推測&quot;値が分かります。
+   ifx ドライバにより適当な時に保存された値が取得されるため、
+   この関数を使用することにより、
+   <i class="literal">SELECT dbinfo(&#039;sqlca.sqlerrdx&#039;)</i>
+   クエリを実行するオーバーヘッドを防止することができます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">result_id</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">result_id</tt></i>
+ は、
+       <a href="function.ifx-query.html" class="function">ifx_query()</a> または
+       <a href="function.ifx-prepare.html" class="function">ifx_prepare()</a> (select 型のクエリのみ!)
+       により返された有効な結果 ID です。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   連想配列を返します。含まれるエントリは
+   <i class="literal">sqlerrd0</i>、<i class="literal">sqlerrd1</i>、
+   <i class="literal">sqlerrd2</i>、<i class="literal">sqlerrd3</i>、
+   <i class="literal">sqlerrd4</i> および <i class="literal">sqlerrd5</i>
+   です。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 Informix sqlca.sqlerrd[x] の値を取得する</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/*&nbsp;'sometable'&nbsp;の最初のカラムは連番であると仮定する&nbsp;*/<br /></span><span style="color: #0000BB">$qid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">ifx_query</span><span style="color: #007700">(</span><span style="color: #DD0000">"insert&nbsp;into&nbsp;sometable<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;values&nbsp;(0,&nbsp;'2nd&nbsp;column',&nbsp;'another&nbsp;column')&nbsp;"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$connid</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$qid</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;...&nbsp;error&nbsp;...&nbsp;*/<br /></span><span style="color: #007700">}<br /></span><span style="color: #0000BB">$sqlca&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">ifx_getsqlca</span><span style="color: #007700">(</span><span style="color: #0000BB">$qid</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$serial_value&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$sqlca</span><span style="color: #007700">[</span><span style="color: #DD0000">"sqlerrd1"</span><span style="color: #007700">];<br />echo&nbsp;</span><span style="color: #DD0000">"挿入された行の続き番号は&nbsp;:&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"$serial_value&lt;br&gt;\n"</span><span style="color: #007700">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ifx-get-char.html">ifx_get_char</a></div>
+ <div class="next" style="float: right;"><a href="function.ifx-htmltbl-result.html">ifx_htmltbl_result</a></div>
+ <div class="up"><a href="ref.ifx.html">Informix</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

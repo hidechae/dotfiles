@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>現在のプロセスの GID を設定する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.posix-seteuid.html">posix_seteuid</a></div>
+ <div class="next" style="float: right;"><a href="function.posix-setpgid.html">posix_setpgid</a></div>
+ <div class="up"><a href="ref.posix.html">POSIX</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.posix-setgid" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">posix_setgid</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">posix_setgid ― 現在のプロセスの GID を設定する</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>posix_setgid</b></b></span>
+    ( <span class="methodparam"><span class="type">int</span> <tt class="parameter">$gid</tt></span>
+   )</div>
+
+  <p class="para">
+   現在のプロセスのグループ ID を設定します。
+   この関数は特権関数であり、実行するにはシステム上において適当な権限
+   (通常は root) が必要です。
+   <b>posix_setgid()</b> を最初に、
+   <a href="function.posix-setuid.html" class="function">posix_setuid()</a> を最後にコールするのが、
+   関数コールの正しい順序となります。
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    コール元がスーバーユーザの場合は、実効グループ ID も設定します。
+   <br />
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">gid</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       グループ ID。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>posix_setgid()</b> の例</b></p>
+    <div class="example-contents"><p>
+     この例は、いったん変更した後で実効グループ ID を表示します。
+    </p></div>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">'実グループ&nbsp;ID&nbsp;は&nbsp;'</span><span style="color: #007700">.</span><span style="color: #0000BB">posix_getgid</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//20<br /></span><span style="color: #0000BB">posix_setgid</span><span style="color: #007700">(</span><span style="color: #0000BB">40</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #DD0000">'実グループ&nbsp;ID&nbsp;は&nbsp;'</span><span style="color: #007700">.</span><span style="color: #0000BB">posix_getgid</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//40<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">'実効グループ&nbsp;ID&nbsp;は&nbsp;'</span><span style="color: #007700">.</span><span style="color: #0000BB">posix_getegid</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//40<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.posix-getgrgid.html" class="function">posix_getgrgid()</a> は、この情報からグループ名を取得します</li>
+    <li class="member"><a href="function.posix-getgid.html" class="function">posix_getgid()</a> は、実グループ ID を取得します</li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.posix-seteuid.html">posix_seteuid</a></div>
+ <div class="next" style="float: right;"><a href="function.posix-setpgid.html">posix_setpgid</a></div>
+ <div class="up"><a href="ref.posix.html">POSIX</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>ファイルポインタ上に残っているすべてのデータを出力する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.fopen.html">fopen</a></div>
+ <div class="next" style="float: right;"><a href="function.fputcsv.html">fputcsv</a></div>
+ <div class="up"><a href="ref.filesystem.html">ファイルシステム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.fpassthru" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">fpassthru</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">fpassthru ― ファイルポインタ上に残っているすべてのデータを出力する</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">int</span> <span class="methodname"><b><b>fpassthru</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$handle</tt></span>
+   )</div>
+
+  <p class="para">
+   与えられたファイルポインタを EOF まで読み、結果を出力バッファに書き出します。
+  </p>
+  <p class="para">
+   ファイルに既にデータを書き終えている場合で
+   ファイルポインタをファイルの先頭にリセットするには
+   <a href="function.rewind.html" class="function">rewind()</a> をコールする必要があります。
+  </p>
+  <p class="para">
+   ファイルを更新したり特定のオフセットを探すのではなく
+   内容を出力バッファにダンプしたいだけの場合、
+   <a href="function.readfile.html" class="function">readfile()</a> を使用することが可能です。
+   この場合、<a href="function.fopen.html" class="function">fopen()</a> コールは必要ありません。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">handle</tt></i>
+</span>
+     <dd>
+
+      <p class="para">ファイルポインタは、有効なファイルポインタである必要があり、
+<a href="function.fopen.html" class="function">fopen()</a> または <a href="function.fsockopen.html" class="function">fsockopen()</a> で正常にオープンされた
+（そしてまだ <a href="function.fclose.html" class="function">fclose()</a> でクローズされていない）
+ファイルを指している必要があります。</p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   エラーが起こった場合、<b>fpassthru()</b> は <b><tt>FALSE</tt></b> を返します。
+   それ以外の場合、<b>fpassthru()</b> は <i><tt class="parameter">handle</tt></i>
+
+   から読み込んだ文字の数を返し、出力へ渡します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 バイナリファイルに対する <b>fpassthru()</b> の使用例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">//&nbsp;バイナリモードでファイルをオープンする<br /></span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'./img/ok.png'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$fp&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'rb'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;正しいヘッダを送出する<br /></span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">"Content-Type:&nbsp;image/png"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">"Content-Length:&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">filesize</span><span style="color: #007700">(</span><span style="color: #0000BB">$name</span><span style="color: #007700">));<br /><br /></span><span style="color: #FF8000">//&nbsp;画像をダンプしスクリプトを終了する<br /></span><span style="color: #0000BB">fpassthru</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">);<br />exit;<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    <b>fpassthru()</b> を Windows システムのバイナリファイルで
+    使用する場合、<a href="function.fopen.html" class="function">fopen()</a> をコールする際に
+    モードに <i class="literal">b</i> を追加してバイナリモードでファイルを
+    オープンするようにしてください。
+   <br />
+   
+    バイナリファイルを扱う場合は、必要でなくても
+    <i class="literal">b</i> フラグを使用するようにしましょう。
+    それにより、スクリプトの可搬性がより高くなります。
+   <br />
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.readfile.html" class="function">readfile()</a></li>
+    <li class="member"><a href="function.fopen.html" class="function">fopen()</a></li>
+    <li class="member"><a href="function.popen.html" class="function">popen()</a></li>
+    <li class="member"><a href="function.fsockopen.html" class="function">fsockopen()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.fopen.html">fopen</a></div>
+ <div class="next" style="float: right;"><a href="function.fputcsv.html">fputcsv</a></div>
+ <div class="up"><a href="ref.filesystem.html">ファイルシステム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

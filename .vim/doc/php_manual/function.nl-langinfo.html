@@ -1,0 +1,370 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>言語およびロケール情報を検索する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.money-format.html">money_format</a></div>
+ <div class="next" style="float: right;"><a href="function.nl2br.html">nl2br</a></div>
+ <div class="up"><a href="ref.strings.html">Strings</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.nl-langinfo" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">nl_langinfo</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.0.7, PHP 5)</p><p class="refpurpose">nl_langinfo ― 言語およびロケール情報を検索する</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">string</span> <span class="methodname"><b><b>nl_langinfo</b></b></span>
+    ( <span class="methodparam"><span class="type">int</span> <tt class="parameter">$item</tt></span>
+   )</div>
+
+  <p class="para">
+   <b>nl_langinfo()</b>
+   はロケールカテゴリの独立した要素にアクセスするために使用されます。
+   <a href="function.localeconv.html" class="function">localeconv()</a> と異なり、全ての要素を返します。
+   <b>nl_langinfo()</b> はいかなる特定要素も取得可能です。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">item</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">item</tt></i>
+ は要素の整数値、もしくは要素の定数名です。
+       以下は、使用される <i><tt class="parameter">item</tt></i>
+
+       に対する定数名と説明の一覧です。
+       これらの定数のいくつかは特定のロケールに対して未定義、
+       もしくは値がありません。
+       <table border="5">
+        <caption><b>nl_langinfo 定数</b></caption>
+        <colgroup>
+
+         <col align="left" />
+         <col align="left" />
+         <thead valign="middle">
+          <tr valign="middle">
+           <th colspan="1">定数</th>
+           <th colspan="1">説明</th>
+          </tr>
+
+         </thead>
+
+         <tbody valign="middle">
+          <tr valign="middle">
+           <td colspan="2" rowspan="1" align="center"><em class="emphasis">LC_TIME カテゴリの定数</em></td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">ABDAY_(1-7)</td>
+           <td colspan="1" rowspan="1" align="left">一週間中の n 番目の曜日名の略式表記</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">DAY_(1-7)</td>
+           <td colspan="1" rowspan="1" align="left">一週間中の n 番目の曜日名 (DAY_1 = 日曜日)</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">ABMON_(1-12)</td>
+           <td colspan="1" rowspan="1" align="left">n 番目の月の名前の略式表記</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">MON_(1-12)</td>
+           <td colspan="1" rowspan="1" align="left">n 番目の月の名前</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">AM_STR</td>
+           <td colspan="1" rowspan="1" align="left">午前を表す文字列</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">PM_STR</td>
+           <td colspan="1" rowspan="1" align="left">午後を表す文字列</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">D_T_FMT</td>
+           <td colspan="1" rowspan="1" align="left"><a href="function.strftime.html" class="function">strftime()</a> で日時を表すためのフォーマット文字列として使用することが可能な文字列</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">D_FMT</td>
+           <td colspan="1" rowspan="1" align="left"><a href="function.strftime.html" class="function">strftime()</a> で日付を表すためのフォーマット文字列として使用することが可能な文字列</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">T_FMT</td>
+           <td colspan="1" rowspan="1" align="left"><a href="function.strftime.html" class="function">strftime()</a> で時刻を表すためのフォーマット文字列として使用することが可能な文字列</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">T_FMT_AMPM</td>
+           <td colspan="1" rowspan="1" align="left"><a href="function.strftime.html" class="function">strftime()</a> でAM/PM付き 12 時間表記を表すためのフォーマット文字列として使用することが可能な文字列</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">ERA</td>
+           <td colspan="1" rowspan="1" align="left">ロケール固有の元号付きフォーマット</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">ERA_YEAR</td>
+           <td colspan="1" rowspan="1" align="left">ロケール固有の元号付きフォーマットでの年</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">ERA_D_T_FMT</td>
+           <td colspan="1" rowspan="1" align="left">ロケール固有の元号付きフォーマットでの日時 (<a href="function.strftime.html" class="function">strftime()</a> で使用可能な文字列)</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">ERA_D_FMT</td>
+           <td colspan="1" rowspan="1" align="left">ロケール固有の元号付きフォーマットでの日付 (<a href="function.strftime.html" class="function">strftime()</a> で使用可能な文字列)</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">ERA_T_FMT</td>
+           <td colspan="1" rowspan="1" align="left">ロケール固有の元号付きフォーマットでの時刻 (<a href="function.strftime.html" class="function">strftime()</a> で使用可能な文字列)</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="2" rowspan="1" align="center"><em class="emphasis">LC_MONETARY カテゴリの定数</em></td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">INT_CURR_SYMBOL</td>
+           <td colspan="1" rowspan="1" align="left">国際通貨記号</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">CURRENCY_SYMBOL</td>
+           <td colspan="1" rowspan="1" align="left">地域通貨記号</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">CRNCYSTR</td>
+           <td colspan="1" rowspan="1" align="left">CURRENCY_SYMBOL と同じ値</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">MON_DECIMAL_POINT</td>
+           <td colspan="1" rowspan="1" align="left">小数点文字</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">MON_THOUSANDS_SEP</td>
+           <td colspan="1" rowspan="1" align="left">1000 単位桁区切り (3 桁ごとのグループ化) の区切り文字</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">MON_GROUPING</td>
+           <td colspan="1" rowspan="1" align="left">&#039;grouping&#039; と同じ</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">POSITIVE_SIGN</td>
+           <td colspan="1" rowspan="1" align="left">正値の表示に使用される記号</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">NEGATIVE_SIGN</td>
+           <td colspan="1" rowspan="1" align="left">負値の表示に使用される記号</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">INT_FRAC_DIGITS</td>
+           <td colspan="1" rowspan="1" align="left">国際的な方法で表現する際の小数点以下の桁数</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">FRAC_DIGITS</td>
+           <td colspan="1" rowspan="1" align="left">地域的な方法で表現する際の小数点以下の桁数</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">P_CS_PRECEDES</td>
+           <td colspan="1" rowspan="1" align="left">CURRENCY_SYMBOL の前に正値がある場合 1 を返す</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">P_SEP_BY_SPACE</td>
+           <td colspan="1" rowspan="1" align="left">CURRENCY_SYMBOL と正値がスペースで区切られる場合 1 を返す</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">N_CS_PRECEDES</td>
+           <td colspan="1" rowspan="1" align="left">CURRENCY_SYMBOL の前に負値がある場合 1 を返す</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">N_SEP_BY_SPACE</td>
+           <td colspan="1" rowspan="1" align="left">CURRENCY_SYMBOL と負値がスペースで区切られる場合 1 を返す</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">P_SIGN_POSN</td>
+           <td colspan="1" rowspan="2" align="left" valign="middle">
+            <ul class="itemizedlist">
+             <li class="listitem">
+              <span class="simpara">
+               量および通貨記号を括弧で括る場合、0 を返す
+              </span>
+             </li>
+             <li class="listitem">
+              <span class="simpara">
+               量および通貨記号の前に符号文字列を置く場合、1 を返す
+              </span>
+             </li>
+             <li class="listitem">
+              <span class="simpara">
+               量および通貨記号の後に符号文字列を置く場合、2 を返す
+              </span>
+             </li>
+             <li class="listitem">
+              <span class="simpara">
+               通貨記号の直前に符号文字列を置く場合、3 を返す
+              </span>
+             </li>
+             <li class="listitem">
+              <span class="simpara">
+               通貨記号の直後に符号文字列を置く場合、4 を返す
+              </span>
+             </li>
+            </ul>
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">N_SIGN_POSN</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="2" rowspan="1" align="center"><em class="emphasis">LC_NUMERIC カテゴリの定数</em></td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">DECIMAL_POINT</td>
+           <td colspan="1" rowspan="1" align="left">小数点文字</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">RADIXCHAR</td>
+           <td colspan="1" rowspan="1" align="left">DECIMAL_POINT と同じ値</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">THOUSANDS_SEP</td>
+           <td colspan="1" rowspan="1" align="left">1000 単位桁区切り (3 桁ごとのグループ化) の区切り文字</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">THOUSEP</td>
+           <td colspan="1" rowspan="1" align="left">THOUSANDS_SEP と同じ値</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">GROUPING</td>
+           <td class="empty">&nbsp;</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="2" rowspan="1" align="center"><em class="emphasis">LC_MESSAGES カテゴリの定数</em></td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">YESEXPR</td>
+           <td colspan="1" rowspan="1" align="left">&#039;はい&#039; の入力にマッチさせるための正規表現</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">NOEXPR</td>
+           <td colspan="1" rowspan="1" align="left">&#039;いいえ&#039; の入力にマッチさせるための正規表現</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">YESSTR</td>
+           <td colspan="1" rowspan="1" align="left">&#039;はい&#039; のための出力文字列</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">NOSTR</td>
+           <td colspan="1" rowspan="1" align="left">&#039;いいえ&#039; のための出力文字列</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="2" rowspan="1" align="center"><em class="emphasis">LC_CTYPE カテゴリの定数</em></td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">CODESET</td>
+           <td colspan="1" rowspan="1" align="left">文字エンコーディング名の文字列を返す</td>
+          </tr>
+
+         </tbody>
+        </colgroup>
+
+       </table>
+
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   要素を文字列で返します。<i><tt class="parameter">item</tt></i>
+
+   が有効でない場合は <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <blockquote><p><b class="note">注意</b>: <span class="simpara">この関数は Windows 環境にはまだ実装されていません。
+</span></p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.setlocale.html" class="function">setlocale()</a></li>
+    <li class="member"><a href="function.localeconv.html" class="function">localeconv()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.money-format.html">money_format</a></div>
+ <div class="next" style="float: right;"><a href="function.nl2br.html">nl2br</a></div>
+ <div class="up"><a href="ref.strings.html">Strings</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

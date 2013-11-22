@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>与えられたクラスが実装しているインターフェースを返す</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.SimpleXMLIterator-valid.html">SimpleXMLIterator::valid</a></div>
+ <div class="next" style="float: right;"><a href="function.class-parents.html">class_parents</a></div>
+ <div class="up"><a href="ref.spl.html">spl</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.class-implements" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">class_implements</h1>
+  <p class="verinfo">(PHP 5)</p><p class="refpurpose">class_implements ― 
+   与えられたクラスが実装しているインターフェースを返す
+  </p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">array</span> <span class="methodname"><b><b>class_implements</b></b></span>
+    ( <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$class</tt></span>
+   [, <span class="methodparam"><span class="type">bool</span> <tt class="parameter">$autoload</tt></span>
+  ] )</div>
+
+  <p class="para">
+   この関数は、与えられたクラス <i><tt class="parameter">class</tt></i>
+
+   とその親が実装しているインターフェースを配列で返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">class</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       オブジェクト (クラスインターフェース)
+       もしくは文字列 (クラス名) を指定します。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">autoload</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <a href="language.oop5.autoload.html" class="link">__autoload</a>
+       マジックメソッドを通じて、
+       この関数にクラスを自動的にロードさせるかどうかを指定します。
+       デフォルトは <b><tt>TRUE</tt></b> です。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   配列もしくはエラー時に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">5.1.0</td>
+       <td colspan="1" rowspan="1" align="left">
+        文字列として <i><tt class="parameter">class</tt></i>
+
+        パラメータを渡すオプションが追加されました。
+        <i><tt class="parameter">autoload</tt></i>
+ パラメータが追加されました。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>class_implements()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #007700">interface&nbsp;</span><span style="color: #0000BB">foo&nbsp;</span><span style="color: #007700">{&nbsp;}<br />class&nbsp;</span><span style="color: #0000BB">bar&nbsp;</span><span style="color: #007700">implements&nbsp;</span><span style="color: #0000BB">foo&nbsp;</span><span style="color: #007700">{}<br /><br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">class_implements</span><span style="color: #007700">(new&nbsp;</span><span style="color: #0000BB">bar</span><span style="color: #007700">));<br /><br /></span><span style="color: #FF8000">//&nbsp;PHP&nbsp;5.1.0&nbsp;以降、パラメータを文字列として指定しても良い<br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">class_implements</span><span style="color: #007700">(</span><span style="color: #DD0000">'bar'</span><span style="color: #007700">));<br /><br /><br />function&nbsp;</span><span style="color: #0000BB">__autoload</span><span style="color: #007700">(</span><span style="color: #0000BB">$class_name</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;require_once&nbsp;</span><span style="color: #0000BB">$class_name&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">'.php'</span><span style="color: #007700">;<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;'not_loaded'&nbsp;クラスをロードするために&nbsp;__autoload&nbsp;を使用する<br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">class_implements</span><span style="color: #007700">(</span><span style="color: #DD0000">'not_loaded'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">));<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は、たとえば
+以下のようになります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+Array
+(
+    [foo] =&gt; foo
+)
+
+Array
+(
+    [interface_of_not_loaded] =&gt; interface_of_not_loaded
+)
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.class-parents.html" class="function">class_parents()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.SimpleXMLIterator-valid.html">SimpleXMLIterator::valid</a></div>
+ <div class="next" style="float: right;"><a href="function.class-parents.html">class_parents</a></div>
+ <div class="up"><a href="ref.spl.html">spl</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

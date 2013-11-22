@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>ファイルあるいはシンボリックリンクの情報を取得する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.linkinfo.html">linkinfo</a></div>
+ <div class="next" style="float: right;"><a href="function.mkdir.html">mkdir</a></div>
+ <div class="up"><a href="ref.filesystem.html">ファイルシステム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.lstat" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">lstat</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">lstat ― ファイルあるいはシンボリックリンクの情報を取得する</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">array</span> <span class="methodname"><b><b>lstat</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$filename</tt></span>
+   )</div>
+
+  <p class="para">
+   <i><tt class="parameter">filename</tt></i>
+ という名前のファイル、
+   またはシンボリックリンクの情報を得ます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">filename</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       ファイルあるいはシンボリックリンクへのパス。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   <b>lstat()</b> が返す配列の内容については
+   <a href="function.stat.html" class="function">stat()</a> のマニュアルをご覧ください。
+   この関数の動作は <a href="function.stat.html" class="function">stat()</a> 関数と同じですが、
+   パラメータ <i><tt class="parameter">filename</tt></i>
+
+   がシンボリックリンクであった場合に、
+   シンボリック先のファイルのステータスではなく、
+   シンボリックリンクのステータスが返されるところが異なります。
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <blockquote><p><b class="note">注意</b>: <span class="simpara">この関数の結果は
+キャッシュされます。詳細は、<a href="function.clearstatcache.html" class="function">clearstatcache()</a>
+を参照してください。</span></p></blockquote>
+  <div class="tip"><b class="tip">ヒント</b><p class="simpara">
+<i class="literal">PHP 5.0.0</i> 以降、この関数は、
+<em class="emphasis">何らかの</em> URL ラッパーと組合せて使用することができます。
+どのラッパーが <a href="function.stat.html" class="function">stat()</a> ファミリーをサポートしているか
+のリストについては、<a href="wrappers.html" class="xref">サポートされるプロトコル/ラッパー</a> を参照してください。</p></div>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.stat.html" class="function">stat()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.linkinfo.html">linkinfo</a></div>
+ <div class="next" style="float: right;"><a href="function.mkdir.html">mkdir</a></div>
+ <div class="up"><a href="ref.filesystem.html">ファイルシステム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

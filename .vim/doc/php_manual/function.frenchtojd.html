@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>¥Õ¥é¥ó¥¹³×Ì¿Îñ¤ò¥æ¥ê¥¦¥¹ÀÑ»»Æü¤ËÊÑ´¹¤¹¤ë</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.easter-days.html">easter_days</a></div>
+ <div class="next" style="float: right;"><a href="function.gregoriantojd.html">GregorianToJD</a></div>
+ <div class="up"><a href="ref.calendar.html">¥«¥ì¥ó¥À¡¼</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.frenchtojd" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">FrenchToJD</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">FrenchToJD ¡½ ¥Õ¥é¥ó¥¹³×Ì¿Îñ¤ò¥æ¥ê¥¦¥¹ÀÑ»»Æü¤ËÊÑ´¹¤¹¤ë</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">ÀâÌÀ</h3>
+  <div class="methodsynopsis">
+   <span class="type">int</span> <span class="methodname"><b><b>frenchtojd</b></b></span>
+    ( <span class="methodparam"><span class="type">int</span> <tt class="parameter">$month</tt></span>
+   , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$day</tt></span>
+   , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$year</tt></span>
+   )</div>
+
+  <p class="para">
+   ÆüÉÕ¤±¤ò¥Õ¥é¥ó¥¹³×Ì¿Îñ¤«¤é¥æ¥ê¥¦¥¹ÀÑ»»Æü¤ËÊÑ´¹¤·¤Þ¤¹¡£
+  </p>
+  <p class="para">
+   ¤³¤ì¤é¤Î¥ë¡¼¥Á¥ó¤Ï¡¢1¤«¤é14Ç¯¤Þ¤Ç(¥°¥ì¥´¥ê¥¦¥¹Îñ¤Î1792Ç¯9·î22Æü¤«¤é
+   1806Ç¯9·î22Æü)ÆüÉÕ¤±¤Î¤ß¤òÊÑ´¹¤·¤Þ¤¹¡£
+   ¤³¤Î´ü´Ö¤Ï¡¢¥Õ¥é¥ó¥¹³×Ì¿Îñ¤¬»ÈÍÑ¤µ¤ì¤Æ¤¤¤¿´ü´Ö¤ò½½Ê¬¤Ë¥«¥Ð¡¼¤·¤Æ¤¤¤Þ¤¹¡£
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">¥Ñ¥é¥á¡¼¥¿</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">month</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       ·î¤òÉ½¤¹¡¢1 (Vend€@miaire) ¤«¤é 13 (³ÆÇ¯¤ÎºÇ¸å¤Î 5-6 Æü)
+       ¤Þ¤Ç¤Î¿ô»ú¡£
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">day</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       Æü¤òÉ½¤¹¡¢1 ¤«¤é 30 ¤Þ¤Ç¤Î¿ô»ú¡£
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">year</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       Ç¯¤òÉ½¤¹¡¢1 ¤«¤é 14 ¤Þ¤Ç¤Î¿ô»ú¡£
+      </p>
+     </dd>
+
+    </dt>
+  
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">ÊÖ¤êÃÍ</h3>
+  <p class="para">
+   ¥Õ¥é¥ó¥¹³×Ì¿Îñ¤ÎÆüÉÕ¤ò¥æ¥ê¥¦¥¹ÀÑ»»Æü¤Ë¤Ê¤ª¤·¤¿·ë²Ì¤òÀ°¿ôÃÍ¤ÇÊÖ¤·¤Þ¤¹¡£
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">»²¹Í</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.jdtofrench.html" class="function">jdtofrench()</a></li> 
+    <li class="member"><a href="function.cal-to-jd.html" class="function">cal_to_jd()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.easter-days.html">easter_days</a></div>
+ <div class="next" style="float: right;"><a href="function.gregoriantojd.html">GregorianToJD</a></div>
+ <div class="up"><a href="ref.calendar.html">¥«¥ì¥ó¥À¡¼</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

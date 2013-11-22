@@ -1,0 +1,194 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>GNU Readline</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.rar-open.html">rar_open</a></div>
+ <div class="next" style="float: right;"><a href="function.readline-add-history.html">readline_add_history</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">GNU Readline</h1>
+  
+
+  <div class="partintro">
+   <div id="readline.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     readline 関数群は、GNU Readline ライブラリへの
+     インターフェースを実装したものです。これらの関数は、コマンドラインの
+     編集機能を提供します。一例をあげると、Bash において文字を挿入したり
+     コマンド履歴を走査したりする際に、矢印キーを使用することを
+     可能にしているものです。
+     このライブラリは対話的なものであるため、Web アプリケーションで
+     使用されることはほとんどないでしょう。しかし、
+     <a href="features.commandline.html" class="link">コマンドライン</a>
+     から PHP を使用するスクリプトを書く際には有用です。
+    </p>
+    <blockquote><p><b class="note">注意</b>: <span class="simpara">この拡張モジュールは Windows
+環境では利用できません。</span></p></blockquote>
+   </div>
+
+   <div id="readline.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">
+     readline 関数を使用するには、libreadline をインストールすることが
+     必要です。libreadline は、<a href="http://cnswww.cns.cwru.edu/~chet/readline/rltop.html" class="link external">&raquo; http://cnswww.cns.cwru.edu/~chet/readline/rltop.html</a> にある GNU Readline
+     プロジェクトのホームページから入手可能です。このライブラリは、Bash の
+     作者でもある Chet Ramey により管理されています。
+    </p>
+    <p class="para">
+     この関数を libeditライブラリで使用することも可能です。これは
+     readline ライブラリの代替品で、非 GPL です。
+     libeditライブラリは BSD ライセンスで配布され、
+     <a href="http://www.thrysoee.dk/editline/" class="link external">&raquo; http://www.thrysoee.dk/editline/</a> から入手可能です。
+    </p>
+   </div>
+
+   
+
+
+<div id="readline.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  この関数を使用するには、readline サポートを有効にして CGI 版または CLI 版の
+  PHP をコンパイルする必要があります。PHP の configure に
+  <span class="option">--with-readline[=DIR]</span> を指定する必要が
+  あります。readline の代替品である libedit を使用したい場合、PHP の
+  configure に <span class="option">--with-libedit[=DIR]</span>
+  を指定してください。
+ </p>
+</div>
+
+
+
+
+
+   <div id="readline.configuration" class="section">
+    <h2 class="title">実行時設定</h2>
+     <p class="para">設定ディレクティブは定義されていません。</p>
+   </div>
+   
+   <div id="readline.resources" class="section">
+    <h2 class="title">リソース型</h2>
+     <p class="para">リソース型は定義されていません。</p>
+   </div>
+
+   <div id="readline.constants" class="section">
+    <h2 class="title">定義済み定数</h2>
+    <p class="para">定数は定義されていません。</p>
+   </div>
+  </div>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.readline-add-history.html">readline_add_history</a> ― ヒストリに 1 行追加する</li><li><a href="function.readline-callback-handler-install.html">readline_callback_handler_install</a> ― readline コールバックインターフェースと端末を初期化し、
+   プロンプトを表示して結果をすぐに返す</li><li><a href="function.readline-callback-handler-remove.html">readline_callback_handler_remove</a> ― インストールされたハンドラを削除し、端末の設定をもとに戻す</li><li><a href="function.readline-callback-read-char.html">readline_callback_read_char</a> ― 文字を読み込み、改行を受け取ると readline コールバックインターフェースに通知する</li><li><a href="function.readline-clear-history.html">readline_clear_history</a> ― ヒストリをクリアする</li><li><a href="function.readline-completion-function.html">readline_completion_function</a> ― 補完関数を登録する</li><li><a href="function.readline-info.html">readline_info</a> ― 種々の readline の内部変数を取得/設定する</li><li><a href="function.readline-list-history.html">readline_list_history</a> ― ヒストリを一覧表示する</li><li><a href="function.readline-on-new-line.html">readline_on_new_line</a> ― カーソルが新しい行に移動したことを readline に通知する</li><li><a href="function.readline-read-history.html">readline_read_history</a> ― ヒストリを読み込む</li><li><a href="function.readline-redisplay.html">readline_redisplay</a> ― 画面を再描画する</li><li><a href="function.readline-write-history.html">readline_write_history</a> ― ヒストリを書きこむ</li><li><a href="function.readline.html">readline</a> ― 一行読み込む</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.rar-open.html">rar_open</a></div>
+ <div class="next" style="float: right;"><a href="function.readline-add-history.html">readline_add_history</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

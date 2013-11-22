@@ -1,0 +1,672 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>XMLReader 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.xmlrpc-set-type.html">xmlrpc_set_type</a></div>
+ <div class="next" style="float: right;"><a href="function.xmlreader-close.html">XMLReader::close</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">XMLReader 関数</h1>
+  
+
+  <div class="partintro">
+
+   <div id="xmlreader.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     XMLReader 拡張モジュールは、プル型の XML パーサです。ドキュメント
+     ストリーム内をカーソル風に進んでいき、その途中の各ノードで立ち止まります。
+    </p>
+   </div>
+
+   <div id="xmlreader.encoding" class="section">
+    <h2 class="title">エンコーディング</h2>
+    <p class="para">
+     内部的には、libxml は UTF-8 エンコーディングを使用しています。
+     したがって、取得したデータはすべて UTF-8
+     エンコーディングに変換されます。
+    </p>
+   </div>
+
+   
+
+
+
+<div id="xmlreader.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+  <p class="para">
+   XMLReader 拡張モジュールは、PHP 5.0.0 では PECL から取得可能です。
+   また、PHP 5.1.0 ではデフォルトで組み込まれ、有効になっています。
+   configure 時に、引数
+   <span class="option">--enable-xmlreader</span>
+   (5.1.0 より前では <span class="option">--with-xmlreader</span>)
+   を指定することでも有効にできます。<a href="ref.libxml.html" class="link">libxml</a>
+   拡張モジュールが必要です。
+  </p>
+</div>
+
+
+
+
+   <div id="xmlreader.classes" class="section">
+    <h2 class="title">定義済みクラス</h2>
+    <p class="para">
+    </p>
+
+    <div id="xmlreader.class.xmlreader" class="section">
+     <h2 class="title"><span class="classname">XMLReader</span></h2>
+     <p class="para">
+      </p>
+     <div id="xmlreader.class.xmlreader.methods" class="section">
+      <h2 class="title">メソッド</h2>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para"><a href="function.xmlreader-close.html" class="xref">XMLReader::close</a> - XMLReader の入力を閉じる</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.xmlreader-expand.html" class="xref">XMLReader::expand</a> - 現在のノードを DOM ノードにエクスポートする</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.xmlreader-getattribute.html" class="xref">XMLReader::getAttribute</a> - 名前をもとに、属性の値を取得する</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.xmlreader-getattributeno.html" class="xref">XMLReader::getAttributeNo</a> - 位置をもとに、属性の値を取得する</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.xmlreader-getattributens.html" class="xref">XMLReader::getAttributeNs</a> - 名前および URI をもとに、属性の値を取得する</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.xmlreader-getparserproperty.html" class="xref">XMLReader::getParserProperty</a> - パーサのプロパティが設定されているかどうかを示す</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.xmlreader-isvalid.html" class="xref">XMLReader::isValid</a> - 妥当なドキュメントであるかどうかを示す</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.xmlreader-lookupnamespace.html" class="xref">XMLReader::lookupNamespace</a> - ノードのスコープで、プレフィックスの URI を取得する</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.xmlreader-movetoattribute.html" class="xref">XMLReader::moveToAttribute</a> - リーダを、指定した名前の属性に移動する</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.xmlreader-movetoattributeno.html" class="xref">XMLReader::moveToAttributeNo</a> - リーダを、指定したインデックスの属性に移動する</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.xmlreader-movetoattributens.html" class="xref">XMLReader::moveToAttributeNs</a> - リーダを、指定した名前および URI の属性に移動する</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.xmlreader-movetoelement.html" class="xref">XMLReader::moveToElement</a> - 現在の属性ノードの親要素に移動する</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.xmlreader-movetofirstattribute.html" class="xref">XMLReader::moveToFirstAttribute</a> - ノードの最初の属性に移動する</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.xmlreader-movetonextattribute.html" class="xref">XMLReader::moveToNextAttribute</a> - ノードの次の属性に移動する</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.xmlreader-next.html" class="xref">XMLReader::next</a> - 子を飛ばして、次の要素に移動する</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.xmlreader-open.html" class="xref">XMLReader::open</a> - パースする URI を設定する</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.xmlreader-read.html" class="xref">XMLReader::read</a> - ストリーム内の次のノードに移動する</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.xmlreader-setparserproperty.html" class="xref">XMLReader::setParserProperty</a> - パーサのプロパティを設定する</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.xmlreader-setrelaxngschema.html" class="xref">XMLReader::setRelaxNGSchema</a> - 妥当性を検証するための RelaxNG スキーマの URI を設定する</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.xmlreader-setrelaxngschemasource.html" class="xref">XMLReader::setRelaxNGSchemaSource</a> - 妥当性を検証するための RelaxNG スキーマを含む文字列を設定する</p>
+       </li>
+       <li class="listitem">
+        <p class="para"><a href="function.xmlreader-xml.html" class="xref">XMLReader::XML</a> - パースする文字列データを設定する</p>
+       </li>
+      </ul>
+     </div>
+     <div id="xmlreader.class.xmlreader.properties" class="section">
+      <h2 class="title">プロパティ</h2>
+      <table border="5">
+       
+       <colgroup>
+
+        <thead valign="middle">
+         <tr valign="middle">
+          <th colspan="1">名前</th>
+          <th colspan="1">型</th>
+          <th colspan="1">読み込み専用</th>
+          <th colspan="1">説明</th>
+         </tr>
+
+        </thead>
+
+        <tbody valign="middle">
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left">attributeCount</td>
+          <td colspan="1" rowspan="1" align="left">int</td>
+          <td colspan="1" rowspan="1" align="left">yes</td>
+          <td colspan="1" rowspan="1" align="left">ノード上の属性の数</td>
+         </tr>
+
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left">baseURI</td>
+          <td colspan="1" rowspan="1" align="left">string</td>
+          <td colspan="1" rowspan="1" align="left">yes</td>
+          <td colspan="1" rowspan="1" align="left">ノードのベース URI</td>
+         </tr>
+
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left">depth</td>
+          <td colspan="1" rowspan="1" align="left">int</td>
+          <td colspan="1" rowspan="1" align="left">yes</td>
+          <td colspan="1" rowspan="1" align="left">ツリー内でのノードの階層 (0 から数える)</td>
+         </tr>
+
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left">hasAttributes</td>
+          <td colspan="1" rowspan="1" align="left">bool</td>
+          <td colspan="1" rowspan="1" align="left">yes</td>
+          <td colspan="1" rowspan="1" align="left">ノードが属性を保持しているかどうか</td>
+         </tr>
+
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left">hasValue</td>
+          <td colspan="1" rowspan="1" align="left">bool</td>
+          <td colspan="1" rowspan="1" align="left">yes</td>
+          <td colspan="1" rowspan="1" align="left">ノードがテキストの値を保持しているかどうか</td>
+         </tr>
+
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left">isDefault</td>
+          <td colspan="1" rowspan="1" align="left">bool</td>
+          <td colspan="1" rowspan="1" align="left">yes</td>
+          <td colspan="1" rowspan="1" align="left">属性が DTD のデフォルトかどうか</td>
+         </tr>
+
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left">isEmptyElement</td>
+          <td colspan="1" rowspan="1" align="left">bool</td>
+          <td colspan="1" rowspan="1" align="left">yes</td>
+          <td colspan="1" rowspan="1" align="left">ノードが空要素のタグかどうか</td>
+         </tr>
+
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left">localName</td>
+          <td colspan="1" rowspan="1" align="left">string</td>
+          <td colspan="1" rowspan="1" align="left">yes</td>
+          <td colspan="1" rowspan="1" align="left">ノードのローカル名</td>
+         </tr>
+
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left">name</td>
+          <td colspan="1" rowspan="1" align="left">string</td>
+          <td colspan="1" rowspan="1" align="left">yes</td>
+          <td colspan="1" rowspan="1" align="left">ノードの限定名</td>
+         </tr>
+
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left">namespaceURI</td>
+          <td colspan="1" rowspan="1" align="left">string</td>
+          <td colspan="1" rowspan="1" align="left">yes</td>
+          <td colspan="1" rowspan="1" align="left">ノードに関連付けられた名前空間の URI</td>
+         </tr>
+
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left">nodeType</td>
+          <td colspan="1" rowspan="1" align="left">int</td>
+          <td colspan="1" rowspan="1" align="left">yes</td>
+          <td colspan="1" rowspan="1" align="left">ノードの型</td>
+         </tr>
+
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left">prefix</td>
+          <td colspan="1" rowspan="1" align="left">string</td>
+          <td colspan="1" rowspan="1" align="left">yes</td>
+          <td colspan="1" rowspan="1" align="left">ノードに関連付けられた名前空間のプレフィックス</td>
+         </tr>
+
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left">value</td>
+          <td colspan="1" rowspan="1" align="left">string</td>
+          <td colspan="1" rowspan="1" align="left">yes</td>
+          <td colspan="1" rowspan="1" align="left">ノードのテキスト値</td>
+         </tr>
+
+         <tr valign="middle">
+          <td colspan="1" rowspan="1" align="left">xmlLang</td>
+          <td colspan="1" rowspan="1" align="left">string</td>
+          <td colspan="1" rowspan="1" align="left">yes</td>
+          <td colspan="1" rowspan="1" align="left">ノードが存在する xml:lang スコープ</td>
+         </tr>
+
+        </tbody>
+       </colgroup>
+
+      </table>
+
+     </div>
+    </div>
+   </div>
+      
+   
+
+
+<div id="xmlreader.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+  <div class="warning"><b class="warning">警告</b>
+   <p class="para">
+    PHP 5.1 以降では、XMLReader はクラス定数を使用します。それより前の
+    リリースでは、<b><tt>XMLREADER_ELEMENT</tt></b> のような形式の
+    グローバル定数を使用します。
+   </p>
+  </div>
+  <table border="5">
+   <caption><b>XMLReader ノード型</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">定数</th>
+      <th colspan="1">値</th>
+      <th colspan="1">説明</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>XMLReader::NONE</tt></b>
+       (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">0</td>
+      <td colspan="1" rowspan="1" align="left">ノード型なし</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>XMLReader::ELEMENT</tt></b>
+       (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">1</td>
+      <td colspan="1" rowspan="1" align="left">開始要素</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>XMLReader::ATTRIBUTE</tt></b> 
+      (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">2</td>
+      <td colspan="1" rowspan="1" align="left">属性ノード</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>XMLReader::TEXT</tt></b>
+       (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">3</td>
+      <td colspan="1" rowspan="1" align="left">テキストノード</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>XMLReader::CDATA</tt></b>
+       (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">4</td>
+      <td colspan="1" rowspan="1" align="left">CDATA ノード</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>XMLReader::ENTITY_REF</tt></b>
+       (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">5</td>
+      <td colspan="1" rowspan="1" align="left">エンティティ参照ノード</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>XMLReader::ENTITY</tt></b>
+       (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">6</td>
+      <td colspan="1" rowspan="1" align="left">エンティティ宣言ノード</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>XMLReader::PI</tt></b>
+       (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">7</td>
+      <td colspan="1" rowspan="1" align="left">処理命令 (Processing Instruction) ノード</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>XMLReader::COMMENT</tt></b>
+       (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">8</td>
+      <td colspan="1" rowspan="1" align="left">コメントノード</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>XMLReader::DOC</tt></b>
+       (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">9</td>
+      <td colspan="1" rowspan="1" align="left">文書ノード</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>XMLReader::DOC_TYPE</tt></b>
+       (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">10</td>
+      <td colspan="1" rowspan="1" align="left">文書型ノード</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>XMLReader::DOC_FRAGMENT</tt></b>
+       (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">11</td>
+      <td colspan="1" rowspan="1" align="left">文書片ノード</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>XMLReader::NOTATION</tt></b>
+       (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">12</td>
+      <td colspan="1" rowspan="1" align="left">記法ノード</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>XMLReader::WHITESPACE</tt></b>
+       (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">13</td>
+      <td colspan="1" rowspan="1" align="left">Whitespace ノード</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>XMLReader::SIGNIFICANT_WHITESPACE</tt></b>
+       (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">14</td>
+      <td colspan="1" rowspan="1" align="left">Significant Whitespace ノード</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>XMLReader::END_ELEMENT</tt></b>
+       (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">15</td>
+      <td colspan="1" rowspan="1" align="left">終了要素</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>XMLReader::END_ENTITY</tt></b>
+       (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">16</td>
+      <td colspan="1" rowspan="1" align="left">終了エンティティ</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>XMLReader::XML_DECLARATION</tt></b>
+       (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">17</td>
+      <td colspan="1" rowspan="1" align="left">XML 宣言ノード</td>
+     </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+  <table border="5">
+   <caption><b>XMLReader パーサオプション</b></caption>
+   <colgroup>
+
+    <thead valign="middle">
+     <tr valign="middle">
+      <th colspan="1">定数</th>
+      <th colspan="1">値</th>
+      <th colspan="1">説明</th>
+     </tr>
+
+    </thead>
+
+    <tbody valign="middle">
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>XMLReader::LOADDTD</tt></b>
+       (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">1</td>
+      <td colspan="1" rowspan="1" align="left">DTD を読み込むが、妥当性は検証しない</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>XMLReader::DEFAULTATTRS</tt></b>
+       (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">2</td>
+      <td colspan="1" rowspan="1" align="left">DTD およびデフォルト属性を読み込むが、妥当性は検証しない</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>XMLReader::VALIDATE</tt></b>
+       (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">3</td>
+      <td colspan="1" rowspan="1" align="left">DTD を読み込み、パース時に妥当性を検証する</td>
+     </tr>
+
+     <tr valign="middle">
+      <td colspan="1" rowspan="1" align="left">
+       <b><tt>XMLReader::SUBST_ENTITIES</tt></b>
+       (<a href="language.types.integer.html" class="type integer">integer</a>)
+      </td>
+      <td colspan="1" rowspan="1" align="left">4</td>
+      <td colspan="1" rowspan="1" align="left">エンティティを参照で置き換える</td>
+     </tr>
+
+    </tbody>
+   </colgroup>
+
+  </table>
+
+</div>
+
+
+
+      
+  </div>
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.xmlreader-close.html">XMLReader::close</a> ― XMLReader の入力を閉じる</li><li><a href="function.xmlreader-expand.html">XMLReader::expand</a> ― 現在のノードのコピーを DOM オブジェクトとして返す</li><li><a href="function.xmlreader-getattribute.html">XMLReader::getAttribute</a> ― 名前をもとに、属性の値を取得する</li><li><a href="function.xmlreader-getattributeno.html">XMLReader::getAttributeNo</a> ― インデックスをもとに、属性の値を取得する</li><li><a href="function.xmlreader-getattributens.html">XMLReader::getAttributeNs</a> ― 名前および URI をもとに、属性の値を取得する</li><li><a href="function.xmlreader-getparserproperty.html">XMLReader::getParserProperty</a> ― 指定したプロパティが設定されているかどうかを示す</li><li><a href="function.xmlreader-isvalid.html">XMLReader::isValid</a> ― パースしているドキュメントの妥当性を示す</li><li><a href="function.xmlreader-lookupnamespace.html">XMLReader::lookupNamespace</a> ― プレフィックスから、名前空間を検索する</li><li><a href="function.xmlreader-movetoattribute.html">XMLReader::moveToAttribute</a> ― 指定した名前の属性にカーソルを移動する</li><li><a href="function.xmlreader-movetoattributeno.html">XMLReader::moveToAttributeNo</a> ― 指定したインデックスの属性にカーソルを移動する</li><li><a href="function.xmlreader-movetoattributens.html">XMLReader::moveToAttributeNs</a> ― 指定した名前の属性にカーソルを移動する</li><li><a href="function.xmlreader-movetoelement.html">XMLReader::moveToElement</a> ― 現在の属性の親要素にカーソルを移動する</li><li><a href="function.xmlreader-movetofirstattribute.html">XMLReader::moveToFirstAttribute</a> ― 最初の属性にカーソルを移動する</li><li><a href="function.xmlreader-movetonextattribute.html">XMLReader::moveToNextAttribute</a> ― 次の属性にカーソルを移動する</li><li><a href="function.xmlreader-next.html">XMLReader::next</a> ― すべてのサブツリーを飛ばして、次のノードにカーソルを移動する</li><li><a href="function.xmlreader-open.html">XMLReader::open</a> ― パースする XML を含む URI を設定する</li><li><a href="function.xmlreader-read.html">XMLReader::read</a> ― ドキュメント内の次のノードに移動する</li><li><a href="function.xmlreader-setparserproperty.html">XMLReader::setParserProperty</a> ― パーサのオプションを設定または設定解除する</li><li><a href="function.xmlreader-setrelaxngschema.html">XMLReader::setRelaxNGSchema</a> ― RelaxNG スキーマのファイル名あるいは URI を設定する</li><li><a href="function.xmlreader-setrelaxngschemasource.html">XMLReader::setRelaxNGSchemaSource</a> ― RelaxNG スキーマを含むデータを設定する</li><li><a href="function.xmlreader-xml.html">XMLReader::XML</a> ― パースする XML を含むデータを設定する</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.xmlrpc-set-type.html">xmlrpc_set_type</a></div>
+ <div class="next" style="float: right;"><a href="function.xmlreader-close.html">XMLReader::close</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

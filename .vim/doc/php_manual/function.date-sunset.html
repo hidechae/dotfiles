@@ -1,0 +1,263 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>指定した日付と場所についての日の入り時刻を返す</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.date-sunrise.html">date_sunrise</a></div>
+ <div class="next" style="float: right;"><a href="function.date-time-set.html">date_time_set</a></div>
+ <div class="up"><a href="ref.datetime.html">日付/時刻</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.date-sunset" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">date_sunset</h1>
+  <p class="verinfo">(PHP 5)</p><p class="refpurpose">date_sunset ― 
+   指定した日付と場所についての日の入り時刻を返す
+  </p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">mixed</span> <span class="methodname"><b><b>date_sunset</b></b></span>
+    ( <span class="methodparam"><span class="type">int</span> <tt class="parameter">$timestamp</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$format</tt></span>
+   [, <span class="methodparam"><span class="type">float</span> <tt class="parameter">$latitude</tt></span>
+   [, <span class="methodparam"><span class="type">float</span> <tt class="parameter">$longitude</tt></span>
+   [, <span class="methodparam"><span class="type">float</span> <tt class="parameter">$zenith</tt></span>
+   [, <span class="methodparam"><span class="type">float</span> <tt class="parameter">$gmt_offset</tt></span>
+   ]]]]] )</div>
+
+   <p class="para">
+    <b>date_sunset()</b> は、与えられた日付
+    (<i><tt class="parameter">timestamp</tt></i>
+ で指定する)
+    と場所についての日の入り時刻を返します。
+   </p>
+  </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">timestamp</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       日の入り時刻を取得する日の
+       <i><tt class="parameter">timestamp</tt></i>
+。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">format</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <table border="5">
+        <caption><b><i><tt class="parameter">format</tt></i>
+ 定数</b></caption>
+        <colgroup>
+
+         <thead valign="middle">
+          <tr valign="middle">
+           <th colspan="1">定数</th>
+           <th colspan="1">説明</th>
+           <th colspan="1">例</th>
+          </tr>
+
+         </thead>
+
+         <tbody valign="middle">
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">SUNFUNCS_RET_STRING</td>
+           <td colspan="1" rowspan="1" align="left">結果を <a href="language.types.string.html" class="type string">string</a> で返します。</td>
+           <td colspan="1" rowspan="1" align="left">16:46</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">SUNFUNCS_RET_DOUBLE</td>
+           <td colspan="1" rowspan="1" align="left">結果を <a href="language.types.float.html" class="type float">float</a> で返します。</td>
+           <td colspan="1" rowspan="1" align="left">16.78243132</td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left">SUNFUNCS_RET_TIMESTAMP</td>
+           <td colspan="1" rowspan="1" align="left">結果を <a href="language.types.integer.html" class="type integer">integer</a> (タイムスタンプ) で返します。</td>
+           <td colspan="1" rowspan="1" align="left">1095034606</td>
+          </tr>
+
+         </tbody>
+        </colgroup>
+
+       </table>
+
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">latitude</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       デフォルトは北緯で、南緯は負の値で表します。
+       <i class="literal">date.default_latitude</i> も参照ください。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">longitude</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       デフォルトは東経で、西経は負の値で表します。
+       <i class="literal">date.default_longitude</i> も参照ください。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">zenith</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       デフォルトは <i class="literal">date.sunrise_zenith</i> です。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">gmtoffset</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       時間単位で指定します。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 errors">
+  <h3 class="title">エラー / 例外</h3>
+   
+   <p class="para">
+すべての日付/時刻関数は、
+有効なタイムゾーンが設定されていない場合に <b><tt>E_NOTICE</tt></b>
+を発生させます。また、システム設定のタイムゾーンあるいは環境変数
+<var class="varname">TZ</var> を使用した場合には <b><tt>E_STRICT</tt></b>
+を発生させます。
+<a href="function.date-default-timezone-set.html" class="function">date_default_timezone_set()</a> も参照ください。</p>
+ 
+ </div>
+
+
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      
+      <tr valign="middle"><td colspan="1" rowspan="1" align="left">5.1.0</td><td colspan="1" rowspan="1" align="left"><p class="para">
+タイムゾーンがおかしい場合に <b><tt>E_STRICT</tt></b> や
+<b><tt>E_NOTICE</tt></b> が発生するようになりました。</p></td></tr>
+
+     
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   日の入り時刻を、指定した <i><tt class="parameter">format</tt></i>
+ で返します。
+   失敗した場合には <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>date_sunset()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">/*&nbsp;ポルトガル&nbsp;リスボンの日の入り時刻を計算する<br />緯度:&nbsp;北緯&nbsp;38.4<br />経度:&nbsp;西経&nbsp;9<br />天頂&nbsp;~=&nbsp;90<br />時差:&nbsp;+1&nbsp;GMT<br />*/<br /><br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">date</span><span style="color: #007700">(</span><span style="color: #DD0000">"D&nbsp;M&nbsp;d&nbsp;Y"</span><span style="color: #007700">).&nbsp;</span><span style="color: #DD0000">',&nbsp;sunset&nbsp;time&nbsp;:&nbsp;'&nbsp;</span><span style="color: #007700">.</span><span style="color: #0000BB">date_sunset</span><span style="color: #007700">(</span><span style="color: #0000BB">time</span><span style="color: #007700">(),&nbsp;</span><span style="color: #0000BB">SUNFUNCS_RET_STRING</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">38.4</span><span style="color: #007700">,&nbsp;-</span><span style="color: #0000BB">9</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">90</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は、たとえば
+以下のようになります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+Mon Dec 20 2004, sunset time : 18:13
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.date-sunrise.html" class="function">date_sunrise()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.date-sunrise.html">date_sunrise</a></div>
+ <div class="next" style="float: right;"><a href="function.date-time-set.html">date_time_set</a></div>
+ <div class="up"><a href="ref.datetime.html">日付/時刻</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

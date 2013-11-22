@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>指定したモジュールのセルフテストを実行する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mcrypt-module-open.html">mcrypt_module_open</a></div>
+ <div class="next" style="float: right;"><a href="function.mcrypt-ofb.html">mcrypt_ofb</a></div>
+ <div class="up"><a href="ref.mcrypt.html">mcrypt</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mcrypt-module-self-test" class="refentry">
+   <div class="refnamediv">
+    <h1 class="refname">mcrypt_module_self_test</h1>
+    <p class="verinfo">(PHP 4 &gt;= 4.0.2, PHP 5)</p><p class="refpurpose">mcrypt_module_self_test ― 指定したモジュールのセルフテストを実行する</p>
+
+   </div>
+   <div class="refsect1 u">
+    <h3 class="title">説明</h3>
+     <div class="methodsynopsis">
+      <span class="type">bool</span> <span class="methodname"><b><b>mcrypt_module_self_test</b></b></span>
+       ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$algorithm</tt></span>
+      [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$lib_dir</tt></span>
+     ] )</div>
+
+    <p class="para">
+     この関数は、指定したアルゴリズムのセルフテストを実行します。
+     オプションのパラメータ <i><tt class="parameter">lib_dir</tt></i>
+ により、
+     システム上での algorithm モジュールの位置を指定することが可能です。
+    </p>
+    <p class="para">
+     この関数は、セルフテストが成功した場合 <b><tt>TRUE</tt></b>、失敗した場合に <b><tt>FALSE</tt></b>
+     を返します。
+    </p>
+    <p class="para">
+     <div class="example">
+      <p><b>Example#1 <b>mcrypt_module_self_test()</b> の例</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">mcrypt_module_self_test</span><span style="color: #007700">(</span><span style="color: #0000BB">MCRYPT_RIJNDAEL_128</span><span style="color: #007700">))&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">mcrypt_module_self_test</span><span style="color: #007700">(</span><span style="color: #0000BB">MCRYPT_BOGUS_CYPHER</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+      <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+      <div class="example-contents"><pre>
+<div class="cdata"><pre>
+bool(true)
+bool(false)
+</pre></div>
+      </pre></div>
+     </div>
+    </p>
+   </div>
+
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mcrypt-module-open.html">mcrypt_module_open</a></div>
+ <div class="next" style="float: right;"><a href="function.mcrypt-ofb.html">mcrypt_ofb</a></div>
+ <div class="up"><a href="ref.mcrypt.html">mcrypt</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>外部プログラムを実行し、未整形の出力を表示する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.exec.html">exec</a></div>
+ <div class="next" style="float: right;"><a href="function.proc-close.html">proc_close</a></div>
+ <div class="up"><a href="ref.exec.html">プログラム実行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.passthru" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">passthru</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">passthru ― 外部プログラムを実行し、未整形の出力を表示する</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">void</span> <span class="methodname"><b><b>passthru</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$command</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter reference">&$return_var</tt></span>
+  ] )</div>
+
+  <p class="para">
+   <b>passthru()</b>関数は<a href="function.exec.html" class="function">exec()</a>関数と同様、
+   <i><tt class="parameter">command</tt></i>
+を実行します。
+   引数 <i><tt class="parameter">return_var</tt></i>
+ を指定した場合、
+   Unix コマンドのステータスで置換されます。
+   この関数は Unix コマンドからの出力がバイナリデータであり、
+   ブラウザーへ直接返す必要がある場合、<a href="function.exec.html" class="function">exec()</a>
+   もしくは<a href="function.system.html" class="function">system()</a>の代わりに使用する必要があります。
+   よく使うのは、直接画像ストリームを出力することができる pbmplus
+   ユーティリティの様なものを実行する場合です。content-type を
+   <em class="emphasis">image/gif</em>に設定して、gifを出力するpbmplus
+   プログラムを呼び出すことにより、直接画像を出力する PHP スクリプトを作成
+   することができます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">command</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       実行するコマンド
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">return_var</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       引数<i><tt class="parameter">return_var</tt></i>
+が存在する場合、
+       Unix コマンドのステータスがこの変数に書かれます。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   値を返しません。
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <div class="warning"><b class="warning">警告</b><p class="para">ユーザが入力したデータをこの関数に
+渡すことを許可する場合、ユーザが任意のコマンドを実行できるようシステムを欺くことが
+できないように <a href="function.escapeshellarg.html" class="function">escapeshellarg()</a> または
+<a href="function.escapeshellcmd.html" class="function">escapeshellcmd()</a> を適用する必要があります。</p></div>
+  <blockquote><p><b class="note">注意</b>: この関数を用いてプログラムを開始し、
+バックグラウンドで実行させたままにしたい場合、このプログラムの出力をファイル
+または他の出力ストリームにリダイレクトするようにする必要があります。さもないと、
+PHP はプログラム実行終了までにハングしてしまいます。<br /></p></blockquote>
+  <blockquote><p><b class="note">注意</b>: <span class="simpara"><a href="features.safe-mode.html" class="link">
+セーフモード</a> が有効な場合、<a href="features.safe-mode.html#ini.safe-mode-exec-dir" class="link">
+safe_mode_exec_dir</a>の中にある実行プログラムのみ実行可能です。
+実際的な理由により、現在、実行プログラムへのパスに <i class="literal">..</i>を
+含めることはできません。</span></p></blockquote>
+  <div class="warning"><b class="warning">警告</b><p class="simpara"><a href="features.safe-mode.html" class="link">
+セーフモード</a>が有効な場合、コマンド文字列は
+<a href="function.escapeshellcmd.html" class="function">escapeshellcmd()</a> でエスケープされます。
+つまり、<i class="literal">echo y | echo x</i> は、<i class="literal">echo y \| echo x</i>
+となります。</p></div>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.exec.html" class="function">exec()</a></li>
+    <li class="member"><a href="function.system.html" class="function">system()</a></li>
+    <li class="member"><a href="function.popen.html" class="function">popen()</a></li>
+    <li class="member"><a href="function.escapeshellcmd.html" class="function">escapeshellcmd()</a></li>
+    <li class="member"><a href="language.operators.execution.html" class="link">バックティック演算子</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.exec.html">exec</a></div>
+ <div class="next" style="float: right;"><a href="function.proc-close.html">proc_close</a></div>
+ <div class="up"><a href="ref.exec.html">プログラム実行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

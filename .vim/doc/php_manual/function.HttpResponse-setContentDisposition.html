@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>content disposition を設定する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.HttpResponse-setCache.html">HttpResponse::setCache</a></div>
+ <div class="next" style="float: right;"><a href="function.HttpResponse-setContentType.html">HttpResponse::setContentType</a></div>
+ <div class="up"><a href="ref.http.html">http</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.HttpResponse-setContentDisposition" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">HttpResponse::setContentDisposition</h1>
+  <p class="verinfo">(PECL pecl_http:0.10.0-1.5.5)</p><p class="refpurpose">HttpResponse::setContentDisposition ― content disposition を設定する</p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="modifier">static</span>
+   <span class="type">bool</span> <span class="methodname"><b><b>HttpResponse::setContentDisposition</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$filename</tt></span>
+   [, <span class="methodparam"><span class="type">bool</span> <tt class="parameter">$inline = FALSE</tt></span>
+  ] )</div>
+
+  <p class="para">
+   <i class="literal">Content-Disposition</i> を設定します。
+   <i class="literal">Content-Disposition</i> ヘッダは、
+   実際に送信するデータがファイルなどであり、それをクライアント/ユーザに &quot;保存&quot;
+   させたい (ブラウザのポップアップ &quot;名前を付けて保存...&quot; を出させたい) 場合に便利です。
+  </p>
+ </div>
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">filename</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       &quot;名前を付けて保存...&quot; ダイアログで表示するファイル名。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">inline</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       これを true に設定し、かつユーザエージェントがその
+       content type の処理方法を知っている場合は、ポップアップウィンドウが表示されません。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ 
+
+
+ 
+
+
+ 
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.HttpResponse-getContentDisposition.html" class="link"><b>HttpResponse::getContentDisposition()</b></a></li>
+    <li class="member"><a href="function.HttpResponse-getContentType.html" class="link"><b>HttpResponse::getContentType()</b></a></li>
+    <li class="member"><a href="function.HttpResponse-setContentType.html" class="link"><b>HttpResponse::setContentType()</b></a></li>
+   </ul>
+  </p>
+ </div>
+
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.HttpResponse-setCache.html">HttpResponse::setCache</a></div>
+ <div class="next" style="float: right;"><a href="function.HttpResponse-setContentType.html">HttpResponse::setContentType</a></div>
+ <div class="up"><a href="ref.http.html">http</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

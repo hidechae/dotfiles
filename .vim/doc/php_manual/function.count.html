@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>変数に含まれる要素、
+  あるいはオブジェクトに含まれるプロパティの数を数える</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.compact.html">compact</a></div>
+ <div class="next" style="float: right;"><a href="function.current.html">current</a></div>
+ <div class="up"><a href="ref.array.html">配列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.count" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">count</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">count ― 変数に含まれる要素、
+  あるいはオブジェクトに含まれるプロパティの数を数える</p>
+
+ </div>
+ <div class="refsect1 u">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">int</span> <span class="methodname"><b><b>count</b></b></span>
+    ( <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$var</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$mode</tt></span>
+  ] )</div>
+
+  <p class="para">
+   <i><tt class="parameter">var</tt></i>
+に含まれる要素の数を返します。
+   他のものには、1つの要素しかありませんので、通常
+   <i><tt class="parameter">var</tt></i>
+ は配列です。
+  </p>
+  <p class="para">
+   オブジェクトに対して、もし <a href="ref.spl.html" class="link">SPL</a>
+   がインストールされている場合、インターフェース
+   <i class="literal">Countable</i> を実装することで <b>count()</b>
+   にフックすることができます。このインターフェースには 1 つのメソッド
+   <b>count()</b> があり、<b>count()</b>
+   関数に対する値を返します。
+  </p>
+  <p class="para">
+   もし <i><tt class="parameter">var</tt></i>
+ が配列もしくは
+   <i class="literal">Countable</i> インターフェースを実装したオブジェクトではない場合、
+   <i class="literal">1</i> が返されます。
+   ひとつ例外があり、<i><tt class="parameter">var</tt></i>
+ が <b><tt>NULL</tt></b> の場合、
+   <i class="literal">0</i> が返されます。
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   <span class="simpara">
+    オプションの引数 <i><tt class="parameter">mode</tt></i>
+ は PHP 4.2.0 以降で使用可能です。
+   </span>
+  </p></blockquote>
+  <p class="para">
+   オプションの<i><tt class="parameter">mode</tt></i>
+ 引数が <b><tt>COUNT_RECURSIVE</tt></b>
+   (または 1) にセットされた場合、<b>count()</b>
+   は再帰的に配列をカウントします。
+   これは多次元配列の全ての要素をカウントするといった場合に特に有効です。
+   <i><tt class="parameter">mode</tt></i>
+ のデフォルトは
+   <i class="literal">0</i> です。
+   <b>count()</b> は無限の再帰を検出しません。
+  </p>
+  <div class="caution"><b class="caution">警告</b>
+   <p class="para">
+    <b>count()</b> は、セットされていない変数に関して 0
+    を返しますが、変数が空の配列として初期化されている場合にも 0 を返します。
+    ある変数がセットされているかどうかを調べるには、
+    <a href="function.isset.html" class="function">isset()</a> を使用してください。
+   </p>
+  </div>
+  <p class="para">
+   配列の実装やPHPでの使用法に関する詳細な説明については、マニュアルの
+   <a href="language.types.array.html" class="link">配列</a>のセクションを参照ください。
+  </p>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>count()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$a</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$a</span><span style="color: #007700">[</span><span style="color: #0000BB">1</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$a</span><span style="color: #007700">[</span><span style="color: #0000BB">2</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">5</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">count</span><span style="color: #007700">(</span><span style="color: #0000BB">$a</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">//&nbsp;$result&nbsp;==&nbsp;3<br /><br /></span><span style="color: #0000BB">$b</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">]&nbsp;&nbsp;=&nbsp;</span><span style="color: #0000BB">7</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$b</span><span style="color: #007700">[</span><span style="color: #0000BB">5</span><span style="color: #007700">]&nbsp;&nbsp;=&nbsp;</span><span style="color: #0000BB">9</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$b</span><span style="color: #007700">[</span><span style="color: #0000BB">10</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">11</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">count</span><span style="color: #007700">(</span><span style="color: #0000BB">$b</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">//&nbsp;$result&nbsp;==&nbsp;3<br /><br /></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">count</span><span style="color: #007700">(</span><span style="color: #0000BB">null</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">//&nbsp;$result&nbsp;==&nbsp;0<br /><br /></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">count</span><span style="color: #007700">(</span><span style="color: #0000BB">false</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">//&nbsp;$result&nbsp;==&nbsp;1<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#2 
+     再帰的な <b>count()</b> の例 (PHP &gt;= 4.2.0)
+    </b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$food&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #DD0000">'fruits'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(</span><span style="color: #DD0000">'orange'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'banana'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'apple'</span><span style="color: #007700">),<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'veggie'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(</span><span style="color: #DD0000">'carrot'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'collard'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'pea'</span><span style="color: #007700">));<br /><br /></span><span style="color: #FF8000">//&nbsp;再帰的なカウント<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">count</span><span style="color: #007700">(</span><span style="color: #0000BB">$food</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">COUNT_RECURSIVE</span><span style="color: #007700">);&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;output&nbsp;8<br /><br />//&nbsp;通常のカウント<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">count</span><span style="color: #007700">(</span><span style="color: #0000BB">$food</span><span style="color: #007700">);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;output&nbsp;2<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+  <p class="para">
+   <a href="function.is-array.html" class="function">is_array()</a>、
+   <a href="function.isset.html" class="function">isset()</a> および
+   <a href="function.strlen.html" class="function">strlen()</a> も参照ください。
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.compact.html">compact</a></div>
+ <div class="next" style="float: right;"><a href="function.current.html">current</a></div>
+ <div class="up"><a href="ref.array.html">配列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

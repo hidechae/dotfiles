@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>ドキュメントをアップロードする</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.hw-insertanchors.html">hw_insertanchors</a></div>
+ <div class="next" style="float: right;"><a href="function.hw-insertobject.html">hw_InsertObject</a></div>
+ <div class="up"><a href="ref.hw.html">Hyperwave</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.hw-insertdocument" class="refentry">
+   <div class="refnamediv">
+    <h1 class="refname">hw_InsertDocument</h1>
+    <p class="verinfo">(PHP 4)</p><p class="refpurpose">hw_InsertDocument ― ドキュメントをアップロードする</p>
+
+   </div>
+   <div class="refsect1 u">
+    <h3 class="title">説明</h3>
+     <div class="methodsynopsis">
+      <span class="type">int</span> <span class="methodname"><b><b>hw_insertdocument</b></b></span>
+       ( <span class="methodparam"><span class="type">int</span> <tt class="parameter">$connection</tt></span>
+      , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$parent_id</tt></span>
+      , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$hw_document</tt></span>
+      )</div>
+
+    <p class="para">
+    ドキュメントを <i><tt class="parameter">parent_id</tt></i>
+ を有するコレクションに
+    アップロードします。
+    ドキュメントは、事前に <b>hw_NewDocument()</b> で
+    作成されている必要があります。
+    新規ドキュメントのオブジェクトレコードは、少なくとも次の属性を
+    有しているよう注意してください。:
+    Type, DocumentType, Title ,Name
+    MimeType を設定したい場合もあるかもしれません。
+    関数は、新規ドキュメントのオブジェクト ID または <b><tt>FALSE</tt></b> を返します。</p>
+    <p class="para">
+     <a href="function.hw-pipedocument.html" class="function">hw_pipedocument()</a> も参照ください。</p>
+   </div>
+
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.hw-insertanchors.html">hw_insertanchors</a></div>
+ <div class="next" style="float: right;"><a href="function.hw-insertobject.html">hw_InsertObject</a></div>
+ <div class="up"><a href="ref.hw.html">Hyperwave</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

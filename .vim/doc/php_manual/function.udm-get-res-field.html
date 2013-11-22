@@ -1,0 +1,177 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>mnoGoSearch 結果フィールドを取得する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.udm-get-doc-count.html">udm_get_doc_count</a></div>
+ <div class="next" style="float: right;"><a href="function.udm-get-res-param.html">udm_get_res_param</a></div>
+ <div class="up"><a href="ref.mnogosearch.html">mnoGoSearch</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.udm-get-res-field" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">udm_get_res_field</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.0.5, PHP 5 &lt;= 5.0.5, PECL mnogosearch:1.0.0)</p><p class="refpurpose">udm_get_res_field ― mnoGoSearch 結果フィールドを取得する</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">string</span> <span class="methodname"><b><b>udm_get_res_field</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$res</tt></span>
+   , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$row</tt></span>
+   , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$field</tt></span>
+   )</div>
+
+  <p class="para">
+   Fetch a mnoGoSearch result field.
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">res</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">res</tt></i>
+ -
+       <a href="function.udm-find.html" class="function">udm_find()</a> から返された結果 ID へのリンク。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">row</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">row</tt></i>
+ - カレントページのリンク番号。0 から
+       <i><tt class="parameter">UDM_PARAM_NUM_ROWS-1</tt></i>
+ までの番号。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">field</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">field</tt></i>
+ - フィールド ID。次の値のどれか。
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <span class="simpara">
+         UDM_FIELD_URL - ドキュメント URL フィールド。
+        </span>
+       </li>
+       <li class="listitem">
+        <span class="simpara">
+         UDM_FIELD_CONTENT - ドキュメント Content-type フィールド (例えば、
+        </span>
+       </li>
+       <li class="listitem">
+        <span class="simpara">
+         UDM_FIELD_CATEGORY - ドキュメントの category フィールド。
+         カテゴリツリーのルートから現在のカテゴリまでの完全なパスを
+         取得するには <a href="function.udm-cat-path.html" class="function">udm_cat_path()</a> を使用します
+         (このパラメータは、PHP 4.0.6 以降でのみ使用可能です)。
+        </span>
+       </li>
+       <li class="listitem">
+        <span class="simpara">
+         UDM_FIELD_TITLE - ドキュメントの title フィールド。
+        </span>
+       </li>
+       <li class="listitem">
+        <span class="simpara">
+         UDM_FIELD_KEYWORDS - ドキュメント keywords フィールド(META
+         KEYWORDS タグから)。
+        </span>
+       </li>
+       <li class="listitem">
+        <span class="simpara">
+         UDM_FIELD_DESC - ドキュメント description フィールド (META
+         DESCRIPTION タグから)。
+        </span>
+       </li>
+       <li class="listitem">
+        <span class="simpara">
+         UDM_FIELD_TEXT - ドキュメント body テキスト (最初の数行で
+         ドキュメントの内容に関するアイデアを示す)。
+        </span>
+       </li>
+       <li class="listitem">
+        <span class="simpara">
+         UDM_FIELD_SIZE - ドキュメントのサイズ。
+        </span>
+       </li>
+       <li class="listitem">
+        <span class="simpara">
+         UDM_FIELD_URLID - リンクへのユニークな URL ID。
+        </span>
+       </li>
+       <li class="listitem">
+        <span class="simpara">
+         UDM_FIELD_RATING  - (mnoGoSearch で計算された)ページのレーティング。
+        </span>
+       </li>
+       <li class="listitem">
+        <span class="simpara">
+         UDM_FIELD_MODIFIED - unixtime 形式の last-modified フィールド。
+        </span>
+       </li>
+       <li class="listitem">
+        <span class="simpara">
+         UDM_FIELD_ORDER - 見つかったドキュメントの中の現在のドキュメントの数。
+        </span>
+       </li>
+       <li class="listitem">
+        <span class="simpara">
+         UDM_FIELD_CRC - ドキュメント CRC。
+        </span>
+       </li>
+      </ul>
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   <b>udm_get_res_field()</b> は、成功時に結果フィールド、
+   エラー時に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.udm-get-doc-count.html">udm_get_doc_count</a></div>
+ <div class="next" style="float: right;"><a href="function.udm-get-res-param.html">udm_get_res_param</a></div>
+ <div class="up"><a href="ref.mnogosearch.html">mnoGoSearch</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

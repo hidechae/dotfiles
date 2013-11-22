@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>全てのHTTPリクエストヘッダを取得する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ebcdic2ascii.html">ebcdic2ascii</a></div>
+ <div class="next" style="float: right;"><a href="function.virtual.html">virtual</a></div>
+ <div class="up"><a href="ref.apache.html">Apache</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.getallheaders" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">getallheaders</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">getallheaders ― 全てのHTTPリクエストヘッダを取得する</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">array</span> <span class="methodname"><b><b>getallheaders</b></b></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+
+  <p class="para">
+   全てのHTTPリクエストヘッダを取得します。
+  </p>
+  <p class="para">
+   この関数は、
+   <a href="function.apache-request-headers.html" class="function">apache_request_headers()</a>のエイリアスです。
+   この関数は、カレントのリクエストにおける全てのHTTPヘッダーを有する
+   連想配列を返します。この関数の動作に関する詳細については、
+   <a href="function.apache-request-headers.html" class="function">apache_request_headers()</a>のドキュメントを参照して
+   ください。
+  </p>
+  <p class="simpara">この関数は、
+PHP が apache モジュールとしてインストールされた場合のみサポートされます。</p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   全てのHTTPリクエストヘッダの連想配列、もしくは失敗時に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">4.3.0</td>
+       <td colspan="1" rowspan="1" align="left">
+        <a href="function.apache-request-headers.html" class="function">apache_request_headers()</a>のエイリアスとなりました。
+        これは、基本的に関数名の変更にあたります。この関数は、
+        Apache モジュールの場合のみ動作します。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <blockquote><p><b class="note">注意</b>: PHP 4.3.3 以降、
+Netscape/iPlanet/SunONE Web サーバの<a href="ref.nsapi.html" class="link">
+NSAPI サーバモジュール</a> でもこの関数を使用できます。<br /></p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.apache-response-headers.html" class="function">apache_response_headers()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ebcdic2ascii.html">ebcdic2ascii</a></div>
+ <div class="next" style="float: right;"><a href="function.virtual.html">virtual</a></div>
+ <div class="up"><a href="ref.apache.html">Apache</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

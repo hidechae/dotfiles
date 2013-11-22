@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>ETag でキャッシュする</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.HttpResponse-status.html">HttpResponse::status</a></div>
+ <div class="next" style="float: right;"><a href="function.http-cache-last-modified.html">http_cache_last_modified</a></div>
+ <div class="up"><a href="ref.http.html">http</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.http-cache-etag" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">http_cache_etag</h1>
+  <p class="verinfo">(PECL pecl_http:0.1.0-1.5.5)</p><p class="refpurpose">http_cache_etag ― ETag でキャッシュする</p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>http_cache_etag</b></b></span>
+    ([ <span class="methodparam"><span class="type">string</span> <tt class="parameter">$etag</tt></span>
+  ] )</div>
+
+  <p class="para">
+   送信されるエンティティを、その <i class="literal">ETag</i> を基準にしてキャッシュしようとします。
+   ETag は、指定されたものを使用するか、あるいは
+   <a href="http.configuration.html" class="link">INI 設定</a> <a href="http.configuration.html#http.configuration.etag.mode" class="link">http.etag.mode</a>
+   で指定したハッシュアルゴリズムにより生成したものを使用します。
+  </p>
+  <p class="para">
+   クライアントの <i class="literal">If-None-Match</i> ヘッダがこの
+   ETag と一致した場合は、その本文はクライアント側でキャッシュされていると判断し、
+   ステータスコード <i class="literal">304 Not Modified</i> を発行します。
+  </p>
+  <p class="para">
+   <a href="http.configuration.html" class="link">INI 設定</a> <a href="http.configuration.html#http.configuration.log.cache" class="link">http.log.cache</a>
+   が設定されており、キャッシュの試みが成功した場合は、
+   キャッシュログにエントリが書き込まれます。
+  </p>
+  <blockquote><p><b class="note">注意</b>: <span class="simpara">この関数は、
+   <a href="function.http-send-data.html" class="function">http_send_data()</a> や <a href="function.http-send-file.html" class="function">http_send_file()</a>  そして <a href="function.http-send-stream.html" class="function">http_send_stream()</a>
+   と組み合わせて使用しすることもあります。</span></p></blockquote>
+  <p class="para">
+   この関数を http_send_*() API の外部で使用すると、
+   <a href="function.ob-etaghandler.html" class="function">ob_etaghandler()</a> を助けます。
+  </p>
+ </div>
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">etag</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       独自の <i class="literal">ETag</i>。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   失敗した場合は <b><tt>FALSE</tt></b> を返します。成功した場合は <em class="emphasis">終了</em> します。
+   エンティティがキャッシュされた場合は、<i class="literal">304 Not Modified</i>
+   となります。
+   &quot;終了&quot; の意味については、<a href="http.configuration.html" class="link">INI 設定</a>
+   <a href="http.configuration.html#http.configuration.force_exit" class="link">http.force_exit</a> を参照ください。
+  </p>
+ </div>
+
+
+ 
+
+
+ 
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>http_cache_etag()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />http_cache_etag</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">http_send_data</span><span style="color: #007700">(</span><span style="color: #DD0000">"data"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.http-cache-last-modified.html" class="function">http_cache_last_modified()</a></li>
+    <li class="member"><a href="function.ob-etaghandler.html" class="function">ob_etaghandler()</a></li>
+    <li class="member"><a href="function.http-match-etag.html" class="function">http_match_etag()</a></li>
+    <li class="member">PHP 5.1 以降を使用している場合は <a href="http.HttpResponse.html" class="link"><span class="classname">HttpResponse</span></a> クラス</li>
+   </ul>
+  </p>
+ </div>
+
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.HttpResponse-status.html">HttpResponse::status</a></div>
+ <div class="next" style="float: right;"><a href="function.http-cache-last-modified.html">http_cache_last_modified</a></div>
+ <div class="up"><a href="ref.http.html">http</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

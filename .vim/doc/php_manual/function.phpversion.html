@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>現在の PHP バージョンを取得する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.phpinfo.html">phpinfo</a></div>
+ <div class="next" style="float: right;"><a href="function.putenv.html">putenv</a></div>
+ <div class="up"><a href="ref.info.html">PHP オプション/情報</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.phpversion" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">phpversion</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">phpversion ― 現在の PHP バージョンを取得する</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">string</span> <span class="methodname"><b><b>phpversion</b></b></span>
+    ([ <span class="methodparam"><span class="type">string</span> <tt class="parameter">$extension</tt></span>
+  ] )</div>
+
+  <p class="para">
+   現在動作中の PHP パーサあるいは拡張モジュールのバージョンを表す文字列を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">extension</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       オプションで指定する拡張モジュール名。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   オプションの <i><tt class="parameter">extension</tt></i>
+
+   パラメータが指定されている場合、<b>phpversion()</b>
+   はその拡張モジュールのバージョンを返します。
+   関連するバージョン情報が存在しない場合、
+   あるいは拡張モジュールが有効でない場合は <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>phpversion()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;たとえば&nbsp;'Current&nbsp;PHP&nbsp;version:&nbsp;4.1.1'&nbsp;などと表示します<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">'Current&nbsp;PHP&nbsp;version:&nbsp;'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">phpversion</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">//&nbsp;たとえば&nbsp;'2.0'&nbsp;などと表示します。拡張モジュールが有効でない場合は何も表示しません<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">phpversion</span><span style="color: #007700">(</span><span style="color: #DD0000">'tidy'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    この情報は、定義済みの定数 <b><tt>PHP_VERSION</tt></b>
+    でも取得可能です。
+   <br />
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.version-compare.html" class="function">version_compare()</a></li>
+    <li class="member"><a href="function.phpinfo.html" class="function">phpinfo()</a></li>
+    <li class="member"><a href="function.phpcredits.html" class="function">phpcredits()</a></li>
+    <li class="member"><a href="function.php-logo-guid.html" class="function">php_logo_guid()</a></li>
+    <li class="member"><a href="function.zend-version.html" class="function">zend_version()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.phpinfo.html">phpinfo</a></div>
+ <div class="next" style="float: right;"><a href="function.putenv.html">putenv</a></div>
+ <div class="up"><a href="ref.info.html">PHP オプション/情報</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

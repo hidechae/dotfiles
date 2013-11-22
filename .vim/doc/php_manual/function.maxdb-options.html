@@ -1,0 +1,180 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>オプションを設定する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.maxdb-num-rows.html">maxdb_num_rows</a></div>
+ <div class="next" style="float: right;"><a href="function.maxdb-param-count.html">maxdb_param_count</a></div>
+ <div class="up"><a href="ref.maxdb.html">MaxDB</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.maxdb-options" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">maxdb_options</h1>
+  <h1 class="refname">maxdb-&gt;options</h1>
+  <p class="verinfo">(PECL maxdb:1.0-7.6.00.38)</p><p class="refpurpose">maxdb->options ― オプションを設定する</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <p class="para">手続き型</p>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>maxdb_options</b></b></span>
+    ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$link</tt></span>
+   , <span class="methodparam"><span class="type">int</span> <tt class="parameter">$option</tt></span>
+   , <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$value</tt></span>
+   )</div>
+
+  <p class="para">オブジェクト指向型 (メソッド)</p>
+  <div class="classsynopsis">
+   <div class="ooclass"><b class="classname">maxdb</b></div>
+   <div class="methodsynopsis">
+    <span class="type">bool</span>
+     <span class="methodname"><b><b>options</b></b></span>
+     ( <span class="methodparam"><span class="type">int</span> <tt class="parameter">$option</tt></span>
+    , <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$value</tt></span>
+    )</div>
+
+  </div>
+  <p class="para">
+   <b>maxdb_options()</b> は、
+   接続時の追加のオプションを設定し、接続の振る舞いを変更するために使用されます。
+  </p>
+  <p class="para">
+   この関数は、いくつかのオプションを設定するために複数回コールすることが可能です。
+  </p>
+  <p class="para">
+   <b>maxdb_options()</b> は、
+   <a href="function.maxdb-init.html" class="function">maxdb_init()</a> をコールした後、
+   <a href="function.maxdb-real-connect.html" class="function">maxdb_real_connect()</a>
+   がコールされるまでにコールしなければなりません。
+  </p>
+  <p class="para">
+   パラメータ <i><tt class="parameter">option</tt></i>
+ は設定したいオプションで、
+   <i><tt class="parameter">value</tt></i>
+ はオプションの値です。
+   オプションについての詳細な説明は、
+   <a href="http://dev.mysql.com/doc/maxdb/" class="link external">&raquo; http://dev.mysql.com/doc/maxdb/</a> を参照ください。
+   パラメータ <i><tt class="parameter">option</tt></i>
+ は、以下のいずれかの値となります。
+   <table border="5">
+    <caption><b>使用可能なオプション</b></caption>
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">名前</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><b><tt>MAXDB_COMPNAME</tt></b></td>
+       <td colspan="1" rowspan="1" align="left">SQLDBC 実行環境の初期化に使用するコンポーネントの名前。</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><b><tt>MAXDB_APPLICATION</tt></b></td>
+       <td colspan="1" rowspan="1" align="left">データベースに接続するアプリケーション。</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><b><tt>MAXDB_APPVERSION</tt></b></td>
+       <td colspan="1" rowspan="1" align="left">アプリケーションのバージョン。</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><b><tt>MAXDB_SQLMODE</tt></b></td>
+       <td colspan="1" rowspan="1" align="left">
+        SQL モード。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><b><tt>MAXDB_UNICODE</tt></b></td>
+       <td colspan="1" rowspan="1" align="left">
+         unicode (UCS2) クライアントからの接続の場合に TRUE、そうでない場合に FALSE。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><b><tt>MAXDB_TIMEOUT</tt></b></td>
+       <td colspan="1" rowspan="1" align="left">
+         データベースへの接続がシステムによって閉じられるまでの、
+         無通信時間の最大値。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><b><tt>MAXDB_ISOLATIONLEVEL</tt></b></td>
+       <td colspan="1" rowspan="1" align="left">
+         共有ロックおよび排他ロックのどちらがどのように要求/開放されるかを指定します。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><b><tt>MAXDB_PACKETCOUNT</tt></b></td>
+       <td colspan="1" rowspan="1" align="left">
+         接続に使用される、要求パケットの数。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><b><tt>MAXDB_STATEMENTCACHESIZE</tt></b></td>
+       <td colspan="1" rowspan="1" align="left">
+         再利用のために接続にキャッシュされるプリペアドステートメントの数。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><b><tt>MAXDB_CURSORPREFIX</tt></b></td>
+       <td colspan="1" rowspan="1" align="left">
+         自動的に命名された結果テーブルに使用するプレフィックス。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para"><a href="function.maxdb-real-connect.html" class="function">maxdb_real_connect()</a> を参照ください。</p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.maxdb-init.html" class="function">maxdb_init()</a></li>
+    <li class="member"><a href="function.maxdb-real-connect.html" class="function">maxdb_real_connect()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.maxdb-num-rows.html">maxdb_num_rows</a></div>
+ <div class="next" style="float: right;"><a href="function.maxdb-param-count.html">maxdb_param_count</a></div>
+ <div class="up"><a href="ref.maxdb.html">MaxDB</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

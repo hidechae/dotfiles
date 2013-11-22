@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>Apache サブリクエストを実行する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.apache.html">Apache</a></div>
+ <div class="next" style="float: right;"><a href="ref.apc.html">APC</a></div>
+ <div class="up"><a href="ref.apache.html">Apache</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.virtual" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">virtual</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">virtual ― Apache サブリクエストを実行する</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>virtual</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$filename</tt></span>
+   )</div>
+
+  <p class="para">
+   <b>virtual()</b> は、mod_include の
+   <i class="literal">&lt;!--#include virtual...--&gt;</i> と似ている
+   Apache 用関数です。
+   この関数は、Apache サブリクエストを実行します。
+   CGI スクリプトまたは .shtml ファイル、Apache を通して解釈を行う
+   他のものがある場合にこの関数は有用です。
+   CGI スクリプトの場合、そのスクリプトは、有効な CGI ヘッダを生成する
+   必要があることに注意してください。
+   最低でも、Content-type ヘッダを生成する必要があります。
+  </p>
+  <p class="para">
+   サブリクエストを実行するには、全てのバッファを終了、ブラウザへフラッシュし、
+   待機状態のヘッダも送信しておきます。
+  </p>
+  <p class="simpara">この関数は、
+PHP が apache モジュールとしてインストールされた場合のみサポートされます。</p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">filename</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       virtual コマンドが実行されるファイル
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功時は virtual コマンドの実行、失敗時は <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">4.0.6</td>
+       <td colspan="1" rowspan="1" align="left">
+        この関数を PHP ファイルに使用することができます。
+        しかし、他の PHP ファイルをインクルードする必要があるのなら、
+        <a href="function.include.html" class="function">include()</a> または <a href="function.require.html" class="function">require()</a> を
+        使用するほうがベターです。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <div class="warning"><b class="warning">警告</b>
+   <p class="para">
+    クエリ文字列をインクルードされるファイルに渡す事ができますが、
+    <var class="varname">$_GET</var> は親スクリプトからコピーされ、
+    <var class="varname">$_SERVER[&#039;QUERY_STRING&#039;]</var> は渡されたクエリ文字列に
+    なります。クエリ文字列は、Apache 2 を使用している場合の見渡されます。
+    要求されたファイルは Apache アクセスログに出力されません。
+   </p>
+  </div>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    要求されたファイルの中で設定された環境変数は、呼び出し元の
+    スクリプトからは見えません。
+   <br />
+  </p></blockquote>
+  <blockquote><p><b class="note">注意</b>: PHP 4.3.3 以降、
+Netscape/iPlanet/SunONE Web サーバの<a href="ref.nsapi.html" class="link">
+NSAPI サーバモジュール</a> でもこの関数を使用できます。<br /></p></blockquote>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.apache.html">Apache</a></div>
+ <div class="next" style="float: right;"><a href="ref.apc.html">APC</a></div>
+ <div class="up"><a href="ref.apache.html">Apache</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,217 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>大文字小文字を区別しない str_replace</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.str-getcsv.html">str_getcsv</a></div>
+ <div class="next" style="float: right;"><a href="function.str-pad.html">str_pad</a></div>
+ <div class="up"><a href="ref.strings.html">Strings</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.str-ireplace" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">str_ireplace</h1>
+  <p class="verinfo">(PHP 5)</p><p class="refpurpose">str_ireplace ― 大文字小文字を区別しない <a href="function.str-replace.html" class="function">str_replace()</a></p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">mixed</span> <span class="methodname"><b><b>str_ireplace</b></b></span>
+    ( <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$search</tt></span>
+   , <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$replace</tt></span>
+   , <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$subject</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter reference">&$count</tt></span>
+  ] )</div>
+
+  <p class="para">
+   この関数は、<i><tt class="parameter">subject</tt></i>
+ の中に現れるすべての
+   <i><tt class="parameter">search</tt></i>
+(大文字小文字を区別しない)を
+   <i><tt class="parameter">replace</tt></i>
+ に置き換えた文字列あるいは配列を
+   返します。一般に、凝った置換ルールが必要ないのであれば、
+   <a href="function.eregi-replace.html" class="function">eregi_replace()</a> あるいは
+   <a href="function.preg-replace.html" class="function">preg_replace()</a> で <i class="literal">i</i> 修正子を
+   使用するかわりにこの関数を使用すべきです。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">search</tt></i>
+</span>
+     <dd>
+
+      <blockquote><p><b class="note">注意</b>: 
+       
+        すべての <i><tt class="parameter">search</tt></i>
+ 配列による置換は、
+        直前の置換の結果に対して作用します。
+       <br />
+      </p></blockquote>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">replace</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">subject</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">subject</tt></i>
+ が配列の場合は、そのすべての要素に
+       対して検索と置換が行われ、返される結果も配列となります。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">count</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">needles</tt></i>
+ の中で、マッチして置換を行った数を
+       <i><tt class="parameter">count</tt></i>
+ に返します。このパラメータは参照渡しとします。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+  <p class="para">
+   <i><tt class="parameter">search</tt></i>
+ および
+   <i><tt class="parameter">replace</tt></i>
+ が配列の場合は、
+   <b>str_ireplace()</b> はそれぞれの配列から取り出した
+   値を使用して <i><tt class="parameter">subject</tt></i>
+ の置換を行います。
+   <i><tt class="parameter">replace</tt></i>
+ の要素数が
+   <i><tt class="parameter">search</tt></i>
+ より少ない場合は、残りの要素は
+   空の文字列に置き換えられます。もし <i><tt class="parameter">search</tt></i>
+
+   が配列で <i><tt class="parameter">replace</tt></i>
+ が文字列だった場合は
+   すべての <i><tt class="parameter">search</tt></i>
+ が同じ文字列に置き換えられます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   置換した文字列あるいは配列を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">5.0.0</td>
+       <td colspan="1" rowspan="1" align="left">
+        <i><tt class="parameter">count</tt></i>
+ パラメータが追加されました。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>str_ireplace()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$bodytag&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">str_ireplace</span><span style="color: #007700">(</span><span style="color: #DD0000">"%body%"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"black"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"&lt;body&nbsp;text=%BODY%&gt;"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    この関数はバイナリセーフです。
+   <br />
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.str-replace.html" class="function">str_replace()</a></li>
+    <li class="member"><a href="function.preg-replace.html" class="function">preg_replace()</a></li>
+    <li class="member"><a href="function.strtr.html" class="function">strtr()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.str-getcsv.html">str_getcsv</a></div>
+ <div class="next" style="float: right;"><a href="function.str-pad.html">str_pad</a></div>
+ <div class="up"><a href="ref.strings.html">Strings</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

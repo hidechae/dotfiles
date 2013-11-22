@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>クラスが定義済みかどうかを確認する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.call-user-method.html">call_user_method</a></div>
+ <div class="next" style="float: right;"><a href="function.get-class-methods.html">get_class_methods</a></div>
+ <div class="up"><a href="ref.classobj.html">クラス/オブジェクト</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.class-exists" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">class_exists</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">class_exists ― クラスが定義済みかどうかを確認する</p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>class_exists</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$class_name</tt></span>
+   [, <span class="methodparam"><span class="type">bool</span> <tt class="parameter">$autoload</tt></span>
+  ] )</div>
+
+  <p class="para">
+   この関数は指定したクラスが定義されているかどうかを調べます。
+  </p>
+ </div>
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">class_name</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       クラス名。大文字小文字は区別しません。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">autoload</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       デフォルトで <a href="language.oop5.autoload.html" class="link">__autoload</a> をコールするかしないか。
+       デフォルトは <b><tt>TRUE</tt></b> です。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   クラス <i><tt class="parameter">class_name</tt></i>
+ が定義されている場合に <b><tt>TRUE</tt></b>、
+   それ以外の場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">5.0.2</td>
+       <td colspan="1" rowspan="1" align="left">
+        定義済みのインターフェイスに対しては <b><tt>TRUE</tt></b> を返さないようになりました。
+        インターフェイスについては <a href="function.interface-exists.html" class="function">interface_exists()</a> を使用します。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">5.0.0</td>
+       <td colspan="1" rowspan="1" align="left">
+        <i><tt class="parameter">autoload</tt></i>
+ パラメータが追加されました。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>class_exists()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;クラスを使用する前に、それが存在するかどうかを調べます<br /></span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">class_exists</span><span style="color: #007700">(</span><span style="color: #DD0000">'MyClass'</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$myclass&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MyClass</span><span style="color: #007700">();<br />}<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+   <div class="example">
+    <p><b>Example#2 <i><tt class="parameter">autoload</tt></i>
+ パラメータの例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">__autoload</span><span style="color: #007700">(</span><span style="color: #0000BB">$class</span><span style="color: #007700">)<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;include(</span><span style="color: #0000BB">$class&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">'.php'</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;クラス宣言を含むかどうか確認する<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">if&nbsp;(!</span><span style="color: #0000BB">class_exists</span><span style="color: #007700">(</span><span style="color: #0000BB">$class</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">trigger_error</span><span style="color: #007700">(</span><span style="color: #DD0000">"Unable&nbsp;to&nbsp;load&nbsp;class:&nbsp;$class"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">E_USER_WARNING</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br />if&nbsp;(</span><span style="color: #0000BB">class_exists</span><span style="color: #007700">(</span><span style="color: #DD0000">'MyClass'</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$myclass&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MyClass</span><span style="color: #007700">();<br />}<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.function-exists.html" class="function">function_exists()</a></li>
+    <li class="member"><a href="function.interface-exists.html" class="function">interface_exists()</a></li>
+    <li class="member"><a href="function.get-declared-classes.html" class="function">get_declared_classes()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.call-user-method.html">call_user_method</a></div>
+ <div class="next" style="float: right;"><a href="function.get-class-methods.html">get_class_methods</a></div>
+ <div class="up"><a href="ref.classobj.html">クラス/オブジェクト</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

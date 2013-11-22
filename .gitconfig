@@ -1,0 +1,24 @@
+[user]
+name = Hideyuki Utsunomiya
+email = hidechae@gmail.com
+
+[color]
+ui =auto
+status = auto
+diff = auto
+branch = auto
+interactive = auto
+grep = auto
+
+[push]
+default = tracking
+
+[core]
+editor = vim
+pager = less
+
+[alias]
+br = branch
+ci = commit
+co = checkout
+st = status

@@ -1,0 +1,1008 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>定義済の変数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="reserved.html">予約語の一覧</a></div>
+ <div class="next" style="float: right;"><a href="reserved.classes.html">定義済のクラス</a></div>
+ <div class="up"><a href="reserved.html">予約語の一覧</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="reserved.variables" class="sect1">
+   <h2 class="title">定義済の変数</h2>
+
+   <p class="para">
+    PHP 4.1.0 以降、
+    <a href="language.variables.external.html" class="link">外部から来る変数</a>
+    を取得するのに推奨される方法は以下に述べるスーパーグローバルを
+    用いることです。それまでは、
+    <a href="ini.core.html#ini.register-globals" class="link">register_globals</a>
+    または定義済みの PHP 配列(<var class="varname">$HTTP_*_VARS</var>)に
+    依存していました。
+    PHP 5.0.0 以降、PHP の長い
+<a href="language.variables.predefined.html" class="link">定義済みの変数</a>
+配列は <a href="ini.core.html#ini.register-long-arrays" class="link">register_long_arrays</a>
+ディレクティブにより無効にすることができます。
+   </p>
+
+   <div id="reserved.variables.server" class="sect2">
+    <h3 class="title">サーバ変数: <var class="varname">$_SERVER</var></h3>
+    <blockquote><p><b class="note">注意</b>: 
+     <span class="simpara">
+      4.1.0 で導入されました。これ以前のバージョンでは、
+      <var class="varname">$HTTP_SERVER_VARS</var> を使用してください。
+     </span>
+    </p></blockquote>
+    
+    <p class="simpara">
+     <var class="varname">$_SERVER</var> は、ヘッダ、パス、スクリプトの位置のような
+     情報を有する配列です。この配列のエントリは、Web サーバにより
+     生成されます。全ての Web サーバがこれら全てを提供する保障はありません。
+     サーバは、これらのいくつかを省略したり、この一覧にない他のものを
+     定義する可能性があります。これらの変数の多くは、
+     <a href="http://hoohoo.ncsa.uiuc.edu/cgi/env.html" class="link external">&raquo; CGI 1.1 specification</a>
+     で定義されています。したがって、これらについては定義されていることを
+     期待することができます。
+    </p>
+
+    <p class="simpara">
+    これは、&#039;スーパーグローバル(superglobal)&#039;、または自動グローバル
+     (automatic global)、変数です。これは、スクリプトの全てのスコープで
+     利用可能であることを意味します。関数やメソッドの中からこの変数に
+     アクセスする際に <var class="varname">$HTTP_SERVER_VARS</var> のように
+     <strong class="command">global $_SERVER;</strong> とする必要はありません。
+    </p>
+
+    <p class="simpara">
+     <var class="varname">$HTTP_SERVER_VARS</var> の最初の情報は同じですが、
+     スーパーグローバルではありません (<var class="varname">HTTP_SERVER_VARS</var> と
+     <var class="varname">$_SERVER</var> は異なる変数であり、
+     PHP は異なる変数として処理を行うことに注意してください)。
+    </p>
+
+    <p class="simpara">
+     <a href="ini.core.html#ini.register-globals" class="link">register_globals</a>
+     ディレクティブを設定した場合、これらの変数は、スクリプトの
+     グローバルスコープ、つまり配列 <var class="varname">$_SERVER</var> 及び
+     <var class="varname">$HTTP_SERVER_VARS</var> 以外のグローバル変数として
+     利用可能となります。関連情報については、
+     <a href="security.globals.html" class="link">register_globals の使用法
+     </a>という名前のセキュリティに関する章を参照ください。
+     これらの各グローバル変数は、スーパーグローバルではありません。
+    </p>
+
+    <p class="simpara">
+    以下の各要素のいくつかは $_SERVER に現れない可能性があります。PHP
+    をコマンドラインで実行している場合には、
+    使用できるものは僅かであることに注意してください。
+    </p>
+
+    <p class="para">
+     <dl>
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">PHP_SELF</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         現在実行しているスクリプトのファイル名です。
+         ドキュメントルートから取得されます。
+         例えば、<var class="filename">http://example.com/test.php/foo.bar</var>
+         というアドレス上にあるスクリプトでは <var class="varname">$_SERVER[&#039;PHP_SELF&#039;]</var>
+         は <var class="filename">/test.php/foo.bar</var> となります。
+         <a href="language.constants.predefined.html" class="link">__FILE__</a> 定数
+         には、カレント(すなわち読み込まれた)ファイルのパスとファイル名が含まれます。
+        </span>
+        <span class="simpara">
+         PHP がコマンドラインから実行される場合、PHP 4.3.0 以降、
+         この変数にはスクリプト名が含まれます。これより前のバージョンでは、
+         この変数は使用できません。
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">argv</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         スクリプトに渡された引数の配列です。スクリプトがコマンドラインから
+         実行された場合、C 言語スタイルでコマンドライン引数に
+         アクセスすることができます。GET メソッドを通してコールされた場合には
+         検索引数が格納されます。
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">argc</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         スクリプトに渡された引数の数が格納されます
+         （コマンドライン上で実行された場合）。
+        </span>
+       </dd>
+
+      </dt>
+
+      
+      <dt>
+
+       <span class="term">&#039;<var class="varname">GATEWAY_INTERFACE</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         サーバが使用している CGI のバージョンです。
+         例 &#039;<i class="literal">CGI/1.1</i>&#039;
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">SERVER_ADDR</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         現在のスクリプトが実行されているサーバの IP アドレスです。
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">SERVER_NAME</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         現在のスクリプトが実行されているサーバのホスト名です。
+         スクリプトがバーチャルホスト上で実行されている場合は
+         そのバーチャルホスト名となります。
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">SERVER_SOFTWARE</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         レスポンスヘッダ上に書かれている、
+         サーバの認識文字列です。
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">SERVER_PROTOCOL</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         ページがリクエストされた際のプロトコル名とバージョンです。
+         例.&#039;<i class="literal">HTTP/1.0</i>&#039;
+        </span>
+       </dd>
+
+      </dt>
+
+      
+      <dt>
+
+       <span class="term">&#039;<var class="varname">REQUEST_METHOD</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         ページにアクセスする際に使用されたリクエストのメソッド名です。
+         &#039;<i class="literal">GET</i>&#039;, &#039;<i class="literal">HEAD</i>&#039;, 
+         &#039;<i class="literal">POST</i>&#039;, &#039;<i class="literal">PUT</i>&#039; など。
+        </span>
+        <blockquote><p><b class="note">注意</b>: 
+         
+          リクエストのメソッドが <i class="literal">HEAD</i> だった場合、
+          PHP スクリプトはヘッダを送信した後（言い換えれば、
+          出力バッファリングを行わずに全出力を処理した後）に終了します。
+         <br />
+        </p></blockquote>
+       </dd>
+
+      </dt>
+
+      
+      <dt>
+
+       <span class="term">&#039;<var class="varname">REQUEST_TIME</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         リクエストの開始時のタイムスタンプ。PHP 5.1.0 以降で利用可能。
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">QUERY_STRING</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         ページがアクセスされた際にもし検索引数があればそれが格納されます。
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">DOCUMENT_ROOT</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         現在実行されているスクリプトが存在するドキュメントルート
+         ディレクトリです。サーバのコンフィグレーションファイルで
+         定義されています。
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">HTTP_ACCEPT</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         現在のリクエストの <i class="literal">Accept:</i> ヘッダがもしあれば
+         その内容。
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">HTTP_ACCEPT_CHARSET</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         現在のリクエストの <i class="literal">Accept-Charset:</i> ヘッダが
+         もしあればその内容。例: &#039;<i class="literal">iso-8859-1,*,utf-8</i>&#039;
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">HTTP_ACCEPT_ENCODING</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         現在のリクエストに <i class="literal">Accept-Encoding:</i> ヘッダが
+         もしあればその内容。例: &#039;<i class="literal">gzip</i>&#039;
+        </span>
+       </dd>
+
+      </dt>
+
+      
+      <dt>
+
+       <span class="term">&#039;<var class="varname">HTTP_ACCEPT_LANGUAGE</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         現在のリクエストに <i class="literal">Accept-Language:</i> ヘッダが
+         もしあればその内容。例: &#039;<i class="literal">en</i>&#039;
+        </span>
+       </dd>
+
+      </dt>
+
+      
+      <dt>
+
+       <span class="term">&#039;<var class="varname">HTTP_CONNECTION</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         現在のリクエストに <i class="literal">Connection:</i> ヘッダが
+         もしあればその内容。例: &#039;<i class="literal">Keep-Alive</i>&#039;
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">HTTP_HOST</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         現在のリクエストに <i class="literal">Host:</i> ヘッダが
+         もしあればその内容。
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">HTTP_REFERER</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         現在のページに遷移する前にユーザエージェントが参照していた
+         ページのアドレス（もしあれば）。これはユーザエージェントに
+         よってセットされます。全てのユーザエージェントが
+         これをセットしているわけではなく、また、<var class="varname">HTTP_REFERER</var>
+         を変更する機能を持つものもああります。
+         要するに、信頼するべきものではありません。
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">HTTP_USER_AGENT</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         現在のリクエストに <i class="literal">User-Agent:</i> ヘッダが
+         もしあればその内容。ページにアクセスしてきているユーザエージェント
+         のしるしの文字列です。典型的な例は、
+         <span class="computeroutput">Mozilla/4.5 [en] (X11; U;
+         Linux 2.2.9 i586)</span>。たとえば、
+         <a href="function.get-browser.html" class="function">get_browser()</a> でこの値を使って
+         ページの出力をそのブラウザにあわせたものにすることも
+         できるでしょう。
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">HTTPS</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         スクリプトが HTTPS プロトコルを通じて実行されている場合に
+         空でない値が設定されます。
+        </span>
+        <span class="simpara">
+         ISAPI を IIS で使用している場合は、HTTPS プロトコルを通さないでリクエストが行われたときの値は
+         <i class="literal">off</i> となることに注意しましょう。
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">REMOTE_ADDR</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         現在ページをみているユーザの IP アドレス。
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">REMOTE_HOST</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         現在のページにアクセスしているホスト名。DNS の逆引き検索は
+         ユーザの <var class="varname">REMOTE_ADDR</var> に基づいています。
+        </span>
+        <blockquote><p><b class="note">注意</b>: 
+         <span class="simpara">
+          Web サーバがこの値を生成できるように設定されている必要があります。
+          例えば Apache の場合 <i class="literal">HostnameLookups On</i> が
+          <var class="filename">httpd.conf</var> に設定されていなければこの値は生成されません。
+          <a href="function.gethostbyaddr.html" class="function">gethostbyaddr()</a> もご覧ください。
+         </span>
+        </p></blockquote>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">REMOTE_PORT</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         ユーザのマシンから Web サーバへの通信に使用されているポート番号
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">SCRIPT_FILENAME</var>&#039;</span>
+       <dd>
+
+        <p class="para">
+         現在実行されているスクリプトの絶対パス
+         <blockquote><p><b class="note">注意</b>: 
+          
+           <var class="filename">file.php</var> あるいは
+           <var class="filename">../file.php</var> のような相対パスを指定して
+           CLI でスクリプトが実行されている場合、
+           <var class="varname">$_SERVER[&#039;SCRIPT_FILENAME&#039;]</var> には
+           ユーザが指定した相対パスが含まれます。
+          <br />
+         </p></blockquote>
+        </p>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">SERVER_ADMIN</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         Web サーバの設定ファイルの SERVER_ADMIN (Apache の場合)ディレクティブ
+         にセットされている値。スクリプトがバーチャルホスト上で
+         実行されている場合、バーチャルホストに対して値が定義されます。
+        </span>
+       </dd>
+
+      </dt>
+
+      
+      <dt>
+
+       <span class="term">&#039;<var class="varname">SERVER_PORT</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         Web サーバの通信ポートとして使用されているポート番号。デフォルトでは
+         &#039;<i class="literal">80</i>&#039; ですが、例えば SSL を使用している場合は
+         セキュア HTTP ポートとして設定されている値に変わります。
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">SERVER_SIGNATURE</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         サーバ上で生成されたページに追加される、
+         サーバのバージョン名とバーチャルホスト名の文字列。
+         Web サーバの設定で有効になっていることが必要です。
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">PATH_TRANSLATED</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         バーチャルからリアルへのマッピングがなされた後の、
+         現在のスクリプトのファイルシステム上（ドキュメントルートではなく）
+         でのパス。
+        </span>
+        <blockquote><p><b class="note">注意</b>: 
+         <span class="simpara">
+          PHP 4.3.2 以降、<span class="envar">PATH_TRANSLATED</span> は、
+          Apache 2 <acronym title="Server Application Programming Interface">SAPI</acronym> において暗黙のうちに設定されなく
+          なりました。一方、Apache 1 では、この値が Apache により設定されない場合、
+          <span class="envar">SCRIPT_FILENAME</span> と同じ値に設定されます。
+          この変更は、<span class="envar">PATH_TRANSLATED</span> は
+          <span class="envar">PATH_INFO</span> が定義されている場合のみ
+          存在するべきであるという <acronym title="Common Gateway Interface">CGI</acronym> の規約を満たすために
+          行われました。
+         </span>
+         <span class="simpara">
+          Apache 2 ユーザは、<span class="envar">PATH_INFO</span> を定義するために
+          <var class="filename">httpd.conf</var> の中で
+          <i class="literal">AcceptPathInfo = On</i> 
+          を使用することが可能です。
+         </span>
+        </p></blockquote>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">SCRIPT_NAME</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         現在のスクリプトのパス。
+         スクリプト自身のページを指定するのに有用です。
+         <a href="language.constants.predefined.html" class="link">__FILE__</a>
+         定数には、カレント(すなわち読み込まれた)ファイルのパスとファイル名が
+         含まれます。
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">REQUEST_URI</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         ページにアクセスするために指定された URI。例えば、
+         &#039;<i class="literal">/index.html</i>&#039;
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">PHP_AUTH_DIGEST</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         PHP を Apache のモジュールとして実行し、HTTP ダイジェスト認証を
+         行っている場合、クライアントから送られた &#039;Authorization&#039; ヘッダの
+         内容が設定されます（適切な認証処理を行うために利用します）。
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">PHP_AUTH_USER</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         PHP を Apache または IIS（PHP 5 での ISAPI）のモジュールとして
+         実行している場合に、HTTP 認証しているときにそのユーザ名がセットされます。
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">PHP_AUTH_PW</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         PHP を Apache または IIS（PHP 5 での ISAPI）のモジュールとして
+         実行している場合に、HTTP 認証しているときにそのユーザの
+         パスワードがセットされます。
+        </span>
+       </dd>
+
+      </dt>
+
+
+      <dt>
+
+       <span class="term">&#039;<var class="varname">AUTH_TYPE</var>&#039;</span>
+       <dd>
+
+        <span class="simpara">
+         PHP を Apache のモジュールとして実行している場合に、
+         HTTP 認証しているときにその認証形式がセットされます。
+        </span>
+       </dd>
+
+      </dt>
+
+
+     </dl>
+
+    </p>
+
+   </div>
+
+   <div id="reserved.variables.environment" class="sect2">
+    <h3 class="title">環境変数: <var class="varname">$_ENV</var></h3>
+
+    <blockquote><p><b class="note">注意</b>: 
+     <span class="simpara">
+      4.1.0 で導入されました。これ以前のバージョンの場合は、
+      <var class="varname">$HTTP_ENV_VARS</var> を使用してください。
+     </span>
+    </p></blockquote>
+    
+    <p class="simpara">
+     これらの変数は PHP パーサが実行されている環境から
+     PHP のグローバル名前空間に取り込まれます。
+     その多くは、PHP が実行されているシェルに由来するものであり、
+     システムが違えばシェルも違ってくるため、確定的なリストを
+     得ることは不可能です。定義されている環境変数のリストについては
+     使用しているシェルのドキュメントをご覧ください。
+    </p>
+
+    <p class="simpara">
+     PHP がサーバモジュールとして実行されているか CGI プロセッサとして
+     実行されているかに関わらず、その他の環境変数は CGI 変数を含みます。
+    </p>
+    
+    <p class="simpara">
+     これは&#039;スーパーグローバル&#039;又は自動グローバルな変数です。
+     つまり、スクリプトの全てのスコープで有効な変数であるということです。
+     <var class="varname">$HTTP_ENV_VARS</var> を使うときそうするように、
+     この変数に関数やメソッドの中からアクセスする際に
+     <strong class="command">global $_ENV;</strong> のようにする必要はありません。
+    </p>
+
+    <p class="simpara">
+     <var class="varname">$HTTP_ENV_VARS</var> は同じ情報を持っていますが、
+     これはスーパーグローバルではありません（<var class="varname">$HTTP_ENV_VARS</var> と
+     <var class="varname">$_ENV</var> は違う変数であり、PHP はそれぞれ別に扱います）。
+    </p>
+
+    <p class="simpara">
+     <a href="ini.core.html#ini.register-globals" class="link">register_globals</a> が
+     オンにセットされている場合、これらの変数はグローバルスコープ
+     で有効となります。例えば、<var class="varname">$_ENV</var> と
+     <var class="varname">$HTTP_ENV_VARS</var> 配列は分けられます。
+     関連する情報として、
+     <a href="security.globals.html" class="link">Using Register Globals
+     </a> というセキュリティの章をご覧ください。
+     個々のグローバルはスーパーグローバルではありません。
+    </p>
+   </div>
+
+   <div id="reserved.variables.cookies" class="sect2">
+    <h3 class="title">HTTPクッキー: <var class="varname">$_COOKIE</var></h3>
+
+    <blockquote><p><b class="note">注意</b>: 
+     <span class="simpara">
+      4.1.0 で導入されました。これ以前のバージョンの場合は、
+      <var class="varname">$HTTP_COOKIE_VARS</var> を使用してください。
+     </span>
+    </p></blockquote>
+    
+    <p class="simpara">
+     カレントのスクリプトから渡された HTTP クッキーの情報が
+     格納された連想配列。
+    </p>
+
+    <p class="simpara">
+     これは&#039;スーパーグローバル&#039;又は自動グローバルな変数です。
+     つまり、スクリプトの全てのスコープで有効な変数であるということです。
+     <var class="varname">$HTTP_COOKIE_VARS</var> を使うときにそうするように、
+     この変数に関数やメソッドの中からアクセスする際に
+     <strong class="command">global $_COOKIE;</strong> のようにする必要はありません。
+    </p>
+
+    <p class="simpara">
+     <var class="varname">$HTTP_COOKIE_VARS</var> は同じ情報を持っていますが、
+     これはスーパーグローバルではありません
+     （<var class="varname">$HTTP_COOKIE_VARS</var> と <var class="varname">$_COOKIE</var>
+     は違う変数であり、PHP はそれぞれ別に扱います）。
+    </p>
+
+    <p class="simpara">
+     <a href="ini.core.html#ini.register-globals" class="link">register_globals</a> が
+     オンにセットされている場合、これらの変数はグローバルスコープで
+     有効となります。例えば、<var class="varname">$_COOKIE</var> と
+     <var class="varname">$HTTP_COOKIE_VARS</var> 配列は分けられます。
+     関連する情報として、
+     <a href="security.globals.html" class="link">Using Register Globals
+     </a> というセキュリティの章をご覧ください。
+     個々のグローバルはスーパーグローバルではありません。
+    </p>
+   </div>
+
+   <div id="reserved.variables.get" class="sect2">
+    <h3 class="title">HTTP GET 変数: <var class="varname">$_GET</var></h3>
+
+    <blockquote><p><b class="note">注意</b>: 
+     <span class="simpara">
+      4.1.0 で導入されました。これ以前のバージョンの場合は、
+      <var class="varname">$HTTP_GET_VARS</var> を使用してください。
+     </span>
+    </p></blockquote>
+    
+    <p class="simpara">
+     カレントのスクリプトから HTTP GET を通して渡された情報が
+     格納された連想配列。自動的にどのスコープでもグローバルとなります。
+    </p>
+
+    <p class="simpara">
+     これは&#039;スーパーグローバル&#039;又は自動グローバルな変数です。
+     つまり、スクリプトの全てのスコープで有効な変数であるということです。
+     <var class="varname">$HTTP_GET_VARS</var> を使うときにそうするように、
+     この変数に関数やメソッドの中からアクセスする際に
+     <strong class="command">global $_GET;</strong> のようにする必要はありません。
+    </p>
+
+    <p class="simpara">
+     <var class="varname">$HTTP_GET_VARS</var> は同じ情報を持っていますが、
+     これはスーパーグローバルではありません
+     （<var class="varname">HTTP_GET_VARS</var> と <var class="varname">$_GET</var>
+     は違う変数であり、PHPはそれぞれ別に扱います）。
+    </p>
+
+    <p class="simpara">
+     <a href="ini.core.html#ini.register-globals" class="link">register_globals</a> が
+     オンにセットされている場合、これらの変数はグローバルスコープで
+     有効となります。例えば、<var class="varname">$_GET</var> と
+     <var class="varname">$HTTP_GET_VARS</var> 配列は分けられます。
+     関連する情報として、
+     <a href="security.globals.html" class="link">Using Register Globals
+     </a> というセキュリティの章をご覧ください。
+     個々のグローバルはスーパーグローバルではありません。
+    </p>
+   </div>
+
+   <div id="reserved.variables.post" class="sect2">
+    <h3 class="title">HTTP POST 変数: <var class="varname">$_POST</var></h3>
+
+    <blockquote><p><b class="note">注意</b>: 
+     <span class="simpara">
+      4.1.0 で導入されました。これ以前のバージョンの場合は、
+      <var class="varname">$HTTP_POST_VARS</var> を使用してください。
+     </span>
+    </p></blockquote>
+    
+    <p class="simpara">
+     カレントのスクリプトから HTTP POST を通して渡された情報が
+     格納された連想配列。自動的にどのスコープでもグローバルとなる。
+    </p>
+
+    <p class="simpara">
+     これは&#039;スーパーグローバル&#039;又は自動グローバルな変数です。
+     つまり、スクリプトの全てのスコープで有効な変数であるということです。
+     <var class="varname">$HTTP_POST_VARS</var> を使うときにそうするように、
+     この変数に関数やメソッドの中からアクセスする際に
+     <strong class="command">global $_POST;</strong> のようにする必要はありません。
+    </p>
+
+    <p class="simpara">
+     <var class="varname">$HTTP_POST_VARS</var> は同じ情報を持っていますが、
+     これはスーパーグローバルではありません
+     （<var class="varname">HTTP_POST_VARS</var> と <var class="varname">$_POST</var>
+     は違う変数であり、PHPはそれぞれ別に扱います）。
+    </p>
+
+    <p class="simpara">
+     <a href="ini.core.html#ini.register-globals" class="link">register_globals</a> が
+     オンにセットされている場合、これらの変数はグローバルスコープで
+     有効となります。例えば、<var class="varname">$_POST</var> と
+     <var class="varname">$HTTP_POST_VARS</var> 配列は分けられます。
+     関連する情報として、
+     <a href="security.globals.html" class="link">Using Register Globals
+     </a> というセキュリティの章をご覧ください。
+     個々のグローバルはスーパーグローバルではありません。
+    </p>
+   </div>
+
+   <div id="reserved.variables.files" class="sect2">
+    <h3 class="title">HTTP ファイルアップロード変数: <var class="varname">$_FILES</var></h3>
+
+    <blockquote><p><b class="note">注意</b>: 
+     <span class="simpara">
+      4.1.0 で導入されました。これ以前のバージョンの場合は、
+      <var class="varname">$HTTP_POST_FILES</var> を使用してください。
+     </span>
+    </p></blockquote>
+    
+    <p class="simpara">
+     カレントのスクリプトから HTTP POST メソッドを通してアップロードされた
+     情報が格納された連想配列。自動的にどのスコープでもグローバルとなります。
+    </p>
+
+    <p class="simpara">
+     これは&#039;スーパーグローバル&#039;又は自動グローバルな変数です。
+     つまり、スクリプトの全てのスコープで有効な変数であるということです。
+     <var class="varname">$HTTP_POST_FILES</var> を使うときにそうするように、
+     この変数に関数やメソッドの中からアクセスする際に
+     <strong class="command">global $_FILES;</strong> のようにする必要はありません。
+    </p>
+
+    <p class="simpara">
+     <var class="varname">$HTTP_POST_FILES</var> は同じ情報を持っていますが、
+     これはスーパーグローバルではありません
+     (<var class="varname">$HTTP_POST_FILES</var> と <var class="varname">$_FILES</var>
+     は異なる変数であり、PHP はこれらを異なる変数として扱うことに注意してください)。
+    </p>
+
+    <p class="simpara">
+     <a href="ini.core.html#ini.register-globals" class="link">register_globals</a> が
+     オンにセットされている場合、これらの変数はグローバルスコープで
+     有効となります。例えば、<var class="varname">$_FILES</var> と
+     <var class="varname">$HTTP_POST_FILES</var> 配列は分けられます。
+     関連する情報として、
+     <a href="security.globals.html" class="link">Using Register Globals
+     </a> というセキュリティの章をご覧ください。
+     個々のグローバルはスーパーグローバルではありません。
+    </p>
+   </div>
+
+   <div id="reserved.variables.request" class="sect2">
+    <h3 class="title">リクエスト変数: <var class="varname">$_REQUEST</var></h3>
+
+    <blockquote><p><b class="note">注意</b>: 
+     <span class="simpara">
+     4.1.0 で導入されました。以前のバージョンには、同等な配列はありません。
+     </span>
+    </p></blockquote>
+    
+    <p class="simpara">
+     <var class="varname">$_GET</var>, <var class="varname">$_POST</var>,
+     <var class="varname">$_COOKIE</var>, <var class="varname">$_FILES</var>
+     の内容を格納した連想配列
+    </p>
+
+    <p class="simpara">
+     これは&#039;スーパーグローバル&#039;又は自動グローバルな変数です。
+     つまり、スクリプトの全てのスコープで有効な変数であるということです。
+     この変数に関数やメソッドの中からアクセスする際に
+     <strong class="command">global $_FILES;</strong> のようにする必要はありません。
+    </p>
+
+    <p class="simpara">
+     <a href="ini.core.html#ini.register-globals" class="link">register_globals</a> が
+     オンにセットされている場合、これらの変数はグローバルスコープでn
+     有効となります。例えば、<var class="varname">$_REQUEST</var>
+     配列は分けられます。
+     関連する情報として、
+     <a href="security.globals.html" class="link">Using Register Globals
+     </a> というセキュリティの章をご覧ください。
+     個々のグローバルはスーパーグローバルではありません。
+    </p>
+   </div>
+
+   <div id="reserved.variables.session" class="sect2">
+    <h3 class="title">セッション変数: <var class="varname">$_SESSION</var></h3>
+
+    <blockquote><p><b class="note">注意</b>: 
+     <span class="simpara">
+     4.1.0 で導入されました。これ以前のバージョンでは、
+      <var class="varname">$HTTP_SESSION_VARS</var> を使用してください。
+     </span>
+    </p></blockquote>
+    
+    <p class="simpara">
+     現在のスクリプトで有効なセッション情報が格納された配列です。
+     使用法の詳細については
+     <a href="ref.session.html" class="link">セッション処理関数</a>を
+     ご覧ください。
+    </p>
+
+    <p class="simpara">
+     これは&#039;スーパーグローバル&#039;又は自動グローバルな変数です。
+     つまり、スクリプトの全てのスコープで有効な変数であるということです。
+     <var class="varname">$HTTP_SESSION_VARS</var> を使うときにそうするように、
+     この変数に関数やメソッドの中からアクセスする際に
+     <strong class="command">global $_SESSION;</strong> のようにする必要はありません。
+    </p>
+
+    <p class="simpara">
+     <var class="varname">$HTTP_SESSION_VARS</var> は同じ情報を格納していますが、
+     スーパーグローバルではありません
+     (<var class="varname">$HTTP_SESSION_VARS</var> と <var class="varname">$_SESSION</var>
+     は異なる変数であり、PHP はこれらを異なる変数として扱うことに注意してください)。
+    </p>
+
+    <p class="simpara">
+     <a href="ini.core.html#ini.register-globals" class="link">register_globals</a> が
+     オンにセットされている場合、これらの変数はグローバルスコープで
+     有効となります。例えば、<var class="varname">$_SESSION</var>
+     と <var class="varname">$HTTP_SESSION_VARS</var> 配列は分けられます。
+     関連する情報として、
+     <a href="security.globals.html" class="link">Using Register Globals
+     </a> というセキュリティの章をご覧ください。
+     個々のグローバルはスーパーグローバルではありません。
+    </p>
+   </div>
+
+   <div id="reserved.variables.globals" class="sect2">
+    <h3 class="title">グローバル変数: <var class="varname">$GLOBALS</var></h3>
+
+    <blockquote><p><b class="note">注意</b>: 
+     <span class="simpara">
+      <var class="varname">$GLOBALS</var> は、PHP 3.0.0 以降で利用可能です。
+     </span>
+    </p></blockquote>
+    
+    <p class="simpara">
+     カレントのスクリプト上でグローバルスコープで定義されている全ての
+     変数を格納した連想配列。変数の名前は配列のキー。
+    </p>
+
+    <p class="simpara">
+     これは&#039;スーパーグローバル&#039;又は自動グローバルな変数です。
+     つまり、スクリプトの全てのスコープで有効な変数であるということです。
+     この変数に関数やメソッドの中からアクセスする際に
+     <strong class="command">global $_GLOBALS;</strong> のようにする必要はありません。
+    </p>
+
+   </div>
+
+   <div id="reserved.variables.phperrormsg" class="sect2">
+    <h3 class="title">直近のエラーメッセージ: <var class="varname">$php_errormsg</var></h3>
+    <p class="simpara">
+     <var class="varname">$php_errormsg</var> は、PHP によって発せられた
+     最後のエラーメッセージのテキストを格納する変数です。
+     エラーが発生したスコープ内、かつ <a href="ref.errorfunc.html#ini.track-errors" class="link">track_errors</a> 設定オプションが
+     オン（デフォルトはオフ）にセットされている場合にのみ有効です。
+    </p>
+   </div>
+
+   <div id="reserved.variables.httprawpostdata" class="sect2">
+    <h3 class="title">生の POST データ: <var class="varname">$HTTP_RAW_POST_DATA</var></h3>
+    <p class="para">
+     <var class="varname">$HTTP_RAW_POST_DATA</var> には生の POST データが格納されます。
+     <a href="ini.core.html#ini.always-populate-raw-post-data" class="link">always_populate_raw_post_data</a>
+     を参照ください。
+    </p>
+   </div>
+
+   <div id="reserved.variables.httpresponseheader" class="sect2">
+    <h3 class="title">HTTP レスポンスヘッダ: <var class="varname">$http_response_header</var></h3>
+    <p class="para">
+     配列 <var class="varname">$http_response_header</var> は
+     <a href="function.get-headers.html" class="function">get_headers()</a> 関数の結果と同等です。
+     <a href="wrappers.http.html" class="link">HTTP ラッパー</a> を使用する時には、
+     <var class="varname">$http_response_header</var> に HTTP レスポンスヘッダが格納されます。
+     response headers.
+    </p>
+   </div>
+
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="reserved.html">予約語の一覧</a></div>
+ <div class="next" style="float: right;"><a href="reserved.classes.html">定義済のクラス</a></div>
+ <div class="up"><a href="reserved.html">予約語の一覧</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,171 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>正規表現(regex)関数 (POSIX拡張サポート)</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.posix-uname.html">posix_uname</a></div>
+ <div class="next" style="float: right;"><a href="function.ereg-replace.html">ereg_replace</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+<h1 class="title">正規表現(regex)関数 (POSIX拡張サポート)</h1>
+  
+  
+  <div class="partintro">
+   <div id="regex.intro" class="section">
+    <h2 class="title">導入</h2>
+    <div class="tip"><b class="tip">ヒント</b>
+     <p class="para">
+      PHPは、<a href="ref.pcre.html" class="link">PCRE関数</a>によりPerl互換の構
+      文を使用する正規表現式もサポートします。これらの関数は、「ものぐさ」
+      マッチ、言明、条件付きサブパターン、そしてPOSIX拡張正規表現構文
+      でサポートされていない他の複数の機能をサポートします。
+     </p>
+    </div>
+    <div class="warning"><b class="warning">警告</b>
+     <p class="para">
+      これらの正規表現関数はバイナリセーフではありません。<a href="ref.pcre.html" class="link">PCRE関数</a>はバイナリセーフです。
+     </p>
+    </div>
+    <p class="para">
+     正規表現は、複雑な文字列操作の際に使用されます。
+     PHPはPOSIX 1003.2で定義されたPOSIX拡張正規表現を使用します。
+     POSIX正規表現に関する詳細については、PHP配布ファイルのregexディレ
+     クトリにある<a href="http://www.tin.org/bin/man.cgi?section=7&topic=regex" class="link external">&raquo; regexのmanページ</a>を参照ください。
+     このページはmanpageフォーマットであり、読むには
+     <strong class="command">man /usr/local/src/regex/regex.7</strong>のようにします。
+    </p>
+   </div>
+
+   <div id="regex.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">外部ライブラリを必要としません。</p>
+   </div>
+   
+   
+
+
+<div id="regex.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <div class="warning"><b class="warning">警告</b>
+  <p class="simpara">
+   動作に関する知識がある場合以外は、TYPE を変更しないでください。
+  </p>
+ </div>
+ <p class="para">
+  PHP で正規表現のサポートを有効にするには、
+  <span class="option">--with-regex=TYPE</span> を指定して
+  PHP の configure を行ってください。TYPE は
+  system、apache、php のいずれかで、デフォルトでは php を使用します。
+ </p>
+ <p class="simpara">Windows 版の <i class="literal">PHP</i> には
+この拡張モジュールのサポートが組み込まれています。これらの関数を使用
+するために拡張モジュールを追加でロードする必要はありません。</p>
+</div>
+
+
+
+
+
+   <div id="regex.configuration" class="section">
+    <h2 class="title">実行時設定</h2>
+    <p class="para">設定ディレクティブは定義されていません。</p>
+   </div>
+
+   <div id="regex.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">リソース型は定義されていません。</p>
+   </div>
+
+   <div id="regex.constants" class="section">
+    <h2 class="title">定義済み定数</h2>
+    <p class="para">定数は定義されていません。</p>
+   </div>
+
+   <div id="regex.examples" class="section">
+    <h2 class="title">例</h2>
+    <p class="para">
+     <div class="example">
+      <p><b>Example#1 正規表現の例</b></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+//&nbsp;"abc"&nbsp;が&nbsp;$string&nbsp;のどこかにある場合に&nbsp;true&nbsp;を返す<br />ereg&nbsp;("abc",&nbsp;$string);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br /><br />//&nbsp;"abc"&nbsp;が&nbsp;$string&nbsp;の最初にある場合に&nbsp;true&nbsp;を返す<br />ereg&nbsp;("^abc",&nbsp;$string);<br /><br />//&nbsp;"abc"&nbsp;が&nbsp;$string&nbsp;の最後にある場合に&nbsp;true&nbsp;を返す<br />ereg&nbsp;("abc$",&nbsp;$string);<br /><br />//&nbsp;クライアントブラウザがNetscape&nbsp;2,&nbsp;3またはMSIE&nbsp;3である場合にtrue&nbsp;を返す<br />eregi("(ozilla.[23]|MSIE.3)",&nbsp;$_SERVER["HTTP_USER_AGENT"]);<br /><br />//&nbsp;空白で区切られた3つ単語を<br />//&nbsp;$regs[1],&nbsp;$regs[2],$regs[3]に代入する<br />ereg&nbsp;("([[:alnum:]]+)&nbsp;([[:alnum:]]+)&nbsp;([[:alnum:]]+)",&nbsp;$string,$regs);&nbsp;<br /><br />//&nbsp;&lt;br&nbsp;/&gt;&nbsp;タグを&nbsp;$string&nbsp;の先頭に挿入する<br />$string&nbsp;=&nbsp;ereg_replace&nbsp;("^",&nbsp;"&lt;br&nbsp;/&gt;",&nbsp;$string);&nbsp;<br /><br />//&nbsp;&lt;br&nbsp;/&gt;&nbsp;タグを&nbsp;$string&nbsp;の最後に挿入する<br />$string&nbsp;=&nbsp;ereg_replace&nbsp;("$",&nbsp;"&lt;br&nbsp;/&gt;",&nbsp;$string);&nbsp;<br /><br />//&nbsp;$string&nbsp;の改行文字を全て取り除く<br />$string&nbsp;=&nbsp;ereg_replace&nbsp;("\n",&nbsp;"",&nbsp;$string);</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+   </div>
+
+   <div id="regex.seealso" class="section">
+    <h2 class="title">参考</h2>
+    <p class="para">
+     Perl互換の構文を有する正規表現については、
+     <a href="ref.pcre.html" class="link">PCRE関数</a>を参照してください。
+     簡単なシェル形式のワイルドカードパターンマッチングが
+     <a href="function.fnmatch.html" class="function">fnmatch()</a>で提供されています。
+    </p>
+   </div>
+  </div>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.ereg-replace.html">ereg_replace</a> ― 正規表現による置換を行う</li><li><a href="function.ereg.html">ereg</a> ― 正規表現によるマッチングを行う</li><li><a href="function.eregi-replace.html">eregi_replace</a> ― 大文字小文字を区別せずに正規表現による置換を行う</li><li><a href="function.eregi.html">eregi</a> ― 大文字小文字を区別せずに正規表現によるマッチングを行う</li><li><a href="function.split.html">split</a> ― 正規表現により文字列を分割し、配列に格納する</li><li><a href="function.spliti.html">spliti</a> ― 大文字小文字を区別しない正規表現により文字列を分割し、配列に格納する</li><li><a href="function.sql-regcase.html">sql_regcase</a> ― 大文字小文字を区別しないマッチングのための正規表現を作成する</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.posix-uname.html">posix_uname</a></div>
+ <div class="next" style="float: right;"><a href="function.ereg-replace.html">ereg_replace</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

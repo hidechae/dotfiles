@@ -1,0 +1,814 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>ClibPDF 関数 [非推奨]</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.classkit-method-rename.html">classkit_method_rename</a></div>
+ <div class="next" style="float: right;"><a href="function.cpdf-add-annotation.html">cpdf_add_annotation</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">ClibPDF 関数 [非推奨]</h1>
+  
+
+  <div class="partintro">
+   <div id="cpdf.intro" class="section">
+    <h2 class="title">導入</h2>
+    <div class="warning"><b class="warning">警告</b>
+     <p class="para">
+      ClibPDF のサポートは廃止予定です。代替候補としては、
+      <a href="ref.haru.html" class="link">Haru</a> や
+      <a href="ref.pdf.html" class="link">PDFlib</a> などがあります。または
+      <a href="faq.using.html#faq.using.freepdf" class="link">PHP での実装</a>
+      のいずれかを使用するという方法もあります。
+     </p>
+    </div>
+    <p class="para">
+     ClibPDF により、PDF ドキュメントを PHP により作成可能となります。
+     ClibPDF の機能と API は、<a href="ref.pdf.html" class="link">PDFlib</a> に
+     似ています。この文書とともに、よりライブラリの詳細を説明している
+     ClibPDF のマニュアルも読んでください。
+    </p>
+    <p class="para">
+     元の ClibPDF および PHP モジュールの多くの関数名は、
+     <a href="ref.pdf.html" class="link">PDFlib</a> と同様に同じです。
+     <a href="function.cpdf-open.html" class="function">cpdf_open()</a> 以外の全ての関数は、最初の
+     パラメータとしてドキュメントのハンドルをとります。
+    </p>
+    <p class="para">
+     現在、このハンドルは内部で使用されていません。これは、
+     ClibPDF が複数の PDF ドキュメントを同時に作成する機能をサポートして
+     いないためです。実際、これを試みても、結果は期待できません。
+     マルチスレッド環境での結果を予測することはできません。ClibPDF の
+     作者によれば、これは将来のリリースで変更されます
+     (これを書いている時点での最新版は 1.10 です)。
+     もしこの機能が必要なら、pdflib モジュールを使用してください。
+    </p>
+    <p class="para">
+     ClipPDF (および <a href="ref.pdf.html" class="link">PDFlib</a>) が優れているのは、
+     テンポラリファイルを使用せずに pdf ドキュメントを
+     完全にメモリ上で作成することが可能であることです。
+     あらかじめ定義された単位長さの座標を渡す機能も有しています
+     (この機能は、<a href="ref.pdf.html" class="link">PDFlib</a> 関数の
+     <a href="function.pdf-translate.html" class="function">pdf_translate()</a> で模擬することも可能です)。
+    </p>
+    <p class="para">
+     その他の ClibPDF の機能で優れているのは、新規のページのオープン後で
+     あっても任意のページをいつでも修正可能であるという点です。関数
+     <a href="function.cpdf-set-current-page.html" class="function">cpdf_set_current_page()</a> により、カレントの
+     ページを離れて、他のページを修正できるようになります。
+    </p>
+    <p class="para">
+     多くの機能の使用法は非常に容易です。最も困難なのは、おそらく新規に
+     PDF ドキュメントを作成する場合でしょう。次の例が導入の手助けと
+     なるはずです。この例では、ページを 1 つ有するドキュメントを
+     作成します。このページは、30pt のアウトラインフォントでテキスト
+     &quot;Times-Roman&quot; により書かれます。テキストには下線が引かれます。
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      
+この拡張モジュールは <a href="http://pecl.php.net/" class="link external">&raquo; PECL</a> レポジトリに移動
+されており、以下のバージョン以降 PHP にバンドルされなくなっています。 PHP 5.1.0.
+     <br />
+    </p></blockquote>
+    <blockquote><p><b class="note">注意</b>: 
+     <span class="simpara">
+      外部の PDF ライブラリを使用しない別のフリーな PDF 作成ツールに
+      ついては、<a href="faq.using.html#faq.using.freepdf" class="link">関連する
+      FAQ</a> を参照ください。
+     </span>
+    </p></blockquote>
+   </div>
+   
+   <div id="cpdf.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">
+     ClibPDF 関数を使用するには、ClibPDF パッケージをインストールする
+     必要があります。ClibPDF は、<a href="http://www.fastio.com/" class="link external">&raquo; 
+     FastIO</a> からダウンロード可能ですが、商用で使用する場合には
+     ライセンスを購入する必要があります。
+     PHP では、cpdflib &gt;= 2 を使用する必要があります。
+     ClibPDF ライブラリの開発は終了しており、FastIO
+     のウェブサイトもそのうちにアクセスできなくなることでしょう。
+    </p>
+   </div>
+
+   
+
+
+<div id="cpdf.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  この関数が動作するには、
+  <span class="option">--with-cpdflib[=DIR]</span> を指定して PHP
+  をコンパイルする必要があります。DIR は cpdflib をインストールする
+  ディレクトリで、<var class="filename">/usr</var> がデフォルトです。
+  ClibPDF が使用する jpeg ライブラリと tiff ライブラリの場所を指定することも
+  できます。これを行うには、configure にオプション
+  <span class="option">--with-jpeg-dir[=DIR]</span> および
+  <span class="option">--with-tiff-dir[=DIR]</span> を
+  指定してください。
+ </p>
+</div>
+
+
+
+   <div id="cpdf.configuration" class="section">
+    <h2 class="title">実行時設定</h2>
+    <p class="para">設定ディレクティブは定義されていません。</p>
+   </div>
+
+   
+
+
+<div id="cpdf.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <dl>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>CPDF_PM_NONE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>CPDF_PM_OUTLINES</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>CPDF_PM_THUMBS</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>CPDF_PM_FULLSCREEN</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>CPDF_PL_SINGLE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>CPDF_PL_1COLUMN</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>CPDF_PL_2LCOLUMN</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>CPDF_PL_2RCOLUMN</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+</div>
+
+
+
+   
+   <div id="cpdf.examples" class="section">
+    <h2 class="title">例</h2>
+    <div class="example">
+     <p><b>Example#1 簡単な ClibPDF の例</b></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$cpdf&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">cpdf_open</span><span style="color: #007700">(</span><span style="color: #0000BB">0</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">cpdf_page_init</span><span style="color: #007700">(</span><span style="color: #0000BB">$cpdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">595</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">842</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1.0</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">cpdf_add_outline</span><span style="color: #007700">(</span><span style="color: #0000BB">$cpdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"Page&nbsp;1"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">cpdf_begin_text</span><span style="color: #007700">(</span><span style="color: #0000BB">$cpdf</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">cpdf_set_font</span><span style="color: #007700">(</span><span style="color: #0000BB">$cpdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"Times-Roman"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">30</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"WinAnsiEncoding"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">cpdf_set_text_rendering</span><span style="color: #007700">(</span><span style="color: #0000BB">$cpdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">cpdf_text</span><span style="color: #007700">(</span><span style="color: #0000BB">$cpdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"Times&nbsp;Roman&nbsp;outlined"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">50</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">50</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">cpdf_end_text</span><span style="color: #007700">(</span><span style="color: #0000BB">$cpdf</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">cpdf_moveto</span><span style="color: #007700">(</span><span style="color: #0000BB">$cpdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">50</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">50</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">cpdf_lineto</span><span style="color: #007700">(</span><span style="color: #0000BB">$cpdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">740</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">330</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">cpdf_stroke</span><span style="color: #007700">(</span><span style="color: #0000BB">$cpdf</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">cpdf_finalize_page</span><span style="color: #007700">(</span><span style="color: #0000BB">$cpdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">cpdf_finalize</span><span style="color: #007700">(</span><span style="color: #0000BB">$cpdf</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">Header</span><span style="color: #007700">(</span><span style="color: #DD0000">"Content-type:&nbsp;application/pdf"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">cpdf_output_buffer</span><span style="color: #007700">(</span><span style="color: #0000BB">$cpdf</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">cpdf_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$cpdf</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+    <p class="para">
+     pdflib の配布ファイルには、アナログクロックを有する複数ページを
+     作成するような複雑な例が含まれています。以下に ClipPDF 拡張を使用して
+     この例を PHP に変換したものを示します。
+    </p>
+    <div class="example">
+     <p><b>Example#2 pdflib 2.0 配布ファイルからの pdfclock の例</b></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$radius&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">200</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$margin&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">20</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$pagecount&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">40</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$pdf&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">cpdf_open</span><span style="color: #007700">(</span><span style="color: #0000BB">0</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">cpdf_set_creator</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"pdf_clock.php"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">cpdf_set_title</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"Analog&nbsp;Clock"</span><span style="color: #007700">);<br />&nbsp;&nbsp;<br />while&nbsp;(</span><span style="color: #0000BB">$pagecount</span><span style="color: #007700">--&nbsp;&gt;&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_page_init</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$pagecount</span><span style="color: #007700">+</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">2&nbsp;</span><span style="color: #007700">*&nbsp;(</span><span style="color: #0000BB">$radius&nbsp;</span><span style="color: #007700">+&nbsp;</span><span style="color: #0000BB">$margin</span><span style="color: #007700">),&nbsp;</span><span style="color: #0000BB">2&nbsp;</span><span style="color: #007700">*&nbsp;(</span><span style="color: #0000BB">$radius&nbsp;</span><span style="color: #007700">+&nbsp;</span><span style="color: #0000BB">$margin</span><span style="color: #007700">),&nbsp;</span><span style="color: #0000BB">1.0</span><span style="color: #007700">);<br />&nbsp;&nbsp;<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_set_page_animation</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">4</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0.5</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">);&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;wipe&nbsp;*/<br />&nbsp;&nbsp;<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_translate</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$radius&nbsp;</span><span style="color: #007700">+&nbsp;</span><span style="color: #0000BB">$margin</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$radius&nbsp;</span><span style="color: #007700">+&nbsp;</span><span style="color: #0000BB">$margin</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_save</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_setrgbcolor</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0.0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0.0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1.0</span><span style="color: #007700">);<br />&nbsp;&nbsp;<br />&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;minute&nbsp;strokes&nbsp;*/<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_setlinewidth</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">2.0</span><span style="color: #007700">);<br />&nbsp;&nbsp;for&nbsp;(</span><span style="color: #0000BB">$alpha&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">;&nbsp;</span><span style="color: #0000BB">$alpha&nbsp;</span><span style="color: #007700">&lt;&nbsp;</span><span style="color: #0000BB">360</span><span style="color: #007700">;&nbsp;</span><span style="color: #0000BB">$alpha&nbsp;</span><span style="color: #007700">+=&nbsp;</span><span style="color: #0000BB">6</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_rotate</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">6.0</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_moveto</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$radius</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0.0</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_lineto</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$radius</span><span style="color: #007700">-</span><span style="color: #0000BB">$margin</span><span style="color: #007700">/</span><span style="color: #0000BB">3</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0.0</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_stroke</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">);<br />&nbsp;&nbsp;}<br />&nbsp;&nbsp;<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_restore</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_save</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">);<br />&nbsp;<br />&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;5&nbsp;minute&nbsp;strokes&nbsp;*/<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_setlinewidth</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">3.0</span><span style="color: #007700">);<br />&nbsp;&nbsp;for&nbsp;(</span><span style="color: #0000BB">$alpha&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">;&nbsp;</span><span style="color: #0000BB">$alpha&nbsp;</span><span style="color: #007700">&lt;&nbsp;</span><span style="color: #0000BB">360</span><span style="color: #007700">;&nbsp;</span><span style="color: #0000BB">$alpha&nbsp;</span><span style="color: #007700">+=&nbsp;</span><span style="color: #0000BB">30</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_rotate</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">30.0</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_moveto</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$radius</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0.0</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_lineto</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$radius</span><span style="color: #007700">-</span><span style="color: #0000BB">$margin</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0.0</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_stroke</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">);<br />&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;</span><span style="color: #0000BB">$ltime&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">getdate</span><span style="color: #007700">();<br /><br />&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;draw&nbsp;hour&nbsp;hand&nbsp;*/<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_save</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_rotate</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;-((</span><span style="color: #0000BB">$ltime</span><span style="color: #007700">[</span><span style="color: #DD0000">'minutes'</span><span style="color: #007700">]/</span><span style="color: #0000BB">60.0</span><span style="color: #007700">)&nbsp;+&nbsp;</span><span style="color: #0000BB">$ltime</span><span style="color: #007700">[</span><span style="color: #DD0000">'hours'</span><span style="color: #007700">]&nbsp;-&nbsp;</span><span style="color: #0000BB">3.0</span><span style="color: #007700">)&nbsp;*&nbsp;</span><span style="color: #0000BB">30.0</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_moveto</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;-</span><span style="color: #0000BB">$radius</span><span style="color: #007700">/</span><span style="color: #0000BB">10</span><span style="color: #007700">,&nbsp;-</span><span style="color: #0000BB">$radius</span><span style="color: #007700">/</span><span style="color: #0000BB">20</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_lineto</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$radius</span><span style="color: #007700">/</span><span style="color: #0000BB">2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0.0</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_lineto</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;-</span><span style="color: #0000BB">$radius</span><span style="color: #007700">/</span><span style="color: #0000BB">10</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$radius</span><span style="color: #007700">/</span><span style="color: #0000BB">20</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_closepath</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_fill</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_restore</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;draw&nbsp;minute&nbsp;hand&nbsp;*/<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_save</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_rotate</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;-((</span><span style="color: #0000BB">$ltime</span><span style="color: #007700">[</span><span style="color: #DD0000">'seconds'</span><span style="color: #007700">]/</span><span style="color: #0000BB">60.0</span><span style="color: #007700">)&nbsp;+&nbsp;</span><span style="color: #0000BB">$ltime</span><span style="color: #007700">[</span><span style="color: #DD0000">'minutes'</span><span style="color: #007700">]&nbsp;-&nbsp;</span><span style="color: #0000BB">15.0</span><span style="color: #007700">)&nbsp;*&nbsp;</span><span style="color: #0000BB">6.0</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_moveto</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;-</span><span style="color: #0000BB">$radius</span><span style="color: #007700">/</span><span style="color: #0000BB">10</span><span style="color: #007700">,&nbsp;-</span><span style="color: #0000BB">$radius</span><span style="color: #007700">/</span><span style="color: #0000BB">20</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_lineto</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$radius&nbsp;</span><span style="color: #007700">*&nbsp;</span><span style="color: #0000BB">0.8</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0.0</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_lineto</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;-</span><span style="color: #0000BB">$radius</span><span style="color: #007700">/</span><span style="color: #0000BB">10</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$radius</span><span style="color: #007700">/</span><span style="color: #0000BB">20</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_closepath</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_fill</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_restore</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;draw&nbsp;second&nbsp;hand&nbsp;*/<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_setrgbcolor</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1.0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0.0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0.0</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_setlinewidth</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_save</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_rotate</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;-((</span><span style="color: #0000BB">$ltime</span><span style="color: #007700">[</span><span style="color: #DD0000">'seconds'</span><span style="color: #007700">]&nbsp;-&nbsp;</span><span style="color: #0000BB">15.0</span><span style="color: #007700">)&nbsp;*&nbsp;</span><span style="color: #0000BB">6.0</span><span style="color: #007700">));<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_moveto</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;-</span><span style="color: #0000BB">$radius</span><span style="color: #007700">/</span><span style="color: #0000BB">5</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0.0</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_lineto</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$radius</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0.0</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_stroke</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_restore</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;draw&nbsp;little&nbsp;circle&nbsp;at&nbsp;center&nbsp;*/<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_circle</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$radius</span><span style="color: #007700">/</span><span style="color: #0000BB">30</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_fill</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_restore</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;</span><span style="color: #0000BB">cpdf_finalize_page</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$pagecount</span><span style="color: #007700">+</span><span style="color: #0000BB">1</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #0000BB">cpdf_finalize</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">Header</span><span style="color: #007700">(</span><span style="color: #DD0000">"Content-type:&nbsp;application/pdf"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">cpdf_output_buffer</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">cpdf_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$pdf</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </div>
+
+   <div id="cpdf.seealso" class="section">
+    <h2 class="title">参考</h2>
+    <p class="para">
+     <a href="ref.pdf.html" class="link">PDFlib</a> 拡張モジュールの
+     ドキュメントも参照ください。
+    </p>
+   </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.cpdf-add-annotation.html">cpdf_add_annotation</a> ― 注記を追加する</li><li><a href="function.cpdf-add-outline.html">cpdf_add_outline</a> ― 現在のページにブックマークを追加する</li><li><a href="function.cpdf-arc.html">cpdf_arc</a> ― 円弧を描く</li><li><a href="function.cpdf-begin-text.html">cpdf_begin_text</a> ― テキストセクションを開始する</li><li><a href="function.cpdf-circle.html">cpdf_circle</a> ― 円を描く</li><li><a href="function.cpdf-clip.html">cpdf_clip</a> ― 現在のパスを切り取る</li><li><a href="function.cpdf-close.html">cpdf_close</a> ― pdf ドキュメントを閉じる</li><li><a href="function.cpdf-closepath-fill-stroke.html">cpdf_closepath_fill_stroke</a> ― パスを閉じ、塗りつぶし、描く</li><li><a href="function.cpdf-closepath-stroke.html">cpdf_closepath_stroke</a> ― パスを閉じ、線をパスに沿って描く</li><li><a href="function.cpdf-closepath.html">cpdf_closepath</a> ― パスを閉じる</li><li><a href="function.cpdf-continue-text.html">cpdf_continue_text</a> ― 次の行にテキストを出力する</li><li><a href="function.cpdf-curveto.html">cpdf_curveto</a> ― 曲線を描く</li><li><a href="function.cpdf-end-text.html">cpdf_end_text</a> ― テキストセクションを終了する</li><li><a href="function.cpdf-fill-stroke.html">cpdf_fill_stroke</a> ― 現在のパスを塗りつぶし、描く</li><li><a href="function.cpdf-fill.html">cpdf_fill</a> ― 現在のパスを塗りつぶす</li><li><a href="function.cpdf-finalize-page.html">cpdf_finalize_page</a> ― ページを終了する</li><li><a href="function.cpdf-finalize.html">cpdf_finalize</a> ― ドキュメントを終了する</li><li><a href="function.cpdf-global-set-document-limits.html">cpdf_global_set_document_limits</a> ― PDF ドキュメントの制限を設定する</li><li><a href="function.cpdf-import-jpeg.html">cpdf_import_jpeg</a> ― JPEG 画像をオープンする</li><li><a href="function.cpdf-lineto.html">cpdf_lineto</a> ― 線を描く</li><li><a href="function.cpdf-moveto.html">cpdf_moveto</a> ― 現在位置を設定する</li><li><a href="function.cpdf-newpath.html">cpdf_newpath</a> ― 新規パスを開始する</li><li><a href="function.cpdf-open.html">cpdf_open</a> ― 新規 pdf ドキュメントをオープンする</li><li><a href="function.cpdf-output-buffer.html">cpdf_output_buffer</a> ― pdf ドキュメントをメモリバッファに出力する</li><li><a href="function.cpdf-page-init.html">cpdf_page_init</a> ― 新規ページを開始する</li><li><a href="function.cpdf-place-inline-image.html">cpdf_place_inline_image</a> ― 画像をページに置く</li><li><a href="function.cpdf-rect.html">cpdf_rect</a> ― 矩形を描く</li><li><a href="function.cpdf-restore.html">cpdf_restore</a> ― 以前に保存した環境を回復させる</li><li><a href="function.cpdf-rlineto.html">cpdf_rlineto</a> ― 線を描く</li><li><a href="function.cpdf-rmoveto.html">cpdf_rmoveto</a> ― 現在位置を設定する</li><li><a href="function.cpdf-rotate-text.html">cpdf_rotate_text</a> ― テキスト回転角を設定する</li><li><a href="function.cpdf-rotate.html">cpdf_rotate</a> ― 回転を設定する</li><li><a href="function.cpdf-save-to-file.html">cpdf_save_to_file</a> ― pdf ドキュメントをファイルに書きこむ</li><li><a href="function.cpdf-save.html">cpdf_save</a> ― 現在の環境を保存する</li><li><a href="function.cpdf-scale.html">cpdf_scale</a> ― 倍率を設定する</li><li><a href="function.cpdf-set-action-url.html">cpdf_set_action_url</a> ― ハイパーリンクを設定する</li><li><a href="function.cpdf-set-char-spacing.html">cpdf_set_char_spacing</a> ― 文字間隔を設定する</li><li><a href="function.cpdf-set-creator.html">cpdf_set_creator</a> ― pdf ドキュメントの creator フィールドを設定する</li><li><a href="function.cpdf-set-current-page.html">cpdf_set_current_page</a> ― 現在のページを設定する</li><li><a href="function.cpdf-set-font-directories.html">cpdf_set_font_directories</a> ― 外部フォントを使用した際、検索するディレクトリを設定する</li><li><a href="function.cpdf-set-font-map-file.html">cpdf_set_font_map_file</a> ― 外部フォントを使用している場合、フォント名をファイル名変換マップに設定する</li><li><a href="function.cpdf-set-font.html">cpdf_set_font</a> ― フォントの種類とサイズを選択する</li><li><a href="function.cpdf-set-horiz-scaling.html">cpdf_set_horiz_scaling</a> ― テキストの水平方向の倍率を設定する</li><li><a href="function.cpdf-set-keywords.html">cpdf_set_keywords</a> ― pdf ドキュメントの keywords フィールドを設定する</li><li><a href="function.cpdf-set-leading.html">cpdf_set_leading</a> ― テキスト行の間隔を設定する</li><li><a href="function.cpdf-set-page-animation.html">cpdf_set_page_animation</a> ― ページ間の移行時間を設定する</li><li><a href="function.cpdf-set-subject.html">cpdf_set_subject</a> ― pdf ドキュメントの subject フィールドを設定する</li><li><a href="function.cpdf-set-text-matrix.html">cpdf_set_text_matrix</a> ― テキスト行列を設定する</li><li><a href="function.cpdf-set-text-pos.html">cpdf_set_text_pos</a> ― テキスト位置を設定する</li><li><a href="function.cpdf-set-text-rendering.html">cpdf_set_text_rendering</a> ― テキストのレンダリング法を定義する</li><li><a href="function.cpdf-set-text-rise.html">cpdf_set_text_rise</a> ― テキストの高さを設定する</li><li><a href="function.cpdf-set-title.html">cpdf_set_title</a> ― pdf ドキュメントの title フィールドを設定する</li><li><a href="function.cpdf-set-viewer-preferences.html">cpdf_set_viewer_preferences</a> ― ドキュメントのビューワ上での表示方法を設定する</li><li><a href="function.cpdf-set-word-spacing.html">cpdf_set_word_spacing</a> ― 単語間の間隔を設定する</li><li><a href="function.cpdf-setdash.html">cpdf_setdash</a> ― 破線のパターンを設定する</li><li><a href="function.cpdf-setflat.html">cpdf_setflat</a> ― flatness を設定する</li><li><a href="function.cpdf-setgray-fill.html">cpdf_setgray_fill</a> ― 塗りつぶし色をグレー値に設定する</li><li><a href="function.cpdf-setgray-stroke.html">cpdf_setgray_stroke</a> ― 描画色をグレー値に設定する</li><li><a href="function.cpdf-setgray.html">cpdf_setgray</a> ― 描画、塗りつぶし色をグレー値に設定する</li><li><a href="function.cpdf-setlinecap.html">cpdf_setlinecap</a> ― linecap パラメータを設定する</li><li><a href="function.cpdf-setlinejoin.html">cpdf_setlinejoin</a> ― linejoin パラメータを設定する</li><li><a href="function.cpdf-setlinewidth.html">cpdf_setlinewidth</a> ― 線幅を設定する</li><li><a href="function.cpdf-setmiterlimit.html">cpdf_setmiterlimit</a> ― miter のリミットを設定する</li><li><a href="function.cpdf-setrgbcolor-fill.html">cpdf_setrgbcolor_fill</a> ― 塗りつぶし色を RGB カラー値に設定する</li><li><a href="function.cpdf-setrgbcolor-stroke.html">cpdf_setrgbcolor_stroke</a> ― 描画色を RGB カラー値に設定する</li><li><a href="function.cpdf-setrgbcolor.html">cpdf_setrgbcolor</a> ― 描画色および塗りつぶし色を RGB 値に設定する</li><li><a href="function.cpdf-show-xy.html">cpdf_show_xy</a> ― 指定位置にテキストを出力する</li><li><a href="function.cpdf-show.html">cpdf_show</a> ― 現在位置にテキストを出力する</li><li><a href="function.cpdf-stringwidth.html">cpdf_stringwidth</a> ― 現在のフォントのテキストの幅を返す</li><li><a href="function.cpdf-stroke.html">cpdf_stroke</a> ― パスに沿って線を描く</li><li><a href="function.cpdf-text.html">cpdf_text</a> ― パラメータを元にテキストを出力する</li><li><a href="function.cpdf-translate.html">cpdf_translate</a> ― 座標系の原点を設定する</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.classkit-method-rename.html">classkit_method_rename</a></div>
+ <div class="next" style="float: right;"><a href="function.cpdf-add-annotation.html">cpdf_add_annotation</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

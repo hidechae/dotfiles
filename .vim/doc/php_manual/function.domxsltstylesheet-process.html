@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>DomDocument オブジェクトに XSLT 変換を適用する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.domprocessinginstruction-target.html">DomProcessingInstruction->target</a></div>
+ <div class="next" style="float: right;"><a href="function.domxsltstylesheet-result-dump-file.html">DomXsltStylesheet->result_dump_file()</a></div>
+ <div class="up"><a href="ref.domxml.html">DOM XML</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.domxsltstylesheet-process" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">DomXsltStylesheet-&gt;process()</h1>
+  <p class="verinfo">(No version information available, might be only in CVS)</p><p class="refpurpose">DomXsltStylesheet->process() ― 
+   DomDocument オブジェクトに XSLT 変換を適用する
+  </p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="classsynopsis">
+   <div class="ooclass"><b class="classname">DomXsltStylesheet</b></div>
+   <div class="methodsynopsis">
+    <span class="type">DomDocument</span> <span class="methodname"><b><b>process</b></b></span>
+     ( <span class="methodparam"><span class="type">DomDocument</span> <tt class="parameter">$xml_doc</tt></span>
+    [, <span class="methodparam"><span class="type">array</span> <tt class="parameter">$xslt_params</tt></span>
+    [, <span class="methodparam"><span class="type">bool</span> <tt class="parameter">$is_xpath_param</tt></span>
+    [, <span class="methodparam"><span class="type">string</span> <tt class="parameter">$profile_filename</tt></span>
+   ]]] )</div>
+
+  </div>
+  <p class="para">
+   与えられた <span class="classname">DomDocument</span> オブジェクトに
+   XSLT 変換を適用します。
+  </p>
+ </div>
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">xml_doc</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <span class="classname">DomDocument</span> オブジェクトとしての変換される
+       XML 文章
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">xslt_params</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       パラメータ名と値のペアを持つ連想配列
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">is_xpath_param</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <b><tt>FALSE</tt></b> に設定された場合、<i><tt class="parameter">xslt_params</tt></i>
+
+       の値は句オーとされます。これはデフォルトの動作です。
+       PHP 文字列として値を渡すことができます。
+      </p>
+      <blockquote><p><b class="note">注意</b>: 
+       
+        もし文字列がシングルクォートとダブルクォートの両方を含んでいる場合、
+        このパラメータを <b><tt>TRUE</tt></b> に設定し、
+        ご自身で全ての値のクォーティングを行う必要があります。
+       <br />
+      </p></blockquote>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">profile_filename</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       プロファイリング情報を希望する場合、ファイル名のパスを設定します。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   処理結果を <span class="classname">DomDocument</span> オブジェクトとして返します。
+  </p>
+ </div>
+
+ <div class="refsect1 migration">
+  <h3 class="title">PHP 5 への移行</h3>
+  <p class="para">
+   <a href="function.xsl-xsltprocessor-set-parameter.html" class="xref">XSLTProcessor::setParameter</a> と
+   <a href="function.xsl-xsltprocessor-transform-to-doc.html" class="xref">XSLTProcessor::transformToDoc</a>
+   を使用してください。
+  </p>
+ </div>
+
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">4.3.0</td>
+       <td colspan="1" rowspan="1" align="left">
+        <i><tt class="parameter">profile_filename</tt></i>
+ パラメータが追加されました。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.domxml-xslt-stylesheet.html" class="function">domxml_xslt_stylesheet()</a></li>
+    <li class="member"><a href="function.domxml-xslt-stylesheet-file.html" class="function">domxml_xslt_stylesheet_file()</a></li>
+    <li class="member"><a href="function.domxml-xslt-stylesheet-doc.html" class="function">domxml_xslt_stylesheet_doc()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.domprocessinginstruction-target.html">DomProcessingInstruction->target</a></div>
+ <div class="next" style="float: right;"><a href="function.domxsltstylesheet-result-dump-file.html">DomXsltStylesheet->result_dump_file()</a></div>
+ <div class="up"><a href="ref.domxml.html">DOM XML</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

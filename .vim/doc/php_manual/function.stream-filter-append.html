@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>ストリームにフィルタを付加する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.stream-encoding.html">stream_encoding</a></div>
+ <div class="next" style="float: right;"><a href="function.stream-filter-prepend.html">stream_filter_prepend</a></div>
+ <div class="up"><a href="ref.stream.html">ストリーム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.stream-filter-append" class="refentry">
+   <div class="refnamediv">
+    <h1 class="refname">stream_filter_append</h1>
+    <p class="verinfo">(PHP 4 &gt;= 4.3.0, PHP 5)</p><p class="refpurpose">stream_filter_append ― ストリームにフィルタを付加する</p>
+ 
+   </div>
+   <div class="refsect1 u">
+    <h3 class="title">説明</h3>
+     <div class="methodsynopsis">
+      <span class="type">resource</span> <span class="methodname"><b><b>stream_filter_append</b></b></span>
+       ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$stream</tt></span>
+      , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$filtername</tt></span>
+      [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$read_write</tt></span>
+      [, <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$params</tt></span>
+     ]] )</div>
+
+    <p class="para">
+     <i><tt class="parameter">filtername</tt></i>
+ で指定されたフィルタを、
+     <i><tt class="parameter">stream</tt></i>
+ に付加されているフィルタのリストに加えます。
+     このフィルタは、指定された <i><tt class="parameter">params</tt></i>
+ と共に、
+     リストの<em class="emphasis">末尾</em>に追加され、ストリームに対する操作の中で最後に呼び出されます。
+     フィルタをリストの先頭に加えたいときは、<a href="function.stream-filter-prepend.html" class="function">stream_filter_prepend()</a>
+     を使ってください。
+    </p>
+    <p class="para">
+     デフォルトでは、 <b>stream_filter_append()</b> は
+     ストリームが読み込み用に開かれている場合は (つまり、オープンモードが
+     <i class="literal">r</i> あるいは <i class="literal">+</i> を伴う場合は)、
+     フィルタを <i class="literal">リードフィルタチェイン</i> に追加し、
+     ストリームが書き出し用に開かれている場合は(つまり、オープンモードが
+     <i class="literal">w</i> か <i class="literal">a</i>か、あるいは<i class="literal">+</i> を伴う場合は)、
+     <i class="literal">ライトフィルターチェィン</i>にも追加します。
+     <b><tt>STREAM_FILTER_READ</tt></b>・
+     <b><tt>STREAM_FILTER_WRITE</tt></b>・
+     <b><tt>STREAM_FILTER_ALL</tt></b> を <i><tt class="parameter">read_write</tt></i>
+パラメータに渡すことで、この挙動を変えることができます。
+    </p>
+    <p class="para">
+     PHP 5.1.0 以降では、この関数はリソースを返します。
+     このリソースは、<a href="function.stream-filter-remove.html" class="function">stream_filter_remove()</a>
+     をコールする際にこのフィルタインスタンスを参照するために使用可能です。
+     PHP 5.1.0 より前のバージョンでは、この関数は成功した場合に <b><tt>TRUE</tt></b>、
+     失敗した場合に <b><tt>FALSE</tt></b> を返します。
+    </p>
+    <p class="para">
+     <div class="example">
+      <p><b>Example#1 フィルタの適用される場所を制御する</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/*&nbsp;ファイルを読み書き用に開く&nbsp;*/<br /></span><span style="color: #0000BB">$fp&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">'test.txt'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'w+'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;ROT13&nbsp;フィルタをライトフィルタチェインに付加する。<br />&nbsp;*&nbsp;リードフィルタチェインには付加しない。*/<br /></span><span style="color: #0000BB">stream_filter_append</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"string.rot13"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">STREAM_FILTER_WRITE</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;単純な文字列をファイルに書き出す。<br />&nbsp;*&nbsp;この文字列には、出口で&nbsp;ROT13&nbsp;変換が適用される。<br />&nbsp;*/<br /></span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"This&nbsp;is&nbsp;a&nbsp;test\n"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;ファイルの最初に戻る&nbsp;*/<br /></span><span style="color: #0000BB">rewind</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;書き出した内容を読み戻す。<br />&nbsp;*&nbsp;もし、フィルタがリードフィルタチェインにも<br />&nbsp;*&nbsp;付加されていれば、再び読み出し時に&nbsp;ROT13&nbsp;が適用され、<br />&nbsp;*&nbsp;テキストは元の状態に戻るはず。&nbsp;*/<br /></span><span style="color: #0000BB">fpassthru</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">fclose</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;期待される出力<br />&nbsp;&nbsp;&nbsp;---------------<br /><br />Guvf&nbsp;vf&nbsp;n&nbsp;grfg<br /><br />&nbsp;*/<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     <b>カスタム(ユーザ)フィルタを使うには</b>
+     <span class="simpara">
+      カスタムフィルタを <i><tt class="parameter">filtername</tt></i>
+ に指定するためには、
+      まず <a href="function.stream-filter-register.html" class="function">stream_filter_register()</a> 関数でそれを登録しておく
+      必要があります。
+     </span>
+    </p></blockquote>
+    <blockquote><p><b class="note">注意</b>: 
+     <span class="simpara">
+      ストリームデータは（ローカルおよびリモートの）リソースからチャンク単位で
+      読み込まれ、内部バッファに保持されます。新しいフィルタがストリームに
+      追加されると、内部バッファのデータがその時点でフィルタリングされます。
+      これは <a href="function.stream-filter-prepend.html" class="function">stream_filter_prepend()</a> の挙動とは違います。
+     </span>
+    </p></blockquote>
+    <p class="simpara">
+     <a href="function.stream-filter-register.html" class="function">stream_filter_register()</a>、
+     <a href="function.stream-filter-prepend.html" class="function">stream_filter_prepend()</a> および
+     <a href="function.stream-get-filters.html" class="function">stream_get_filters()</a> も参照ください。
+    </p>
+   </div>
+
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.stream-encoding.html">stream_encoding</a></div>
+ <div class="next" style="float: right;"><a href="function.stream-filter-prepend.html">stream_filter_prepend</a></div>
+ <div class="up"><a href="ref.stream.html">ストリーム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

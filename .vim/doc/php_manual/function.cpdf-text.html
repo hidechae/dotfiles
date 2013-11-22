@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>パラメータを元にテキストを出力する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.cpdf-stroke.html">cpdf_stroke</a></div>
+ <div class="next" style="float: right;"><a href="function.cpdf-translate.html">cpdf_translate</a></div>
+ <div class="up"><a href="ref.cpdf.html">ClibPDF</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.cpdf-text" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">cpdf_text</h1>
+  <p class="verinfo">(PHP 4, PHP 5 &lt;= 5.0.5)</p><p class="refpurpose">cpdf_text ― パラメータを元にテキストを出力する</p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>cpdf_text</b></b></span>
+    ( <span class="methodparam"><span class="type">int</span> <tt class="parameter">$pdf_document</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$text</tt></span>
+   [, <span class="methodparam"><span class="type">float</span> <tt class="parameter">$x_coor</tt></span>
+   ], <span class="methodparam"><span class="type">float</span> <tt class="parameter">$y_coor</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$mode</tt></span>
+   [, <span class="methodparam"><span class="type">float</span> <tt class="parameter">$orientation</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$alignmode</tt></span>
+  ]]] )</div>
+
+  <p class="para">
+   文字列 <i><tt class="parameter">text</tt></i>
+ を、指定した位置に出力します。
+  </p>
+ </div>
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+<span class="term"><i><tt class="parameter">
+pdf_document</tt></i>
+</span><dd>
+<p class="para">
+<a href="function.cpdf-open.html" class="function">cpdf_open()</a> が返す、ドキュメントのハンドル。</p></dd>
+</dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">text</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       テキスト。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">x_coor</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       テキスト位置の x 座標。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">y_coor</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       テキスト位置の y 座標。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+<span class="term"><i><tt class="parameter">
+mode</tt></i>
+</span><dd>
+<p class="para">オプションのパラメータ <i><tt class="parameter">mode</tt></i>
+
+は単位長さを定義します。この値が 0 または値が省略された場合、
+このページで指定されたデフォルト値が使用されます。それ以外の場合、
+現在の単位を無視してポストスクリプトのポイントで座標が計測されます。
+</p></dd>
+</dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">orientation</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       テキストの回転角。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">alignmode</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       テキストの配置方法を指定します。
+       使用できる値は ClibPDF のドキュメントを参照ください。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.cpdf-show-xy.html" class="function">cpdf_show_xy()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.cpdf-stroke.html">cpdf_stroke</a></div>
+ <div class="next" style="float: right;"><a href="function.cpdf-translate.html">cpdf_translate</a></div>
+ <div class="up"><a href="ref.cpdf.html">ClibPDF</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

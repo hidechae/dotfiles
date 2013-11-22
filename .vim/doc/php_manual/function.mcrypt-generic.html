@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>データを暗号化する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mcrypt-generic-init.html">mcrypt_generic_init</a></div>
+ <div class="next" style="float: right;"><a href="function.mcrypt-get-block-size.html">mcrypt_get_block_size</a></div>
+ <div class="up"><a href="ref.mcrypt.html">mcrypt</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mcrypt-generic" class="refentry">
+   <div class="refnamediv">
+    <h1 class="refname">mcrypt_generic</h1>
+    <p class="verinfo">(PHP 4 &gt;= 4.0.2, PHP 5)</p><p class="refpurpose">mcrypt_generic ― データを暗号化する</p>
+
+   </div>
+   <div class="refsect1 u">
+    <h3 class="title">説明</h3>
+     <div class="methodsynopsis">
+      <span class="type">string</span> <span class="methodname"><b><b>mcrypt_generic</b></b></span>
+       ( <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$td</tt></span>
+      , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$data</tt></span>
+      )</div>
+
+    <p class="para">
+     この関数は、データを暗号化します。データ長を n * blocksize とする
+     ために、データは &quot;<i class="literal">\0</i>&quot; で埋められます。
+     この関数は、暗号化されたデータを返します。
+     データのパディングが行われるため、返される文字列の長さは
+     入力よりも長いことがあることに注意してください。
+    </p>
+    <p class="para">
+     暗号化したデータをデータベースに格納する場合は、mcrypt_generic
+     が返す文字列全てを格納することを忘れないでください。さもないと、
+     文字列を適切に復号化できなくなります。もとの文字列が 10 文字で
+     ブロックサイズが 8 (ブロックサイズを調べるには
+     <a href="function.mcrypt-enc-get-block-size.html" class="function">mcrypt_enc_get_block_size()</a> を使用します)
+     だった場合、データベースのフィールドには少なくとも 16 文字が
+     必要です。<a href="function.mdecrypt-generic.html" class="function">mdecrypt_generic()</a> が返す文字列も
+     16 文字となることに注意しましょう。埋められた文字を取り除くには...
+     <a href="function.rtrim.html" class="function">rtrim()</a>($str, &quot;\0&quot;) を使用します。
+    </p>
+    <p class="para">
+     もし MySQL データベースにデータを格納する場合は、
+     varchar フィールドに値を挿入する際に末尾のスペースが取り除かれることを
+     覚えておきましょう。暗号化されたデータの最後にスペース(ASCII 32)が
+     含まれていた場合、この処理によってデータが破壊されてしまいます。
+     かわりに tinyblob/tinytext (あるいはより大きな) フィールドを
+     使用してください。
+    </p>
+    <p class="para">
+     この関数をコールする前には、常にキーと IV を用いて
+     <a href="function.mcrypt-generic-init.html" class="function">mcrypt_generic_init()</a> で暗号化ハンドルを
+     初期化しておくべきです。暗号化が終了したら、
+     <a href="function.mcrypt-generic-deinit.html" class="function">mcrypt_generic_deinit()</a> をコールして
+     暗号化バッファを開放すべきです。使用例は
+     <a href="function.mcrypt-module-open.html" class="function">mcrypt_module_open()</a> を参照ください。
+    </p>
+    <p class="para">
+     <a href="function.mdecrypt-generic.html" class="function">mdecrypt_generic()</a>、
+     <a href="function.mcrypt-generic-init.html" class="function">mcrypt_generic_init()</a> および
+     <a href="function.mcrypt-generic-deinit.html" class="function">mcrypt_generic_deinit()</a> も参照ください。
+    </p>
+   </div>
+
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mcrypt-generic-init.html">mcrypt_generic_init</a></div>
+ <div class="next" style="float: right;"><a href="function.mcrypt-get-block-size.html">mcrypt_get_block_size</a></div>
+ <div class="up"><a href="ref.mcrypt.html">mcrypt</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

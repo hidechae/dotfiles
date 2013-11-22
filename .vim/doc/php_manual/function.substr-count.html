@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>副文字列の出現回数を数える</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.substr-compare.html">substr_compare</a></div>
+ <div class="next" style="float: right;"><a href="function.substr-replace.html">substr_replace</a></div>
+ <div class="up"><a href="ref.strings.html">Strings</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.substr-count" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">substr_count</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">substr_count ― 副文字列の出現回数を数える</p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">int</span> <span class="methodname"><b><b>substr_count</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$haystack</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$needle</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$offset</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$length</tt></span>
+  ]] )</div>
+
+  <p class="para">
+   <b>substr_count()</b> は、文字列
+   <i><tt class="parameter">haystack</tt></i>
+ の中での副文字列
+   <i><tt class="parameter">needle</tt></i>
+ の出現回数を返します。
+   <i><tt class="parameter">needle</tt></i>
+
+   は英大小文字を区別することに注意してください。
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    この関数は重なり合う副文字列をカウントしません。以下の例を見てください !
+   <br />
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">haystack</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       検索対象の文字列
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">needle</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       検索する副文字列
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">offset</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       開始位置のオフセット
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">length</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       指定したオフセット以降に副文字列で検索する最大長。
+       オフセットと長さの総和が <i><tt class="parameter">haystack</tt></i>
+
+       の長さよりも長い場合、警告が発生します。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   この関数は <span class="type 整数">整数</span> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">5.1.0</td>
+       <td colspan="1" rowspan="1" align="left">
+        <i><tt class="parameter">offset</tt></i>
+ と <i><tt class="parameter">length</tt></i>
+
+        パラメータが追加されました。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>substr_count()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$text&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'This&nbsp;is&nbsp;a&nbsp;test'</span><span style="color: #007700">;<br />echo&nbsp;</span><span style="color: #0000BB">strlen</span><span style="color: #007700">(</span><span style="color: #0000BB">$text</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;14<br /><br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">substr_count</span><span style="color: #007700">(</span><span style="color: #0000BB">$text</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'is'</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;2<br /><br />//&nbsp;文字列は&nbsp;'s&nbsp;is&nbsp;a&nbsp;test'&nbsp;になっているので,&nbsp;1&nbsp;が表示される<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">substr_count</span><span style="color: #007700">(</span><span style="color: #0000BB">$text</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'is'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;テキストは&nbsp;'s&nbsp;i'&nbsp;になっているので,&nbsp;0&nbsp;が表示される<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">substr_count</span><span style="color: #007700">(</span><span style="color: #0000BB">$text</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'is'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;5+10&nbsp;&gt;&nbsp;14&nbsp;なので、警告が発生する<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">substr_count</span><span style="color: #007700">(</span><span style="color: #0000BB">$text</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'is'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">5</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">10</span><span style="color: #007700">);<br /><br /><br /></span><span style="color: #FF8000">//&nbsp;重なっている副文字列はカウントされないので、1&nbsp;が表示される<br /></span><span style="color: #0000BB">$text2&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'gcdgcdgcd'</span><span style="color: #007700">;<br />echo&nbsp;</span><span style="color: #0000BB">substr_count</span><span style="color: #007700">(</span><span style="color: #0000BB">$text2</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'gcdgcd'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.count-chars.html" class="function">count_chars()</a></li>
+    <li class="member"><a href="function.strpos.html" class="function">strpos()</a></li>
+    <li class="member"><a href="function.substr.html" class="function">substr()</a></li>
+    <li class="member"><a href="function.strstr.html" class="function">strstr()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.substr-compare.html">substr_compare</a></div>
+ <div class="next" style="float: right;"><a href="function.substr-replace.html">substr_replace</a></div>
+ <div class="up"><a href="ref.strings.html">Strings</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

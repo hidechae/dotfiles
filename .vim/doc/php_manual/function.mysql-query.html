@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>MySQL クエリを送信する</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mysql-ping.html">mysql_ping</a></div>
+ <div class="next" style="float: right;"><a href="function.mysql-real-escape-string.html">mysql_real_escape_string</a></div>
+ <div class="up"><a href="ref.mysql.html">MySQL</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mysql-query" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mysql_query</h1>
+  <p class="verinfo">(PHP 4, PHP 5, PECL mysql:1.0)</p><p class="refpurpose">mysql_query ― MySQL クエリを送信する</p>
+
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">resource</span> <span class="methodname"><b><b>mysql_query</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$query</tt></span>
+   [, <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$link_identifier</tt></span>
+  ] )</div>
+
+  <p class="para">
+   <b>mysql_query()</b> は、
+   ひとつのクエリを送信します (複数クエリの送信はサポートしません)。
+   送信先は、<i><tt class="parameter">link_identifier</tt></i>
+
+   で指定したサーバ上にある、現在アクティブなデータベースです。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">query</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       SQL クエリ。
+      </p>
+      <p class="para">
+       クエリ文字列は、セミコロンで終えてはいけません。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+<span class="term"><i><tt class="parameter">
+link_identifier</tt></i>
+</span><dd>
+<p class="para">MySQL 接続。
+指定されない場合、<a href="function.mysql-connect.html" class="function">mysql_connect()</a> により直近にオープンされたリンクが
+指定されたと仮定されます。そのようなリンクがない場合、引数を指定せずに
+<a href="function.mysql-connect.html" class="function">mysql_connect()</a> がコールした時と同様にリンクを確立します。
+リンクが見付からない、または、確立できない場合、
+<b><tt>E_WARNING</tt></b> レベルの警告が生成されます。</p></dd>
+
+</dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   SELECT, SHOW, DESCRIBE や EXPLAIN 文、その他結果セットを返す文では、
+   <b>mysql_query()</b> は成功した場合に
+   <a href="language.types.resource.html" class="type resource">resource</a> を返します。エラー時には <b><tt>FALSE</tt></b> を返します。
+  </p>
+  <p class="para">
+   それ以外の SQL 文 UPDATE, DELETE, DROP などでは、
+   <b>mysql_query()</b> は成功した場合に
+   <b><tt>TRUE</tt></b> 、エラー時に <b><tt>FALSE</tt></b> を返します。
+  </p>
+  <p class="para">
+   返された結果にアクセスするためには、結果リソースを
+   <a href="function.mysql-fetch-array.html" class="function">mysql_fetch_array()</a> やその他の関数に渡します。
+  </p>
+  <p class="para">
+   SELECT 文によって返された行の数を知るには
+   <a href="function.mysql-num-rows.html" class="function">mysql_num_rows()</a> を用います。また
+   DELETE, INSERT, REPLACE, または UPDATE 文で変更された行の数を
+   知るには <a href="function.mysql-affected-rows.html" class="function">mysql_affected_rows()</a> を用います。
+  </p>
+  <p class="para">
+   クエリが参照するテーブルにアクセスする権限がない場合も
+   <b>mysql_query()</b>は失敗し、<b><tt>FALSE</tt></b> が返されます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 間違ったクエリ</b></p>
+    <div class="example-contents"><p>
+     次のクエリは文法的に間違っているので、
+     <b>mysql_query()</b>は失敗し <b><tt>FALSE</tt></b>を返します。
+    </p></div>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysql_query</span><span style="color: #007700">(</span><span style="color: #DD0000">'SELECT&nbsp;*&nbsp;WHERE&nbsp;1=1'</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$result</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;die(</span><span style="color: #DD0000">'Invalid&nbsp;query:&nbsp;'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">mysql_error</span><span style="color: #007700">());<br />}<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#2 正しいクエリ</b></p>
+    <div class="example-contents"><p>
+     次のクエリは正しいので、<b>mysql_query()</b>
+     は <a href="language.types.resource.html" class="type resource">resource</a> を返します。
+    </p></div>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;これはユーザが指定する。たとえば<br /></span><span style="color: #0000BB">$firstname&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'fred'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$lastname&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'fox'</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">//&nbsp;クエリの作成<br />//&nbsp;これは&nbsp;SQL&nbsp;クエリを実行する最良の方法です。<br />//&nbsp;さらなる例は、mysql_real_escape_string()&nbsp;を参照ください。<br /></span><span style="color: #0000BB">$query&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">sprintf</span><span style="color: #007700">(</span><span style="color: #DD0000">"SELECT&nbsp;firstname,&nbsp;lastname,&nbsp;address,&nbsp;age&nbsp;FROM&nbsp;friends&nbsp;WHERE&nbsp;firstname='%s'&nbsp;AND&nbsp;lastname='%s'"</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">mysql_real_escape_string</span><span style="color: #007700">(</span><span style="color: #0000BB">$firstname</span><span style="color: #007700">),<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">mysql_real_escape_string</span><span style="color: #007700">(</span><span style="color: #0000BB">$lastname</span><span style="color: #007700">));<br /><br /></span><span style="color: #FF8000">//&nbsp;クエリの実行<br /></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysql_query</span><span style="color: #007700">(</span><span style="color: #0000BB">$query</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;結果のチェック<br />//&nbsp;MySQL&nbsp;に送られたクエリと返ってきたエラーをそのまま表示します。デバッグに便利です。<br /></span><span style="color: #007700">if&nbsp;(!</span><span style="color: #0000BB">$result</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$message&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'Invalid&nbsp;query:&nbsp;'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">mysql_error</span><span style="color: #007700">()&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$message&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #DD0000">'Whole&nbsp;query:&nbsp;'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$query</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;die(</span><span style="color: #0000BB">$message</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;結果の利用<br />//&nbsp;$result&nbsp;をそのまま出力してもリソースの内部の情報にはアクセスできません。<br />//&nbsp;結果にたいして&nbsp;MySQL&nbsp;の関数を適用する必要があります。<br />//&nbsp;mysql_result(),&nbsp;mysql_fetch_array(),&nbsp;mysql_fetch_row()&nbsp;なども参照ください。<br /></span><span style="color: #007700">while&nbsp;(</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysql_fetch_assoc</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">'firstname'</span><span style="color: #007700">];<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">'lastname'</span><span style="color: #007700">];<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">'address'</span><span style="color: #007700">];<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">'age'</span><span style="color: #007700">];<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;結果セットに関連付けられているリソースの開放<br />//&nbsp;これは、スクリプトが終了する際に自動的に実行されます。<br /></span><span style="color: #0000BB">mysql_free_result</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.mysql-connect.html" class="function">mysql_connect()</a></li>
+    <li class="member"><a href="function.mysql-error.html" class="function">mysql_error()</a></li>
+    <li class="member"><a href="function.mysql-real-escape-string.html" class="function">mysql_real_escape_string()</a></li>
+    <li class="member"><a href="function.mysql-result.html" class="function">mysql_result()</a></li>
+    <li class="member"><a href="function.mysql-fetch-assoc.html" class="function">mysql_fetch_assoc()</a></li>
+    <li class="member"><a href="function.mysql-unbuffered-query.html" class="function">mysql_unbuffered_query()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.mysql-ping.html">mysql_ping</a></div>
+ <div class="next" style="float: right;"><a href="function.mysql-real-escape-string.html">mysql_real_escape_string</a></div>
+ <div class="up"><a href="ref.mysql.html">MySQL</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

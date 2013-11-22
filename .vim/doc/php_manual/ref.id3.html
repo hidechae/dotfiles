@@ -1,0 +1,267 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>ID3 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ob-iconv-handler.html">ob_iconv_handler</a></div>
+ <div class="next" style="float: right;"><a href="function.id3-get-frame-long-name.html">id3_get_frame_long_name</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">ID3 関数</h1>
+  
+
+  <div class="partintro">
+   <div id="id3.intro" class="section">
+   <h2 class="title">導入</h2>
+    <p class="para">
+     これらの関数は、ID3 タグの読み込みや操作を行います。
+     ID3 タグは MP3 ファイルで使用されており、曲のタイトルや
+     演奏者、アルバム名、ジャンル、年、トラック番号といった情報が
+     格納されています。
+    </p>
+    <p class="para">
+     バージョン 0.2 以降では、ID3 v2.2+ タグのテキストフレームを
+     抽出できるようになりました。
+    </p>
+   </div>
+   
+   <div id="id3.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">外部ライブラリを必要としません。</p>
+   </div>
+   
+   <div id="id3.installation" class="section">
+    <h2 class="title">インストール手順</h2>
+    <p class="para">
+      id3 は PECL の一部となっており、PEAR インストーラを用いて
+      インストールすることができます。PHP を id3 サポートつきで
+      コンパイルするには、ソースコードをダウンロードして
+      php-src/ext/id3 に配置し、--enable-id3 を指定して
+      PHP をコンパイルします。
+    </p>
+   </div>
+
+   <div id="id3.configuration" class="section">
+    <h2 class="title">実行時設定</h2>
+    <p class="para">設定ディレクティブは定義されていません。</p>
+   </div>
+
+   <div id="id3.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">リソース型は定義されていません。</p>
+   </div>
+
+   
+
+
+<div id="id3.constants" class="section">
+ <h2 class="title">定義済みの定数</h2>
+ <p class="para">
+   ほとんどの id3 関数は、使用時にタグのバージョンを指定したり、タグの
+   バージョンを結果として返したりします。タグのバージョンを指定するには、
+   これらの定数を使用してください。
+ </p>
+ <p class="para">
+  <dl>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>ID3_V1_0</tt></b> 
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      <b><tt>ID3_V1_0</tt></b> は、
+      ID3 V1.0 タグを利用する場合に用います。このタグには
+      title、artist、album、genre、year および comment
+      といったフィールドが含まれます。
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>ID3_V1_1</tt></b> 
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      <b><tt>ID3_V1_1</tt></b> は、
+      ID3 V1.1 タグを利用する場合に用います。このタグには
+      v1.0 タグのすべての情報に加えてトラック番号が含まれます。
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>ID3_V2_1</tt></b> 
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      <b><tt>ID3_V2_1</tt></b> は、
+      ID3 V2.1 タグを利用する場合に用います。
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>ID3_V2_2</tt></b> 
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      <b><tt>ID3_V2_2</tt></b> は、
+      ID3 V2.2 タグを利用する場合に用います。
+     </span>
+    </dd>
+
+   </dt>
+
+    <dt>
+
+    <span class="term">
+     <b><tt>ID3_V2_3</tt></b> 
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      <b><tt>ID3_V2_3</tt></b> は、
+      ID3 V2.3 タグを利用する場合に用います。
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>ID3_V2_4</tt></b> 
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      <b><tt>ID3_V2_4</tt></b> は、
+      ID3 V2.4 タグを利用する場合に用います。
+     </span>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <b><tt>ID3_BEST</tt></b> 
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+    </span>
+    <dd>
+
+     <span class="simpara">
+      <b><tt>ID3_BEST</tt></b> は、
+      どのバージョンのタグを使用するのかを id3 関数自身に決定させる場合に
+      用います。
+     </span>
+    </dd>
+
+   </dt>
+
+ </dl>
+
+ </p>
+</div>
+
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.id3-get-frame-long-name.html">id3_get_frame_long_name</a> ― ID3v2 フレームの長い名前を取得する</li><li><a href="function.id3-get-frame-short-name.html">id3_get_frame_short_name</a> ― ID3v2 フレームの短い名前を取得する</li><li><a href="function.id3-get-genre-id.html">id3_get_genre_id</a> ― ジャンルの ID を取得する</li><li><a href="function.id3-get-genre-list.html">id3_get_genre_list</a> ― 使用可能なジャンルの一覧を取得する</li><li><a href="function.id3-get-genre-name.html">id3_get_genre_name</a> ― ジャンル ID に対応する名前を取得する</li><li><a href="function.id3-get-tag.html">id3_get_tag</a> ― ID3 タグに含まれるすべての情報を取得する</li><li><a href="function.id3-get-version.html">id3_get_version</a> ― ID3 タグのバージョンを取得する</li><li><a href="function.id3-remove-tag.html">id3_remove_tag</a> ― 既存の ID3 タグを削除する</li><li><a href="function.id3-set-tag.html">id3_set_tag</a> ― ID3 タグに格納されている情報を更新する</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.ob-iconv-handler.html">ob_iconv_handler</a></div>
+ <div class="next" style="float: right;"><a href="function.id3-get-frame-long-name.html">id3_get_frame_long_name</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

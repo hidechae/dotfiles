@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>利用可能な PDO ドライバの配列を返す</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.PDO-getAttribute.html">PDO->getAttribute()</a></div>
+ <div class="next" style="float: right;"><a href="function.PDO-lastInsertId.html">PDO->lastInsertId()</a></div>
+ <div class="up"><a href="ref.pdo.html">PDO</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.PDO-getAvailableDrivers" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">PDO-&gt;getAvailableDrivers()</h1>
+  <p class="verinfo">(No version information available, might be only in CVS)</p><p class="refpurpose">PDO->getAvailableDrivers() ― 
+   利用可能な PDO ドライバの配列を返す
+  </p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="classsynopsis">
+   <div class="ooclass"><b class="classname">PDO</b></div>
+   <div class="methodsynopsis">
+    <span class="type">array</span> <span class="methodname"><b><b>getAvailableDrivers</b></b></span>
+     ( <span class="methodparam">void</span>
+    )</div>
+
+  </div>
+  <p class="para">
+   この関数は、<a href="function.PDO-construct.html" class="xref">PDO->__construct()</a> の
+   <i><tt class="parameter">DSN</tt></i>
+ パラメータで利用可能な全ての有効な
+   PDO ドライバを返します。これはスタティックメソッドです。
+  </p>
+
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   <a href="function.PDO-getAvailableDrivers.html" class="xref">PDO->getAvailableDrivers()</a> は PDO ドライバ名の配列を返します。
+   もしドライバが何も利用できない場合、空の配列を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <a href="function.PDO-getAvailableDrivers.html" class="xref">PDO->getAvailableDrivers()</a> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">getAvailableDrivers</span><span style="color: #007700">());<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は、たとえば
+以下のようになります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+Array
+(
+    [0] =&gt; mysql
+    [1] =&gt; sqlite
+)
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.PDO-getAttribute.html">PDO->getAttribute()</a></div>
+ <div class="next" style="float: right;"><a href="function.PDO-lastInsertId.html">PDO->lastInsertId()</a></div>
+ <div class="up"><a href="ref.pdo.html">PDO</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

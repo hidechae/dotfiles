@@ -1,0 +1,1012 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>MCAL 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.maxdb-warning-count.html">maxdb_warning_count</a></div>
+ <div class="next" style="float: right;"><a href="function.mcal-append-event.html">mcal_append_event</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+  <h1 class="title">MCAL 関数</h1>
+  
+
+  <div class="partintro">
+   
+   <div id="mcal.intro" class="section">
+    <h2 class="title">導入</h2>
+    <p class="para">
+     MCAL は、Modular Calendar Access Library を意味します。
+    </p>
+    <p class="para">
+     libmcal は、カレンダーアクセス用の C ライブラリです。このライブラリは、
+     モジュール化されており、後から追加しやすいドライバとして書かれています。
+     MCAL は、メールボックス用の IMAP モジュールのカレンダー版です。
+    </p>
+    <p class="para">
+     mcal サポート機能により、カレンダーストリームを IMAP サポート機能による
+     メールボックスストリームと全く同様にオープンすることができます。
+     カレンダーは、ローカルファイルに保存したり、リモートの ICAP サーバ
+     としたり、mcal ライブラリによりサポートされる他のフォーマットとする
+     ことができます。
+    </p>
+    <p class="para">
+     カレンダーイベントは、発生、検索、保存することができます。カレンダーの
+     トリガー(アラーム)および定期的なイベントもサポートされます。
+    </p>
+    <p class="para">
+     libmcal により、メインのカレンダーサーバーをアクセス、使用することが
+     できます。この場合、特定のデータベースおよびローカルファイルに依存した
+     プログラミングは必要ありません。
+    </p>
+
+    <p class="para">
+     ほどんどの関数は、ストリームごとに固有の内部イベント構造体を使用します。
+     これにより、大きなオブジェクトを関数の間で渡すことが容易になります。
+     イベント構造体の値を設定、初期化、取得する便利な関数があります。
+    </p>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      
+この拡張モジュールは <a href="http://pecl.php.net/" class="link external">&raquo; PECL</a> レポジトリに移動
+されており、以下のバージョン以降 PHP にバンドルされなくなっています。 PHP 5.0.0.
+     <br />
+    </p></blockquote>
+    <blockquote><p><b class="note">注意</b>: 
+     
+      PHP には ICAP 拡張モジュールが以前ありましたが、元のライブラリと
+      この PHP 拡張モジュールはもうサポートされていません。推奨される
+      代替品は MCAL です。
+     <br />
+    </p></blockquote>
+    <blockquote><p><b class="note">注意</b>: <span class="simpara">この拡張モジュールは Windows
+環境では利用できません。</span></p></blockquote>
+   </div>
+   
+   <div id="mcal.requirements" class="section">
+    <h2 class="title">要件</h2>
+    <p class="para">
+     mcal ライブラリがインストールされている必要があります。最新版を
+     <a href="http://mcal.chek.com/" class="link external">&raquo; http://mcal.chek.com/</a> から取得し、コンパイル、
+     インストールしてください。
+    </p>
+   </div>
+
+   
+
+
+
+<div id="mcal.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  mcal ライブラリをインストールした後、これらの関数を動作させるには、
+  <span class="option">--with-mcal[=DIR]</span> を付けて PHP を
+  コンパイルする必要があります。
+ </p>
+</div>
+
+
+
+
+   
+   <div id="mcal.configuration" class="section">
+    <h2 class="title">実行時設定</h2>
+    <p class="para">設定ディレクティブは定義されていません。</p>
+   </div>
+
+   <div id="mcal.resources" class="section">
+    <h2 class="title">リソース型</h2>
+    <p class="para">リソース型は定義されていません。</p>
+   </div>
+   
+   
+
+
+
+<div id="mcal.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <dl>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_SUNDAY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_MONDAY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_TUESDAY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_WEDNESDAY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_THURSDAY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_FRIDAY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_SATURDAY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_JANUARY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_FEBRUARY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_MARCH</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_APRIL</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_MAY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_JUNE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_JULY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_AUGUST</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_SEPTEMBER</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_OCTOBER</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_NOVEMBER</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_DECEMBER</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_RECUR_NONE</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_RECUR_DAILY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_RECUR_WEEKLY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_RECUR_MONTHLY_MDAY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_RECUR_MONTHLY_WDAY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_RECUR_YEARLY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_M_SUNDAY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_M_MONDAY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_M_TUESDAY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_M_WEDNESDAY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_M_THURSDAY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_M_FRIDAY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_M_SATURDAY</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_M_WEEKDAYS</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_M_WEEKEND</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>MCAL_M_ALLDAYS</tt></b> 
+    (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+</div>
+
+
+
+
+  </div>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+<h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.mcal-append-event.html">mcal_append_event</a> ― MCALカレンダーに新規イベントを保存する</li><li><a href="function.mcal-close.html">mcal_close</a> ― MCAL ストリームを閉じる</li><li><a href="function.mcal-create-calendar.html">mcal_create_calendar</a> ― 新規に MCAL カレンダを作成する</li><li><a href="function.mcal-date-compare.html">mcal_date_compare</a> ― 二つの日付を比較する</li><li><a href="function.mcal-date-valid.html">mcal_date_valid</a> ― 指定した年月日が有効な日付である場合に TRUE を返す</li><li><a href="function.mcal-day-of-week.html">mcal_day_of_week</a> ― 指定した日の曜日を返す</li><li><a href="function.mcal-day-of-year.html">mcal_day_of_year</a> ― 指定した日の年間積算日を返す</li><li><a href="function.mcal-days-in-month.html">mcal_days_in_month</a> ― 月の日数を返す</li><li><a href="function.mcal-delete-calendar.html">mcal_delete_calendar</a> ― MCAL カレンダを削除する</li><li><a href="function.mcal-delete-event.html">mcal_delete_event</a> ― MCAL カレンダーからイベントを削除する</li><li><a href="function.mcal-event-add-attribute.html">mcal_event_add_attribute</a> ― グローバルイベント構造体ストリームに属性およびその値を追加する</li><li><a href="function.mcal-event-init.html">mcal_event_init</a> ― グローバルイベント構造体のストリームを初期化する</li><li><a href="function.mcal-event-set-alarm.html">mcal_event_set_alarm</a> ― グローバルイベント構造体ストリームのアラームを設定する</li><li><a href="function.mcal-event-set-category.html">mcal_event_set_category</a> ― グローバルイベント構造体ストリームのカテゴリを設定する</li><li><a href="function.mcal-event-set-class.html">mcal_event_set_class</a> ― グローバルイベント構造体ストリームのクラスを設定する</li><li><a href="function.mcal-event-set-description.html">mcal_event_set_description</a> ― グローバルイベント構造体ストリームの説明を設定する</li><li><a href="function.mcal-event-set-end.html">mcal_event_set_end</a> ― グローバルイベント構造体ストリームの終了日を設定する</li><li><a href="function.mcal-event-set-recur-daily.html">mcal_event_set_recur_daily</a> ― グローバルイベント構造体ストリームの反復を設定する</li><li><a href="function.mcal-event-set-recur-monthly-mday.html">mcal_event_set_recur_monthly_mday</a> ― グローバルイベント構造体ストリームの繰り返しを設定する</li><li><a href="function.mcal-event-set-recur-monthly-wday.html">mcal_event_set_recur_monthly_wday</a> ― グローバルイベント構造体ストリームの繰り返しを設定する</li><li><a href="function.mcal-event-set-recur-none.html">mcal_event_set_recur_none</a> ― グローバルイベント構造体ストリームの反復を設定する</li><li><a href="function.mcal-event-set-recur-weekly.html">mcal_event_set_recur_weekly</a> ― グローバルイベント構造体ストリームの繰り返しを設定する</li><li><a href="function.mcal-event-set-recur-yearly.html">mcal_event_set_recur_yearly</a> ― グローバルイベント構造体ストリームの繰り返しを設定する</li><li><a href="function.mcal-event-set-start.html">mcal_event_set_start</a> ― グローバルイベント構造体ストリームの開始日を設定する</li><li><a href="function.mcal-event-set-title.html">mcal_event_set_title</a> ― グローバルイベント構造体ストリームの表題を設定する</li><li><a href="function.mcal-expunge.html">mcal_expunge</a> ― 削除マークを付けられた全てのイベントを削除する</li><li><a href="function.mcal-fetch-current-stream-event.html">mcal_fetch_current_stream_event</a> ― 現在のイベント構造体ストリームを有するオブジェクトを返す</li><li><a href="function.mcal-fetch-event.html">mcal_fetch_event</a> ― カレンダーストリームからイベントを取得する</li><li><a href="function.mcal-is-leap-year.html">mcal_is_leap_year</a> ― 指定した年が閏年であるかどうかを返す</li><li><a href="function.mcal-list-alarms.html">mcal_list_alarms</a> ― 指定した datetime までにアラームを発生するイベントのリストを返す</li><li><a href="function.mcal-list-events.html">mcal_list_events</a> ― 日付または日付の範囲に関して ID のリストを返す</li><li><a href="function.mcal-next-recurrence.html">mcal_next_recurrence</a> ― イベントが次に発生する日を返す</li><li><a href="function.mcal-open.html">mcal_open</a> ― MCAL 接続をオープンする</li><li><a href="function.mcal-popen.html">mcal_popen</a> ― 永続的な MCAL 接続をオープンする</li><li><a href="function.mcal-rename-calendar.html">mcal_rename_calendar</a> ― MCAL カレンダの名前を変更する</li><li><a href="function.mcal-reopen.html">mcal_reopen</a> ― MCAL 接続を再オープンする</li><li><a href="function.mcal-snooze.html">mcal_snooze</a> ― イベントのアラームをオフにする</li><li><a href="function.mcal-store-event.html">mcal_store_event</a> ― MCAL カレンダーの既存のイベントを修正する</li><li><a href="function.mcal-time-valid.html">mcal_time_valid</a> ― 指定した時間、分、秒が有効な時間である場合に TRUE を返す</li><li><a href="function.mcal-week-of-year.html">mcal_week_of_year</a> ― 指定した日付の週番号を返す</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.maxdb-warning-count.html">maxdb_warning_count</a></div>
+ <div class="next" style="float: right;"><a href="function.mcal-append-event.html">mcal_append_event</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>オブジェクトがこのクラスのものであるか、このクラスをその親クラスのひとつとしているかどうかを調べる</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.interface-exists.html">interface_exists</a></div>
+ <div class="next" style="float: right;"><a href="function.is-subclass-of.html">is_subclass_of</a></div>
+ <div class="up"><a href="ref.classobj.html">クラス/オブジェクト</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.is-a" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">is_a</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.2.0, PHP 5)</p><p class="refpurpose">is_a ― オブジェクトがこのクラスのものであるか、このクラスをその親クラスのひとつとしているかどうかを調べる</p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>is_a</b></b></span>
+    ( <span class="methodparam"><span class="type">object</span> <tt class="parameter">$object</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$class_name</tt></span>
+   )</div>
+
+  <p class="para">
+   指定した  <i><tt class="parameter">object</tt></i>
+
+   がこのクラスのものであるか、
+   あるいはこのクラスをその親クラスのひとつとしているかどうかを調べます。
+  </p>
+  <blockquote><p><b class="note">注意</b>: 
+   
+    <b>is_a()</b> 関数は PHP 5 では非推奨となりました。かわりに
+    <a href="language.operators.type.html" class="link">instanceof</a> 演算子を使用してください。
+   <br />
+  </p></blockquote>
+ </div>
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">object</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       調べたいオブジェクト。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">class_name</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       クラス名。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   オブジェクトがこのクラスのものであるか、
+   あるいはこのクラスをその親クラスのひとつとしている場合に
+   <b><tt>TRUE</tt></b>、それ以外の場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>is_a()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;クラス定義<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">WidgetFactory<br /></span><span style="color: #007700">{<br />&nbsp;&nbsp;var&nbsp;</span><span style="color: #0000BB">$oink&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'moo'</span><span style="color: #007700">;<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;オブジェクトを作成します<br /></span><span style="color: #0000BB">$WF&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">WidgetFactory</span><span style="color: #007700">();<br /><br />if&nbsp;(</span><span style="color: #0000BB">is_a</span><span style="color: #007700">(</span><span style="color: #0000BB">$WF</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'WidgetFactory'</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"はい、\$WF&nbsp;は&nbsp;WidgetFactory&nbsp;です\n"</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+   <div class="example">
+    <p><b>Example#2 PHP 5 での <em class="emphasis">instanceof</em> 演算子の使用</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">$WF&nbsp;</span><span style="color: #007700">instanceof&nbsp;</span><span style="color: #0000BB">WidgetFactory</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">'はい、$WF&nbsp;は&nbsp;WidgetFactory&nbsp;です'</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.get-class.html" class="function">get_class()</a></li>
+    <li class="member"><a href="function.get-parent-class.html" class="function">get_parent_class()</a></li>
+    <li class="member"><a href="function.is-subclass-of.html" class="function">is_subclass_of()</a></li>
+   </ul>
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.interface-exists.html">interface_exists</a></div>
+ <div class="next" style="float: right;"><a href="function.is-subclass-of.html">is_subclass_of</a></div>
+ <div class="up"><a href="ref.classobj.html">クラス/オブジェクト</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

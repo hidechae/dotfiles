@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>クラスとオブジェクトの変更点</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="migration51.integer-parameters.html">関数のパラメータとしての整数値</a></div>
+ <div class="next" style="float: right;"><a href="migration51.extensions.html">拡張モジュール</a></div>
+ <div class="up"><a href="migration51.html">PHP 5.0.x から PHP 5.1.x への移行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="migration51.oop" class="section">
+  <h2 class="title">クラスとオブジェクトの変更点</h2>
+  <ul class="itemizedlist">
+   <li class="listitem">
+    <p class="para">
+     <a href="migration51.oop.html#migration51.oop-functions" class="link"><i class="literal">instanceof</i>、
+      <i class="literal">is_a()</i>、<i class="literal">is_subclass_of()</i> および
+      <i class="literal">catch</i></a>
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     <a href="migration51.oop.html#migration51.oop-methods" class="link">抽象 private メソッド</a>
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     <a href="migration51.oop.html#migration51.oop-modifiers" class="link">インターフェイスのアクセス修飾子</a>
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     <a href="migration51.oop.html#migration51.oop-inheritance" class="link">継承規則の変更</a>
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     <a href="migration51.oop.html#migration51.oop-constants" class="link">クラス定数</a>
+    </p>
+   </li>
+  </ul>
+
+  <div id="migration51.oop-functions" class="section">
+   <h2 class="title"><i class="literal">instanceof</i>、<i class="literal">is_a()</i>、
+    <i class="literal">is_subclass_of()</i> および <i class="literal">catch</i></h2>
+   <p class="para">
+    PHP 5.0 で <i class="literal">is_a()</i> は非推奨となり、<i class="literal">instanceof</i>
+    演算子に置き換えられました。
+    <i class="literal">instanceof</i> の初期の実装にはいくつかの問題があり、クラスを探すために
+    <i class="literal">__autoload()</i> に頼っていました。もしクラスが存在しなかった場合、
+    <i class="literal">__autoload()</i> に失敗するために <i class="literal">instanceof</i>
+    は致命的な <b><tt>E_ERROR</tt></b> をスローしていました。
+    同じ理由で、<i class="literal">catch</i> 演算子や <i class="literal">is_subclass_of()</i>
+    関数でも同様の現象が発生していました。
+   </p>
+   <p class="para">
+    PHP 5.1 では、これらの関数や演算子は <i class="literal">__autoload()</i> をコールしません。
+    また、PHP 5.0.x ではこの問題の回避策として <i class="literal">class_exists()</i> が使用可能です。
+    大きな問題ではありませんが、この回避策はもはや必要ありません。
+   </p>
+  </div>
+
+  <div id="migration51.oop-methods" class="section">
+   <h2 class="title">抽象 private メソッド</h2>
+   <p class="para">
+    PHP 5.0.0 から PHP 5.0.4 まででは抽象 private メソッドがサポートされていましたが、
+    これは禁止されました。なぜなら <i class="literal">private</i>
+    と <i class="literal">abstract</i> とは決して両立することのない概念だからです。
+   </p>
+  </div>
+
+  <div id="migration51.oop-modifiers" class="section">
+   <h2 class="title">インターフェイスのアクセス修飾子</h2>
+   <p class="para">
+    PHP 5.0 では、インターフェイス内での関数定義はクラス内での関数定義と同じように扱われました。
+    2004 年 10 月以降はそうではなくなり、インターフェイス内での関数定義では
+    <i class="literal">public</i> 以外のアクセス修飾子を指定できなくなりました。
+    そして 2005 年 4 月、PHP 5.0b1 のリリース前に、<i class="literal">static</i>
+    修飾子も許可されるようになりました。しかし、<i class="literal">protected</i> 修飾子や
+    <i class="literal">private</i> 修飾子を指定しようとすると
+    <b><tt>E_ERROR</tt></b> をスローします。
+    <i class="literal">abstract</i> も同様です。
+    この変更が既存のコードに影響を及ぼすことはないはずです。
+    結局のところ、インターフェイス内でこれら (protected, private, abstract)
+    を指定してもそれは意味のないものだからです。
+   </p>
+  </div>
+
+  <div id="migration51.oop-inheritance" class="section">
+   <h2 class="title">継承規則の変更</h2>
+   <p class="para">
+    PHP 5.0 では、基底クラスの同名の関数定義と一致しない関数を
+    派生クラスの中で定義することが可能でした。たとえば以下のようなものです。
+   </p>
+   <div class="informalexample">
+    <p class="para">
+     PHP 5.1.x では、このコードは <b><tt>E_STRICT</tt></b> エラーを発生させます。
+    </p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">Base&nbsp;</span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;&amp;</span><span style="color: #0000BB">return_by_ref</span><span style="color: #007700">()&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$r&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$r</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br />class&nbsp;</span><span style="color: #0000BB">Derived&nbsp;</span><span style="color: #007700">extends&nbsp;</span><span style="color: #0000BB">Base&nbsp;</span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;</span><span style="color: #0000BB">return_by_ref</span><span style="color: #007700">()&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </div>
+
+  <div id="migration51.oop-constants" class="section">
+   <h2 class="title">クラス定数</h2>
+   <p class="para">
+    PHP 5.0.x では、以下のコードは正しいものでした。
+   </p>
+   <div class="informalexample">
+    <p class="para">
+     PHP 5.1.x では、クラス定数を再定義すると、致命的なエラー
+     <b><tt>E_ERROR</tt></b> がスローされます。
+    </p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">test&nbsp;</span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;</span><span style="color: #0000BB">foobar&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'foo'</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;</span><span style="color: #0000BB">foobar&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'bar'</span><span style="color: #007700">;<br />}<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </div>
+ </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="migration51.integer-parameters.html">関数のパラメータとしての整数値</a></div>
+ <div class="next" style="float: right;"><a href="migration51.extensions.html">拡張モジュール</a></div>
+ <div class="up"><a href="migration51.html">PHP 5.0.x から PHP 5.1.x への移行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

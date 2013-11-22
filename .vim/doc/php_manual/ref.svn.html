@@ -1,0 +1,967 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>Subversion 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.wordwrap.html">wordwrap</a></div>
+ <div class="next" style="float: right;"><a href="function.svn-add.html">svn_add</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+ <h1 class="title">Subversion 関数</h1>
+ 
+ <div class="partintro">
+  <div id="svn.intro" class="section">
+   <h2 class="title">導入</h2>
+   <div class="warning"><b class="warning">警告</b><p class="simpara">この拡張モジュールは、
+<em class="emphasis">実験的</em> なものです。この拡張モジュールの動作・
+関数名・その他ドキュメントに書かれている事項は、予告なく、将来的な PHP
+のリリースにおいて変更される可能性があります。
+このモジュールは自己責任で使用してください。</p></div>
+   <p class="para">
+    この拡張モジュールは、バージョン管理システム
+    <a href="http://subversion.tigris.org/" class="link external">&raquo; Subversion</a> (SVN)
+    を PHP から操作するためのものです。
+    コマンドラインから <var class="filename">svn</var>
+    をコールせずに PHP スクリプトから
+    SVN リポジトリや作業コピーを操作することができます。
+   </p>
+  </div>
+  <div id="svn.requirements" class="section">
+   <h2 class="title">要件</h2>
+   <p class="para">
+    この拡張モジュールを使うのに、Subversion
+    のバイナリは不要です。しかし、この拡張モジュールをコンパイルする際には
+    libsvn (Subversion のヘッダ) が必須となります。
+   </p>
+  </div>
+  
+
+
+<div id="svn.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  この PECL 拡張モジュールをインストールする方法は、
+マニュアルの <a href="install.pecl.html" class="link">
+PECL 拡張モジュールのインストール</a> という章にあります。
+新規リリース・ダウンロード・ソースファイル・管理者情報・CHANGELOG
+といった関連する情報については、次の場所にあります。
+  <a href="http://pecl.php.net/package/svn" class="link external">&raquo; http://pecl.php.net/package/svn</a>
+ </p>
+ <p class="para">
+   <var class="filename">./configure</var> が
+   SVN 関連のファイルを見つけられない場合
+   (Subversion が標準とは異なる場所にインストールされている場合など)
+   は、<strong class="userinput"><code>./configure --with-svn=$USR_PATH</code></strong>
+
+   として <var class="filename">include/subversion-1/</var>
+   フォルダの場所を指定します
+ </p>
+ <p class="para">
+  
+この <acronym title="PHP Extension and Application Repository">PECL</acronym> 拡張モジュール用の <acronym title="Dynamic Link Library">DLL</acronym>
+は、<a href="http://www.php.net/downloads.php" class="link external">&raquo; PHP のダウンロード</a> ページあるいは
+<a href="http://pecl4win.php.net/" class="link external">&raquo; http://pecl4win.php.net/</a> からダウンロードできます。
+ </p>
+ <div class="warning"><b class="warning">警告</b>
+  <p class="para">
+   この拡張モジュールを libsvn 1.3 でコンパイルした場合は、
+   Subversion 1.4 で作成した作業コピーを操作しようとすると失敗します。
+  </p>
+ </div>
+</div>
+
+
+
+  <div id="svn.resources" class="section">
+   <h2 class="title">リソース型</h2>
+   <p class="para">
+    Subversion の低レベル関数 svn_fs_* は、
+    ローカルのファイルシステム上のリポジトリを指すリソースを私用します。
+    これは、<a href="function.svn-repos-fs.html" class="function">svn_repos_fs()</a> および
+    <a href="function.svn-fs-revision-root.html" class="function">svn_fs_revision_root()</a>
+    で作成します (要確認)。
+   </p>
+   <p class="para">リソース型は定義されていません。</p>
+  </div>
+  
+
+
+<div id="svn.constants" class="section">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">
+以下の定数が定義されています。
+この関数の拡張モジュールが PHP 組み込みでコンパイルされているか、
+実行時に動的にロードされている場合のみ使用可能です。
+</p>
+ <dl>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SVN_REVISON_HEAD</tt></b>
+     (<a href="language.types.integer.html" class="type integer">integer</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     HEAD リビジョンを指すマジックナンバー (-1)。
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+ <dl>
+
+  <strong class="title"><a href="function.svn-auth-set-parameter.html" class="function">svn_auth_set_parameter()</a> で使用する定数</strong>
+  <dt>
+
+   <span class="term">
+    <b><tt>SVN_AUTH_PARAM_DEFAULT_USERNAME</tt></b> 
+    (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     ベーシック認証で使用するデフォルトのユーザ名を表すプロパティ。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SVN_AUTH_PARAM_DEFAULT_PASSWORD</tt></b> 
+    (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     ベーシック認証で使用するデフォルトのパスワードを表すプロパティ。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SVN_AUTH_PARAM_NON_INTERACTIVE</tt></b> 
+    (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+<span class="simpara"/></dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SVN_AUTH_PARAM_DONT_STORE_PASSWORDS</tt></b> 
+    (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+<span class="simpara"/></dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SVN_AUTH_PARAM_NO_AUTH_CACHE</tt></b> 
+    (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+<span class="simpara"/></dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SVN_AUTH_PARAM_SSL_SERVER_FAILURES</tt></b> 
+    (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+<span class="simpara"/></dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SVN_AUTH_PARAM_SSL_SERVER_CERT_INFO</tt></b> 
+    (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+<span class="simpara"/></dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SVN_AUTH_PARAM_CONFIG</tt></b> 
+    (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+<span class="simpara"/></dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SVN_AUTH_PARAM_SERVER_GROUP</tt></b> 
+    (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+<span class="simpara"/></dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SVN_AUTH_PARAM_CONFIG_DIR</tt></b> 
+    (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+<span class="simpara"/></dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>PHP_SVN_AUTH_PARAM_IGNORE_SSL_VERIFY_ERRORS</tt></b> 
+    (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+      SSL 証明書の検証エラーを無視するカスタムプロパティ。
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+ <dl>
+
+  <strong class="title">ファイルシステムの定数</strong>
+  <dt>
+
+   <span class="term">
+    <b><tt>SVN_FS_CONFIG_FS_TYPE</tt></b> 
+    (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     ファイルシステムの形式を決める設定キー。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SVN_FS_TYPE_BDB</tt></b> 
+    (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     ファイルシステムは Berkeley-DB です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SVN_FS_TYPE_FSFS</tt></b> 
+    (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     ファイルシステムはネイティブのファイルシステムです。
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+ <dl>
+
+  <strong class="title">予約されているプロパティの定数</strong>
+  <dt>
+
+   <span class="term">
+    <b><tt>SVN_PROP_REVISION_DATE</tt></b> 
+    (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     svn:date
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SVN_PROP_REVISION_ORIG_DATE</tt></b> 
+    (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     svn:original-date
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SVN_PROP_REVISION_AUTHOR</tt></b> 
+    (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     svn:author
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>SVN_PROP_REVISION_LOG</tt></b> 
+    (<a href="language.types.string.html" class="type string">string</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     svn:log
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+ <dl>
+
+  <strong class="title">作業コピーの状態に関する定数</strong>
+  <dt>
+
+   <span class="term">
+    <b><tt>svn_wc_status_none</tt></b> 
+    (<a href="language.types.integer.html" class="type int">int</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     状態が存在しません。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>svn_wc_status_unversioned</tt></b> 
+    (<a href="language.types.integer.html" class="type int">int</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     この作業コピー内でバージョン管理されていません。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>svn_wc_status_normal</tt></b> 
+    (<a href="language.types.integer.html" class="type int">int</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     アイテムは存在しますが、特に何もない状態です。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>svn_wc_status_added</tt></b> 
+    (<a href="language.types.integer.html" class="type int">int</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     追加予約されています。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>svn_wc_status_missing</tt></b> 
+    (<a href="language.types.integer.html" class="type int">int</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     バージョン管理されているアイテムですが、作業コピー内に存在しません。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>svn_wc_status_deleted</tt></b> 
+    (<a href="language.types.integer.html" class="type int">int</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     削除予約されています。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>svn_wc_status_replaced</tt></b> 
+    (<a href="language.types.integer.html" class="type int">int</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     いったん削除されたあとに再度追加されました。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>svn_wc_status_modified</tt></b> 
+    (<a href="language.types.integer.html" class="type int">int</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     アイテム (の内容あるいはプロパティ) が変更されました。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>svn_wc_status_merged</tt></b> 
+    (<a href="language.types.integer.html" class="type int">int</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     ローカルでの変更内容がリポジトリの変更内容とマージされました。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>svn_wc_status_conflicted</tt></b> 
+    (<a href="language.types.integer.html" class="type int">int</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     ローカルでの変更内容がリポジトリでの変更内容と衝突 (conflict) しています。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>svn_wc_status_ignored</tt></b> 
+    (<a href="language.types.integer.html" class="type int">int</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     バージョン管理されていないアイテムですが、無視するよう設定されています。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>svn_wc_status_obstructed</tt></b> 
+    (<a href="language.types.integer.html" class="type int">int</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     バージョン管理されていないアイテムが、
+     バージョン管理下のリソースを邪魔しています。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>svn_wc_status_external</tt></b> 
+    (<a href="language.types.integer.html" class="type int">int</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     バージョン管理されていないパスで、
+     svn:externals を使用しています。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>svn_wc_status_incomplete</tt></b> 
+    (<a href="language.types.integer.html" class="type int">int</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     ディレクトリのエントリ一覧がありません。
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+ <dl>
+
+  <strong class="title">ノードの種類を表す定数</strong>
+  <dt>
+
+   <span class="term">
+    <b><tt>svn_node_none</tt></b> 
+    (<a href="language.types.integer.html" class="type int">int</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     存在しない。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>svn_node_file</tt></b> 
+    (<a href="language.types.integer.html" class="type int">int</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     ファイル。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>svn_node_dir</tt></b> 
+    (<a href="language.types.integer.html" class="type int">int</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     ディレクトリ。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt>
+
+   <span class="term">
+    <b><tt>svn_node_unknown</tt></b> 
+    (<a href="language.types.integer.html" class="type int">int</a>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     Subversion が判別できない何か。
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+</div>
+
+
+
+ </div>
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.svn-add.html">svn_add</a> ― 作業ディレクトリ内のアイテムの追加を予約する</li><li><a href="function.svn-auth-get-parameter.html">svn_auth_get_parameter</a> ― 認証パラメータを取得する</li><li><a href="function.svn-auth-set-parameter.html">svn_auth_set_parameter</a> ― 認証パラメータを設定する</li><li><a href="function.svn-cat.html">svn_cat</a> ― リポジトリ内のファイルの内容を返す</li><li><a href="function.svn-checkout.html">svn_checkout</a> ― リポジトリから作業コピーをチェックアウトする</li><li><a href="function.svn-cleanup.html">svn_cleanup</a> ― 作業コピーディレクトリを再帰的にクリーンアップし、中途半端な操作を解消してロックを削除する</li><li><a href="function.svn-client-version.html">svn_client_version</a> ― SVN クライアントライブラリのバージョンを返す</li><li><a href="function.svn-commit.html">svn_commit</a> ― 変更内容を、ローカルの作業コピーからリポジトリに送信する</li><li><a href="function.svn-diff.html">svn_diff</a> ― ふたつのパスの差分を再帰的に取得する</li><li><a href="function.svn-fs-abort-txn.html">svn_fs_abort_txn</a> ― トランザクションを中断し、成功したら true、失敗したら false を返す</li><li><a href="function.svn-fs-apply-text.html">svn_fs_apply_text</a> ― 置換に使用するストリームを作成して返す</li><li><a href="function.svn-fs-begin-txn2.html">svn_fs_begin_txn2</a> ― 新しいトランザクションを作成する</li><li><a href="function.svn-fs-change-node-prop.html">svn_fs_change_node_prop</a> ― 成功したら true、失敗したら false を返す</li><li><a href="function.svn-fs-check-path.html">svn_fs_check_path</a> ― 指定したリポジトリの fsroot パスにどんなアイテムが存在するかを調べる</li><li><a href="function.svn-fs-contents-changed.html">svn_fs_contents_changed</a> ― コンテンツが変更されている場合に true、されていない場合に false を返す</li><li><a href="function.svn-fs-copy.html">svn_fs_copy</a> ― ファイルやディレクトリをコピーし、成功したら true、失敗したら false を返す</li><li><a href="function.svn-fs-delete.html">svn_fs_delete</a> ― ファイルやディレクトリを削除し、成功したら true、失敗したら false を返す</li><li><a href="function.svn-fs-dir-entries.html">svn_fs_dir_entries</a> ― 指定したパスのディレクトリを列挙し、ディレクトリ名とファイルタイプのハッシュを返す</li><li><a href="function.svn-fs-file-contents.html">svn_fs_file_contents</a> ― 指定したバージョンの fs から、ファイルの中身を読み込むためのストリームを返す</li><li><a href="function.svn-fs-file-length.html">svn_fs_file_length</a> ― 指定したバージョンの fs から、ファイルの長さを返す</li><li><a href="function.svn-fs-is-dir.html">svn_fs_is_dir</a> ― ディレクトリを指すパスである場合に true、それ以外の場合に false を返す</li><li><a href="function.svn-fs-is-file.html">svn_fs_is_file</a> ― ファイルを指すパスである場合に true、それ以外の場合に false を返す</li><li><a href="function.svn-fs-make-dir.html">svn_fs_make_dir</a> ― 空のディレクトリを作成し、成功したら true、失敗したら false を返す</li><li><a href="function.svn-fs-make-file.html">svn_fs_make_file</a> ― 空のファイルを作成し、成功したら true、失敗したら false を返す</li><li><a href="function.svn-fs-node-created-rev.html">svn_fs_node_created_rev</a> ― fsroot 配下のパスが作成されたリビジョンを返す</li><li><a href="function.svn-fs-node-prop.html">svn_fs_node_prop</a> ― ノードのプロパティの値を返す</li><li><a href="function.svn-fs-props-changed.html">svn_fs_props_changed</a> ― プロパティが変更されている場合に true、それ以外の場合に false を返す</li><li><a href="function.svn-fs-revision-prop.html">svn_fs_revision_prop</a> ― 指定したプロパティの値を取得する</li><li><a href="function.svn-fs-revision-root.html">svn_fs_revision_root</a> ― リポジトリのルートの指定したバージョンのハンドルを取得する</li><li><a href="function.svn-fs-txn-root.html">svn_fs_txn_root</a> ― トランザクションのルートを作成して返す</li><li><a href="function.svn-fs-youngest-rev.html">svn_fs_youngest_rev</a> ― ファイルシステム内で一番若いリビジョン番号を返す</li><li><a href="function.svn-import.html">svn_import</a> ― バージョン管理されていないパスをリポジトリにインポートする</li><li><a href="function.svn-log.html">svn_log</a> ― 指定したリポジトリ URL のコミットログメッセージを返す</li><li><a href="function.svn-ls.html">svn_ls</a> ― 指定したリポジトリ URL のディレクトリ内の一覧を返す (オプションでリビジョン番号も指定可能)</li><li><a href="function.svn-repos-create.html">svn_repos_create</a> ― 新しい subversion リポジトリを指定したパスに作成する</li><li><a href="function.svn-repos-fs-begin-txn-for-commit.html">svn_repos_fs_begin_txn_for_commit</a> ― 新しいトランザクションを作成する</li><li><a href="function.svn-repos-fs-commit-txn.html">svn_repos_fs_commit_txn</a> ― トランザクションをコミットし、新しいリビジョンを返す</li><li><a href="function.svn-repos-fs.html">svn_repos_fs</a> ― リポジトリ用に、ファイルシステム上のハンドルを取得する</li><li><a href="function.svn-repos-hotcopy.html">svn_repos_hotcopy</a> ― repospath にあるリポジトリのホットコピーを作成し、destpath にコピーする</li><li><a href="function.svn-repos-open.html">svn_repos_open</a> ― リポジトリの共有ロックをオープンする</li><li><a href="function.svn-repos-recover.html">svn_repos_recover</a> ― 指定したパスのリポジトリのリカバリ処理を実行する</li><li><a href="function.svn-status.html">svn_status</a> ― 作業コピー内のファイルやディレクトリの状態を返す</li><li><a href="function.svn-update.html">svn_update</a> ― 作業コピーをアップデートする</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.wordwrap.html">wordwrap</a></div>
+ <div class="next" style="float: right;"><a href="function.svn-add.html">svn_add</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

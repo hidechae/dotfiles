@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>URL を組み立てる</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.http.html">http</a></div>
+ <div class="next" style="float: right;"><a href="ref.hw.html">Hyperwave</a></div>
+ <div class="up"><a href="ref.http.html">http</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.http-build-url" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">http_build_url</h1>
+  <p class="verinfo">(PECL pecl_http:0.21.0-1.5.5)</p><p class="refpurpose">http_build_url ― URL を組み立てる</p>
+
+ </div>
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">string</span> <span class="methodname"><b><b>http_build_url</b></b></span>
+    ([ <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$url</tt></span>
+   [, <span class="methodparam"><span class="type">mixed</span> <tt class="parameter">$parts</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$flags = HTTP_URL_REPLACE</tt></span>
+   [, <span class="methodparam"><span class="type">array</span> <tt class="parameter reference">&$new_url</tt></span>
+  ]]]] )</div>
+
+
+  <p class="para">
+   URL を組み立てます。
+  </p>
+  <p class="para">
+   引数 flag の設定によっては、二番目の URL の一部が最初の URL に統合されます。
+  </p>
+
+ </div>
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">url</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       文字列形式、あるいは <a href="function.parse-url.html" class="function">parse_url()</a>
+       の返すような連想配列形式で表した、URL (の一部)。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">parts</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       最初の引数と同じ。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">flags</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <a href="http.constants.html#http.constants.url" class="link">HTTP_URL 定数</a>
+       の論理和からなるビットマスク。デフォルトは
+       <b><tt>HTTP_URL_REPLACE</tt></b> です。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">new_url</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       設定されている場合は、<a href="function.parse-url.html" class="function">parse_url()</a>
+       が返すような構築された URL の一部が格納されます。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に新しい URL を表す文字列、失敗した場合に
+   <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ 
+
+
+ 
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>http_build_url()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">http_build_url</span><span style="color: #007700">(</span><span style="color: #DD0000">"http://user@www.example.com/pub/index.php?a=b#files"</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"scheme"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"ftp"</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"host"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"ftp.example.com"</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"path"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"files/current/"</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"query"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"a=c"<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">),<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">HTTP_URL_STRIP_AUTH&nbsp;</span><span style="color: #007700">|&nbsp;</span><span style="color: #0000BB">HTTP_URL_JOIN_PATH&nbsp;</span><span style="color: #007700">|&nbsp;</span><span style="color: #0000BB">HTTP_URL_JOIN_QUERY&nbsp;</span><span style="color: #007700">|&nbsp;</span><span style="color: #0000BB">HTTP_URL_STRIP_FRAGMENT<br /></span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+ftp://ftp.example.com/pub/files/current/?a=b&amp;a=c
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+ </div>
+
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="function.parse-url.html" class="function">parse_url()</a></li>
+    <li class="member"><a href="function.http-build-str.html" class="function">http_build_str()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="ref.http.html">http</a></div>
+ <div class="next" style="float: right;"><a href="ref.hw.html">Hyperwave</a></div>
+ <div class="up"><a href="ref.http.html">http</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

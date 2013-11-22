@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>パーサの動作</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="migration4.configuration.html">設定ファイルの移行</a></div>
+ <div class="next" style="float: right;"><a href="migration4.error-reporting.html">エラー出力</a></div>
+ <div class="up"><a href="migration4.html">PHP 3 から PHP 4 への移行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="migration4.parser" class="section">
+   <h2 class="title">パーサの動作</h2>
+   <p class="para">
+    パーサと実行は、二つの完全に分割されたステップになりました。ファイ
+    ル中のコードの実行は、ファイル全体と必要なものが全て完全にパースさ
+    れるまで行われません。
+   </p>
+   <p class="para">
+    この分割により PHP 4では requireやincludeで読み込まれるファイルが
+    構文的に完全であることが新たに必要となっています。PHP 4では、制御
+    構造の異なる制御部をファイル境界をまたいで配置することはできません。
+    このため、<i class="literal">for</i> ループまたは
+    <i class="literal">while</i>ループ、<i class="literal">if</i> 命令または
+    <i class="literal">switch</i>ブロックをあるファイルで開始し、
+    <i class="literal">else</i>、<i class="literal">endif</i>,
+    <i class="literal">case</i>、<i class="literal">break</i> 命令を別のファイ
+    ルに置くことはできません。
+   </p>
+   <p class="para">
+    ループまたは他の制御構造の中で追加のコードを読み込むことは、PHP 4
+    では、全く問題ありません。制御用のキーワードや対応する波括弧
+    <i class="literal">{...}</i> だけは、同じコンパイル単位(ファイルまたは
+    <a href="function.eval.html" class="function">eval()</a>された文字列)の中に置く必要があります。
+   </p>
+   <p class="para">
+    しかし、配布されているコードではこうした記法は非常に悪いスタイルで
+    あるとみなされているようなので、この制約の影響は大きくないはずです。
+   </p>
+   <p class="para">
+    使用ができなくなった他の機能としては、PHP 3ではほとんど使用され
+    ていませんが、requireで読みこまれたファイルから値を返すというもの
+    があります。includeで読み込まれたファイルから値を返すことは PHP
+    4でも可能です。
+   </p>
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="migration4.configuration.html">設定ファイルの移行</a></div>
+ <div class="next" style="float: right;"><a href="migration4.error-reporting.html">エラー出力</a></div>
+ <div class="up"><a href="migration4.html">PHP 3 から PHP 4 への移行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

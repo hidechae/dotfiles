@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>配列をキーで逆順にソートする</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.key.html">key</a></div>
+ <div class="next" style="float: right;"><a href="function.ksort.html">ksort</a></div>
+ <div class="up"><a href="ref.array.html">配列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.krsort" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">krsort</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">krsort ― 配列をキーで逆順にソートする</p>
+
+ </div>
+ <div class="refsect1 u">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">bool</span> <span class="methodname"><b><b>krsort</b></b></span>
+    ( <span class="methodparam"><span class="type">array</span> <tt class="parameter reference">&$array</tt></span>
+   [, <span class="methodparam"><span class="type">int</span> <tt class="parameter">$sort_flags</tt></span>
+  ] )</div>
+
+  <p class="para">
+   配列をキーにより逆順にソートします。キーとデータとの関係は維持されます。
+   この関数は主に連想配列の場合に有用です。
+  </p>
+  <p class="para">
+   成功した場合に <b><tt>TRUE</tt></b> を、失敗した場合に <b><tt>FALSE</tt></b> を返します。
+  </p>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>krsort()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$fruits&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #DD0000">"d"</span><span style="color: #007700">=&gt;</span><span style="color: #DD0000">"lemon"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"a"</span><span style="color: #007700">=&gt;</span><span style="color: #DD0000">"orange"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"b"</span><span style="color: #007700">=&gt;</span><span style="color: #DD0000">"banana"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"c"</span><span style="color: #007700">=&gt;</span><span style="color: #DD0000">"apple"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">krsort</span><span style="color: #007700">(</span><span style="color: #0000BB">$fruits</span><span style="color: #007700">);<br />foreach&nbsp;(</span><span style="color: #0000BB">$fruits&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$key&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$val</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"$key&nbsp;=&nbsp;$val\n"</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents"><pre>
+<div class="cdata"><pre>
+d = lemon
+c = apple
+b = banana
+a = orange
+</pre></div>
+    </pre></div>
+   </div>
+  </p>
+  <p class="para">
+   オプションのパラメータ <i><tt class="parameter">sort_flags</tt></i>
+
+   によりソートの動作を修正可能です。詳細については、
+   <a href="function.sort.html" class="function">sort()</a> を参照ください。
+  </p>
+  <p class="simpara">
+   <a href="function.asort.html" class="function">asort()</a>、<a href="function.arsort.html" class="function">arsort()</a>、
+   <a href="function.ksort.html" class="function">ksort()</a>、<a href="function.sort.html" class="function">sort()</a>、
+   <a href="function.natsort.html" class="function">natsort()</a> および <a href="function.rsort.html" class="function">rsort()</a>
+   も参照ください。
+  </p>
+ </div>
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.key.html">key</a></div>
+ <div class="next" style="float: right;"><a href="function.ksort.html">ksort</a></div>
+ <div class="up"><a href="ref.array.html">配列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

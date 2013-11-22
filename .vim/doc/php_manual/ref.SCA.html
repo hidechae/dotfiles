@@ -1,0 +1,1354 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>SCA 関数</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.satellite-object-to-string.html">satellite_object_to_string</a></div>
+ <div class="next" style="float: right;"><a href="function.SCA-LocalProxy-createDataObject.html">SCA_LocalProxy::createDataObject</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+ <h1 class="title">SCA 関数</h1>
+ 
+ 
+ <div class="partintro">
+  <div id="SCA.intro" class="section">
+   <h2 class="title">導入</h2>
+   <div class="warning"><b class="warning">警告</b><p class="simpara">この拡張モジュールは、
+<em class="emphasis">実験的</em> なものです。この拡張モジュールの動作・
+関数名・その他ドキュメントに書かれている事項は、予告なく、将来的な PHP
+のリリースにおいて変更される可能性があります。
+このモジュールは自己責任で使用してください。</p></div>
+   <p class="para"> 
+    SCA を使用すると、再利用可能なコンポーネントを
+    PHP プログラマが書けるようになります。
+    このコンポーネントはさまざまな方法でコール可能ですし、
+    固有のインターフェイスを持っており、まったく手がかかりません。
+    現時点ではローカルあるいはウェブサービス経由でしか
+    このコンポーネントをコールできませんが、将来はそれ以外の方法も可能になるでしょう。
+    これらの作業を、PHP プログラマが違和感なく行えるするようにする手段を提供しています。
+   </p>
+   
+   <p class="para"> 
+    SCA のコンポーネントは、phpDocumentor 形式
+    (http://www.phpdoc.org/ を参照ください) のアノテーション (注記) を用いて
+    他の SCA コンポーネントやウェブサービスとの依存性を宣言します。
+    SCA for PHP のランタイムは、これらの依存性をコンポーネントに代わって
+    実行時に解決します。したがって、プログラマは
+    依存性を解決するために参照を取得して配置したりすることよりも
+    ビジネスロジックの作成に集中することができます。
+   </p>
+   
+   <p class="para"> 
+    SCA for PHP のプログラミングモデルは、さまざまな形式のサービス、
+    たとえば REST や Atompub などをサポートするように拡張することもできます。
+    しかし、現在指定できるのはウェブサービス
+    (正確には WSDL で定義された SOAP/HTTP サービス) のみです。
+   </p>
+   
+   <p class="para"> 
+    これらのコンポーネントでは、
+    サービスが公開するインターフェイスを定義するアノテーションも使用します。
+    SCA for PHP のランタイムは、これらのアノテーションをもとにして
+    WSDL を自動的に生成します。これを用いることで、SCA
+    コンポーネントで簡単にウェブサービスを公開できるようになります。
+    これらのアノテーションは、phpDocumentor の記法を、
+    違和感なく拡張したものです。
+    ウェブサービスを公開する方法は簡単で、単に PHP
+    コンポーネントをウェブサーバのドキュメントルートに置くだけです。
+   </p>
+   
+   <p class="para"> 
+    これらのコンポーネントではまた、
+    データ構造 (XML スキーマの複合型を使用して表します)
+    を指定するアノテーションも使用します。
+    このデータ構造を、Service Data Object (SDO) を用いて処理します。
+   </p>
+   
+   <p class="para"> 
+    SCA コンポーネントではなくアノテーションを含まない PHP
+    スクリプトから、SCA コンポーネントのサービスを使用することができます。
+    また、PHP スクリプトやコンポーネントは、SCA コンポーネントでない
+    ウェブサービスをコールすることもできます。しかし、
+    参照を取得するには、SCA コンポーネントと同じ形式のコール方法やアノテーションを使用します。
+   </p>
+   
+   <p class="para"> 
+    まず手始めに、ConvertedStockQuote という SCA コンポーネントをご覧に入れましょう。
+    これを用いて、SCA for PHP の多くの機能について説明します。
+    このコンポーネントはひとつのメソッド <b>getQuote()</b>
+    を持っています。このメソッドは株式の &quot;ティッカー&quot; を指定して
+    その株の株価を取得し、指定した通貨に変換します。
+    このドキュメントの残りの部分では、この例をもとにして
+    SCA for PHP の機能を説明していきます。
+   </p>
+   
+   <p class="para">
+    <div class="example">
+     <p><b>Example#1 SCA コンポーネントのサンプル</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #007700">include&nbsp;</span><span style="color: #DD0000">"SCA/SCA.php"</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">/**<br />&nbsp;*&nbsp;指定したティッカーシンボルと通貨についての株価を計算する<br />&nbsp;*<br />&nbsp;*&nbsp;@service<br />&nbsp;*&nbsp;@binding.soap<br />&nbsp;*/<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">ConvertedStockQuote&nbsp;</span><span style="color: #007700">{<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/**<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;使用する為替レートサービス<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@reference<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@binding.php&nbsp;../ExchangeRate/ExchangeRate.php<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">public&nbsp;</span><span style="color: #0000BB">$exchange_rate</span><span style="color: #007700">;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/**<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;使用する株価サービス<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@reference<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@binding.soap&nbsp;../StockQuote/StockQuote.wsdl<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">public&nbsp;</span><span style="color: #0000BB">$stock_quote</span><span style="color: #007700">;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/**<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;ティッカーシンボルと通貨を指定して、株価を取得する<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;string&nbsp;$ticker&nbsp;ティッカーシンボル。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;string&nbsp;$currency&nbsp;値を変換する通貨単位。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;float&nbsp;指定した通貨単位で表した株価。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">getQuote</span><span style="color: #007700">(</span><span style="color: #0000BB">$ticker</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$currency</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$quote&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">stock_quote</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getQuote</span><span style="color: #007700">(</span><span style="color: #0000BB">$ticker</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$rate&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">exchange_rate</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getRate</span><span style="color: #007700">(</span><span style="color: #0000BB">$currency</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;&nbsp;</span><span style="color: #0000BB">$rate&nbsp;</span><span style="color: #007700">*&nbsp;</span><span style="color: #0000BB">$quote</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+   
+   <p class="para"> 
+    この例では、PHP のクラスを含むスクリプトで
+    SCA コンポーネントを実装しており、<var class="filename">SCA.php</var>
+    をインクルードしています。このクラスは、ビジネスロジックと
+    他のコンポーネントやサービスへの参照を両方含んでいます。
+    <b>getQuote()</b> メソッドにはビジネスロジックしかありませんが、
+    このメソッドではインスタンス変数
+    <var class="varname">$stock_quote</var> および
+    <var class="varname">$exchange_rate</var> を使用しています。
+    これらはそれぞれ別のコンポーネントを参照しており、
+    SCA のランタイムがこれら二つのサービスのプロキシを用いて初期化します。
+    これは、このコンポーネントが実行されるたびに行われます。
+    これらの二つのサービスのアノテーションからわかるように、
+    一方はローカルのコンポーネントで、同じ PHP ランタイムからコールします。
+    もう一方はリモートのコンポーネントで、SOAP リクエストでコールします。
+    このコンポーネントは <b>getQuote()</b>
+    メソッドをローカルおよびウェブサービスの両方で公開しているので、
+    ローカルからもリモートからもコール可能です。
+   </p>
+   
+  </div>
+  
+  <div id="SCA.requirements" class="section">
+   <h2 class="title">要件</h2>
+   <p class="para"> 
+    SCA を使用してウェブサービスの作成や使用を行うには
+    PHP 5.2.0 以降が必要です。また soap 拡張モジュールが有効でなければなりません。
+    ローカルのコンポーネントのみを使用し、ウェブサービスを使用しないのなら、
+    このバージョンの SCA for PHP は PHP 5.1.6 以降で動作します。
+   </p>
+  </div>
+  
+  <div id="SCA.installation" class="section">
+   <h2 class="title">インストール手順</h2>
+   <p class="para"> 
+    SCA は、SDO とともにひとつのパッケージとして PECL で公開されています。
+    SCA_SDO パッケージを PECL からインストールする方法については
+    http://www.php.net/sdo#sdo.installation を参照ください。
+    SCA のコードは、PHP のインクルードパスに存在しなければなりません。
+    つまり、もし /usr/local/lib/php/SCA にインストールされたのなら、
+    include_path ディレクティブに /usr/local/lib/php を含める必要があります。
+   </p>
+  </div>
+  
+  <div id="SCA.examples" class="section">
+   <h2 class="title">例</h2>
+   <p class="para"> 
+    これ以降の節の例では、PHP for SCA の次のような側面を説明します。
+   </p>
+   
+   <ul class="itemizedlist">
+    <li class="listitem">
+     <p class="para">
+      PHP のアノテーションを使用して PHP のクラスを
+      SCA コンポーネントとして定義する方法、
+      そしてアノテーションを使用してサービスを定義する方法。
+     </p>
+    </li>
+    <li class="listitem">
+     <p class="para">
+      SCA コンポーネントをウェブサービスとして公開する方法。
+     </p>
+    </li>
+    <li class="listitem">
+     <p class="para">
+      SCA コンポーネントから別のウェブサービスを使用する方法。
+      使用するウェブサービスが別の SCA コンポーネントである場合と
+      まったく SCA とは関係ないサービスである場合の両方を示します。
+     </p>
+    </li>
+    <li class="listitem">
+     <p class="para">
+      SCA コンポーネントから、ローカル (同一プロセス、同一コールスタック)
+      の別の SCA コンポーネントをコールする方法。
+     </p>
+    </li>
+    <li class="listitem">
+     <p class="para">
+      SCA コンポーネントではないクライアントスクリプトが、
+      getService をコールして SCA コンポーネントのプロキシを使用する方法。
+     </p>
+    </li>
+    <li class="listitem">
+     <p class="para">
+      住所や発注データなどのデータ構造を
+      Service Data Object で表現し、処理する方法。
+     </p>
+    </li>
+    <li class="listitem">
+     <p class="para">
+      SCA コンポーネントを配置する方法。特に、サービスの
+      WSDL がいつどのように作成されるか。
+     </p>
+    </li>
+    <li class="listitem">
+     <p class="para">
+      コンポーネント間でのパラメータの受け渡しが、ローカルコールであっても
+      (参照ではなく) 値渡しとなること。これにより、
+      コンポーネントの場所にかかわらずコール方法が同じになります。
+     </p>
+    </li>
+    <li class="listitem">
+     <p class="para">
+      サービスへの、位置指定によるパラメータをサポートする方法。
+      もとになる WSDL がドキュメントリテラルをラップしたもので、
+      通常は名前指定によるパラメータしかサポートしていない場合も含みます。
+     </p>
+    </li>
+    <li class="listitem">
+     <p class="para">
+      ビジネスロジックのエラーや実行時例外の処理方法
+     </p>
+    </li>
+    
+   </ul>
+   
+   <div id="SCA.examples.structure" class="section">
+    <h2 class="title">サービスコンポーネントの構造</h2>
+    <p class="para"> 
+     サービスコンポーネントは、クラスとして実装します。
+     サービスコンポーネントであることを示すために、@service
+     アノテーションを使用します。SCA ランタイムは、
+     スクリプトのファイル名にもとづく規約でコンポーネント名を決定します。
+     したがって、クラス名とスクリプトのファイル名は同じにしておく必要があります。
+    </p>
+    
+    <p class="para"> 
+     PHP SCA コンポーネントは常にサービスを公開しています。
+     コンポーネントは、ウェブサービスへのリクエストの結果としてコールされるか
+     スクリプト内の別のコンポーネントから直接コールされるかのいずれかの方法でしか起動しません。
+     このため、有効な PHP SCA コンポーネントは常に @service
+     アノテーションを含んでおり、少なくともひとつの public メソッドを持っています。
+    </p>
+    
+    <p class="para"> 
+     各 SCA コンポーネントは、SCA.php をインクルードする必要があります。
+     ここには SCA クラスの定義が含まれているだけでなく、
+     スクリプトがコールされた際に実行される、
+     コンポーネントとして振舞うための PHP コードも含まれています。
+    </p>
+    
+    <div class="caution"><b class="caution">警告</b>
+     
+     <p class="para"> 
+      もし別のファイルもインクルードするのなら、それは
+      SCA.php をインクルードする前に行わなければなりません。
+      SCA.php の後で別のファイルをインクルードすると、
+      SCA ランタイムがクラスを処理する際に、
+      そのファイルの内容が処理されません。
+     </p>
+    </div>
+    
+    <p class="para"> 
+      以下の例で、これらすべての構造について説明します。
+    </p>
+    
+    <p class="para">
+     <div class="example">
+      <p><b>Example#2 SCA for PHP のコンポーネントの構造</b></p>
+      
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">//&nbsp;何かをインクルードします<br /><br /></span><span style="color: #007700">include&nbsp;</span><span style="color: #DD0000">"SCA/SCA.php"</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">/**<br />&nbsp;*&nbsp;@service<br />&nbsp;*/<br /><br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">ConvertedStockQuote&nbsp;</span><span style="color: #007700">{<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;インスタンス変数、ビジネスロジック、そして最低ひとつの&nbsp;public&nbsp;メソッドを含めます<br /><br /></span><span style="color: #007700">}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+   </div>
+   
+   <div id="SCA.examples.proxies" class="section">
+    <h2 class="title">別のサービスコンポーネントへのプロキシの取得</h2>
+    <p class="para">
+     ある SCA コンポーネントが、別の SCA コンポーネントのサービスをコールすることができます。
+     コンポーネントが提供するサービスは、すべて public メソッドでできています。
+     SCA for PHP では現在、あるコンポーネントから他のコンポーネントをコールする方法を
+     二通り提供しています。ローカルに (同一の PHP ランタイム、
+     同一のコールスタック上で) コールする方法と、リモートにコールする方法です。
+     リモートにコールする場合は、コールされるコンポーネントが
+     ウェブサービスを公開していなければなりません。
+    </p>
+    
+    <p class="para">
+     あるコンポーネントが別のコンポーネントをコールするには、
+     呼び出し元のコンポーネント側に呼び出し先コンポーネントへのプロキシが必要です。
+     このプロキシは、通常は呼び出し元コンポーネントのインスタンス変数として用意します。
+     しかし、後でご覧いただくように SCA::getService()
+     でプロキシを取得することも可能です。
+     コンポーネントを作成する際にプロキシを作成し、
+     別のコンポーネントを参照するインスタンス変数にそのプロキシを &quot;注入 (inject)&quot;
+     します。プロキシは、そのコンポーネントがローカルにあるかリモートにあるかにかかわらず
+     常に用いられます。これにより、リモートだろうがローカルだろうが同じ方法でコールできるようになります
+     (たとえば、ローカルへのコールの際もデータは常に値渡しとなります)。
+     プロキシは、そのコンポーネントがある場所と、
+     それをコールする方法を知っています。
+    </p>
+    
+    <p class="para">
+     サービスのプロキシを保持することを意図したインスタンス変数は、
+     PHPDocumentor 形式のふたつのアノテーション
+     @reference および @binding で表します。それぞれのアノテーションは、
+     クラスのインスタンス変数のコメント部で指定します。以下のコードを参照ください。
+    </p>
+    
+    <p class="para">
+     インスタンス変数の前にある @reference アノテーションは、
+     そのインスタンス変数がコンポーネントへのプロキシとして初期化されることを示します。
+    </p>
+    
+    <p class="para"> 
+     @binding アノテーションには二通りの形式 @binding.php および
+     @@binding.soap があり、それぞれそのプロキシが
+     ローカルコンポーネント用なのかウェブサービス用なのかを表します。
+     @binding.php および @binding.soap のいずれの場合も、
+     対象の URI をアノテーションで指定します。
+    </p>
+    
+    <p class="para">
+     現時点では依存性の指定をアノテーションで行っているので、
+     参照先を変更する唯一の方法はコンポーネント内のアノテーションを書き換えることになります。
+    </p>
+    
+    <p class="para">
+     今回の例の ConvertedStockQuote では、インスタンス変数
+     <var class="varname">$exchange_rate</var> をローカルのコンポーネント
+     ExchangeRate へのプロキシとして初期化しています。これは、
+     ConvertedStockQuote のインスタンスが作成されるたびに作成されます。
+    </p>
+    
+    <p class="para">
+     <div class="example">
+      <p><b>Example#3 ローカルの PHP クラスへのプロキシの取得</b></p>
+      
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php&nbsp;<br />&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/**<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;使用する為替レートサービス<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@reference<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@binding.php&nbsp;../ExchangeRate/ExchangeRate.php<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">public&nbsp;</span><span style="color: #0000BB">$exchange_rate</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+    
+    <p class="para"> 
+     @binding.php の場合の URI は、
+     そのコンポーネントの実装を含むスクリプトの場所を表します。
+     コンポーネントはローカルにコールされます。
+     提供されるサービスは、コンポーネントの public メソッド群となります。
+     URI は、絶対パスあるいは相対パスで表す単純なパス名でなければなりません。
+     コンポーネントの読み込みには、PHP の include ディレクティブを使用します。
+     その際に、既に読み込まれていないかどうかを <a href="function.class-exists.html" class="function">class_exists()</a>
+     で調べます。URI が相対パスの場合は、
+     そのアノテーションを含むコンポーネントの場所を基準としてパスを解決します。
+     これは、通常の PHP の振る舞いとは異なることに注意しましょう。
+     通常は、PHP は include_path を基準として解決します。
+     このようにしない理由は、複数コンポーネント間の参照関係を、
+     できるだけ場所の影響を受けないようにするためです。
+    </p>
+    
+    <p class="para"> 
+     この ExchangeRate サービスがリモートにあり、ウェブサービスとしてコールされるものだとすると、
+     変更するところは @binding の行だけです。PHP クラスの場所を指定するかわりに、
+     ウェブサービスについて記述した WSDL ファイルの場所を指定します。
+     今回のサンプルでは、二番目の参照でこの方式を説明しています。
+    </p>
+    
+    <p class="para">
+     <div class="example">
+      <p><b>Example#4 ウェブサービスへのプロキシの取得</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/**<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;使用する株価サービス<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@reference<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@binding.soap&nbsp;../StockQuote/StockQuote.wsdl<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">public&nbsp;</span><span style="color: #0000BB">$stock_quote</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+    
+    <p class="para"> 
+     StockQuote コンポーネントはウェブサービスへのリクエストとしてコールされます。
+     今回の場合は WSDL の URI が単純なパス名となっていますが、
+     PHP のラッパーを使用して、たとえば <var class="varname">file://</var>
+     や <var class="varname">http://</var> で始めることもできます。
+     単純にパス指定する場合は絶対パスでも相対パスでもかまいません。
+     相対パスの場合は、そのアノテーションを含むコンポーネントの位置からの相対パスと解釈されます。
+     これは @binding.php の振る舞いと同様で、通常の PHP の挙動とは異なることに注意しましょう。
+     通常は、PHP は現在の作業ディレクトリからの相対パスとして探します。
+     作業ディレクトリは、通常はそのスクリプトがコールされた場所となります。
+     このようにしない理由は、複数コンポーネント間の参照関係を、
+     まずバインド形式の違いに影響を受けないようにすること、
+     そして場所の影響を受けないようにするためです。
+    </p>
+    
+   </div>
+   
+   <div id="SCA.examples.calling" class="section">
+    
+    <h2 class="title">別のサービスコンポーネントのコール</h2>
+    
+    <p class="para">
+     ConvertedStockQuote の例では、これらのプロキシをコールすることで
+     それぞれが参照するコンポーネントを使用しています。
+    </p>
+    
+    <p class="para">
+     <div class="example">
+      <p><b>Example#5 サービスのコール</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$quote&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">stock_quote</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getQuote</span><span style="color: #007700">(</span><span style="color: #0000BB">$ticker</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$rate&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">exchange_rate</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getRate</span><span style="color: #007700">(</span><span style="color: #0000BB">$currency</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+    
+    <p class="para"> 
+     StockQuote サービスのコールはローカルサービスへのコール、
+     一方 ExchangeRate サービスのコールはリモートサービスへのコールとなります。
+     それがローカルサービスであるかリモートサービスであるかにかかわらず、
+     コール方法は同じようになることに注意しましょう。
+    </p>
+
+    <p class="para"> 
+     プロキシを使用することにより、コンポーネントのコール方法や振る舞いが
+     ローカルであろうがリモートであろうが同じものになることが保証されます。
+     つまり、コンポーネントをコールする際に
+     それがローカルにあるのかリモートにあるのかを気にしなくてもよいということです。
+     たとえば、ローカルサービスへのプロキシは、
+     引数をコピーしてそのコピーのみをサービスに渡します。
+     これにより、リモートコールの場合と同様に引数が値渡しとなることが保証されるわけです。
+     またリモートサービスへのプロキシは、受け取ったパラメータを SOAP
+     リクエストのプロパティに変換し、戻ってきた内容を通常のパラメータリストに変換します。
+    </p>
+    
+    <p class="para"> 
+     上の例では、<var class="varname">$ticker</var> および
+     <var class="varname">$currency</var> は明らかに PHP のスカラー型です。
+     コンポーネントには PHP のスカラー型である string、integer、float
+     および boolean を渡すことができます。しかし、構造化されたデータは常に
+     Service Data Objects (SDO) として渡します。
+     これ以降では、コンポーネントがどのようにして SDO を作成して
+     ローカルコールやウェブサービスコールに渡すのか、
+     あるいはどのようにしてコンポーネントが返す SDO を作成するのかについて説明します。
+     PHP SDO プロジェクトのドキュメントに、SDO API の動作原理についての説明があります
+     (<a href="ref.sdo.html" class="link">SDO のページ</a> を参照ください)。
+    </p>
+    
+   </div>
+   
+   <div id="SCA.examples.nonSCAscript" class="section">
+    
+    <h2 class="title">SCA コンポーネントではないスクリプトからのサービスの指定およびコール</h2>
+
+    <p class="para"> 
+     SCA コンポーネントは、インスタンス変数に @reference
+     アノテーションを指定することで他のコンポーネントやサービスのプロキシを取得することができます。
+     しかし、コンポーネントではないスクリプトの場合はこれは不可能です。
+     クライアントスクリプトがコンポーネントではない場合は、静的メソッド
+     <b>SCA::getService()</b> を使用して
+     ローカルあるいはリモートサービスのプロキシを取得する必要があります。
+     <b>getService()</b> メソッドの引数には URI を指定します。
+     通常は、これはコンポーネントを含むローカル PHP スクリプトの場所か、
+     あるいは wsdl ファイルの場所となります。また、先ほどの節で説明した
+     @binding アノテーションで指定するものと同じようになります。
+     つまり、相対 URI はクライアントスクリプトの場所を基準として解決し、
+     PHP の include_path や現在の作業ディレクトリは使用しません。
+    </p>
+    
+    <p class="para"> 
+     たとえば、あるスクリプトで ExchangeRate および StockQuote
+     サービスのプロキシを取得する必要があるが、そのスクリプトがコンポーネントではない場合、
+     <b>getService()</b> メソッドを次のように使用します。
+    </p>
+    
+    <p class="para">
+     <div class="example">
+      <p><b>Example#6 getService を使用したプロキシの取得</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$exchange_rate&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">SCA</span><span style="color: #007700">::</span><span style="color: #0000BB">getService</span><span style="color: #007700">(</span><span style="color: #DD0000">'../ExchangeRate/ExchangeRate.php'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$stock_quote&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">SCA</span><span style="color: #007700">::</span><span style="color: #0000BB">getService</span><span style="color: #007700">(</span><span style="color: #DD0000">'../StockQuote/StockQuote.wsdl'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+    
+    <p class="para">
+     サービスのメソッドをコールするには、返されたプロキシを使用します。
+     これはコンポーネント内からコールする場合と同じです。
+    </p>
+    <p class="para">
+     <div class="example">
+      <p><b>Example#7 プロキシ上でのコール</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$quote&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$stock_quote</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getQuote</span><span style="color: #007700">(</span><span style="color: #0000BB">$ticker</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$rate&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$exchange_rate</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getRate</span><span style="color: #007700">(</span><span style="color: #0000BB">$currency</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+    
+   </div>
+   
+   <div class="section">
+    <h2 class="title">サービスコンポーネントの、ウェブサービスとしての公開</h2>
+    
+    <p class="para"> 
+     SCA for PHP は、サービスコンポーネント内のアノテーションから
+     WSDL を作成することができます。これにより、
+     ウェブサービスとして公開することが簡単にできるようになります。
+     WSDL の作成に必要な情報を SCA に与えるには、@binding.soap
+     アノテーションを @service アノテーションの下に追加しなければなりません。
+     そこに、メソッドのパラメータおよび返り値をそれぞれ @param
+     アノテーションおよび @return アノテーションで指定します。
+     これらのアノテーションを読み込むことで WSDL が作成され、
+     パラメータの順序や型が WSDL の &lt;schema&gt; セクションの内容を決定します。
+    </p>
+    
+    <p class="para"> 
+     SCA for PHP は、常に document/literal でラップされたコンポーネントの WSDL
+     を作成します。これにより、ウェブサービスを公開します。注意してほしいのは、
+     これは、SCA コンポーネント以外のウェブサービスや
+     別の形式の WSDL で表されるウェブサービスの使用を妨げるものではないということです。
+    </p>
+    
+    <p class="para"> 
+     @param アノテーションで使用できるスカラー型は、
+     一般的な PHP のスカラー型である boolean、integer、float
+     そして string です。これらは、WSDL において
+     それぞれ同名の XML スキーマ型に変換されます。
+     以下の例は、ConvertedStockQuote コンポーネントが呼び出す
+     StockQuote サービスをごく平凡に実装したもので、
+     string および float 型の使用法をご確認いただけます。
+    </p>
+    
+    <p class="para">
+     <div class="example">
+      <p><b>Example#8 StockQuote サービス</b></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #007700">include&nbsp;</span><span style="color: #DD0000">"SCA/SCA.php"</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">/**<br />&nbsp;*&nbsp;リモートの&nbsp;StockQuote&nbsp;ウェブサービスの土台となる実装<br />&nbsp;*<br />&nbsp;*&nbsp;@service<br />&nbsp;*&nbsp;@binding.soap<br />&nbsp;*<br />&nbsp;*/<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">StockQuote&nbsp;</span><span style="color: #007700">{<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/**<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;指定したティッカーシンボルの株価を取得する<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;string&nbsp;$ticker&nbsp;ティッカーシンボル<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;float&nbsp;株価<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">getQuote</span><span style="color: #007700">(</span><span style="color: #0000BB">$ticker</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">80.9</span><span style="color: #007700">;<br />&nbsp;&nbsp;}<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+    
+    <p class="para"> 
+     このサービスの WSDL は、次のようになります (おそらく、サービスの場所は
+     &#039;localhost&#039; ではなく別のものになるでしょう)。
+    </p>
+    
+    <p class="para">
+     <div class="example">
+      <p><b>Example#9 作成された WSDL</b></p>
+      <div class="example-contents">
+<div class="cdata"><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;definitions xmlns=&quot;http://schemas.xmlsoap.org/wsdl/&quot; xsi:type=&quot;tDefinitions&quot;
+    xmlns:tns2=&quot;http://StockQuote&quot; xmlns:tns=&quot;http://schemas.xmlsoap.org/wsdl/&quot;
+    xmlns:tns3=&quot;http://schemas.xmlsoap.org/wsdl/soap/&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; targetNamespace=&quot;http://StockQuote&quot;&gt;
+  &lt;types&gt;
+    &lt;xs:schema xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot;
+      targetNamespace=&quot;http://StockQuote&quot;&gt;
+      &lt;xs:element name=&quot;getQuote&quot;&gt;
+        &lt;xs:complexType&gt;
+          &lt;xs:sequence&gt;
+            &lt;xs:element name=&quot;ticker&quot; type=&quot;xs:string&quot;/&gt;
+          &lt;/xs:sequence&gt;
+        &lt;/xs:complexType&gt;
+      &lt;/xs:element&gt;
+      &lt;xs:element name=&quot;getQuoteResponse&quot;&gt;
+        &lt;xs:complexType&gt;
+          &lt;xs:sequence&gt;
+            &lt;xs:element name=&quot;getQuoteReturn&quot; type=&quot;xs:float&quot;/&gt;
+          &lt;/xs:sequence&gt;
+        &lt;/xs:complexType&gt;
+      &lt;/xs:element&gt;
+    &lt;/xs:schema&gt;
+  &lt;/types&gt;
+
+  &lt;message name=&quot;getQuoteRequest&quot;&gt;
+    &lt;part name=&quot;getQuoteRequest&quot; element=&quot;tns2:getQuote&quot;/&gt;
+  &lt;/message&gt;
+  &lt;message name=&quot;getQuoteResponse&quot;&gt;
+    &lt;part name=&quot;return&quot; element=&quot;tns2:getQuoteResponse&quot;/&gt;
+  &lt;/message&gt;
+  &lt;portType name=&quot;StockQuotePortType&quot;&gt;
+    &lt;operation name=&quot;getQuote&quot;&gt;
+      &lt;input message=&quot;tns2:getQuoteRequest&quot;/&gt;
+      &lt;output message=&quot;tns2:getQuoteResponse&quot;/&gt;
+    &lt;/operation&gt;
+  &lt;/portType&gt;
+  &lt;binding name=&quot;StockQuoteBinding&quot; type=&quot;tns2:StockQuotePortType&quot;&gt;
+    &lt;operation name=&quot;getQuote&quot;&gt;
+      &lt;input&gt;
+        &lt;tns3:body xsi:type=&quot;tBody&quot; use=&quot;literal&quot;/&gt;
+      &lt;/input&gt;
+      &lt;output&gt;
+        &lt;tns3:body xsi:type=&quot;tBody&quot; use=&quot;literal&quot;/&gt;
+      &lt;/output&gt;
+      &lt;tns3:operation xsi:type=&quot;tOperation&quot; soapAction=&quot;&quot;/&gt;
+    &lt;/operation&gt;
+    &lt;tns3:binding xsi:type=&quot;tBinding&quot; transport=&quot;http://schemas.xmlsoap.org/soap/http&quot; style=&quot;document&quot;/&gt;
+  &lt;/binding&gt;
+  &lt;service name=&quot;StockQuoteService&quot;&gt;
+    &lt;port name=&quot;StockQuotePort&quot; binding=&quot;tns2:StockQuoteBinding&quot;&gt;
+      &lt;tns3:address xsi:type=&quot;tAddress&quot; location=&quot;http://localhost/StockQuote/StockQuote.php&quot;/&gt;
+    &lt;/port&gt;
+  &lt;/service&gt;
+&lt;/definitions&gt;
+
+&lt;!-- this line identifies this file as WSDL generated by SCA for PHP. Do not remove --&gt;
+</pre></div>
+       
+      </div>
+
+     </div>
+    </p>
+    
+   </div>
+   
+   <div id="SCA.examples.deploy" class="section">
+    
+    <h2 class="title">SCA コンポーネントの配置</h2>
+    <p class="para"> 
+     PHP SCA コンポーネントを配置するには、特別な方法は必要ありません。
+     コンポーネントの PHP スクリプトを、
+     ウェブサーバのドキュメントルート以下の適切なディレクトリに配置するだけです。
+     これはごく普通の PHP スクリプトと同様です。
+     スクリプトがコールされると、各コンポーネント内の
+     <b>SCA::initComponent()</b> の行が実行されます。
+     またウェブサービスのコール、ローカルのコール、
+     あるいは WSDL へのリクエストに対してコンポーネントが適切に応答するようにします。
+    </p>
+    
+   </div>
+   
+   <div id="SCA.examples.obtaining-wsdl" class="section">
+    
+    <h2 class="title">ウェブサービスとしてのサービスを提供する SCA コンポーネントの WSDL の取得</h2>
+    
+    <p class="para"> 
+     ウェブサービスのインターフェイスを公開している
+     (つまり、@binding.soap アノテーションを持っている)
+     SCA コンポーネントは、HTTP リクエストのパラメータに &quot;wsdl&quot;
+     を指定されるとその WSDL 定義を返します。
+     つまり、WSDL を取得する一般的な方法は、URL の最後に &quot;?wsdl&quot;
+     をつけることです。以下の例では、
+     <a href="function.file-get-contents.html" class="function">file_get_contents()</a>
+     を使用してサービスの WSDL を取得し、それをテンポラリファイルに書き出します。
+     それをもとにして、サービスへのプロキシを取得します。
+     もちろん、WSDL をブラウザやその他の方法で取得して、自分でそれを保存することも可能です。
+    </p>
+    
+    <p class="para">
+     <div class="example">
+      <p><b>Example#10 作成された WSDL</b></p>
+      <div class="example-contents">
+<div class="cdata"><pre>
+&lt;?php
+$wsdl = file_get_contents(&#039;http://www.example.com/Services/Example.php?wsdl&#039;);
+file_put_contents(&quot;service.wsdl&quot;,$wsdl); // wsdl をファイルに書き出します
+$service = SCA::getService(&#039;service.wsdl&#039;); 
+?&gt;
+</pre></div>
+       
+      </div>
+
+     </div>
+    </p>
+    
+    <p class="para">
+     注意: wsdl が xsd をインポートしている場合は、
+     それを個別に取得する必要があります。
+    </p>
+    
+   </div>
+   
+   <div id="SCA.examples.understanding-wsdl" class="section">
+    <h2 class="title">WSDL の作成方法について理解する</h2>
+    <p class="para"> 
+     SCA for PHP は、@service アノテーションの後に
+     @binding.soap アノテーションを含むコンポーネントについての
+     WSDL を作成します。WSDL を作成するために、SCA
+     はコンポーネントの情報を取得し、各 public メソッドの @param
+     アノテーションおよび @return アノテーションの内容を調べます。
+     また、コンポーネント内の @types アノテーションの内容も調べます。
+     @param アノテーションおよび @return アノテーションからの情報を基にして、
+     WSDL の &lt;types&gt; セクションを構築します。また、@types
+     アノテーションによる別のスキーマファイルの指定は、WSDL 内の
+     &lt;import&gt; 要素に変換されます。
+    </p>
+    
+    <div id="SCA.examples.understanding-wsdl.location" class="section">
+     <h2 class="title">&lt;service&gt; 要素の location 属性</h2>
+     <p class="para"> 
+      WSDL の最後は &lt;service&gt; 要素で、
+      この要素の location 属性によってサービスの URL を表します。
+      たとえば、次のようになります。
+     </p>
+     
+     <p class="para">
+      <div class="example">
+       <p><b>Example#11 location 属性</b></p>
+       <div class="example-contents">
+<div class="cdata"><pre>
+    &lt;service name=&quot;ConvertedStockQuote&quot;
+...
+location=&quot;http://localhost/ConvertedStockQuote/ConvertedStockQuote.php&quot;/&gt;
+</pre></div>
+        
+       </div>
+
+      </div>
+     </p>
+     <p class="para">
+      この location は、ウェブサーバのドキュメントルートからの相対位置であることに注意しましょう。
+      事前に解決することはできません。コンポーネントがウェブサーバ上の適切な場所に配置され、
+      ホスト名やポート番号がわかった時点ではじめて解決することができます。
+      WSDL を要求した URL からの情報を使用します。つまり、たとえば
+      http://www.example.com:1111/ConvertedStockQuote/ConvertedStockQuote.php?wsdl
+      へのリクエストの応答として WSDL が作成されたとすると、
+      WSDL の location 属性には
+      http://www.example.com:1111/ConvertedStockQuote/ConvertedStockQuote.php
+      が挿入されます。
+     </p>
+    </div>
+    
+    <div id="SCA.examples.understanding-wsdl.positional-parameters" class="section">
+     <h2 class="title">WSDL および位置パラメータをラップするドキュメント/リテラル</h2>
+     <p class="para"> 
+      SCA for PHP が作成する WSDL は、ドキュメント/リテラル
+      でラップした形式となります。これは、パラメータを囲い込んで
+      &#039;ラッパー&#039; メソッド型として返すものです。この型は、
+      対応するメソッドの名前となります。WSDL の先頭にある
+      &lt;types&gt; 要素で、これらのラッパーを定義します。
+      ConvertedStockQuote のサンプルにおける
+      <b>getQuote()</b> メソッドを考えてみましょう。
+     </p>
+     
+     <p class="para">
+      <div class="example">
+       <p><b>Example#12 ふたつの引数を持つメソッド</b></p>
+       <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/**<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;ティッカーシンボルと通貨を指定して、株価を取得する<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;string&nbsp;$ticker&nbsp;ティッカーシンボル。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;string&nbsp;$currency&nbsp;値を変換する通貨単位。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;float&nbsp;指定した通貨単位で表した株価。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">getQuote</span><span style="color: #007700">(</span><span style="color: #0000BB">$ticker</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$currency</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$quote&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">stock_quote</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getQuote</span><span style="color: #007700">(</span><span style="color: #0000BB">$ticker</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$rate&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">exchange_rate</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getRate</span><span style="color: #007700">(</span><span style="color: #0000BB">$currency</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;&nbsp;</span><span style="color: #0000BB">$rate&nbsp;</span><span style="color: #007700">*&nbsp;</span><span style="color: #0000BB">$quote</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+        
+       </div>
+
+      </div>
+     </p>
+     
+     <p class="para">
+      このメソッドの WSDL は、メソッドとパラメータの名前を定義します。
+      また、パラメータに対応する XML スキーマ型を提供します。
+      WSDL の types セクションは、このようになります。
+     </p>
+     
+     <p class="para">
+      <div class="example">
+       <p><b>Example#13 パラメータ名を表す types セクション</b></p>
+       <div class="example-contents">
+<div class="cdata"><pre>
+  &lt;types&gt;
+    &lt;xs:schema xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot;
+      targetNamespace=&quot;http://ConvertedStockQuote&quot;&gt;
+      &lt;xs:element name=&quot;getQuote&quot;&gt;
+        &lt;xs:complexType&gt;
+          &lt;xs:sequence&gt;
+            &lt;xs:element name=&quot;ticker&quot; type=&quot;xs:string&quot;/&gt;
+            &lt;xs:element name=&quot;currency&quot; type=&quot;xs:string&quot;/&gt;
+          &lt;/xs:sequence&gt;
+        &lt;/xs:complexType&gt;
+      &lt;/xs:element&gt;
+      &lt;xs:element name=&quot;getQuoteResponse&quot;&gt;
+        &lt;xs:complexType&gt;
+          &lt;xs:sequence&gt;
+            &lt;xs:element name=&quot;getQuoteReturn&quot; type=&quot;xs:float&quot;/&gt;
+          &lt;/xs:sequence&gt;
+        &lt;/xs:complexType&gt;
+      &lt;/xs:element&gt;
+    &lt;/xs:schema&gt;
+  &lt;/types&gt;
+</pre></div>
+        
+       </div>
+
+      </div>
+     </p>
+     
+     <p class="para">
+      インターフェイス内で順番に指定したパラメータと
+      soap リクエスト内の名前つきパラメータを含む XML を相互変換するために、
+      SCA ランタイムは特別な処理をします。この件について知るために、
+      さまざまなインターフェイスを使用する PHP スクリプトが
+      SOAP コールようのパラメータリストをどのように作成するのかを考えてみましょう。
+      たとえば PHP の SoapClient を使用する PHP スクリプトは、
+      &quot;ticker&quot; および &quot;currency&quot; の値を指定したひとつのパラメータを
+      SoapClient に渡す必要があります。おそらくこれは連想配列になるでしょう。
+      SCA コンポーネントがウェブサービス用にパラメータリストを作成する場合は、
+      相手がローカルであるかリモートであるかによって形式が異なります。
+      そのため、個別のアプローチが必要となります。
+     </p>
+     
+     <p class="para">
+      SCA が SCA コンポーネント用の WSDL を作成する際に、
+      その WSDL が SCA コンポーネントのインターフェイスであることを示すコメントを埋め込みます。
+      ある SCA コンポーネントが別のコンポーネントをウェブサービスとしてコールするとき、
+      呼び出し側の SCA ランタイムが受け取るパラメータは、
+      指定された順番に並べられたリストとなります。
+      これを、soap メッセージの名前つきパラメータにひとつひとつ割り当てるわけです。
+      たとえば、上で定義した <b>getQuote()</b>
+      メソッドに値 &#039;IBM&#039; および &#039;USD&#039; を渡す場合のコール方法は、このようになります。
+     </p>
+     
+     <p class="para">
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+$quote&nbsp;=&nbsp;$remote_service-&gt;getQuote('IBM','USD');</span>
+</code></div>
+      </div>
+
+     </p>
+     
+     <p class="para">
+      この結果は、次のような soap メッセージになります。
+     </p>
+     
+     <p class="para">
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+&lt;getQuote&gt;<br />&nbsp;&nbsp;&lt;ticker&gt;IBM&lt;/ticker&gt;<br />&nbsp;&nbsp;&lt;currency&gt;USD&lt;/currency&gt;<br />&lt;/getQuote&gt;</span>
+</code></div>
+      </div>
+
+     </p>
+     
+     <p class="para">
+      サービス提供側の SCA コンポーネントは、soap メッセージから受け取った
+      名前つきパラメータをひとつひとつ受け取り、順番が指定されたパラメータリスト形式の
+      (&#039;IBM&#039;,&#039;USD&#039;) に再変換します。
+     </p>
+     
+     <div class="caution"><b class="caution">警告</b>
+      
+      <p class="para"> 
+       どちらの側の SCA ランタイムについても、
+       soap メッセージ内でのパラメータの登場順が
+       メソッドのパラメータリストの順序と一致していることを前提としています。
+       これは、@param アノテーションの順序によって決まります。
+       これが、WSDL 内でのパラメータの登場順と
+       soap メッセージ内でのパラメータの登場順を定義しています。
+       したがって、@param アノテーションの順序は
+       メソッドのパラメータの順番と一致させておくことが必要不可欠です。
+      </p>
+     </div>
+     
+    </div>
+    
+   </div>
+   
+   <div id="SCA.examples.structures" class="section">
+    <h2 class="title">データ構造の扱い</h2>
+    <p class="para">
+     SCA コンポーネントが受け渡しできる PHP のスカラー型は
+     boolean、integer、float および string の四種類です。
+     それ以外のデータ構造を扱う際には、SCA コンポーネントは
+     Service Data Objects (SDO) を使用します。SDO についての詳細は、このマニュアルの
+     <a href="ref.sdo.html" class="link">SDO のページ</a> を参照ください。
+     SDO になじみのあるかたならご存知のとおり、
+     SDO は (XML のモデルのような) 構造化されたデータを扱うのに非常に適しています。
+     また、リモートコンポーネントやウェブサービスとのデータのやり取りの際に
+     ごく自然にシリアライズすることができます。
+     データ構造の受け渡しを行う手段としては、現在 SDO のみをサポートしています。
+     その他の PHP オブジェクトや配列を受け渡しすることはできません。
+    </p>
+    
+    <p class="para"> 
+     SCA ランタイムは、データを常に値渡しします。これはローカルコールでも同じです。
+     そのため、SCA ランタイムは、パラメータリスト中の SDO
+     のコピーを事前に作成します。これはスカラー型の場合と同じです。
+    </p>
+    
+    <div class="section">
+     <h2 class="title">データ構造を SCA コンポーネントで定義する方法</h2>
+     <p class="para"> 
+      現在、データ構造の定義の場所を指定する手段としては
+      XML スキーマファイルのでの型の指定しかありません。
+      しかし、将来的には別の方法も可能になるでしょう。
+      たとえば PHP のクラスやインターフェイスで定義したり、
+      連想配列で定義したりなどです。
+     </p>
+     
+     <p class="para">
+      SDO の使用法を説明するために、以下では新しいコンポーネント
+      PortfolioMangement サービスを使用します。
+      これは、指定した顧客のポートフォリオを表す SDO を返します。
+     </p>
+     
+     <p class="para">
+      <div class="example">
+       <p><b>Example#14 データ構造を使用するコンポーネント</b></p>
+       <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #007700">include&nbsp;</span><span style="color: #DD0000">"SCA/SCA.php"</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">/**<br />&nbsp;*&nbsp;顧客のポートフォリオを管理する<br />&nbsp;*<br />&nbsp;*&nbsp;@service<br />&nbsp;*&nbsp;@binding.soap<br />&nbsp;*<br />&nbsp;*&nbsp;@types&nbsp;http://www.example.org/Portfolio&nbsp;PortfolioTypes.xsd<br />&nbsp;*<br />&nbsp;*/<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">PortfolioManagement&nbsp;</span><span style="color: #007700">{<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/**<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;指定した顧客のポートフォリオを取得する<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;integer&nbsp;$customer_id&nbsp;顧客&nbsp;ID<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;Portfolio&nbsp;http://www.example.org/Portfolio&nbsp;ポートフォリオ&nbsp;(銘柄と数量)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">getPortfolio</span><span style="color: #007700">(</span><span style="color: #0000BB">$customer_id</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;データベースから取得しているものとします<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$portfolio&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">SCA</span><span style="color: #007700">::</span><span style="color: #0000BB">createDataObject</span><span style="color: #007700">(</span><span style="color: #DD0000">'http://www.example.org/Portfolio'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'Portfolio'</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$holding&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$portfolio</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">createDataObject</span><span style="color: #007700">(</span><span style="color: #DD0000">'holding'</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$holding</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">ticker&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'AAPL'</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$holding</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">number&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">100.5</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$holding&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$portfolio</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">createDataObject</span><span style="color: #007700">(</span><span style="color: #DD0000">'holding'</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$holding</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">ticker&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'INTL'</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$holding</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">number&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">100.5</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$holding&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$portfolio</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">createDataObject</span><span style="color: #007700">(</span><span style="color: #DD0000">'holding'</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$holding</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">ticker&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'IBM'</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$holding</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">number&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">100.5</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$portfolio</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+        
+       </div>
+
+      </div>
+     </p>
+     
+     <p class="para">
+      @types アノテーションは次のようになります。
+     </p>
+     
+     <p class="para">
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">@</span><span style="color: #0000BB">types&nbsp;http</span><span style="color: #007700">:</span><span style="color: #FF8000">//www.example.org/Portfolio&nbsp;PortfolioTypes.xsd<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </p>
+     
+     <p class="para">
+      これは、名前空間
+      http://www.example.org/Portfolio 内の型が、スキーマファイル
+      URI PortfolioTypes.xsd で見つかることを表します。
+      作成される WSDL では、この情報を次のような import ステートメントで再現します。
+     </p>
+     
+     <p class="para">
+      <div class="example-contents">
+<div class="cdata"><pre>
+   &lt;xs:import schemaLocation=&quot;PortfolioTypes.xsd&quot;
+                      namespace=&quot;http://www.example.org/Portfolio&quot;/&gt;
+</pre></div>
+      </div>
+
+     </p>
+     
+     <p class="para">
+      つまり、この URI は、絶対 URI であろうが相対 URI
+      であろうが schemaLocation 属性で指定されたときに解決可能でなければなりません。
+     </p>
+     
+    </div>
+    
+    <div class="section">
+     <h2 class="title">SDO の作成</h2>
+     <p class="para">
+      SDO になじみの深い方は、SDO は
+      認められている構造 (あるいは &#039;スキーマ&#039; や &#039;モデル&#039; と呼ばれることもあります)
+      でのみ作成されることをご存知でしょう。
+      また、&#039;new&#039; を使用するのではなくデータファクトリが必要となることもご存知でしょう。
+      たいていは、既存のデータオブジェクトをデータファクトリとして使用します。
+      しかし時には、特に最初のデータオブジェクトを取得するときなど、
+      何か別のものをデータファクトリとして使用する必要があります。
+     </p>
+     
+     <p class="para">
+      SCA では、SCA ランタイムクラスかあるいは (ローカルかリモートの)
+      サービスのプロキシを SDO のデータファクトリとして使用できます。
+      どれを使用するのか、そしていつ使用するのかについて、
+      次の二つの節で説明します。
+     </p>
+     <p class="para"> 
+      SDO の作成について説明するための新しい例を使用します。
+      サービスに SDO を渡し、そしてそのサービスから SDO を返すものです。
+     </p>
+    </div>
+    
+    <div class="section">
+     <h2 class="title">サービスに渡す SDO の作成</h2>
+     <p class="para">
+      サービスをコールする際にデータ構造が必要となる場合、
+      そのサービスへのプロキシを
+      対応する SDO 用のデータファクトリとして使用します。
+      たとえば、ローカルの AddressBook
+      コンポーネントが提供するサービスのプロキシとして使用するコンポーネントを考えて見ましょう。
+     </p>
+     
+     <p class="para">
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/**<br />&nbsp;*&nbsp;@reference<br />&nbsp;*&nbsp;@binding.local&nbsp;AddressBook.php<br />&nbsp;*/<br /></span><span style="color: #0000BB">$address_book</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+       
+      </div>
+
+     </p>
+     <p class="para"> 
+      コールしようとしている AddressBook コンポーネントの定義は、
+      次のようになります。
+     </p>
+     <p class="para">
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/**<br />*&nbsp;@service<br />*&nbsp;@binding.soap<br />*&nbsp;@types&nbsp;http://addressbook&nbsp;../AddressBook/AddressBook.xsd<br />*/<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">AddressBook&nbsp;</span><span style="color: #007700">{<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/**<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;personType&nbsp;$person&nbsp;http://addressbook&nbsp;(person&nbsp;オブジェクト)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;addressType&nbsp;http://addressbook&nbsp;(その&nbsp;person&nbsp;オブジェクトに対応する&nbsp;address&nbsp;オブジェクト)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">lookupAddress</span><span style="color: #007700">(</span><span style="color: #0000BB">$person</span><span style="color: #007700">)&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+       
+      </div>
+
+     </p>
+     
+     <p class="para"> 
+      AddressBook コンポーネントは、
+      <b>lookupAddress()</b> という名前のサービスメソッドを提供します。
+      これは、http://addressbook 名前空間の型を使用します。
+      lookupAddress メソッドは、personType 型のデータを受け取って
+      addressType 型のデータを返します。それぞれの型は、スキーマファイル
+      addressbook.xsd で定義されています。
+     </p>
+     
+     <p class="para"> 
+      AddressBook コンポーネントを使用するコンポーネントを作成すると、
+      インスタンス変数 <var class="varname">$address_book</var>
+      にサービスへのプロキシが設定されます。
+      呼び出し元のコンポーネントは、<var class="varname">$address_book</var>
+      に格納されたプロキシを使用して SDO を作成します。実際の例を以下に示します。
+     </p>
+     
+     <p class="para">
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$william_shakespeare&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$address_book</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">createDataObject</span><span style="color: #007700">(</span><span style="color: #DD0000">'http://addressbook'</span><span style="color: #007700">,</span><span style="color: #DD0000">'personType'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$william_shakespeare&nbsp;</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">name&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"William&nbsp;Shakespeare"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$address_book</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">lookupAddress</span><span style="color: #007700">(</span><span style="color: #0000BB">$william_shakespeare</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+       
+      </div>
+
+     </p>
+     
+     <p class="para"> 
+      このようにしてプロキシから SDO を作成する方法は、
+      SCA コンポーネントに限った話ではないことに注意しましょう。
+      サービスが一般の PHP スクリプトからコールされ、
+      プロキシを <b>getService()</b>
+      で取得した場合にも同様の方法を使用します。
+     </p>
+     
+     <p class="para">
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$address_book&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">SCA</span><span style="color: #007700">::</span><span style="color: #0000BB">getService</span><span style="color: #007700">(</span><span style="color: #DD0000">'AddressBook.php'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$william_shakespeare&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$address_book</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">createDataObject</span><span style="color: #007700">(</span><span style="color: #DD0000">'http://addressbook'</span><span style="color: #007700">,</span><span style="color: #DD0000">'personType'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+       
+      </div>
+
+     </p>
+     
+    </div>
+    <div class="section">
+     <h2 class="title">コンポーネントから返す SDO の作成</h2>
+     <p class="para"> 
+      データオブジェクトを作成して呼び出し元に返す必要のあるコンポーネントは、
+      データオブジェクトへのプロキシを使用しません。この場合は、
+      <var class="filename">SCA.php</var> の静的メソッド
+      <b>createDataObject()</b> を使用します。
+      したがって、もし先ほど説明した AddressBook
+      コンポーネントが <span class="classname">addressType</span>
+      型のオブジェクトを名前空間 http://addressbook に作成するのなら、
+      次のようになります。
+     </p>
+     
+     <p class="para">
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$address&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">SCA</span><span style="color: #007700">::</span><span style="color: #0000BB">createDataObject</span><span style="color: #007700">(</span><span style="color: #DD0000">'http://addressbook'</span><span style="color: #007700">,</span><span style="color: #DD0000">'addressType'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+       
+      </div>
+
+     </p>
+     
+    </div>
+    
+   </div>
+   
+   <div id="SCA.examples.errorhandling" class="section">
+    <h2 class="title">エラー処理</h2>
+    <p class="para"> 
+     この節では、エラーの処理方法について説明します。
+     エラーには次の二種類があります。
+    </p>
+    <ul class="itemizedlist">
+     <li class="listitem">
+      <p class="para"> 
+       SCA の実行時例外。これは、
+       コンポーネントの実行やリモートサービスとのやりとりの際に問題が発生したことを表すものです。
+       ネットワークや設定の問題が原因で起こることがあります。
+      </p>
+     </li>
+     
+     <li class="listitem">
+      <p class="para"> 
+       ビジネスロジックの例外。これは、
+       プログラマが定義するものです。
+       PHP の Exception クラスを継承したクラスを作成し、
+       ビジネスロジックで問題が発生した場合に故意にスローします。
+      </p>
+     </li>
+     
+    </ul>
+    
+    <div class="section">
+     <h2 class="title">実行時例外の処理</h2>
+     <p class="para"> 
+      SCA の実行時例外には二つの型があります。
+     </p>
+     
+     <ul class="itemizedlist">
+      <li class="listitem">
+       <p class="para"> 
+        SCA_RuntimeException -
+        SCA ランタイム内で問題が見つかった、あるいは問題が起こったであろうと考えられるということを通知します。
+        これは、さまざまな理由で発生しえます。
+        その多くは、対象がローカルであるかリモートサービスであるかにかかわらず発生します。
+        コンポーネント内のアノテーションのエラーや、
+        WSDL や PHP ファイルが存在しないなどといった内容です。
+        ウェブサービスの場合に SCA_RuntimeException がスローされるのは、
+        リモートのウェブサービスから SoapFault を受け取り、
+        その失敗コードの内容が「再試行しても成功しないであろう」と判断されるときです。
+       </p>
+      </li>
+      
+      <li class="listitem">
+       <p class="para"> 
+        SCA_ServiceUnavailableException -
+        これは SCA_RuntimeException のサブクラスです。
+        接続時やリモートサービスの使用時に問題が発生したものの、
+        再試行すれば成功する可能性がある場合にスローされます。
+        ウェブサービスの場合にこの例外がスローされるのは、
+        リモートのウェブサービスから SoapFault を受け取り、
+        その失敗コードの内容が「再試行すれば成功するであろう」と判断されるときです。
+       </p>
+      </li>
+      
+     </ul>
+    </div>
+    <div class="section">
+     <h2 class="title">ビジネスロジックの例外の処理</h2>
+     <p class="para"> 
+      ビジネスロジックの例外の定義やスローは、通常通りの方法でコンポーネントで行います。
+      そのコンポーネントがローカルにコールされるかリモートからコールされるかは関係ありません。
+      SCA ランタイムは、ローカルからコールされたコンポーネント内で発生した
+      ビジネスロジック例外をキャッチしません。これは呼び出し元に返されます。
+      一方、コンポーネントがウェブサービス経由でコールされた場合は
+      SCA ランタイムがそのビジネスロジック例外をキャッチし、再度スローします。
+      呼び出し元がその例外の定義を知っている
+      (その例外の PHP クラス定義を含むファイルをインクルードしている)
+      ものとして、再度スローされた冷害は元の例外と同じ内容を含みます。
+      つまり、たとえば
+      <b>getLine()</b> メソッドや
+      <b>getFile()</b> メソッドには
+      ビジネスロジック内のどの位置で例外が発生したのかが含まれます。
+      例外は、soap fault の詳細フィールドにおいて &quot;Client&quot;
+      というコードで渡されます。
+     </p>
+    </div>
+    
+   </div>
+   
+  </div> 
+  
+  
+  <div id="sca.classes" class="section">
+   <h2 class="title">定義済みクラス</h2>
+   <p class="para"> 
+    SCA へのインターフェイスのほとんどは、SCA コンポーネントのアノテーションを用いて操作します。
+    そのため、パブリックなクラスやメソッドは少ししかありません。
+    スクリプトやコンポーネントからコールできるクラスは、
+    SCA クラスそのもののほかには
+    プロキシクラスである SCA_LocalProxy と SCA_SoapProxy だけです。
+   </p>
+   
+   <div id="sca.class" class="section">
+    
+    <h2 class="title">
+     <span class="classname">SCA</span>
+    </h2>
+    <p class="para">
+     SCA クラスのほとんどの作業は、SCA コンポーネントにファイル SCA.php
+     をインクルードしたときに行われます。しかし、PHP スクリプトは
+     <var class="filename">SCA.php</var> をインクルードしてから SCA クラスの
+     <b>getService()</b> メソッドをコールし、
+     サービスのプロキシを取得することもできます。
+     コンポーネントは、これを行う必要はありません。というのも、
+     インスタンス変数と @reference アノテーションを定義することでプロキシを取得できるからです。
+    </p>
+    <p class="para"> 
+     SDO を作成して呼び出し元に返す必要があるコンポーネントは、
+     データファクトリが必要となります。この目的のために、SCA クラスは
+     <b>createDataObject()</b> メソッドをサポートしています。
+     これは、コンポーネントの @types アノテーションで定義したモデルに基づいた
+     SDO を作成します。
+     <b>createDataObject()</b> への引数は、
+     SDO の XML データアクセスサービスと同じです。
+    </p>
+    
+    <div id="sca.class.SCA.methods" class="section"> <h2 class="title">メソッド</h2>
+     <ul class="itemizedlist">
+      <li class="listitem">
+       <p class="para">
+        <a href="function.SCA-getService.html" class="link">
+         getService</a> - サービスのプロキシを取得する
+       </p>
+      </li>
+      <li class="listitem">
+       <p class="para">
+        <a href="function.SCA-createDataObject.html" class="link">
+         createDataObject</a> - SDO を作成する
+       </p>
+      </li>
+     </ul>
+    </div>
+   </div>
+   
+   <div id="sca-local-proxy.class" class="section">
+    <h2 class="title">
+     <span class="classname">SCA_LocalProxy</span>
+    </h2>
+    <p class="para">
+     <b>getService()</b> に
+     対象となるローカル PHP コンポーネントを指定してコールすると、
+     ローカルプロキシが返されます。
+     ローカルプロキシは、@reference および @binding.php
+     アノテーションで定義されたコンポーネントのインスタンス変数に注入されます。
+     スクリプトあるいはコンポーネントがローカルプロキシをコールすると、
+     それが対象のコンポーネント自身に渡されます。
+    </p>
+    <p class="para"> 
+     SDO を作成して呼び出し元に返す必要があるコンポーネントは、
+     データファクトリが必要となります。この目的のために、
+     SCA_LocalProxy クラスは createDataObject メソッドをサポートしています。
+     これは、コンポーネントの @types アノテーションで定義したモデルに基づいた
+     SDO を作成します。
+     createDataObject への引数は、
+     SDO の XML データアクセスサービスと同じです。
+    </p>
+    
+    <div id="sca.class.SCA-LocalProxy.methods" class="section">
+     <h2 class="title">メソッド</h2>
+     <ul class="itemizedlist">
+      <li class="listitem">
+       <p class="para">
+        <a href="function.SCA-LocalProxy-createDataObject.html" class="link">
+         createDataObject</a> - SDO を作成する
+       </p>
+      </li>
+     </ul>
+    </div>
+   </div>
+   
+   <div id="sca-soap-proxy.class" class="section">
+    <h2 class="title">
+     <span class="classname">SCA_SoapProxy</span>
+    </h2>
+    <p class="para">
+     <b>getService()</b> に
+     対象となる WSDL ファイルを指定してコールすると、
+     SOAP プロキシが返されます。
+     SOAP プロキシは、@reference および @binding.soap
+     アノテーションで定義されたコンポーネントのインスタンス変数に注入されます。
+     スクリプトあるいはコンポーネントが SOAP プロキシをコールすると、
+     それがウェブサービスへの SOAP リクエストに変換され、
+     PHP の Soap 拡張モジュールの助けを得て対象のコンポーネントに渡されます。
+    </p>
+    <p class="para"> 
+     SDO を作成して呼び出し元に返す必要があるコンポーネントは、
+     データファクトリが必要となります。この目的のために、
+     SCA_SoapProxy クラスは createDataObject メソッドをサポートしています。
+     これは、対象の WSDL で定義したモデルに基づいた
+     SDO を作成します。
+     createDataObject への引数は、
+     SDO の XML データアクセスサービスと同じです。
+    </p>
+    
+    <div id="sca.class.SCA-SoapProxy.methods" class="section">
+     <h2 class="title">メソッド</h2>
+     <ul class="itemizedlist">
+      <li class="listitem">
+       <p class="para">
+        <a href="function.SCA-SoapProxy-createDataObject.html" class="link">
+         createDataObject</a> - SDO を作成する
+       </p>
+      </li>
+     </ul>
+    </div>
+   </div>
+   
+  </div>
+  
+  
+  
+ </div>
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+<h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="function.SCA-LocalProxy-createDataObject.html">SCA_LocalProxy::createDataObject</a> ― SDO を作成する</li><li><a href="function.SCA-SoapProxy-createDataObject.html">SCA_SoapProxy::createDataObject</a> ― SDO を作成する</li><li><a href="function.SCA-createDataObject.html">SCA::createDataObject</a> ― SDO を作成する</li><li><a href="function.SCA-getService.html">SCA::getService</a> ― サービスのプロキシを取得する</li></ul>
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.satellite-object-to-string.html">satellite_object_to_string</a></div>
+ <div class="next" style="float: right;"><a href="function.SCA-LocalProxy-createDataObject.html">SCA_LocalProxy::createDataObject</a></div>
+ <div class="up"><a href="funcref.html">関数リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

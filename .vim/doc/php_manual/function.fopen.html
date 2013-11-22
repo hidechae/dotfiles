@@ -1,0 +1,433 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>ファイルまたは URL をオープンする</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.fnmatch.html">fnmatch</a></div>
+ <div class="next" style="float: right;"><a href="function.fpassthru.html">fpassthru</a></div>
+ <div class="up"><a href="ref.filesystem.html">ファイルシステム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.fopen" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">fopen</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose">fopen ― ファイルまたは URL をオープンする</p>
+
+ </div>
+ 
+ <div class="refsect1 description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis">
+   <span class="type">resource</span> <span class="methodname"><b><b>fopen</b></b></span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$filename</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$mode</tt></span>
+   [, <span class="methodparam"><span class="type">bool</span> <tt class="parameter">$use_include_path</tt></span>
+   [, <span class="methodparam"><span class="type">resource</span> <tt class="parameter">$context</tt></span>
+  ]] )</div>
+
+  <p class="para">
+   <b>fopen()</b> は、<i><tt class="parameter">filename</tt></i>
+
+   で指定されたリソースをストリームに結び付けます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">filename</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       <i><tt class="parameter">filename</tt></i>
+ が &quot;スキーム://...&quot; の形式である場合、
+       それは URL とみなされ、PHP はそのプロトコルのハンドラ
+       (ラッパーともいいます) を探します。
+       もしもそのプロトコルに対するラッパが登録されていない場合、
+       PHP はスクリプトに潜在的な問題があることを示す NOTICE を発行したうえで、
+       <i><tt class="parameter">filename</tt></i>
+ を通常のファイルとみなしてオープンすることを試みます。
+      </p>
+      <p class="para">
+       PHP は、<i><tt class="parameter">filename</tt></i>
+ がローカルのファイルを示しているとみなすと、
+       そのファイルへのストリームをオープンします。
+       そのファイルはPHPからアクセスできるものでなければなりません。
+       ファイルのパーミッションが (パラメータで指定された)
+       アクセスを許可されているかどうか確認する必要があります。
+       <a href="features.safe-mode.html#ini.safe-mode" class="link">セーフモード</a> または <a href="features.safe-mode.html#ini.open-basedir" class="link">open_basedir</a>
+       を有効にしている場合は更なるアクセス制限が加えられることがあります。
+      </p>
+      <p class="para">
+       <i><tt class="parameter">filename</tt></i>
+ が登録されているプロトコルを示していると
+       PHP が判断し、かつそのプロトコルがネットワーク URL として登録されていれば、
+       PHP は <a href="ref.filesystem.html#ini.allow-url-fopen" class="link">allow_url_fopen</a>
+       が有効となっているかどうかチェックします。
+       もしこれがオフになっていると、PHP は warning を発行し fopen は失敗します。
+      </p>
+      <blockquote><p><b class="note">注意</b>: 
+       
+        サポートされているプロトコルのリストは <a href="wrappers.html" class="xref">サポートされるプロトコル/ラッパー</a> にあります。
+        いくつかのプロトコル (<i class="literal">wrappers</i>にも関連する) は
+        <i class="literal">context</i> かつ/または <var class="filename">php.ini</var> のオプションをサポートします。
+        使用するプロトコルについてセットされるオプションのリストについては、
+        それぞれのページを見てください (例えば、 <var class="filename">php.ini</var> 上の
+        <i class="literal">user_agent</i> の値は
+        <i class="literal">http</i> ラッパーが使用します)。
+       <br />
+      </p></blockquote>
+      <p class="para">
+       Windows 環境では、ファイルパスで用いる全てのバックスラッシュを
+       エスケープするかフォワードスラッシュを使用することに注意してください。
+       <div class="informalexample">
+        <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$handle&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">"c:\\data\\info.txt"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"r"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+        </div>
+
+       </div>
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">mode</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       パラメータ <i><tt class="parameter">mode</tt></i>
+ は、
+       そのストリームに要するアクセス形式を指定します。
+       この指定は、下表のうちのどれかとなります。
+       <table border="5">
+        <caption><b>
+         <b>fopen()</b> で使用可能な
+         <i><tt class="parameter">mode</tt></i>
+ のリスト
+        </b></caption>
+        <colgroup>
+
+         <thead valign="middle">
+          <tr valign="middle">
+           <th colspan="1"><i><tt class="parameter">mode</tt></i>
+</th>
+           <th colspan="1">説明</th>
+          </tr>
+
+         </thead>
+
+         <tbody valign="middle">
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><i class="literal">&#039;r&#039;</i></td>
+           <td colspan="1" rowspan="1" align="left">
+            読み込みのみでオープンします。ファイルポインタをファイルの先頭に置きます。
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><i class="literal">&#039;r+&#039;</i></td>
+           <td colspan="1" rowspan="1" align="left">
+            読み込み／書き出し用にオープンします。
+            ファイルポインタをファイルの先頭に置きます。
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><i class="literal">&#039;w&#039;</i></td>
+           <td colspan="1" rowspan="1" align="left">
+            書き出しのみでオープンします。ファイルポインタをファイルの先頭に置き、
+            ファイルサイズをゼロにします。ファイルが存在しない場合には、
+            作成を試みます。
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><i class="literal">&#039;w+&#039;</i></td>
+           <td colspan="1" rowspan="1" align="left">
+            読み込み／書き出し用でオープンします。
+            ファイルポインタをファイルの先頭に置き、
+            ファイルサイズをゼロにします。
+            ファイルが存在しない場合には、作成を試みます。
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><i class="literal">&#039;a&#039;</i></td>
+           <td colspan="1" rowspan="1" align="left">
+            書き出し用のみでオープンします。ファイルポインタをファイルの終端に置きます。
+            ファイルが存在しない場合には、作成を試みます。
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><i class="literal">&#039;a+&#039;</i></td>
+           <td colspan="1" rowspan="1" align="left">
+            読み込み／書き出し用でオープンします。
+            ファイルポインタをファイルの終端に置きます。
+            ファイルが存在しない場合には、作成を試みます。
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><i class="literal">&#039;x&#039;</i></td>
+           <td colspan="1" rowspan="1" align="left">
+            書き込みのみでオープンします。ファイルポインタをファイルの先頭に置きます。
+            ファイルが既に存在する場合には <b>fopen()</b> は失敗し、
+            <b><tt>E_WARNING</tt></b> レベルのエラーを発行します。
+            ファイルが存在しない場合には新規作成を試みます。
+            これは <i class="literal">open(2)</i> システムコールにおける
+            <i class="literal">O_EXCL|O_CREAT</i> フラグの指定と等価です。
+            このオプションはPHP4.3.2以降でサポートされ、また、
+            ローカルファイルに対してのみ有効です。
+           </td>
+          </tr>
+
+          <tr valign="middle">
+           <td colspan="1" rowspan="1" align="left"><i class="literal">&#039;x+&#039;</i></td>
+           <td colspan="1" rowspan="1" align="left">
+            読み込み／書き出し用でオープンします。ファイルポインタをファイルの先頭に置きます。
+            ファイルが既に存在する場合には <b>fopen()</b> は失敗し、
+            <b><tt>E_WARNING</tt></b> レベルのエラーを発行します。
+            これは <i class="literal">open(2)</i> システムコールにおける
+            <i class="literal">O_EXCL|O_CREAT</i> フラグの指定と等価です。
+            このオプションは PHP 4.3.2 以降でサポートされ、また、
+            ローカルファイルに対してのみ有効です。
+           </td>
+          </tr>
+
+         </tbody>
+        </colgroup>
+
+       </table>
+
+      </p>
+      <blockquote><p><b class="note">注意</b>: 
+       
+        オペレーティングシステムファミリが異なると行末も異なります。
+        テキストファイルに書き出し、そこに改行を加えたいとき、
+        オペレーティングシステムにあわせた正しい改行コードを使用する必要があります。
+        Unix ベースのシステムでは改行に <i class="literal">\n</i> キャラクタを使用します。
+        Windows ベースのシステムでは <i class="literal">\r\n</i> を使用します。
+        マッキントッシュベースのシステムでは <i class="literal">\r</i> を使用します。
+       <br />
+       
+        間違った改行コードでファイルに書き込むと、
+        他のアプリケーション上でそのファイルを開いた際に変な風に見えてしまいます。
+       <br />
+       
+        Windows上では、<i class="literal">\n</i>を<i class="literal">\r\n</i>に透過的に変換する
+        text-mode変換フラグ(<i class="literal">&#039;t&#039;</i>)が提供されます。
+        それに対し、<i class="literal">&#039;b&#039;</i>を使って強制的にバイナリモードにすることもできます。
+        その場合データの変換はされません。
+        このフラグを使用するには、<i class="literal">&#039;b&#039;</i> または <i class="literal">&#039;t&#039;</i>を
+        <i><tt class="parameter">mode</tt></i>
+引数の最後に追加してください。
+       <br />
+       
+        デフォルトの変換モードは SAPI と使用している PHP のバージョンによって異なります。
+        したがって、互換性の意味から、常に適切なフラグを指定することが推奨されます。
+        plain-text ファイルを使用する場合には <i class="literal">&#039;t&#039;</i> モードを指定すべきであり、
+        改行に <i class="literal">\n</i> を使用すると、
+        メモ帳のようなアプリケーションで読めることを期待できます。
+        それ以外のケースでは <i class="literal">&#039;b&#039;</i> を使うべきです。
+       <br />
+       
+        バイナリファイルを扱っている際に
+        <i class="literal">&#039;b&#039;</i> フラグを指定しなかった場合、
+        画像ファイルが壊れたり、<i class="literal">\r\n</i>
+        キャラクタがおかしくなる等の問題を抱えてしまうでしょう。
+       <br />
+      </p></blockquote>
+      <blockquote><p><b class="note">注意</b>: 
+       
+        互換性維持のために、<b>fopen()</b> でファイルをオープンする際は
+        常に <i class="literal">&#039;b&#039;</i> フラグを指定することが強く推奨されます。
+       <br />
+      </p></blockquote>
+      <blockquote><p><b class="note">注意</b>: 
+       
+        互換性維持のために、<i class="literal">&#039;t&#039;</i>
+        モードを使用または依存しているコードを書き直し、
+        正しい改行コードと <i class="literal">&#039;b&#039;</i> モードを代わりに使用することが、
+        強く推奨されます。
+       <br />
+      </p></blockquote>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">use_include_path</tt></i>
+</span>
+     <dd>
+
+      <p class="para">
+       オプションの３番目の引数<i><tt class="parameter">use_include_path</tt></i>
+に&#039;1&#039;又は
+       <b><tt>TRUE</tt></b> を設定することにより、<a href="ini.core.html#ini.include-path" class="link">include_path</a>
+       のファイルの検索も行うこともできます。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><i><tt class="parameter">context</tt></i>
+</span>
+     <dd>
+
+      <blockquote><p><b class="note">注意</b>: <span class="simpara">コンテキストのサポートは、
+PHP 5.0.0 で追加されました。<i class="literal">contexts</i> の説明に関しては、
+<a href="ref.stream.html" class="xref">ストリーム</a> を参照してください。</span></p></blockquote>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合にファイルポインタリソース、エラー時に <b><tt>FALSE</tt></b> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 errors">
+  <h3 class="title">エラー / 例外</h3>
+  <p class="para">
+   オープンが失敗するとこの関数は <b><tt>FALSE</tt></b> を返し、
+   <b><tt>E_WARNING</tt></b>
+   レベルのエラーを発行します。
+   <a href="language.operators.errorcontrol.html" class="link">@</a>
+   を使ってこの warning を抑制することもできます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="informaltable">
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">バージョン</th>
+       <th colspan="1">説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">4.3.2</td>
+       <td colspan="1" rowspan="1" align="left">
+        PHP 4.3.2 以降では、バイナリモードとテキストモードを区別する全ての
+        プラットフォームにおいて、デフォルトのモードはバイナリにセットされます。
+        アップグレード後にスクリプトに問題が起きた場合は、
+        以上に述べたスクリプトの互換性を確保するまでの次善策として、
+        <i class="literal">&#039;t&#039;</i> フラグを試してみてください。
+       </td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left">4.3.2</td>
+       <td colspan="1" rowspan="1" align="left">
+        <i class="literal">&#039;x&#039;</i> および <i class="literal">&#039;x+&#039;</i>
+        が追加されました。
+       </td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example">
+    <p><b>Example#1 <b>fopen()</b> の例</b></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$handle&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">"/home/rasmus/file.txt"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"r"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$handle&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">"/home/rasmus/file.gif"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"wb"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$handle&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">"http://www.example.com/"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"r"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$handle&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">"ftp://user:password@example.com/somefile.txt"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"w"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes">
+  <h3 class="title">注意</h3>
+  <div class="warning"><b class="warning">警告</b><p class="para">IIS のような、いくつかの標準に
+対応してない Web サーバは、PHP に警告を発生させるような手順でデータを送信します。
+このようなサーバを使用する場合は、<a href="ref.errorfunc.html#ini.error-reporting" class="link">
+error_reporting</a> を警告を発生しないレベルまで小さくする必要があります。
+PHP 4.3.7 以降では、https:// ラッパーでストリームをオープンする際に
+バグがある IIS サーバソフトウエアを検出することができ、この警告を抑制することができます。
+あなたが ssl:// ソケットを作性するために  <a href="function.fsockopen.html" class="function">fsockopen()</a> を使用している場合、
+自らこの警告を検出し、抑制する必要があります。</p></div>
+  <blockquote><p><b class="note">注意</b>: <span class="simpara"> <a href="features.safe-mode.html" class="link">セーフモード</a> が有効の場合、PHP は、
+操作を行うディレクトリが、実行するスクリプトと同じ UID (所有者)を有しているか
+どうかを確認します。</span></p></blockquote>
+  <p class="para">
+   ファイルの読みこみ・書きこみ時に問題が発生し、
+   サーバーモジュール版のPHPを使用している場合、
+   使用するファイル・ディレクトリがサーバプロセスからアクセス可能かどうかを確認してください。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="wrappers.html" class="xref">サポートされるプロトコル/ラッパー</a></li>
+    <li class="member"><a href="function.fclose.html" class="function">fclose()</a></li>
+    <li class="member"><a href="function.fgets.html" class="function">fgets()</a></li>
+    <li class="member"><a href="function.fread.html" class="function">fread()</a></li>
+    <li class="member"><a href="function.fwrite.html" class="function">fwrite()</a></li>
+    <li class="member"><a href="function.fsockopen.html" class="function">fsockopen()</a></li>
+    <li class="member"><a href="function.file.html" class="function">file()</a></li>
+    <li class="member"><a href="function.file-exists.html" class="function">file_exists()</a></li>
+    <li class="member"><a href="function.is-readable.html" class="function">is_readable()</a></li>
+    <li class="member"><a href="function.stream-set-timeout.html" class="function">stream_set_timeout()</a></li>
+    <li class="member"><a href="function.popen.html" class="function">popen()</a></li>
+    <li class="member"><a href="function.stream-context-create.html" class="function">stream_context_create()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="function.fnmatch.html">fnmatch</a></div>
+ <div class="next" style="float: right;"><a href="function.fpassthru.html">fpassthru</a></div>
+ <div class="up"><a href="ref.filesystem.html">ファイルシステム</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

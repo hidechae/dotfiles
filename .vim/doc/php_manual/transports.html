@@ -1,0 +1,217 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>サポートされるソケットトランスポートのリスト</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="filters.encryption.html">暗号化フィルタ</a></div>
+ <div class="next" style="float: right;"><a href="transports.unix.html">Unix ドメイン: UNIX および UDG</a></div>
+ <div class="up"><a href="appendices.html">付録</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div>
+ <h1>サポートされるソケットトランスポートのリスト</h1>
+<h2>目次</h2><ul class="chunklist chunklist_appendix"><li><a href="transports.unix.html">Unix ドメイン: UNIX および UDG</a></li></ul>
+
+ <p class="para">
+  以下は、PHP がビルトインで持っている
+  <a href="function.fsockopen.html" class="function">fsockopen()</a> や
+  <a href="function.stream-socket-client.html" class="function">stream_socket_client()</a> のような
+  ストリームに基づくソケットトランスポートとともに使用できる
+  URL 形式のソケットトランスポートのリストです。
+  これらの転送は
+  <a href="ref.sockets.html" class="link">ソケット拡張</a>には
+  <em class="emphasis">適用されません</em>。
+ </p>
+
+ <p class="para">
+  自分が使用している PHP のバージョンのトランスポートのリストを得るには
+  <a href="function.stream-get-transports.html" class="function">stream_get_transports()</a> を使用してください。
+ </p>
+
+ <div id="transports.inet" class="section">
+  <h2 class="title">Internet ドメイン: TCP、UDP、SSL、および TLS</h2>
+  <p class="simpara">
+   PHP 3、PHP 4、PHP 5。
+   <i class="literal">ssl://</i> &amp; <i class="literal">tls://</i> PHP 4.3.0 以降
+   <i class="literal">sslv2://</i> &amp; <i class="literal">sslv3://</i> PHP 5.0.2 以降
+  </p>
+
+  <blockquote><p><b class="note">注意</b>: 
+   <span class="simpara">
+    トランスポートが指定されなければ、<i class="literal">tcp://</i> と仮定されます。
+   </span>
+  </p></blockquote>
+
+  <ul class="itemizedlist">
+   <li class="listitem"><span class="simpara"><i class="literal">127.0.0.1</i></span></li>
+   <li class="listitem"><span class="simpara"><i class="literal">fe80::1</i></span></li>
+   <li class="listitem"><span class="simpara"><i class="literal">www.example.com</i></span></li>
+   <li class="listitem"><span class="simpara"><i class="literal">tcp://127.0.0.1</i></span></li>
+   <li class="listitem"><span class="simpara"><i class="literal">tcp://fe80::1</i></span></li>
+   <li class="listitem"><span class="simpara"><i class="literal">tcp://www.example.com</i></span></li>
+   <li class="listitem"><span class="simpara"><i class="literal">udp://www.example.com</i></span></li>
+   <li class="listitem"><span class="simpara"><i class="literal">ssl://www.example.com</i></span></li>
+   <li class="listitem"><span class="simpara"><i class="literal">sslv2://www.example.com</i></span></li>
+   <li class="listitem"><span class="simpara"><i class="literal">sslv3://www.example.com</i></span></li>
+   <li class="listitem"><span class="simpara"><i class="literal">tls://www.example.com</i></span></li>
+  </ul>
+
+  <p class="simpara">
+   Internet ドメインソケットは、対象のアドレスに加えてポート番号を
+   受け付けます。<a href="function.fsockopen.html" class="function">fsockopen()</a> の場合、これは 2 番目の
+   パラメータとして指定するので、トランスポートの URL には影響を与えません。
+   しかし、<a href="function.stream-socket-client.html" class="function">stream_socket_client()</a> および関連する関数では
+   伝統的な URL を使用します。この場合、ポート番号はトランスポート URL の
+   後にコロンで区切ってつなげます。
+  </p>
+
+  <ul class="itemizedlist">
+   <li class="listitem"><span class="simpara"><i class="literal">tcp://127.0.0.1:80</i></span></li>
+   <li class="listitem"><span class="simpara"><i class="literal">tcp://[fe80::1]:80</i></span></li>
+   <li class="listitem"><span class="simpara"><i class="literal">tcp://www.example.com:80</i></span></li>
+  </ul>
+
+  <blockquote><p><b class="note">注意</b>: 
+   <b>IPv6 数値アドレスとポート番号</b>
+   <span class="simpara">
+    IPv4 やホスト名形式の例では、ポート番号はアドレスやホスト名の直後に
+    コロンでつながっていますが、上の 2 番目の例では IPv6 アドレスが
+    角括弧でかこまれて <i class="literal">[fe80::1]</i> となっています。
+    これは、IPv6 アドレスに使用されるコロンとポート番号を表す際のコロンを
+    区別するためです。
+   </span>
+  </p></blockquote>
+
+  <p class="simpara">
+   <i class="literal">ssl://</i> および <i class="literal">tls://</i> のトランスポート
+   （PHP が openssl サポートを含めてコンパイルされている場合のみ有効）は、
+   <i class="literal">tcp://</i> トランスポートに SSL 暗号化を含めた拡張です。
+   PHP 4.3.0 以降では OpenSSL サポートは PHP に静的に組み込まれている
+   必要があります。PHP 5.0.0 以降では静的に組み込むだけではなくモジュールとして
+   コンパイルされていてもよくなりました。
+  </p>
+
+  <p class="simpara">
+   <i class="literal">ssl://</i> は SSL V2 での接続を試みます。
+   あるいはリモートホストの設定によっては SSL V3 での接続を試みます。
+   <i class="literal">sslv2://</i> および
+   <i class="literal">sslv3://</i> は、SSL V2 と SSL V3 のどちらのプロトコルを
+   使用するかを明示的に指定します。
+  </p>
+
+  <p class="para">
+   <table border="5">
+    <caption><b>
+     <i class="literal">ssl://</i> および <i class="literal">tls://</i> の
+     トランスポート時のオプション（PHP 4.3.2 以降）
+    </b></caption>
+    <colgroup>
+
+     <thead valign="middle">
+      <tr valign="middle">
+       <th colspan="1">名前</th>
+       <th colspan="1">使用法</th>
+       <th colspan="1">デフォルト</th>
+      </tr>
+
+     </thead>
+
+     <tbody valign="middle">
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><i class="literal">verify_peer</i></td>
+       <td colspan="1" rowspan="1" align="left">
+        <b><tt>TRUE</tt></b> あるいは <b><tt>FALSE</tt></b> 。
+        SSL サーバ証明書の検証を要求するかどうか。
+       </td>
+       <td colspan="1" rowspan="1" align="left"><b><tt>FALSE</tt></b></td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><i class="literal">allow_self_signed</i></td>
+       <td colspan="1" rowspan="1" align="left">
+        <b><tt>TRUE</tt></b> あるいは <b><tt>FALSE</tt></b> 。
+        自己証明の証明書を許可するかどうか。
+       </td>
+       <td colspan="1" rowspan="1" align="left"><b><tt>FALSE</tt></b></td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><i class="literal">cafile</i></td>
+       <td colspan="1" rowspan="1" align="left">
+        ローカルファイルシステム上の証明書ファイルの場所。
+        <i class="literal">verify_peer</i> オプションでリモートサーバとの
+        認証の際に使用する。
+       </td>
+       <td class="empty">&nbsp;</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><i class="literal">capath</i></td>
+       <td colspan="1" rowspan="1" align="left">
+        <i class="literal">cafile</i> が指定されていなかったりその場所にファイルが
+        見つからなかったりした場合、<i class="literal">capath</i> が指す
+        ディレクトリを検索して認証ファイルを探します。<i class="literal">capath</i>
+        は認証ファイルのディレクトリを正確に指している必要があります。
+       </td>
+       <td class="empty">&nbsp;</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><i class="literal">local_cert</i></td>
+       <td colspan="1" rowspan="1" align="left">
+        ファイルシステム上のローカル証明書ファイルのパス。
+        あなたの証明書とプライベートキーを含み、PEM エンコードされた
+        ファイルである必要があります。オプションで、発行者の
+        認証チェーンを含めることも可能です。
+       </td>
+       <td class="empty">&nbsp;</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><i class="literal">passphrase</i></td>
+       <td colspan="1" rowspan="1" align="left">
+        <i class="literal">local_cert</i> ファイルをエンコードした際の
+        パスフレーズ。
+       </td>
+       <td class="empty">&nbsp;</td>
+      </tr>
+
+      <tr valign="middle">
+       <td colspan="1" rowspan="1" align="left"><i class="literal">CN_match</i></td>
+       <td colspan="1" rowspan="1" align="left">
+        予期している一般名（CN）。PHP は限定されたワイルドカード検索を
+        行います。もし一般名がこれにマッチしなかった場合、接続の試行は
+        失敗します。
+       </td>
+       <td class="empty">&nbsp;</td>
+      </tr>
+
+     </tbody>
+    </colgroup>
+
+   </table>
+
+  </p>
+
+  <blockquote><p><b class="note">注意</b>: 
+   <span class="simpara">
+    <i class="literal">ssl://</i> は
+    <a href="wrappers.http.html" class="link"><i class="literal">https://</i></a> および
+    <a href="wrappers.ftp.html" class="link"><i class="literal">ftps://</i></a> のラッパの
+    基盤となるものなので、<i class="literal">ssl://</i> に適用可能なオプションは
+    <i class="literal">https://</i> および <i class="literal">ftps://</i> にも
+    適用可能です。
+   </span>
+  </p></blockquote>
+ </div>
+
+ 
+
+</div>
+<hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="filters.encryption.html">暗号化フィルタ</a></div>
+ <div class="next" style="float: right;"><a href="transports.unix.html">Unix ドメイン: UNIX および UDG</a></div>
+ <div class="up"><a href="appendices.html">付録</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>エラー出力</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ </head>
+ <body><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="migration4.parser.html">パーサの動作</a></div>
+ <div class="next" style="float: right;"><a href="migration4.initializers.html">イニシャライザ</a></div>
+ <div class="up"><a href="migration4.html">PHP 3 から PHP 4 への移行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="migration4.error-reporting" class="section">
+   <h2 class="title">エラー出力</h2>
+
+   <div id="migration4.error-reporting.config" class="section">
+    <h2 class="title">設定変更</h2>
+    <p class="para">
+     PHP 3では、エラー出力レベルは異なったエラーレベルを意味する数
+     を合計した単純な数値で表されていました。よく使用されるのは、全て
+     のエラーと警告を出力する15と好ましくない形式や事項を通知するメッ
+     セージ以外の全てを出力する7です。
+    </p>
+    <p class="para">
+     PHP 4では、より多くの異なったエラーおよび警告レベルを設定して
+     おり、設定ファイルにおいて意図する動作を設定するために定数シンボ
+     ルを使用することが可能になっています。
+    </p>
+    <p class="para">
+     エラー出力レベルは、出力したくないエラーメッセージの警告レベルを
+     定数シンボル <i class="literal">E_ALL</i> と排他的論理和をとることに
+     より明示的に取り除くことにより指定することも可能になっています。
+     解りにくいでしょうか? では、ここで定数シンボル
+     <i class="literal">E_NOTICE</i> に分類される簡単な警告以外のエラー出
+     力を行うように設定したい場合を考えます。この場合、 
+     <var class="filename">php.ini</var>において次のような指定を行います。
+     <i class="literal">error_reporting = E_ALL &amp; ~ ( E_NOTICE )</i>
+     ここでさらに警告の出力を行わないようにしたい場合は、次のように括
+     弧の中でバイナリまたは演算子&#039;|&#039;を使用して適当な定数を追加します。
+     <i class="literal">error_reporting= E_ALL &amp; ~ ( E_NOTICE | E_WARNING
+     )</i>
+    </p>
+    <div class="warning"><b class="warning">警告</b>
+     <p class="para">
+      PHP 3 から PHP 4 にアップグレードする際には、
+      これらの設定を確認したうえで
+      <a href="function.error-reporting.html" class="function">error_reporting()</a> をコールします。
+      新しいエラー型、特に <i class="literal">E_COMPILE_ERROR</i>
+      を無効にしたくなるかもしれませんが、
+      そうすると、何かエラーが発生したときに真っ白なページが表示されてしまい、
+      原因がつかみにくくなることがあります。
+     </p>
+    </div>
+    <div class="warning"><b class="warning">警告</b>
+     <p class="para">
+      従来の値7および15を使用してエラー出力を設定する方法は、パースエ
+      ラーを含む新たに追加されたエラークラスのいくつかが使用できなくな
+      るため、非常に悪い方法です。この場合、スクリプトが動作しない場合
+      でもエラーメッセージをどこにも表示しないため、非常に奇妙な動作と
+      なることがあります。
+     </p>
+     <p class="para">
+      これにより、過去において、原因を追求が困難なスクリプトエンジンの
+      問題と報告された多くの再現不可能なバグレポートが、実際には、
+      requireで読み込まれたファイルにいくつかの &#039;}&#039; が足りず、エラー出
+      力の設定を誤っていたためにパーサがエラーを出力できなかったという
+      ことがあります。
+     </p>
+     <p class="para">
+      このため、スクリプトが何も出力せずに終了する場合、エラー出力設定
+      をまず確認するべきです。現在のZend エンジンは十分に完成されてお
+      り、この種の奇妙な動作を発生しません。
+     </p>
+    </div>
+   </div>
+
+   <div id="migration4.error-reporting.additions" class="section">
+    <h2 class="title">追加された警告メッセージ</h2>
+    <p class="para">
+     既存のPHP 3コードの多くは、このコードのように非常に悪いスタイル
+     の言語構造を使用しており、意図された通りに動作している場合でも、
+     他の部分を変更すると動作しなくなることがあります。PHP 4は、PHP
+     3が出力しないような場面でも多くの通知メッセージを出力します。
+     <i class="literal">E_NOTICE</i> メッセージをオフにすれば簡単に修正できますが、
+     通常は問題のあるコードを修正する方が良いでしょう。
+    </p>
+    <p class="para">
+     通知メッセージが出力される場面で最も多いのが、引用符で括られてい
+     ない文字列定数を配列の添字として使用している場合です。その名前の
+     キーワードまたは定数が存在しない場合、PHP 3と4は共にこれら
+     を文字列として解釈し直します。しかし、そのコードのどこか他の場所
+     でその名前の定数が定義されている場合、このスクリプトは意図した通
+     りに動作しない可能性があります。これは、侵入者が文字列定数を再定
+     義して使用されるスクリプトが侵入者が有さないアクセス権を侵入者に
+     与えるようにする場合には、セキュリティのリスクとなることさえあり
+     ます。そこで、PHP 4では、例えば、
+     <i class="literal">$HTTP_SERVER_VARS[REQUEST_METHOD]</i> のように引用
+     符で括られていない文字列定数を使用した場合に警告を発生するように
+     なっています。これを
+     <i class="literal">$_SERVER[&#039;REQUEST_METHOD&#039;]</i> に変更する
+     ことにより、パーサは正常に動作し、コードのスタイルとセキュリティ
+     は大幅に改善されます。
+    </p>
+    <p class="para">
+     その他、PHP 4では初期化されていない変数または配列要素を使用し
+     ていることを知らせるようになっています。
+    </p>
+   </div>
+   
+  </div><hr /><div style="text-align: center;">
+ <div class="prev" style="float: left;"><a href="migration4.parser.html">パーサの動作</a></div>
+ <div class="next" style="float: right;"><a href="migration4.initializers.html">イニシャライザ</a></div>
+ <div class="up"><a href="migration4.html">PHP 3 から PHP 4 への移行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>
