@@ -256,3 +256,5 @@ map <silent> te i{/t}<ESC>
 map <silent> ta a{/t}<ESC>
 
 map <silent> tt i{t}<ESC>ea{/t}<ESC>
+
+map <silent> qq a<CR><ESC>

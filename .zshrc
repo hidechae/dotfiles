@@ -72,5 +72,8 @@ alias l="ls -la"
 alias d="cd"
 alias diffnotab="diff -BbwE"
 
+#disable autocorrect
+unsetopt correct_all
+
 # for Mac
 alias cache="sudo watch -n 1 \"du -a /private/var/folders | sort -nr\""
