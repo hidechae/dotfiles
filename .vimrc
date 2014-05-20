@@ -56,10 +56,14 @@ set softtabstop=4
 "omnifunc
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType ejs set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
+
+au BufRead,BufNewFile *.scala set filetype=scala
+au BufNewFile,BufRead *.go set filetype=go
 
 "omnifunc error support
 setlocal omnifunc=syntaxcomplete#Complete
@@ -67,6 +71,11 @@ setlocal omnifunc=syntaxcomplete#Complete
 
 "dictionary
 autocmd FileType php set dictionary=~/.vim/dict/PHP.dict
+autocmd FileType js set dictionary=~/.vim/dict/javascript.dict
+autocmd FileType scala set dictionary=~/.vim/dict/scala.dict
+autocmd FileType java set dictionary=~/.vim/dict/java.dict
+autocmd FileType c set dictionary=~/.vim/dict/c.dict
+autocmd FileType cpp set dictionary=~/.vim/dict/cpp.dict
 
 "delete space
 :map <silent> <F1> :%s /\s\+$//gc<CR>
@@ -81,17 +90,18 @@ if v:version>=702
     call neobundle#rc(expand('~/.bundle'))
   endif
 
-  NeoBundle 'git://github.com/Shougo/vimshell.git'
+"  NeoBundle 'git://github.com/Shougo/vimshell.git'
   NeoBundle 'git://github.com/tpope/vim-fugitive.git'
   NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 "  NeoBundle 'git://github.com/vim-scripts/YankRing.vim.git'
-  NeoBundle 'git://github.com/Shougo/vimfiler.git'
-  NeoBundle 'git://github.com/Shougo/unite.vim.git'
-  NeoBundle 'git://github.com/vim-scripts/sudo.vim.git'
+"  NeoBundle 'git://github.com/Shougo/vimfiler.git'
+"  NeoBundle 'git://github.com/Shougo/unite.vim.git'
+"  NeoBundle 'git://github.com/vim-scripts/sudo.vim.git'
 "  NeoBundle 'git://github.com/mattn/zencoding-vim.git'
 "  NeoBundle 'git://github.com/Shougo/neocomplcache.git'
 "  NeoBundle 'git://github.com/vim-scripts/FuzzyFinder.git'
 "  NeoBundle 'git://github.com/vim-scripts/L9.git'
+"  NeoBundle 'git://github.com/mattn/benchvimrc-vim.git'
 
   filetype plugin on
 "  filetype indent on
@@ -240,3 +250,11 @@ let java_allow_cpp_keywords=1
 if has('gui_macvim')
     colorscheme peachpuff
 endif
+
+map <silent> ts i{t}<ESC>
+map <silent> te i{/t}<ESC>
+map <silent> ta a{/t}<ESC>
+
+map <silent> tt i{t}<ESC>ea{/t}<ESC>
+
+map <silent> qq a<CR><ESC>
