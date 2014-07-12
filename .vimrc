@@ -3,7 +3,9 @@ set background=dark
 set hlsearch
 "set showcmd
 set ignorecase
-set wildignorecase
+if v:version>=704
+  set wildignorecase
+endif
 set visualbell
 "set foldmethod=marker
 "set incsearch
