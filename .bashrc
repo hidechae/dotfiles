@@ -36,9 +36,12 @@ if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
     PS1=$PS1'$(__git_ps1 " \e[1;33m(\e[00m\e[1;32mgit:%s\e[00m\e[1;33m)\e[00m")'
 fi
+if [ -f /usr/local/Cellar/bash-completion/1.3/etc/bash_completion ]; then
+    . /usr/local/Cellar/bash-completion/1.3/etc/bash_completion
+    PS1=$PS1'$(__git_ps1 " \e[1;33m(\e[00m\e[1;32mgit:%s\e[00m\e[1;33m)\e[00m")'
+fi
 PS1="$PS1\n$current $last "
 export PS1
-
 
 ## mysql
 export MYSQL_PS1=$'[\e[36m\\R:\\m:\\s\e[0m] \e[32m\\u@\\h:\\p\e[0m \\d\\nmysql> '
@@ -51,10 +54,13 @@ alias rm="rm -i"
 alias rf="rm -f"
 alias cp="cp -i"
 alias mv="mv -i"
-alias ls="ls --color"
+# alias ls="ls -G"
 alias grep="grep --color"
 alias l="ls -la"
+alias sl="ls"
+alias c="cd"
 alias d="cd"
+alias where="which -a"
 alias diffnotab="diff -BbwE"
 
 # show time if over 1sec
@@ -70,12 +76,3 @@ export PATH=${HOME}/bin:$PATH
 
 ## vim
 export PATH=/usr/local/vim-7.3/bin:$PATH
-
-## proton
-PROTON_HOME="/home/hideyuki-utsunomiya/proton"
-PATH=${PATH}:${HOME}
-PATH=${PATH}:${PROTON_HOME}/src/server/node_modules/coffee-script/bin
-PATH=${PATH}:${PROTON_HOME}/src/server/node_modules/.bin
-PATH=${PATH}:${HOME}/.nvm/v0.4.12/bin
-PATH=${PATH}:${GOROOT}/bin:${GOPATH}/bin
-export PATH
