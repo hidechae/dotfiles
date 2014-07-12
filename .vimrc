@@ -106,6 +106,7 @@ if v:version>=702
 "  NeoBundle 'git://github.com/vim-scripts/L9.git'
 "  NeoBundle 'git://github.com/mattn/benchvimrc-vim.git'
 "  NeoBundle 'git://github.com/everzet/phpfolding.vim.git'
+  NeoBundle 'git://github.com/slim-template/vim-slim.git'
 
   filetype plugin on
 "  filetype indent on
