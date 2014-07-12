@@ -3,6 +3,7 @@ set background=dark
 set hlsearch
 "set showcmd
 set ignorecase
+set wildignorecase
 set visualbell
 "set foldmethod=marker
 "set incsearch
@@ -102,6 +103,7 @@ if v:version>=702
 "  NeoBundle 'git://github.com/vim-scripts/FuzzyFinder.git'
 "  NeoBundle 'git://github.com/vim-scripts/L9.git'
 "  NeoBundle 'git://github.com/mattn/benchvimrc-vim.git'
+"  NeoBundle 'git://github.com/everzet/phpfolding.vim.git'
 
   filetype plugin on
 "  filetype indent on

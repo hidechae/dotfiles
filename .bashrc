@@ -1,5 +1,10 @@
 # prompt
 
+## confirm color
+function color () {
+    for i in {0..255} ; do printf "\x1b[38;5;${i}mcolour${i}  "; done
+}
+
 ## for __git_ps1
 if [ -f $HOME/rc/local/etc/bash_completion.d/git-prompt.sh ]; then
     source $HOME/rc/local/etc/bash_completion.d/git-prompt.sh
@@ -11,6 +16,8 @@ function addopt () {
     red="\[\e[1;31m\]"
     green="\[\e[1;32m\]"
     yellow="\[\e[1;33m\]"
+    cyan="\[\e[1;36m\]"
+    gray="\[\e[0;37m\]"
     bold="\[\e[1;01m\]"
     underline="\[\e[1;04m\]"
     rseq="\[\e[00m\]"
@@ -20,12 +27,12 @@ function addopt () {
     echo "${lseq}${2}${rseq}"
 }
 
-lbr=`addopt yellow \[`
-rbr=`addopt yellow \]`
-time=`addopt green \\\t`
+lbr=[ #`addopt gray \[`
+rbr=] #`addopt gray \]`
+time=`addopt cyan \\\t`
 user=`addopt green \\\u`
 at=`addopt yellow @`
-host=`addopt green \\\h`
+host=`addopt green \\\H`
 current=`addopt red \\\w`
 # last=$(addopt red \>\>\>)
 last=$(addopt red $)
@@ -35,6 +42,7 @@ PS1="$lbr$time$rbr $at$host"
 if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
     PS1=$PS1'$(__git_ps1 " \e[1;33m(\e[00m\e[1;32mgit:%s\e[00m\e[1;33m)\e[00m")'
+    PS1=$PS1'\[\e[1;33m\]''$(uptime | sed "s/^.*\(load average.*\)/ [\1]/g")''\[\e[00m\]'
 fi
 if [ -f /usr/local/Cellar/bash-completion/1.3/etc/bash_completion ]; then
     . /usr/local/Cellar/bash-completion/1.3/etc/bash_completion
@@ -54,7 +62,7 @@ alias rm="rm -i"
 alias rf="rm -f"
 alias cp="cp -i"
 alias mv="mv -i"
-# alias ls="ls -G"
+alias ls="ls --color"
 alias grep="grep --color"
 alias l="ls -la"
 alias sl="ls"
@@ -70,9 +78,10 @@ REPORTTIME=1
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
+# vimenv
+export PATH="$HOME/.vimenv/bin:$PATH"
+eval "$(vimenv init -)"
+
 # PATH
 ## my bin
 export PATH=${HOME}/bin:$PATH
-
-## vim
-export PATH=/usr/local/vim-7.3/bin:$PATH
