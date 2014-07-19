@@ -107,11 +107,26 @@ if v:version>=702
 "  NeoBundle 'git://github.com/mattn/benchvimrc-vim.git'
 "  NeoBundle 'git://github.com/everzet/phpfolding.vim.git'
   NeoBundle 'git://github.com/slim-template/vim-slim.git'
+  NeoBundle 'git://github.com/kchmck/vim-coffee-script.git'
+  NeoBundle 'Shougo/vimproc', {
+    \ 'build' : {
+      \ 'windows' : 'make -f make_mingw32.mak',
+      \ 'cygwin' : 'make -f make_cygwin.mak',
+      \ 'mac' : 'make -f make_mac.mak',
+      \ 'unix' : 'make -f make_unix.mak',
+    \ },
+  \ }
 
   filetype plugin on
 "  filetype indent on
 endif
 
+let g:quickrun_config = {
+  \ '_' : {
+  \ 'runner' : 'vimproc',
+  \ 'runner/vimproc/updatetime' : 10,
+  \ },
+\ }
 
 " " neocomplcache
 " " 起動時に有効化
