@@ -44,9 +44,12 @@ if [ -f /etc/bash_completion ]; then
     PS1=$PS1'$(__git_ps1 " \e[1;33m(\e[00m\e[1;32mgit:%s\e[00m\e[1;33m)\e[00m")'
     PS1=$PS1'\[\e[1;33m\]''$(uptime | sed "s/^.*\(load average.*\)/ [\1]/g")''\[\e[00m\]'
 fi
-if [ -f /usr/local/Cellar/bash-completion/1.3/etc/bash_completion ]; then
-    . /usr/local/Cellar/bash-completion/1.3/etc/bash_completion
-    PS1=$PS1'$(__git_ps1 " \e[1;33m(\e[00m\e[1;32mgit:%s\e[00m\e[1;33m)\e[00m")'
+which brew
+if [ $? -eq 0 ]; then
+    if [ -f $(brew --prefix)/etc/bash_completion ]; then
+        . $(brew --prefix)/etc/bash_completion
+        PS1=$PS1'$(__git_ps1 " \e[1;33m(\e[00m\e[1;32mgit:%s\e[00m\e[1;33m)\e[00m")'
+    fi
 fi
 PS1="$PS1\n$current $last "
 export PS1
@@ -62,7 +65,11 @@ alias rm="rm -i"
 alias rf="rm -f"
 alias cp="cp -i"
 alias mv="mv -i"
-alias ls="ls --color"
+if [ -f /usr/local/bin/brew ]; then
+  alias ls="ls -G"
+else
+  alias ls="ls --color"
+fi
 alias grep="grep --color"
 alias l="ls -la"
 alias sl="ls"
