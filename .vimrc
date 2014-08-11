@@ -50,11 +50,17 @@ set listchars=tab:>-,trail:-,extends:>,precedes:<,nbsp:%
 set tabstop=4
 set shiftwidth=4
 set expandtab
-set softtabstop=4
+" set softtabstop=4
 "autocmd FileType smarty set shiftwidth=2
 "autocmd FileType html set shiftwidth=2
 "autocmd FileType smarty set softtabstop=2
 "autocmd FileType html set softtabstop=2
+au BufNewFile,BufRead *.rb set tabstop=2 shiftwidth=2
+au BufNewFile,BufRead *.php set tabstop=4 shiftwidth=4
+au BufNewFile,BufRead *.slim set tabstop=2 shiftwidth=2
+au BufNewFile,BufRead *.html set tabstop=2 shiftwidth=2
+au BufNewFile,BufRead *.scss set tabstop=2 shiftwidth=2
+au BufNewFile,BufRead *.coffee set tabstop=2 shiftwidth=2
 
 "omnifunc
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
@@ -131,27 +137,27 @@ let g:quickrun_config = {
 " " neocomplcache
 " " 起動時に有効化
 " let g:neocomplcache_enable_at_startup = 1
-" 
+"
 " " 大文字が入力されるまで大文字小文字の区別を無視する
 " let g:neocomplcache_enable_smart_case = 1
-" 
+"
 " " _(アンダースコア)区切りの補完を有効化
 " let g:neocomplcache_enable_underbar_completion = 1
-" 
+"
 " let g:neocomplcache_enable_camel_case_completion  =  1
-" 
+"
 " " ポップアップメニューで表示される候補の数
 " let g:neocomplcache_max_list = 20
-" 
+"
 " " シンタックスをキャッシュするときの最小文字長
 " let g:neocomplcache_min_syntax_length = 3
-" 
+"
 " " ディクショナリ定義
 " let g:neocomplcache_dictionary_filetype_lists = {
 "     \ 'default' : '',
 "     \ 'php' : $HOME . '/.vim/dict/PHP.dict',
 "     \ }
-" 
+"
 " if !exists('g:neocomplcache_keyword_patterns')
 "     let g:neocomplcache_keyword_patterns = {}
 " endif
@@ -271,10 +277,10 @@ if has('gui_macvim')
     colorscheme peachpuff
 endif
 
-map <silent> ts i{t}<ESC>
-map <silent> te i{/t}<ESC>
-map <silent> ta a{/t}<ESC>
-
-map <silent> tt i{t}<ESC>ea{/t}<ESC>
-
-map <silent> qq a<CR><ESC>
+" map <silent> ts i{t}<ESC>
+" map <silent> te i{/t}<ESC>
+" map <silent> ta a{/t}<ESC>
+"
+" map <silent> tt i{t}<ESC>ea{/t}<ESC>
+"
+" map <silent> qq a<CR><ESC>
