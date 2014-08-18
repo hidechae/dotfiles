@@ -86,8 +86,10 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
 # vimenv
-export PATH="$HOME/.vimenv/bin:$PATH"
-eval "$(vimenv init -)"
+if [ -r $HOME/.vimenv/bin:$PATH ]; then
+    export PATH="$HOME/.vimenv/bin:$PATH"
+    eval "$(vimenv init -)"
+fi
 
 # PATH
 ## my bin
