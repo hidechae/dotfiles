@@ -73,6 +73,10 @@ autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
 
+" settings for leafgarland/typescript-vim
+autocmd QuickFixCmdPost [^l]* nested cwindow
+autocmd QuickFixCmdPost    l* nested lwindow
+
 au BufRead,BufNewFile *.scala set filetype=scala
 au BufNewFile,BufRead *.go set filetype=go
 
@@ -115,7 +119,10 @@ if v:version>=702
 "  NeoBundle 'git://github.com/mattn/benchvimrc-vim.git'
 "  NeoBundle 'git://github.com/everzet/phpfolding.vim.git'
   NeoBundle 'git://github.com/slim-template/vim-slim.git'
+  NeoBundle 'git://github.com/etaoins/vim-volt-syntax.git'
+  NeoBundle 'git://github.com/digitaltoad/vim-jade.git'
   NeoBundle 'git://github.com/kchmck/vim-coffee-script.git'
+  NeoBundle 'git://github.com/leafgarland/typescript-vim.git'
   NeoBundle 'Shougo/vimproc', {
     \ 'build' : {
       \ 'windows' : 'make -f make_mingw32.mak',
