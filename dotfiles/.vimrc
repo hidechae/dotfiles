@@ -75,8 +75,9 @@ autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
 autocmd QuickFixCmdPost [^l]* nested cwindow
 autocmd QuickFixCmdPost    l* nested lwindow
 
-au BufRead,BufNewFile *.scala set filetype=scala
-au BufNewFile,BufRead *.go set filetype=go
+autocmd BufRead,BufNewFile *.scala set filetype=scala
+autocmd BufNewFile,BufRead *.go set filetype=go
+autocmd BufRead,BufNewFile *.ts set filetype=typescript
 
 "omnifunc error support
 setlocal omnifunc=syntaxcomplete#Complete
