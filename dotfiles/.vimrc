@@ -33,8 +33,6 @@ set laststatus=2
 " file encoding
 set fileencodings=utf-8
 set encoding=utf-8
-"set fileencodings=euc-jp
-"set encoding=euc-jp
 
 syntax on
 
