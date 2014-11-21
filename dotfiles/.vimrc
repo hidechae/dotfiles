@@ -51,45 +51,43 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 " set softtabstop=4
-"autocmd FileType smarty set shiftwidth=2
-"autocmd FileType html set shiftwidth=2
-"autocmd FileType smarty set softtabstop=2
-"autocmd FileType html set softtabstop=2
-au BufNewFile,BufRead *.rb set tabstop=2 shiftwidth=2
-au BufNewFile,BufRead *.php set tabstop=4 shiftwidth=4
-au BufNewFile,BufRead *.slim set tabstop=2 shiftwidth=2
-au BufNewFile,BufRead *.html set tabstop=2 shiftwidth=2
-au BufNewFile,BufRead *.scss set tabstop=2 shiftwidth=2
-au BufNewFile,BufRead *.coffee set tabstop=2 shiftwidth=2
+
+" filetype and tabwidth
+autocmd BufNewFile,BufRead *.rb     set filetype=ruby       tabstop=2 shiftwidth=2
+autocmd BufNewFile,BufRead *.php    set filetype=php        tabstop=4 shiftwidth=4
+autocmd BufNewFile,BufRead *.slim   set filetype=slim       tabstop=2 shiftwidth=2
+autocmd BufNewFile,BufRead *.html   set filetype=html       tabstop=2 shiftwidth=2
+autocmd BufNewFile,BufRead *.scss   set filetype=scss       tabstop=2 shiftwidth=2
+autocmd BufNewFile,BufRead *.coffee set filetype=coffee     tabstop=2 shiftwidth=2
+autocmd BufRead,BufNewFile *.ts     set filetype=typescript tabstop=4 shiftwidth=4
+autocmd BufRead,BufNewFile *.jade   set filetype=jade       tabstop=2 shiftwidth=2
+autocmd BufRead,BufNewFile *.scala  set filetype=scala
+autocmd BufRead,BufNewFile *.go     set filetype=go
 
 "omnifunc
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType ejs set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType html       set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType ejs        set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css        set omnifunc=csscomplete#CompleteCSS
+autocmd FileType php        set omnifunc=phpcomplete#CompletePHP
+autocmd FileType python     set omnifunc=pythoncomplete#Complete
 autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
 
 " settings for leafgarland/typescript-vim
 autocmd QuickFixCmdPost [^l]* nested cwindow
 autocmd QuickFixCmdPost    l* nested lwindow
 
-autocmd BufRead,BufNewFile *.scala set filetype=scala
-autocmd BufNewFile,BufRead *.go set filetype=go
-autocmd BufRead,BufNewFile *.ts set filetype=typescript
-
 "omnifunc error support
 setlocal omnifunc=syntaxcomplete#Complete
 :map <silent> <F3> :setlocal omnifunc=syntaxcomplete#Complete<CR>
 
 "dictionary
-autocmd FileType php set dictionary=~/.vim/dict/PHP.dict
-autocmd FileType js set dictionary=~/.vim/dict/javascript.dict
+autocmd FileType php   set dictionary=~/.vim/dict/PHP.dict
+autocmd FileType js    set dictionary=~/.vim/dict/javascript.dict
 autocmd FileType scala set dictionary=~/.vim/dict/scala.dict
-autocmd FileType java set dictionary=~/.vim/dict/java.dict
-autocmd FileType c set dictionary=~/.vim/dict/c.dict
-autocmd FileType cpp set dictionary=~/.vim/dict/cpp.dict
+autocmd FileType java  set dictionary=~/.vim/dict/java.dict
+autocmd FileType c     set dictionary=~/.vim/dict/c.dict
+autocmd FileType cpp   set dictionary=~/.vim/dict/cpp.dict
 
 "delete space
 :map <silent> <F1> :%s /\s\+$//gc<CR>
