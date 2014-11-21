@@ -22,3 +22,4 @@ br = branch
 ci = commit
 co = checkout
 st = status
+clone = clone --recursive

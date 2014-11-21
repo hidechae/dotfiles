@@ -1,0 +1,14 @@
+#!/bin/bash
+
+PKG_LIST=(
+    gawk
+    tree
+)
+
+sudo apt-get update
+sudo apt-get upgrade
+
+for PACKAGE in ${PKG_LIST[@]}
+do
+    sudo apt-get install $PACKAGE
+done

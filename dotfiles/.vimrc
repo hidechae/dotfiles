@@ -102,8 +102,9 @@ if v:version>=702
 
   if has('vim_starting')
     set runtimepath+=~/.vim/neobundle.vim.git
-    call neobundle#rc(expand('~/.bundle'))
   endif
+
+  call neobundle#begin(expand('~/.bundle'))
 
 "  NeoBundle 'git://github.com/Shougo/vimshell.git'
   NeoBundle 'git://github.com/tpope/vim-fugitive.git'
@@ -134,6 +135,8 @@ if v:version>=702
 
   filetype plugin on
 "  filetype indent on
+
+  call neobundle#end()
 endif
 
 let g:quickrun_config = {

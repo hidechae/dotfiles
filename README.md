@@ -1,1 +1,1 @@
-To setup, execute init.sh.
+private dotfiles
