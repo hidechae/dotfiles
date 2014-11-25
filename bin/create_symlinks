@@ -20,5 +20,8 @@ do
             rm -rf "$HOME/$TARGET"
             ln -s -i "$DIR/$TARGET" "$HOME/$TARGET"
         fi
+    else
+        rm -rf "$HOME/$TARGET"
+        ln -s -i "$DIR/$TARGET" "$HOME/$TARGET"
     fi
 done
