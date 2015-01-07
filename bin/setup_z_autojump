@@ -3,3 +3,10 @@
 # ref: https://github.com/rupa/z
 
 git clone https://github.com/rupa/z ~/.zsh/z
+
+echo '
+_Z_CMD=j
+source ~/.zsh/z/z.sh
+precmd() {
+  _z --add "$(pwd -P)"
+}' >> "$HOME/.zshrc"
