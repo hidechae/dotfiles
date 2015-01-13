@@ -55,6 +55,7 @@ set expandtab
 " filetype and tabwidth
 autocmd BufNewFile,BufRead *.rb     set filetype=ruby       tabstop=2 shiftwidth=2
 autocmd BufNewFile,BufRead *.php    set filetype=php        tabstop=4 shiftwidth=4
+autocmd BufNewFile,BufRead *.hh     set filetype=php        tabstop=4 shiftwidth=4
 autocmd BufNewFile,BufRead *.slim   set filetype=slim       tabstop=2 shiftwidth=2
 autocmd BufNewFile,BufRead *.html   set filetype=html       tabstop=2 shiftwidth=2
 autocmd BufNewFile,BufRead *.scss   set filetype=scss       tabstop=2 shiftwidth=2
@@ -121,6 +122,7 @@ if v:version>=702
   NeoBundle 'git://github.com/digitaltoad/vim-jade.git'
   NeoBundle 'git://github.com/kchmck/vim-coffee-script.git'
   NeoBundle 'git://github.com/leafgarland/typescript-vim.git'
+  NeoBundle 'git://github.com/hhvm/vim-hack.git'
   NeoBundle 'Shougo/vimproc', {
     \ 'build' : {
       \ 'windows' : 'make -f make_mingw32.mak',
