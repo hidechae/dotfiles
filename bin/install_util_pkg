@@ -4,6 +4,9 @@ PKG_LIST=(
     gawk
     tree
     zsh
+    nkf
+    mysql-server libmysqld-dev
+    libimagemagick libmagickcore libmagickcore-dev libmagickwand-dev
 )
 
 sudo apt-get update
