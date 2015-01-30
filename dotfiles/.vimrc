@@ -56,6 +56,7 @@ set expandtab
 autocmd BufNewFile,BufRead *.rb     set filetype=ruby       tabstop=2 shiftwidth=2
 autocmd BufNewFile,BufRead *.php    set filetype=php        tabstop=4 shiftwidth=4
 autocmd BufNewFile,BufRead *.hh     set filetype=php        tabstop=4 shiftwidth=4
+autocmd BufNewFile,BufRead *.hhi    set filetype=php        tabstop=4 shiftwidth=4
 autocmd BufNewFile,BufRead *.slim   set filetype=slim       tabstop=2 shiftwidth=2
 autocmd BufNewFile,BufRead *.html   set filetype=html       tabstop=2 shiftwidth=2
 autocmd BufNewFile,BufRead *.scss   set filetype=scss       tabstop=2 shiftwidth=2
@@ -104,12 +105,12 @@ if v:version>=702
 
   call neobundle#begin(expand('~/.bundle'))
 
-"  NeoBundle 'git://github.com/Shougo/vimshell.git'
+  NeoBundle 'git://github.com/Shougo/vimshell.git'
   NeoBundle 'git://github.com/tpope/vim-fugitive.git'
   NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 "  NeoBundle 'git://github.com/vim-scripts/YankRing.vim.git'
-"  NeoBundle 'git://github.com/Shougo/vimfiler.git'
-"  NeoBundle 'git://github.com/Shougo/unite.vim.git'
+  NeoBundle 'git://github.com/Shougo/vimfiler.git'
+  NeoBundle 'git://github.com/Shougo/unite.vim.git'
 "  NeoBundle 'git://github.com/vim-scripts/sudo.vim.git'
 "  NeoBundle 'git://github.com/mattn/zencoding-vim.git'
 "  NeoBundle 'git://github.com/Shougo/neocomplcache.git'
@@ -123,6 +124,7 @@ if v:version>=702
   NeoBundle 'git://github.com/kchmck/vim-coffee-script.git'
   NeoBundle 'git://github.com/leafgarland/typescript-vim.git'
   NeoBundle 'git://github.com/hhvm/vim-hack.git'
+  NeoBundle 'naoty/vim-folcom'
   NeoBundle 'Shougo/vimproc', {
     \ 'build' : {
       \ 'windows' : 'make -f make_mingw32.mak',
@@ -208,17 +210,22 @@ nnoremap <silent> tm :<C-u>tabnew<CR>:tabmove<CR>:FuzzyFinderMruFile!<CR>
 " nnoremap <unique> <silent> tm :<C-u>tabnew<CR>:tabmove<CR>:FufMruFile!<CR>
 
 
-" VimShell
-let g:vimshell_prompt = ' ~  '
-" nnoremap <unique> <silent> vs :<C-u>vs<CR>:<C-u>VimShell<CR><ESC>:<C-u>set nonu<CR>a
-nnoremap <silent> vs :<C-u>VimShellPop<CR><ESC>:<C-u>set nonu<CR>a
-nnoremap v <Nop>
-nnoremap s <Nop>
+" " VimShell
+" let g:vimshell_prompt = ' ~  '
+" " nnoremap <unique> <silent> vs :<C-u>vs<CR>:<C-u>VimShell<CR><ESC>:<C-u>set nonu<CR>a
+" nnoremap <silent> vs :<C-u>VimShellPop<CR><ESC>:<C-u>set nonu<CR>a
+" nnoremap v <Nop>
+" nnoremap s <Nop>
 
 
 " VimFiler
 " let g:vimfiler_as_default_explorer = 1
+let g:vimfiler_safe_mode_by_default = 0
 nnoremap <silent> vf :cd %:p:h<CR>:<C-u>VimFiler -buffer-name=explorer -split -simple -winwidth=35 -toggle -no-quit<CR>
+
+" folcom
+nnoremap <silent> zc zm
+nnoremap <silent> zo zr
 
 
 " Move to Current Directory
@@ -295,3 +302,7 @@ endif
 " map <silent> tt i{t}<ESC>ea{/t}<ESC>
 "
 " map <silent> qq a<CR><ESC>
+
+" for source master
+:map <silent> <F2> :%s/^\d\d*\ */    '/g<CR>:%s/\ *201[45].*/',/g<CR>
+
