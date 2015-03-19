@@ -127,6 +127,7 @@ if v:version>=702
   NeoBundle 'git://github.com/leafgarland/typescript-vim.git'
   NeoBundle 'git://github.com/hhvm/vim-hack.git'
   NeoBundle 'naoty/vim-folcom'
+  NeoBundle 'sudo.vim'
   NeoBundle 'Shougo/vimproc', {
     \ 'build' : {
       \ 'windows' : 'make -f make_mingw32.mak',
@@ -144,9 +145,13 @@ endif
 
 let g:quickrun_config = {
   \ '_' : {
-  \ 'runner' : 'vimproc',
-  \ 'runner/vimproc/updatetime' : 10,
+  \   'runner' : 'vimproc',
+  \   'runner/vimproc/updatetime' : 10,
   \ },
+  \ 'vim' : {
+  \   "hook/output_encode/enable" : 1,
+  \   "hook/output_encode/encoding" : "utf-8",
+  \ }
 \ }
 
 " " neocomplcache
@@ -241,42 +246,42 @@ nnoremap <silent> cd :cd %:p:h<CR>
 " nnoremap <silent> yr :<C-u>YRShow<CR>
 
 " Char Code
-if has('iconv')
-   let s:enc_euc = 'euc-jp'
-   let s:enc_jis = 'iso-2022-jp'
-   " iconvがeucJP-msに対応しているかをチェック
-   if iconv("\x87\x64\x87\x6a", 'cp932', 'eucjp-ms') ==# "\xad\xc5\xad\xcb"
-       let s:enc_euc = 'eucjp-ms'
-       let s:enc_jis = 'iso-2022-jp-3'
-   " iconvがJISX0213に対応しているかをチェック
-   elseif iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
-       let s:enc_euc = 'euc-jisx0213'
-       let s:enc_jis = 'iso-2022-jp-3'
-   endif
-   " fileencodingsを構築
-   if &encoding ==# 'utf-8'
-       let s:fileencodings_default = &fileencodings
-       let &fileencodings = s:enc_jis .','. s:enc_euc .',cp932'
-       let &fileencodings = &fileencodings .','. s:fileencodings_default
-       unlet s:fileencodings_default
-   else
-       let &fileencodings = &fileencodings .','. s:enc_jis
-       set fileencodings+=utf-8,ucs-2le,ucs-2
-       if &encoding =~# '^\(euc-jp\|euc-jisx0213\|eucjp-ms\)$'
-           set fileencodings+=cp932
-           set fileencodings-=euc-jp
-           set fileencodings-=euc-jisx0213
-           set fileencodings-=eucjp-ms
-           let &encoding = s:enc_euc
-           let &fileencoding = s:enc_euc
-       else
-           let &fileencodings = &fileencodings .','. s:enc_euc
-       endif
-   endif
-   " 定数を処分
-   unlet s:enc_euc
-   unlet s:enc_jis
-endif
+" if has('iconv')
+"    let s:enc_euc = 'euc-jp'
+"    let s:enc_jis = 'iso-2022-jp'
+"    " iconvがeucJP-msに対応しているかをチェック
+"    if iconv("\x87\x64\x87\x6a", 'cp932', 'eucjp-ms') ==# "\xad\xc5\xad\xcb"
+"        let s:enc_euc = 'eucjp-ms'
+"        let s:enc_jis = 'iso-2022-jp-3'
+"    " iconvがJISX0213に対応しているかをチェック
+"    elseif iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
+"        let s:enc_euc = 'euc-jisx0213'
+"        let s:enc_jis = 'iso-2022-jp-3'
+"    endif
+"    " fileencodingsを構築
+"    if &encoding ==# 'utf-8'
+"        let s:fileencodings_default = &fileencodings
+"        let &fileencodings = s:enc_jis .','. s:enc_euc .',cp932'
+"        let &fileencodings = &fileencodings .','. s:fileencodings_default
+"        unlet s:fileencodings_default
+"    else
+"        let &fileencodings = &fileencodings .','. s:enc_jis
+"        set fileencodings+=utf-8,ucs-2le,ucs-2
+"        if &encoding =~# '^\(euc-jp\|euc-jisx0213\|eucjp-ms\)$'
+"            set fileencodings+=cp932
+"            set fileencodings-=euc-jp
+"            set fileencodings-=euc-jisx0213
+"            set fileencodings-=eucjp-ms
+"            let &encoding = s:enc_euc
+"            let &fileencoding = s:enc_euc
+"        else
+"            let &fileencodings = &fileencodings .','. s:enc_euc
+"        endif
+"    endif
+"    " 定数を処分
+"    unlet s:enc_euc
+"    unlet s:enc_jis
+" endif
 
 " map
 map <silent> <ESC><ESC> :noh<CR>
