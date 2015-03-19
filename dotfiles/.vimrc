@@ -111,11 +111,10 @@ if v:version>=702
 "  NeoBundle 'git://github.com/vim-scripts/YankRing.vim.git'
   NeoBundle 'git://github.com/Shougo/vimfiler.git'
   NeoBundle 'git://github.com/Shougo/unite.vim.git'
-"  NeoBundle 'git://github.com/vim-scripts/sudo.vim.git'
 "  NeoBundle 'git://github.com/mattn/zencoding-vim.git'
-"  NeoBundle 'git://github.com/Shougo/neocomplcache.git'
-"  NeoBundle 'Shougo/neocomplcache'
-"  NeoBundle 'Shougo/neosnippet'
+  NeoBundle 'Shougo/neocomplcache'
+  NeoBundle 'Shougo/neosnippet'
+  NeoBundle 'Shougo/neosnippet-snippets'
 "  NeoBundle 'git://github.com/vim-scripts/FuzzyFinder.git'
 "  NeoBundle 'git://github.com/vim-scripts/L9.git'
 "  NeoBundle 'git://github.com/mattn/benchvimrc-vim.git'
@@ -155,33 +154,33 @@ let g:quickrun_config = {
 \ }
 
 " " neocomplcache
-" " 起動時に有効化
-" let g:neocomplcache_enable_at_startup = 1
-"
-" " 大文字が入力されるまで大文字小文字の区別を無視する
-" let g:neocomplcache_enable_smart_case = 1
-"
-" " _(アンダースコア)区切りの補完を有効化
-" let g:neocomplcache_enable_underbar_completion = 1
-"
-" let g:neocomplcache_enable_camel_case_completion  =  1
-"
-" " ポップアップメニューで表示される候補の数
-" let g:neocomplcache_max_list = 20
-"
-" " シンタックスをキャッシュするときの最小文字長
-" let g:neocomplcache_min_syntax_length = 3
-"
-" " ディクショナリ定義
-" let g:neocomplcache_dictionary_filetype_lists = {
-"     \ 'default' : '',
-"     \ 'php' : $HOME . '/.vim/dict/PHP.dict',
-"     \ }
-"
-" if !exists('g:neocomplcache_keyword_patterns')
-"     let g:neocomplcache_keyword_patterns = {}
-" endif
-" let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
+" 起動時に有効化
+let g:neocomplcache_enable_at_startup = 1
+
+" 大文字が入力されるまで大文字小文字の区別を無視する
+let g:neocomplcache_enable_smart_case = 1
+
+" _(アンダースコア)区切りの補完を有効化
+let g:neocomplcache_enable_underbar_completion = 1
+
+let g:neocomplcache_enable_camel_case_completion  =  1
+
+" ポップアップメニューで表示される候補の数
+let g:neocomplcache_max_list = 20
+
+" シンタックスをキャッシュするときの最小文字長
+let g:neocomplcache_min_syntax_length = 3
+
+" ディクショナリ定義
+let g:neocomplcache_dictionary_filetype_lists = {
+    \ 'default' : '',
+    \ 'php' : $HOME . '/.vim/dict/PHP.dict',
+    \ }
+
+if !exists('g:neocomplcache_keyword_patterns')
+    let g:neocomplcache_keyword_patterns = {}
+endif
+let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
 
 
 " vimtab
@@ -289,7 +288,7 @@ map <silent> <ESC><ESC> :noh<CR>
 " like shell
 imap <silent> <C-a> <ESC>0i
 imap <silent> <C-e> <ESC>$a
-imap <silent> <C-k> <ESC>Di
+"imap <silent> <C-k> <ESC>Di
 
 " for java
 set sm
@@ -313,3 +312,27 @@ endif
 " for source master
 :map <silent> <F2> :%s/^\d\d*\ */    '/g<CR>:%s/\ *201[45].*/',/g<CR>
 
+
+" for neosnippet
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+" SuperTab like snippets behavior.
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: "\<TAB>"
+
+" For snippet_complete marker.
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+  endif
+
+" Enable snipMate compatibility feature.
+let g:neosnippet#enable_snipmate_compatibility = 1
+
+" Tell Neosnippet about the other snippets
+let g:neosnippet#snippets_directory='~/.vim/snippets'
