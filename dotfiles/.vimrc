@@ -53,21 +53,22 @@ set expandtab
 " set softtabstop=4
 
 " filetype and tabwidth
-autocmd BufNewFile,BufRead *.rb     set filetype=ruby       tabstop=2 shiftwidth=2
-autocmd BufNewFile,BufRead *.php    set filetype=php        tabstop=4 shiftwidth=4
-autocmd BufNewFile,BufRead *.hh     set filetype=php        tabstop=4 shiftwidth=4
-autocmd BufNewFile,BufRead *.hhi    set filetype=php        tabstop=4 shiftwidth=4
-autocmd BufNewFile,BufRead *.slim   set filetype=slim       tabstop=2 shiftwidth=2
-autocmd BufNewFile,BufRead *.html   set filetype=html       tabstop=2 shiftwidth=2
-autocmd BufNewFile,BufRead *.scss   set filetype=scss       tabstop=2 shiftwidth=2
-autocmd BufNewFile,BufRead *.coffee set filetype=coffee     tabstop=2 shiftwidth=2
-autocmd BufRead,BufNewFile *.ts     set filetype=typescript tabstop=4 shiftwidth=4
-autocmd BufRead,BufNewFile *.jsx    set filetype=javascript tabstop=2 shiftwidth=2
-autocmd BufRead,BufNewFile *.jade   set filetype=jade       tabstop=2 shiftwidth=2
-autocmd BufRead,BufNewFile *.scala  set filetype=scala
-autocmd BufRead,BufNewFile *.go     set filetype=go
-autocmd BufRead,BufNewFile *.json   set filetype=json       tabstop=2 shiftwidth=2
-autocmd BufRead,BufNewFile *.snip   set                     tabstop=2 shiftwidth=2 noexpandtab
+autocmd BufNewFile,BufRead *.rb       set filetype=ruby       tabstop=2 shiftwidth=2
+autocmd BufNewFile,BufRead *.jbuilder set filetype=ruby       tabstop=2 shiftwidth=2
+autocmd BufNewFile,BufRead *.php      set filetype=php        tabstop=4 shiftwidth=4
+autocmd BufNewFile,BufRead *.hh       set filetype=php        tabstop=4 shiftwidth=4
+autocmd BufNewFile,BufRead *.hhi      set filetype=php        tabstop=4 shiftwidth=4
+autocmd BufNewFile,BufRead *.slim     set filetype=slim       tabstop=2 shiftwidth=2
+autocmd BufNewFile,BufRead *.html     set filetype=html       tabstop=2 shiftwidth=2
+autocmd BufNewFile,BufRead *.scss     set filetype=scss       tabstop=2 shiftwidth=2
+autocmd BufNewFile,BufRead *.coffee   set filetype=coffee     tabstop=2 shiftwidth=2
+autocmd BufRead,BufNewFile *.ts       set filetype=typescript tabstop=4 shiftwidth=4
+autocmd BufRead,BufNewFile *.jsx      set filetype=javascript tabstop=2 shiftwidth=2
+autocmd BufRead,BufNewFile *.jade     set filetype=jade       tabstop=2 shiftwidth=2
+autocmd BufRead,BufNewFile *.scala    set filetype=scala
+autocmd BufRead,BufNewFile *.go       set filetype=go
+autocmd BufRead,BufNewFile *.json     set filetype=json       tabstop=2 shiftwidth=2
+autocmd BufRead,BufNewFile *.snip     set                     tabstop=2 shiftwidth=2 noexpandtab
 
 "omnifunc
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
