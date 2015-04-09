@@ -1,16 +1,19 @@
-snippet rcc
-    var React = require('react');
+snippet init_component
+	'use strict';
+	var React = require('react'),
+			Router = require('react-router'),
+			Link = Router.Link,
+			Bootstrap = require('react-bootstrap')
+	;
 
-    var ${1} = React.createClass({
+	var ${1} = React.createClass({
+		render: function() {
+			return (
+				<div>
+					${3}
+				</div>
+			);
+		}
+	});
 
-      render: function() {
-        return (
-          <div>
-            ${3}
-          </div>
-        );
-      }
-
-    });
-
-    module.exports = ${2};
+	module.exports = ${2};

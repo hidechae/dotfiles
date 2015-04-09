@@ -31,7 +31,7 @@ set laststatus=2
 "helptags $HOME/.vim/doc
 
 " file encoding
-set fileencodings=utf-8
+set fileencoding=utf-8
 set encoding=utf-8
 
 syntax on
@@ -62,9 +62,12 @@ autocmd BufNewFile,BufRead *.html   set filetype=html       tabstop=2 shiftwidth
 autocmd BufNewFile,BufRead *.scss   set filetype=scss       tabstop=2 shiftwidth=2
 autocmd BufNewFile,BufRead *.coffee set filetype=coffee     tabstop=2 shiftwidth=2
 autocmd BufRead,BufNewFile *.ts     set filetype=typescript tabstop=4 shiftwidth=4
+autocmd BufRead,BufNewFile *.jsx    set filetype=javascript tabstop=2 shiftwidth=2
 autocmd BufRead,BufNewFile *.jade   set filetype=jade       tabstop=2 shiftwidth=2
 autocmd BufRead,BufNewFile *.scala  set filetype=scala
 autocmd BufRead,BufNewFile *.go     set filetype=go
+autocmd BufRead,BufNewFile *.json   set filetype=json       tabstop=2 shiftwidth=2
+autocmd BufRead,BufNewFile *.snip   set                     tabstop=2 shiftwidth=2 noexpandtab
 
 "omnifunc
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
@@ -105,28 +108,22 @@ if v:version>=702
 
   call neobundle#begin(expand('~/.bundle'))
 
-  NeoBundle 'git://github.com/Shougo/vimshell.git'
-  NeoBundle 'git://github.com/tpope/vim-fugitive.git'
-  NeoBundle 'git://github.com/thinca/vim-quickrun.git'
-"  NeoBundle 'git://github.com/vim-scripts/YankRing.vim.git'
-  NeoBundle 'git://github.com/Shougo/vimfiler.git'
-  NeoBundle 'git://github.com/Shougo/unite.vim.git'
-"  NeoBundle 'git://github.com/mattn/zencoding-vim.git'
+  NeoBundle 'digitaltoad/vim-jade'
+  NeoBundle 'elzr/vim-json'
+  NeoBundle 'etaoins/vim-volt-syntax'
+  NeoBundle 'hhvm/vim-hack.git'
+  NeoBundle 'kchmck/vim-coffee-script'
+  NeoBundle 'leafgarland/typescript-vim'
+  NeoBundle 'mxw/vim-jsx'
+  NeoBundle 'naoty/vim-folcom'
+  NeoBundle "pangloss/vim-javascript"
+"  NeoBundle 'scrooloose/syntastic'
+  NeoBundle 'Shougo/vimshell'
+  NeoBundle 'Shougo/vimfiler'
+  NeoBundle 'Shougo/unite.vim'
   NeoBundle 'Shougo/neocomplcache'
   NeoBundle 'Shougo/neosnippet'
   NeoBundle 'Shougo/neosnippet-snippets'
-"  NeoBundle 'git://github.com/vim-scripts/FuzzyFinder.git'
-"  NeoBundle 'git://github.com/vim-scripts/L9.git'
-"  NeoBundle 'git://github.com/mattn/benchvimrc-vim.git'
-"  NeoBundle 'git://github.com/everzet/phpfolding.vim.git'
-  NeoBundle 'git://github.com/slim-template/vim-slim.git'
-  NeoBundle 'git://github.com/etaoins/vim-volt-syntax.git'
-  NeoBundle 'git://github.com/digitaltoad/vim-jade.git'
-  NeoBundle 'git://github.com/kchmck/vim-coffee-script.git'
-  NeoBundle 'git://github.com/leafgarland/typescript-vim.git'
-  NeoBundle 'git://github.com/hhvm/vim-hack.git'
-  NeoBundle 'naoty/vim-folcom'
-  NeoBundle 'sudo.vim'
   NeoBundle 'Shougo/vimproc', {
     \ 'build' : {
       \ 'windows' : 'make -f make_mingw32.mak',
@@ -135,6 +132,17 @@ if v:version>=702
       \ 'unix' : 'make -f make_unix.mak',
     \ },
   \ }
+  NeoBundle 'slim-template/vim-slim'
+  NeoBundle 'sudo.vim'
+  NeoBundle 'tell-k/vim-autopep8'
+  NeoBundle 'tpope/vim-fugitive'
+  NeoBundle 'thinca/vim-quickrun'
+"  NeoBundle 'everzet/phpfolding.vim'
+"  NeoBundle 'mattn/zencoding-vim'
+"  NeoBundle 'mattn/benchvimrc-vim'
+"  NeoBundle 'vim-scripts/YankRing.vim'
+"  NeoBundle 'vim-scripts/FuzzyFinder'
+"  NeoBundle 'vim-scripts/L9'
 
   filetype plugin on
 "  filetype indent on
@@ -156,21 +164,15 @@ let g:quickrun_config = {
 " " neocomplcache
 " 起動時に有効化
 let g:neocomplcache_enable_at_startup = 1
-
 " 大文字が入力されるまで大文字小文字の区別を無視する
 let g:neocomplcache_enable_smart_case = 1
-
 " _(アンダースコア)区切りの補完を有効化
 let g:neocomplcache_enable_underbar_completion = 1
-
 let g:neocomplcache_enable_camel_case_completion  =  1
-
 " ポップアップメニューで表示される候補の数
 let g:neocomplcache_max_list = 20
-
 " シンタックスをキャッシュするときの最小文字長
 let g:neocomplcache_min_syntax_length = 3
-
 " ディクショナリ定義
 let g:neocomplcache_dictionary_filetype_lists = {
     \ 'default' : '',
@@ -336,3 +338,6 @@ let g:neosnippet#enable_snipmate_compatibility = 1
 
 " Tell Neosnippet about the other snippets
 let g:neosnippet#snippets_directory='~/.vim/snippets'
+
+" use jsx syntax on .js extension
+let g:jsx_ext_required = 0
