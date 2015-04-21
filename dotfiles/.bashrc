@@ -6,8 +6,8 @@ function color () {
 }
 
 ## for __git_ps1
-if [ -f $HOME/rc/local/etc/bash_completion.d/git-prompt.sh ]; then
-    source $HOME/rc/local/etc/bash_completion.d/git-prompt.sh
+if [ -f $HOME/dotfiles/local/etc/bash_completion.d/git-prompt.sh ]; then
+    source $HOME/dotfiles/local/etc/bash_completion.d/git-prompt.sh
 fi
 
 ## bash
@@ -39,18 +39,27 @@ last=$(addopt red $)
 git_branch_format=`__git_ps1`
 
 PS1="$lbr$time$rbr $at$host"
-if [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-    PS1=$PS1'$(__git_ps1 " \e[1;33m(\e[00m\e[1;32mgit:%s\e[00m\e[1;33m)\e[00m")'
-    PS1=$PS1'\[\e[1;33m\]''$(uptime | sed "s/^.*\(load average.*\)/ [\1]/g")''\[\e[00m\]'
-fi
-which brew
+
+which brew >/dev/null 2>&1
 if [ $? -eq 0 ]; then
+    # Mac
     if [ -f $(brew --prefix)/etc/bash_completion ]; then
         . $(brew --prefix)/etc/bash_completion
         PS1=$PS1'$(__git_ps1 " \e[1;33m(\e[00m\e[1;32mgit:%s\e[00m\e[1;33m)\e[00m")'
     fi
+else
+    # linux
+    if [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+        PS1=$PS1'$(__git_ps1 " \e[1;33m(\e[00m\e[1;32mgit:%s\e[00m\e[1;33m)\e[00m")'
+        PS1=$PS1'\[\e[1;33m\]''$(uptime | sed "s/^.*\(load average.*\)/ [\1]/g")''\[\e[00m\]'
+
+    elif [ -f $HOME/dotfiles/local/etc/bash_completion.d/git-completion.bash ]; then
+        source $HOME/dotfiles/local/etc/bash_completion.d/git-completion.bash
+        PS1=$PS1'$(__git_ps1 " \e[1:31m(\e[00m\e[1;31m%s\e[00m\e[1;31m)\e[00m")'
+    fi
 fi
+
 PS1="$PS1\n$current $last "
 export PS1
 
