@@ -56,7 +56,7 @@ else
 
     elif [ -f $HOME/dotfiles/local/etc/bash_completion.d/git-completion.bash ]; then
         source $HOME/dotfiles/local/etc/bash_completion.d/git-completion.bash
-        PS1=$PS1'$(__git_ps1 " \e[1:31m(\e[00m\e[1;31m%s\e[00m\e[1;31m)\e[00m")'
+        PS1=$PS1'$(__git_ps1 " \e[1;31m(\e[00m\e[1;31m%s\e[00m\e[1;31m)\e[00m")'
     fi
 fi
 
