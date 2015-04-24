@@ -63,6 +63,11 @@ fi
 PS1="$PS1\n$current $last "
 export PS1
 
+GIT_PS1_SHOWDIRTYSTATE=true
+GIT_PS1_SHOWUNTRACKEDFILES=true
+GIT_PS1_SHOWSTASHSTATE=true
+# GIT_PS1_SHOWUPSTREAM=auto
+
 ## mysql
 export MYSQL_PS1=$'[\e[36m\\R:\\m:\\s\e[0m] \e[32m\\u@\\h:\\p\e[0m \\d\\nmysql> '
 
