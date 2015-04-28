@@ -101,6 +101,8 @@ alias where="which -a"
 alias diffnotab="diff -BbwE"
 alias screen="screen -U"
 
+shopt -s autocd
+
 # show time if over 1sec
 REPORTTIME=1
 
