@@ -24,3 +24,9 @@ REPORTTIME=1
 
 # mysql
 export MYSQL_PS1=$'[\e[36m\\R:\\m:\\s\e[0m] \e[32m\\u@\\h:\\p\e[0m \\d\\nmysql> '
+
+export LC_CTYPE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+
+# prompt for prezto
+prompt steeef
