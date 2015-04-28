@@ -9,6 +9,7 @@ TARGET_LIST=(
     .screenrc
     .gitconfig
     .my.cnf
+    .inputrc
 )
 
 for TARGET in ${TARGET_LIST[@]}
