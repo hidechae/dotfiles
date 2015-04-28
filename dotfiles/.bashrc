@@ -99,6 +99,7 @@ alias c="cd"
 alias d="cd"
 alias where="which -a"
 alias diffnotab="diff -BbwE"
+alias screen="screen -U"
 
 # show time if over 1sec
 REPORTTIME=1
