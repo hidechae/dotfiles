@@ -2,7 +2,14 @@
 
 ## confirm color
 function color () {
-    for i in {0..255} ; do printf "\x1b[38;5;${i}mcolour${i}  "; done
+    for i in {0..255}
+    do
+        if [ `expr $i % 16` -eq 15 ]; then
+            printf "\x1b[38;5;%03dm%03d\n" $i $i
+        else
+            printf "\x1b[38;5;%03dm%03d  " $i $i
+        fi
+    done
 }
 
 ## for __git_ps1
@@ -43,8 +50,7 @@ in=`addopt smokewhite in`
 host=`addopt orange \\\H`
 current=`addopt green \\\w`
 # last=$(addopt red \>\>\>)
-last=$(addopt red $)
-git_branch_format=`__git_ps1`
+last=$(addopt smokewhite $)
 
 PS1="\n$time $user $at $host $in $current"
 
@@ -94,6 +100,7 @@ else
 fi
 alias grep="grep --color"
 alias l="ls -la"
+alias s="ls"
 alias sl="ls"
 alias c="cd"
 alias d="cd"
@@ -119,10 +126,6 @@ if [ -r $HOME/.vimenv/bin:$PATH ]; then
     export PATH="$HOME/.vimenv/bin:$PATH"
     eval "$(vimenv init -)"
 fi
-
-# PATH
-## my bin
-export PATH=${HOME}/bin:$PATH
 
 export LANG=en_US.UTF-8
 export PAGER=less
