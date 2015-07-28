@@ -136,6 +136,7 @@ if v:version>=702
   NeoBundle 'slim-template/vim-slim'
   NeoBundle 'sudo.vim'
   NeoBundle 'tell-k/vim-autopep8'
+  NeoBundle 'tpope/vim-abolish'
   NeoBundle 'tpope/vim-fugitive'
   NeoBundle 'thinca/vim-quickrun'
 "  NeoBundle 'everzet/phpfolding.vim'
