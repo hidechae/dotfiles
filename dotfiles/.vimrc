@@ -3,6 +3,7 @@ set background=dark
 set hlsearch
 "set showcmd
 set ignorecase
+set smartcase
 if v:version>=704
   set wildignorecase
 endif
