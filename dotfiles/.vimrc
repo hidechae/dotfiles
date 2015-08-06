@@ -60,11 +60,13 @@ autocmd BufNewFile,BufRead *.hh       set filetype=php        tabstop=4 shiftwid
 autocmd BufNewFile,BufRead *.hhi      set filetype=php        tabstop=4 shiftwidth=4
 autocmd BufNewFile,BufRead *.slim     set filetype=slim       tabstop=2 shiftwidth=2
 autocmd BufNewFile,BufRead *.html     set filetype=html       tabstop=2 shiftwidth=2
+autocmd BufNewFile,BufRead *.html.tag set filetype=html       tabstop=2 shiftwidth=2
 autocmd BufNewFile,BufRead *.scss     set filetype=scss       tabstop=2 shiftwidth=2
 autocmd BufNewFile,BufRead *.coffee   set filetype=coffee     tabstop=2 shiftwidth=2
 autocmd BufRead,BufNewFile *.ts       set filetype=typescript tabstop=4 shiftwidth=4
 autocmd BufRead,BufNewFile *.jsx      set filetype=javascript tabstop=2 shiftwidth=2
 autocmd BufRead,BufNewFile *.jade     set filetype=jade       tabstop=2 shiftwidth=2
+autocmd BufRead,BufNewFile *.jade.tag set filetype=jade       tabstop=2 shiftwidth=2
 autocmd BufRead,BufNewFile *.scala    set filetype=scala
 autocmd BufRead,BufNewFile *.go       set filetype=go
 autocmd BufRead,BufNewFile *.json     set filetype=json       tabstop=2 shiftwidth=2
@@ -111,7 +113,7 @@ if v:version>=702
   call neobundle#begin(expand('~/.bundle'))
 
   NeoBundle 'digitaltoad/vim-jade'
-  NeoBundle 'elzr/vim-json'
+"  NeoBundle 'elzr/vim-json'
   NeoBundle 'etaoins/vim-volt-syntax'
   NeoBundle 'hhvm/vim-hack.git'
   NeoBundle 'kchmck/vim-coffee-script'
