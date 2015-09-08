@@ -71,7 +71,10 @@ autocmd BufRead,BufNewFile *.scala    set filetype=scala
 autocmd BufRead,BufNewFile *.go       set filetype=go
 autocmd BufRead,BufNewFile *.json     set filetype=json       tabstop=2 shiftwidth=2
 autocmd BufRead,BufNewFile *.snip     set                     tabstop=2 shiftwidth=2 noexpandtab
-autocmd BufRead,BufNewFile *.conf      set filetype=sh        tabstop=2 shiftwidth=2
+autocmd BufRead,BufNewFile *.conf     set filetype=sh         tabstop=2 shiftwidth=2
+autocmd BufNewFile,BufRead *.ex       set filetype=elixir     tabstop=2 shiftwidth=2
+autocmd BufNewFile,BufRead *.exs      set filetype=elixir     tabstop=2 shiftwidth=2
+autocmd BufNewFile,BufRead *.eex      set filetype=elixir     tabstop=2 shiftwidth=2
 
 "omnifunc
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
@@ -114,6 +117,7 @@ if v:version>=702
 
   NeoBundle 'digitaltoad/vim-jade'
 "  NeoBundle 'elzr/vim-json'
+  NeoBundle 'elixir-lang/vim-elixir'
   NeoBundle 'etaoins/vim-volt-syntax'
   NeoBundle 'hhvm/vim-hack.git'
   NeoBundle 'kchmck/vim-coffee-script'

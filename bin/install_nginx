@@ -1,5 +1,10 @@
 #!/bin/sh
 
+# uninstall
+sudo apt-get remove nginx nginx-common
+sudo apt-get purge nginx nginx-common
+sudo apt-get autoremove
+
 # install mainline of nginx
 sudo sh -c 'echo "deb http://nginx.org/packages/mainline/ubuntu/ trusty nginx" >> /etc/apt/sources.list'
 sudo sh -c 'echo "deb-src http://nginx.org/packages/mainline/ubuntu/ trusty nginx" >> /etc/apt/sources.list'
