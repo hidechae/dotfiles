@@ -30,3 +30,5 @@ export LC_ALL=en_US.UTF-8
 
 # prompt for prezto
 prompt steeef
+
+alias sudo="sudo env PATH=$PATH"
