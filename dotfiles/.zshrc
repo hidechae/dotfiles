@@ -32,3 +32,14 @@ export LC_ALL=en_US.UTF-8
 prompt steeef
 
 alias sudo="sudo env PATH=$PATH"
+
+function color () {
+    for i in {0..255}
+    do
+        if [ `expr $i % 16` -eq 15 ]; then
+            printf "\x1b[38;5;%03dm%03d\n" $i $i
+        else
+            printf "\x1b[38;5;%03dm%03d  " $i $i
+        fi
+    done
+}
