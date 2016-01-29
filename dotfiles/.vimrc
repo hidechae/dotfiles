@@ -52,6 +52,9 @@ set shiftwidth=2
 set expandtab
 " set softtabstop=4
 
+" search by rotation
+set wrapscan
+
 " filetype and tabwidth
 autocmd BufNewFile,BufRead *.rb       set filetype=ruby       tabstop=2 shiftwidth=2
 autocmd BufNewFile,BufRead *.jbuilder set filetype=ruby       tabstop=2 shiftwidth=2
