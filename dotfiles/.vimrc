@@ -187,38 +187,46 @@ let g:neocomplcache_max_list = 20
 let g:neocomplcache_min_syntax_length = 3
 " ディクショナリ定義
 let g:neocomplcache_dictionary_filetype_lists = {
-    \ 'default' : '',
-    \ 'php' : $HOME . '/.vim/dict/PHP.dict',
-    \ }
+  \ 'default' : '',
+  \ 'php' : $HOME . '/.vim/dict/PHP.dict',
+  \ }
 
 if !exists('g:neocomplcache_keyword_patterns')
-    let g:neocomplcache_keyword_patterns = {}
+  let g:neocomplcache_keyword_patterns = {}
 endif
 let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
 
 
-" vimtab
-nnoremap <Space> t t
-nnoremap <Space> T T
-nnoremap t <Nop>
-nnoremap <silent> tc :<C-u>tabnew<CR>:tabmove<CR>
-nnoremap <silent> tk :<C-u>tabclose<CR>
-nnoremap <silent> tn :<C-u>tabnext<CR>
-nnoremap <silent> tp :<C-u>tabprevious<CR>
+" +--------+
+" | vimtab |
+" +--------+
+  nnoremap <Space> t t
+  nnoremap <Space> T T
+  nnoremap t <Nop>
+  nnoremap <silent> tc :<C-u>tabnew<CR>:tabmove<CR>
+  nnoremap <silent> tk :<C-u>tabclose<CR>
+  nnoremap <silent> tn :<C-u>tabnext<CR>
+  nnoremap <silent> tp :<C-u>tabprevious<CR>
 
 " +-----------------+
 " | FuzzyFinder.vim |
 " +-----------------+
 
-    nnoremap <Space>f f
-    nnoremap <Space>F F
-    nnoremap f <Nop>
-    nnoremap <silent> fb :<C-u>FuzzyFinderBuffer!<CR>
-    nnoremap <silent> ff :<C-u>FuzzyFinderFile! <C-r>=expand('%:~:.')[:-2-len(expand('%:~:.:t'))]<CR><CR>
-    nnoremap <silent> fm :<C-u>FuzzyFinderMruFile!<CR>
-    nnoremap <silent> tb :<C-u>tabnew<CR>:tabmove<CR>:FuzzyFinderBuffer!<CR>
-    nnoremap <silent> tf :<C-u>tabnew<CR>:tabmove<CR>:FuzzyFinderFile! <C-r>=expand('#:~:.')[:-2-len(expand('#:~:.:t'))]<CR><CR>
-    nnoremap <silent> tm :<C-u>tabnew<CR>:tabmove<CR>:FuzzyFinderMruFile!<CR>
+  nnoremap <Space>f f
+  nnoremap <Space>F F
+  nnoremap f <Nop>
+  nnoremap <silent> fb :<C-u>FuzzyFinderBuffer!<CR>
+  nnoremap <silent> ff :<C-u>FuzzyFinderFile! <C-r>=expand('%:~:.')[:-2-len(expand('%:~:.:t'))]<CR><CR>
+  nnoremap <silent> fm :<C-u>FuzzyFinderMruFile!<CR>
+  nnoremap <silent> tb :<C-u>tabnew<CR>:tabmove<CR>:FuzzyFinderBuffer!<CR>
+  nnoremap <silent> tf :<C-u>tabnew<CR>:tabmove<CR>:FuzzyFinderFile! <C-r>=expand('#:~:.')[:-2-len(expand('#:~:.:t'))]<CR><CR>
+  nnoremap <silent> tm :<C-u>tabnew<CR>:tabmove<CR>:FuzzyFinderMruFile!<CR>
+
+" +-----+
+" | FZF |
+" +-----+
+  set rtp+=~/.fzf
+  nnoremap <silent> zz :<C-u>FZF<CR>
 
 
 " " VimShell
