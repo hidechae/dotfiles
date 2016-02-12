@@ -43,3 +43,6 @@ function color () {
         fi
     done
 }
+
+export LESS='--no-init --quit-if-one-screen --RAW-CONTROL-CHARS'
+alias ag="ag --pager='less -R'"

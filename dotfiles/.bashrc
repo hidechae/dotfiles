@@ -138,3 +138,6 @@ fi
 if [ -f ~/.colorrc ]; then
     eval `dircolors ~/.colorrc`
 fi
+
+export LESS='--no-init --quit-if-one-screen --RAW-CONTROL-CHARS'
+alias ag="ag --pager='less -R'"
