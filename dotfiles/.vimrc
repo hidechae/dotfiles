@@ -226,7 +226,7 @@ let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
 " | FZF |
 " +-----+
   set rtp+=~/.fzf
-  nnoremap <silent> zz :<C-u>FZF<CR>
+  nnoremap <silent> fzf :<C-u>FZF<CR>
 
 
 " " VimShell
