@@ -78,6 +78,7 @@ autocmd BufRead,BufNewFile *.conf     set filetype=sh         tabstop=2 shiftwid
 autocmd BufNewFile,BufRead *.ex       set filetype=elixir     tabstop=2 shiftwidth=2
 autocmd BufNewFile,BufRead *.exs      set filetype=elixir     tabstop=2 shiftwidth=2
 autocmd BufNewFile,BufRead *.eex      set filetype=elixir     tabstop=2 shiftwidth=2
+autocmd BufNewFile,BufRead *.swift    set filetype=swift      tabstop=4 shiftwidth=4 listchars=
 
 "omnifunc
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
@@ -155,6 +156,8 @@ if v:version>=702
 "  NeoBundle 'vim-scripts/YankRing.vim'
 "  NeoBundle 'vim-scripts/FuzzyFinder'
 "  NeoBundle 'vim-scripts/L9'
+  NeoBundle 'toyamarinyon/vim-swift'
+  NeoBundle 'Keithbsmiley/swift.vim'
 
   filetype plugin on
 "  filetype indent on
