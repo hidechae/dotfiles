@@ -1,0 +1,50 @@
+"set tags=/home/gree/tags,/home/gree/tags_lib
+set background=dark
+set hlsearch
+"set showcmd
+set ignorecase
+set smartcase
+set wildignorecase
+set visualbell
+"set foldmethod=marker
+"set incsearch
+set number
+set backspace=indent,eol,start
+set backspace=2
+set nofoldenable
+
+" split new file down or right
+set splitbelow
+set splitright
+
+set statusline=%F%m%r%h%w\ [ENC=%{&enc}]\ [FENC=%{&fenc}]\ %{fugitive#statusline()}\ %=\ %3l/%3L,%3v\ %10P\ %4m
+set laststatus=2
+
+"helptags $HOME/.vim/doc
+
+" file encoding
+set fileencoding=utf-8
+set encoding=utf-8
+
+syntax on
+
+"wildmenu
+"set wildmenu
+"set wildmode=list,longest,full
+set wildmode=list:longest
+
+"visualize tab, space, etc
+set list
+set listchars=tab:>-,trail:-,extends:>,precedes:<,nbsp:%
+"set listchars=tab:?-,trail:-,eol:?,extends:?,precedes:?,nbsp:%
+
+" tab
+set tabstop=4
+set shiftwidth=4
+set expandtab
+" set softtabstop=4
+
+" search by rotation
+set wrapscan
+
+nmap <Esc> :noh<CR>
