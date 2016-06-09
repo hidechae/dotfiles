@@ -1,4 +1,5 @@
 export EDITOR=vim
+export VISUAL=vim
 export HISTSIZE=100000;
 
 # General Setting
@@ -46,3 +47,4 @@ function color () {
 
 export LESS='--no-init --quit-if-one-screen --RAW-CONTROL-CHARS'
 alias ag="ag --pager='less -R'"
+alias fzf="fzf --ansi --multi"
