@@ -89,6 +89,7 @@ PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure --prefix="$HOME/f
 make &&
 make install &&
 make distclean &&
-hash -r
+hash -r &&
 
-rm -rf ~/ffmpeg_sources
+rm -rf ~/ffmpeg_sources &&
+rm -rf ~/ffmpeg_build
