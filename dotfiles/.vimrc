@@ -58,6 +58,7 @@ set wrapscan
 " filetype and tabwidth
 autocmd BufNewFile,BufRead *.rb       set filetype=ruby       tabstop=2 shiftwidth=2
 autocmd BufNewFile,BufRead *.jbuilder set filetype=ruby       tabstop=2 shiftwidth=2
+autocmd BufNewFile,BufRead *.py       set filetype=python     tabstop=4 shiftwidth=4
 autocmd BufNewFile,BufRead *.php      set filetype=php        tabstop=4 shiftwidth=4
 autocmd BufNewFile,BufRead *.hh       set filetype=php        tabstop=4 shiftwidth=4
 autocmd BufNewFile,BufRead *.hhi      set filetype=php        tabstop=4 shiftwidth=4
