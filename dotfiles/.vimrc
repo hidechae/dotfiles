@@ -69,8 +69,9 @@ autocmd BufNewFile,BufRead *.scss     set filetype=scss       tabstop=2 shiftwid
 autocmd BufNewFile,BufRead *.coffee   set filetype=coffee     tabstop=2 shiftwidth=2
 autocmd BufRead,BufNewFile *.ts       set filetype=typescript tabstop=4 shiftwidth=4
 autocmd BufRead,BufNewFile *.jsx      set filetype=javascript tabstop=2 shiftwidth=2
-autocmd BufRead,BufNewFile *.jade     set filetype=jade       tabstop=2 shiftwidth=2
-autocmd BufRead,BufNewFile *.jade.tag set filetype=jade       tabstop=2 shiftwidth=2
+autocmd BufRead,BufNewFile *.jade     set filetype=pug        tabstop=2 shiftwidth=2
+autocmd BufRead,BufNewFile *.jade.tag set filetype=pug        tabstop=2 shiftwidth=2
+autocmd BufRead,BufNewFile *.pug      set filetype=pug        tabstop=2 shiftwidth=2
 autocmd BufRead,BufNewFile *.scala    set filetype=scala
 autocmd BufRead,BufNewFile *.go       set filetype=go
 autocmd BufRead,BufNewFile *.json     set filetype=json       tabstop=2 shiftwidth=2
@@ -120,7 +121,8 @@ if v:version>=702
 
   call neobundle#begin(expand('~/.bundle'))
 
-  NeoBundle 'digitaltoad/vim-jade'
+  NeoBundle 'derekwyatt/vim-scala'
+  NeoBundle 'digitaltoad/vim-pug'
 "  NeoBundle 'elzr/vim-json'
   NeoBundle 'elixir-lang/vim-elixir'
   NeoBundle 'etaoins/vim-volt-syntax'
