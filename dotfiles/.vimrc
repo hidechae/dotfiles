@@ -67,12 +67,13 @@ autocmd BufNewFile,BufRead *.html     set filetype=html       tabstop=2 shiftwid
 autocmd BufNewFile,BufRead *.html.tag set filetype=html       tabstop=2 shiftwidth=2
 autocmd BufNewFile,BufRead *.scss     set filetype=scss       tabstop=2 shiftwidth=2
 autocmd BufNewFile,BufRead *.coffee   set filetype=coffee     tabstop=2 shiftwidth=2
-autocmd BufRead,BufNewFile *.ts       set filetype=typescript tabstop=4 shiftwidth=4
+autocmd BufRead,BufNewFile *.ts       set filetype=typescript tabstop=2 shiftwidth=2
 autocmd BufRead,BufNewFile *.jsx      set filetype=javascript tabstop=2 shiftwidth=2
 autocmd BufRead,BufNewFile *.jade     set filetype=pug        tabstop=2 shiftwidth=2
 autocmd BufRead,BufNewFile *.jade.tag set filetype=pug        tabstop=2 shiftwidth=2
 autocmd BufRead,BufNewFile *.pug      set filetype=pug        tabstop=2 shiftwidth=2
 autocmd BufRead,BufNewFile *.scala    set filetype=scala
+autocmd BufRead,BufNewFile *.sbt      set filetype=scala
 autocmd BufRead,BufNewFile *.go       set filetype=go
 autocmd BufRead,BufNewFile *.json     set filetype=json       tabstop=2 shiftwidth=2
 autocmd BufRead,BufNewFile *.snip     set                     tabstop=2 shiftwidth=2 noexpandtab
@@ -121,10 +122,12 @@ if v:version>=702
 
   call neobundle#begin(expand('~/.bundle'))
 
+  NeoBundle 'blueshirts/darcula'
   NeoBundle 'derekwyatt/vim-scala'
   NeoBundle 'digitaltoad/vim-pug'
 "  NeoBundle 'elzr/vim-json'
   NeoBundle 'elixir-lang/vim-elixir'
+  NeoBundle 'ensime/ensime'
   NeoBundle 'etaoins/vim-volt-syntax'
   NeoBundle 'hhvm/vim-hack.git'
   NeoBundle 'kchmck/vim-coffee-script'
@@ -317,7 +320,9 @@ let java_allow_cpp_keywords=1
 
 " for MacVim
 if has('gui_macvim')
-    colorscheme peachpuff
+  colorscheme peachpuff
+else
+  colorscheme darcula
 endif
 
 " map <silent> ts i{t}<ESC>
