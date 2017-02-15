@@ -55,6 +55,8 @@ set expandtab
 " search by rotation
 set wrapscan
 
+set smartindent
+
 " filetype and tabwidth
 autocmd BufNewFile,BufRead *.rb       set filetype=ruby       tabstop=2 shiftwidth=2
 autocmd BufNewFile,BufRead *.jbuilder set filetype=ruby       tabstop=2 shiftwidth=2
@@ -66,6 +68,7 @@ autocmd BufNewFile,BufRead *.slim     set filetype=slim       tabstop=2 shiftwid
 autocmd BufNewFile,BufRead *.html     set filetype=html       tabstop=2 shiftwidth=2
 autocmd BufNewFile,BufRead *.html.tag set filetype=html       tabstop=2 shiftwidth=2
 autocmd BufNewFile,BufRead *.scss     set filetype=scss       tabstop=2 shiftwidth=2
+autocmd BufNewFile,BufRead *.css      set filetype=scss       tabstop=2 shiftwidth=2
 autocmd BufNewFile,BufRead *.coffee   set filetype=coffee     tabstop=2 shiftwidth=2
 autocmd BufRead,BufNewFile *.ts       set filetype=typescript tabstop=2 shiftwidth=2
 autocmd BufRead,BufNewFile *.jsx      set filetype=javascript tabstop=2 shiftwidth=2
@@ -132,6 +135,7 @@ if v:version>=702
   NeoBundle 'hhvm/vim-hack.git'
   NeoBundle 'kchmck/vim-coffee-script'
   NeoBundle 'leafgarland/typescript-vim'
+  NeoBundle 'lilydjwg/colorizer'
   NeoBundle 'mxw/vim-jsx'
   NeoBundle 'naoty/vim-folcom'
   NeoBundle "pangloss/vim-javascript"
@@ -460,3 +464,9 @@ endif
 "    " For perlomni.vim setting.
 "    " https://github.com/c9s/perlomni.vim
 "    let g:neocomplcache_force_omni_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+
+" avoid smartindent
+" inoremap {<Enter> {}<Left><CR><ESC><S-o>
+inoremap {<Enter> {}<Left><CR><ESC><S-<><S-<><S-o>
+inoremap [<Enter> []<Left><CR><ESC><S-o>
+inoremap (<Enter> ()<Left><CR><ESC><S-o>
