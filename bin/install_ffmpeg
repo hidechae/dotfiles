@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo yum -y install autoconf automake cmake freetype-devel gcc gcc-c++ git libtool make mercurial nasm pkgconfig zlib-devel &&
+# sudo yum -y install autoconf automake cmake freetype-devel gcc gcc-c++ git libtool make mercurial nasm pkgconfig zlib-devel &&
 
 rm -rf ~/ffmpeg_sources
 mkdir ~/ffmpeg_sources &&
@@ -17,7 +17,7 @@ make distclean &&
 cd ~/ffmpeg_sources &&
 git clone --depth 1 git://git.videolan.org/x264 &&
 cd x264 &&
-PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin" --enable-static &&
+PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin" --enable-static --disable-asm &&
 make &&
 make install &&
 make distclean &&

@@ -1,6 +1,6 @@
 [user]
-name = Hideyuki Utsunomiya
-email = hidechae@gmail.com
+	name = Hideyuki Utsunomiya
+	email = hideyuki.utsunomiya@nextbeat.net
 
 [color]
 ui =auto
@@ -16,6 +16,7 @@ default = tracking
 [core]
 editor = vim
 pager = less
+excludesfile = /Users/hideyuki_utsunomiya/.gitignore_global
 
 [alias]
 br = branch
@@ -23,3 +24,33 @@ ci = commit
 co = checkout
 st = status
 clone = clone --recursive
+cof  = !git branch    | fzf | xargs git checkout
+cofa = !git branch -a | fzf | xargs git checkout
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+
+[core]
+    pager = delta
+
+[delta]
+    plus-color = "#012800"
+    minus-color = "#340001"
+    syntax-theme = Monokai Extended
+    side-by-side = true
+
+    line-numbers-left-format  = ""
+    line-numbers-right-format = " │ "
+    line-numbers-left-style  = white
+    line-numbers-right-style = white
+
+    file-style = bold ul
+    file-decoration-style = omit
+    hunk-header-style = blue
+    hunk-header-decoration-style = omit
+
+[interactive]
+    diffFilter = delta --color-only

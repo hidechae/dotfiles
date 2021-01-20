@@ -1,0 +1,67 @@
+# 忘れるのでメモ
+# 横分割    : "
+# 縦分割    : %
+# 分割解除  : !
+# デタッチ  : d
+# アタッチ  : a
+# 指定      : a -t name
+# 名前変更  : ,
+
+# prefixをscreenと同じに
+unbind C-b
+set -g prefix C-t
+bind C-t send-prefix
+
+# 256色端末を使用する
+set -g default-terminal "screen-256color"
+
+# 日本語環境
+# setw -g utf8 on
+
+# viのキーバインドを使用する
+setw -g mode-keys vi
+
+# バックスクロール行数を増やす
+set -g history-limit 10000
+
+# 実行されているコマンド名をウィンドウ名に
+setw -g automatic-rename on
+
+# ステータスバー
+# set -g status-utf8 on
+#set -g status-bg white
+setw -g window-status-current-bg blue
+setw -g window-status-current-bg white
+setw -g window-status-current-fg black:w
+
+# Ctrlを押しっぱなしでもよいように
+bind C-a last-window
+bind C-n next-window
+bind C-p previous-window
+bind C-l select-pane -t :.+
+bind C-c new-window -c '#{pane_current_path}'
+bind C-[ copy-mode
+bind R source-file ~/.tmux.conf \; display-message "Reload Config!!"
+
+# mouse
+# set-window-option -g mode-mouse off
+# set-option -g mouse-select-pane off
+# set-option -g mouse-resize-pane off
+# set-option -g mouse-select-window off
+
+# scroll
+set -g terminal-overrides 'xterm*:smcup@:rmcup@'
+
+# Setup 'v' to begin selection as in Vim
+# bind-key -t vi-copy C-v begin-selection
+# bind-key -t vi-copy y copy-pipe "reattach-to-user-namespace pbcopy"
+
+# Update default binding of `Enter` to also use copy-pipe
+# unbind -t vi-copy Enter
+# bind-key -t vi-copy Enter copy-pipe "reattach-to-user-namespace pbcopy"
+
+# open same directory on splited pane
+bind '"' split-window -c '#{pane_current_path}'
+bind % split-window -h -c '#{pane_current_path}'
+
+set -s escape-time 0

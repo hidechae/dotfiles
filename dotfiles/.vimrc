@@ -1,4 +1,5 @@
-"set tags=/home/gree/tags,/home/gree/tags_lib
+"上位階層にタグファイルを検索する
+set tags=./tags;,tags;
 set background=dark
 set hlsearch
 "set showcmd
@@ -55,7 +56,7 @@ set expandtab
 " search by rotation
 set wrapscan
 
-set smartindent
+" set smartindent
 
 " filetype and tabwidth
 autocmd BufNewFile,BufRead *.rb       set filetype=ruby       tabstop=2 shiftwidth=2
@@ -465,8 +466,12 @@ endif
 "    " https://github.com/c9s/perlomni.vim
 "    let g:neocomplcache_force_omni_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
+" 括弧の補完
 " avoid smartindent
-" inoremap {<Enter> {}<Left><CR><ESC><S-o>
-inoremap {<Enter> {}<Left><CR><ESC><S-<><S-<><S-o>
-inoremap [<Enter> []<Left><CR><ESC><S-o>
-inoremap (<Enter> ()<Left><CR><ESC><S-o>
+" inoremap {<Enter> {}<Left><CR><ESC><S-<><S-<><S-o>
+" inoremap [<Enter> []<Left><CR><ESC><S-o><TAB>
+" inoremap (<Enter> ()<Left><CR><ESC><S-o><TAB>
+
+" タグジャンプ
+nmap <C-b> :exe("tag ".expand('<cword>'))<CR>
+nmap <C-l> :pop<CR>
